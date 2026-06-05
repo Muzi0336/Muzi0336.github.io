@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML & CSS 学习导航</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title .icon {
+            font-size: 1.8rem;
+        }
+
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .file-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .file-card:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .file-card .file-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .file-card .file-desc {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        .simple-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+
+        .js-placeholder {
+            background: #f0f0f0;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            color: #999;
+        }
+
+        .js-placeholder .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .js-placeholder p {
+            font-size: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 HTML & CSS 学习导航</h1>
+            <p>从基础到进阶，系统学习前端开发</p>
+        </header>
+
+        <!-- HTML 学习模块 -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon"> </span>
+                HTML 学习
+            </h2>
+            <div class="file-grid">
+                <a href="HTML/HTML基础结构.html" class="file-card">
+                    <div class="file-name">HTML基础结构</div>
+                    <div class="file-desc">文档声明、HTML根元素、head和body</div>
+                </a>
+                <a href="HTML/常见文本标签.html" class="file-card">
+                    <div class="file-name">常见文本标签</div>
+                    <div class="file-desc">标题、段落、强调、代码标签</div>
+                </a>
+                <a href="HTML/列表标签.html" class="file-card">
+                    <div class="file-name">列表标签</div>
+                    <div class="file-desc">无序列表、有序列表、定义列表</div>
+                </a>
+                <a href="HTML/链接进阶.html" class="file-card">
+                    <div class="file-name">链接进阶</div>
+                    <div class="file-desc">超链接、锚点、target属性</div>
+                </a>
+                <a href="HTML/图片标签.html" class="file-card">
+                    <div class="file-name">图片标签</div>
+                    <div class="file-desc">img标签、alt属性、图片映射</div>
+                </a>
+                <a href="HTML/语义化与结构.html" class="file-card">
+                    <div class="file-name">语义化与结构</div>
+                    <div class="file-desc">语义化标签、header、nav、main</div>
+                </a>
+                <a href="HTML/表格进阶.html" class="file-card">
+                    <div class="file-name">表格进阶</div>
+                    <div class="file-desc">表格结构、合并单元格、样式</div>
+                </a>
+                <a href="HTML/多媒体与嵌入.html" class="file-card">
+                    <div class="file-name">多媒体与嵌入</div>
+                    <div class="file-desc">视频、音频、iframe、canvas</div>
+                </a>
+                <a href="HTML/表单与输入.html" class="file-card">
+                    <div class="file-name">表单与输入</div>
+                    <div class="file-desc">表单元素、输入类型、验证</div>
+                </a>
+                <a href="HTML/HTML属性.html" class="file-card">
+                    <div class="file-name">HTML属性</div>
+                    <div class="file-desc">全局属性、自定义属性</div>
+                </a>
+                <a href="HTML/HTML5新增标签.html" class="file-card">
+                    <div class="file-name">HTML5新增标签</div>
+                    <div class="file-desc">新语义标签、新API</div>
+                </a>
+                <a href="HTML/进阶与兼容.html" class="file-card">
+                    <div class="file-name">进阶与兼容</div>
+                    <div class="file-desc">SEO、无障碍、浏览器兼容</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- HTML 简化版 -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon"> </span>
+                HTML 简化版（快速入门）
+            </h2>
+            <div class="file-grid">
+                <a href="HTML/HTML基础_simple.html" class="file-card">
+                    <div class="file-name">HTML基础 <span class="simple-badge">简化版</span></div>
+                    <div class="file-desc">核心知识点，适合快速复习</div>
+                </a>
+                <a href="HTML/HTML结构_simple.html" class="file-card">
+                    <div class="file-name">HTML结构 <span class="simple-badge">简化版</span></div>
+                    <div class="file-desc">语义化标签和表格</div>
+                </a>
+                <a href="HTML/HTML交互_simple.html" class="file-card">
+                    <div class="file-name">HTML交互 <span class="simple-badge">简化版</span></div>
+                    <div class="file-desc">表单和链接</div>
+                </a>
+                <a href="HTML/HTML媒体_simple.html" class="file-card">
+                    <div class="file-name">HTML媒体 <span class="simple-badge">简化版</span></div>
+                    <div class="file-desc">视频、音频、多媒体</div>
+                </a>
+                <a href="HTML/HTML进阶_simple.html" class="file-card">
+                    <div class="file-name">HTML进阶 <span class="simple-badge">简化版</span></div>
+                    <div class="file-desc">属性、事件、SEO</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- CSS 学习模块 -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon"> </span>
+                CSS 学习
+            </h2>
+            <div class="file-grid">
+                <a href="CSS/CSS导入方式.html" class="file-card">
+                    <div class="file-name">CSS导入方式</div>
+                    <div class="file-desc">内联、内部、外部样式表</div>
+                </a>
+                <a href="CSS/CSS选择器.html" class="file-card">
+                    <div class="file-name">CSS选择器</div>
+                    <div class="file-desc">基础选择器、复合选择器</div>
+                </a>
+                <a href="CSS/CSS常用属性.html" class="file-card">
+                    <div class="file-name">CSS常用属性</div>
+                    <div class="file-desc">颜色、背景、边框</div>
+                </a>
+                <a href="CSS/CSS盒模型.html" class="file-card">
+                    <div class="file-name">CSS盒模型</div>
+                    <div class="file-desc">margin、padding、border</div>
+                </a>
+                <a href="CSS/CSS文本与字体.html" class="file-card">
+                    <div class="file-name">CSS文本与字体</div>
+                    <div class="file-desc">字体、文本样式、行高</div>
+                </a>
+                <a href="CSS/CSS布局定位.html" class="file-card">
+                    <div class="file-name">CSS布局定位</div>
+                    <div class="file-desc">display、position、float</div>
+                </a>
+                <a href="CSS/CSS Flex布局.html" class="file-card">
+                    <div class="file-name">CSS Flex布局</div>
+                    <div class="file-desc">弹性盒子、主轴、交叉轴</div>
+                </a>
+                <a href="CSS/CSS Grid布局.html" class="file-card">
+                    <div class="file-name">CSS Grid布局</div>
+                    <div class="file-desc">网格布局、行列定义</div>
+                </a>
+                <a href="CSS/CSS视觉美化.html" class="file-card">
+                    <div class="file-name">CSS视觉美化</div>
+                    <div class="file-desc">阴影、圆角、渐变</div>
+                </a>
+                <a href="CSS/CSS动效与变换.html" class="file-card">
+                    <div class="file-name">CSS动效与变换</div>
+                    <div class="file-desc">transition、animation、transform</div>
+                </a>
+                <a href="CSS/CSS单位.html" class="file-card">
+                    <div class="file-name">CSS单位</div>
+                    <div class="file-desc">px、em、rem、vw、vh</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- JavaScript 预留模块 -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon">⚡</span>
+                JavaScript 学习（即将推出）
+            </h2>
+            <div class="js-placeholder">
+                <div class="icon"> </div>
+                <p>JavaScript 学习模块正在准备中...</p>
+                <p style="margin-top: 10px; font-size: 0.9rem;">敬请期待！</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>HTML & CSS 学习资源 | 持续更新中</p>
+        </footer>
+    </div>
+</body>
+</html>

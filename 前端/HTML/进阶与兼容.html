@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进阶与兼容</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        nav h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        nav a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked ~ .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked ~ .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 演示区内的表格样式 */
+        .demo table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .demo th, .demo td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .demo th {
+            background: #f0f0f0;
+            font-weight: bold;
+        }
+
+        /* 字符实体演示 */
+        .entity-demo {
+            font-size: 18px;
+            line-height: 2;
+        }
+
+        .entity-demo span {
+            display: inline-block;
+            width: 150px;
+            margin-right: 20px;
+        }
+
+        /* 属性表格 */
+        .attr-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .attr-table th, .attr-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .attr-table th {
+            background: #3498db;
+            color: white;
+        }
+
+        .attr-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav>
+        <h3>进阶与兼容</h3>
+        <a href="#unit-1">1. 字符实体</a>
+        <a href="#unit-2">2. 常用字符实体</a>
+        <a href="#unit-3">3. SEO 基础</a>
+        <a href="#unit-4">4. Open Graph</a>
+        <a href="#unit-5">5. link 引入 CSS</a>
+        <a href="#unit-6">6. link 引入图标</a>
+        <a href="#unit-7">7. script 引入 JS</a>
+        <a href="#unit-8">8. async/defer</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- 第1节：字符实体 -->
+        <div class="unit" id="unit-1"> <!-- 块级容器 -->
+            <h2>1. 字符实体</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p>HTML 中有些字符有特殊含义（如 <code>&lt;</code> <code>&gt;</code>），直接写会被当成标签解析。</p> <!-- 段落标签 -->
+                <p><strong>字符实体</strong>（Character Entities）用特殊代码来显示这些字符。</p> <!-- 段落标签 -->
+                <p>格式：<code>&amp;实体名;</code> 或 <code>&amp;#实体编号;</code></p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <div class="entity-demo"> <!-- 块级容器 -->
+                    <span> <!-- 行内容器 -->&lt; 小于号</span>
+                    <span> <!-- 行内容器 -->&gt; 大于号</span>
+                    <span> <!-- 行内容器 -->&amp; 和号</span>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-1" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-1" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;p&gt;&amp;lt; 小于号&lt;/p&gt;
+&lt;p&gt;&amp;gt; 大于号&lt;/p&gt;
+&lt;p&gt;&amp;amp; 和号&lt;/p&gt;</div>
+        </div>
+
+        <!-- 第2节：常用字符实体 -->
+        <div class="unit" id="unit-2"> <!-- 块级容器 -->
+            <h2>2. 常用字符实体</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p>以下是常用的字符实体：</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->字符实体对照表：</div>
+                <table> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th> <!-- 表格表头 -->实体</th>
+                        <th> <!-- 表格表头 -->编号</th>
+                        <th> <!-- 表格表头 -->显示</th>
+                        <th> <!-- 表格表头 -->说明</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->&amp;lt;</td>
+                        <td> <!-- 表格单元格 -->&amp;#60;</td>
+                        <td> <!-- 表格单元格 -->&lt;</td>
+                        <td> <!-- 表格单元格 -->小于号</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->&amp;gt;</td>
+                        <td> <!-- 表格单元格 -->&amp;#62;</td>
+                        <td> <!-- 表格单元格 -->&gt;</td>
+                        <td> <!-- 表格单元格 -->大于号</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->&amp;amp;</td>
+                        <td> <!-- 表格单元格 -->&amp;#38;</td>
+                        <td> <!-- 表格单元格 -->&amp;</td>
+                        <td> <!-- 表格单元格 -->和号</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->&amp;nbsp;</td>
+                        <td> <!-- 表格单元格 -->&amp;#160;</td>
+                        <td> <!-- 表格单元格 -->&nbsp;</td>
+                        <td> <!-- 表格单元格 -->不换行空格</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->&amp;quot;</td>
+                        <td> <!-- 表格单元格 -->&amp;#34;</td>
+                        <td> <!-- 表格单元格 -->&quot;</td>
+                        <td> <!-- 表格单元格 -->双引号</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->&amp;apos;</td>
+                        <td> <!-- 表格单元格 -->&amp;#39;</td>
+                        <td> <!-- 表格单元格 -->&apos;</td>
+                        <td> <!-- 表格单元格 -->单引号</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->&amp;copy;</td>
+                        <td> <!-- 表格单元格 -->&amp;#169;</td>
+                        <td> <!-- 表格单元格 -->&copy;</td>
+                        <td> <!-- 表格单元格 -->版权符号</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->&amp;reg;</td>
+                        <td> <!-- 表格单元格 -->&amp;#174;</td>
+                        <td> <!-- 表格单元格 -->&reg;</td>
+                        <td> <!-- 表格单元格 -->注册商标</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->&amp;trade;</td>
+                        <td> <!-- 表格单元格 -->&amp;#8482;</td>
+                        <td> <!-- 表格单元格 -->&trade;</td>
+                        <td> <!-- 表格单元格 -->商标符号</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->&amp;times;</td>
+                        <td> <!-- 表格单元格 -->&amp;#215;</td>
+                        <td> <!-- 表格单元格 -->&times;</td>
+                        <td> <!-- 表格单元格 -->乘号</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->&amp;divide;</td>
+                        <td> <!-- 表格单元格 -->&amp;#247;</td>
+                        <td> <!-- 表格单元格 -->&divide;</td>
+                        <td> <!-- 表格单元格 -->除号</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->使用场景：</div>
+                <p>1. 显示 HTML 代码：<code>&amp;lt;div&amp;gt;内容&amp;lt;/div&amp;gt;</code></p> <!-- 段落标签 -->
+                <p>2. 多个空格：<code>第一&amp;nbsp;&amp;nbsp;&amp;nbsp;第二</code>（普通空格会被合并）</p> <!-- 段落标签 -->
+                <p>3. 版权信息：<code>&amp;copy; 2024 版权所有</code></p> <!-- 段落标签 -->
+            </div>
+        </div>
+
+        <!-- 第3节：SEO 基础 -->
+        <div class="unit" id="unit-3"> <!-- 块级容器 -->
+            <h2>3. SEO 基础</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><strong>SEO</strong>（Search Engine Optimization）搜索引擎优化，让网页更容易被搜索引擎收录和排名。</p> <!-- 段落标签 -->
+                <p>HTML 中影响 SEO 的关键元素：</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->SEO 关键元素：</div>
+                <table class="attr-table"> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th> <!-- 表格表头 -->元素</th>
+                        <th> <!-- 表格表头 -->作用</th>
+                        <th> <!-- 表格表头 -->最佳实践</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->title</td>
+                        <td> <!-- 表格单元格 -->页面标题</td>
+                        <td> <!-- 表格单元格 -->30-60字符，包含关键词</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->meta description</td>
+                        <td> <!-- 表格单元格 -->页面描述</td>
+                        <td> <!-- 表格单元格 -->150-160字符，吸引点击</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->meta keywords</td>
+                        <td> <!-- 表格单元格 -->关键词</td>
+                        <td> <!-- 表格单元格 -->3-5个，用逗号分隔</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->h1-h6</td>
+                        <td> <!-- 表格单元格 -->标题层级</td>
+                        <td> <!-- 表格单元格 -->一个页面只有一个 h1</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->alt 属性</td>
+                        <td> <!-- 表格单元格 -->图片描述</td>
+                        <td> <!-- 表格单元格 -->准确描述图片内容</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->语义化标签</td>
+                        <td> <!-- 表格单元格 -->结构清晰</td>
+                        <td> <!-- 表格单元格 -->使用 header/nav/main 等</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-3" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-3" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;head&gt;
+    &lt;title&gt;页面标题 - 网站名&lt;/title&gt;
+    &lt;meta name="description" content="页面描述，150字以内，包含关键词"&gt;
+    &lt;meta name="keywords" content="关键词1, 关键词2, 关键词3"&gt;
+    &lt;meta name="author" content="作者名"&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;页面主标题（唯一）&lt;/h1&gt;
+    &lt;h2&gt;章节标题&lt;/h2&gt;
+    &lt;img src="image.jpg" alt="准确的图片描述"&gt;
+&lt;/body&gt;</div>
+        </div>
+
+        <!-- 第4节：Open Graph -->
+        <div class="unit" id="unit-4"> <!-- 块级容器 -->
+            <h2>4. Open Graph</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><strong>Open Graph</strong>（OG）是 Facebook 推出的协议，用于控制网页在社交媒体分享时的显示内容。</p> <!-- 段落标签 -->
+                <p>其他平台（Twitter、微信等）也支持类似协议。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->常用 OG 标签：</div>
+                <table class="attr-table"> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th> <!-- 表格表头 -->标签</th>
+                        <th> <!-- 表格表头 -->说明</th>
+                        <th> <!-- 表格表头 -->示例值</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->og:title</td>
+                        <td> <!-- 表格单元格 -->标题</td>
+                        <td> <!-- 表格单元格 -->页面标题</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->og:description</td>
+                        <td> <!-- 表格单元格 -->描述</td>
+                        <td> <!-- 表格单元格 -->页面描述</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->og:image</td>
+                        <td> <!-- 表格单元格 -->封面图</td>
+                        <td> <!-- 表格单元格 -->https://example.com/image.jpg</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->og:url</td>
+                        <td> <!-- 表格单元格 -->页面 URL</td>
+                        <td> <!-- 表格单元格 -->https://example.com/page</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->og:type</td>
+                        <td> <!-- 表格单元格 -->类型</td>
+                        <td> <!-- 表格单元格 -->website、article、product</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->og:site_name</td>
+                        <td> <!-- 表格单元格 -->网站名</td>
+                        <td> <!-- 表格单元格 -->我的网站</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-4" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-4" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;!-- Open Graph --&gt;
+&lt;meta property="og:title" content="页面标题"&gt;
+&lt;meta property="og:description" content="页面描述"&gt;
+&lt;meta property="og:image" content="https://example.com/image.jpg"&gt;
+&lt;meta property="og:url" content="https://example.com/page"&gt;
+&lt;meta property="og:type" content="website"&gt;
+&lt;meta property="og:site_name" content="我的网站"&gt;
+
+&lt;!-- Twitter Card --&gt;
+&lt;meta name="twitter:card" content="summary_large_image"&gt;
+&lt;meta name="twitter:title" content="页面标题"&gt;
+&lt;meta name="twitter:description" content="页面描述"&gt;
+&lt;meta name="twitter:image" content="https://example.com/image.jpg"&gt;</div>
+        </div>
+
+        <!-- 第5节：link 引入 CSS -->
+        <div class="unit" id="unit-5"> <!-- 块级容器 -->
+            <h2>5. link 引入 CSS</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;link&gt;</code> 标签用于引入<strong>外部资源</strong>，最常用的是引入 CSS 样式表。</p> <!-- 段落标签 -->
+                <p><code>rel</code> 定义关系，<code>href</code> 定义资源地址。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->引入方式：</div>
+                <table class="attr-table"> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th> <!-- 表格表头 -->方式</th>
+                        <th> <!-- 表格表头 -->代码</th>
+                        <th> <!-- 表格表头 -->适用场景</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->外部样式表</td>
+                        <td> <!-- 表格单元格 -->&lt;link rel="stylesheet" href="style.css"&gt;</td>
+                        <td> <!-- 表格单元格 -->推荐，可缓存</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->内部样式</td>
+                        <td> <!-- 表格单元格 -->&lt;style&gt;...&lt;/style&gt;</td>
+                        <td> <!-- 表格单元格 -->少量样式</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->内联样式</td>
+                        <td> <!-- 表格单元格 -->&lt;div style="..."&gt;</td>
+                        <td> <!-- 表格单元格 -->特殊覆盖</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-5" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-5" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 外部样式表（推荐） --&gt;
+&lt;link rel="stylesheet" href="style.css"&gt;
+
+&lt;!-- 多个样式表 --&gt;
+&lt;link rel="stylesheet" href="reset.css"&gt;
+&lt;link rel="stylesheet" href="main.css"&gt;
+
+&lt;!-- 内部样式 --&gt;
+&lt;style&gt;
+    body { font-family: sans-serif; }
+    .container { max-width: 1200px; }
+&lt;/style&gt;</div>
+        </div>
+
+        <!-- 第6节：link 引入图标 -->
+        <div class="unit" id="unit-6"> <!-- 块级容器 -->
+            <h2>6. link 引入图标</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;link rel="icon"&gt;</code> 用于设置网页图标（favicon），显示在浏览器标签页上。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->图标格式：</div>
+                <table class="attr-table"> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th> <!-- 表格表头 -->格式</th>
+                        <th> <!-- 表格表头 -->代码</th>
+                        <th> <!-- 表格表头 -->说明</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->ICO</td>
+                        <td> <!-- 表格单元格 -->&lt;link rel="icon" href="favicon.ico"&gt;</td>
+                        <td> <!-- 表格单元格 -->传统格式，兼容性最好</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->PNG</td>
+                        <td> <!-- 表格单元格 -->&lt;link rel="icon" type="image/png" href="icon.png"&gt;</td>
+                        <td> <!-- 表格单元格 -->现代格式，支持透明</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->SVG</td>
+                        <td> <!-- 表格单元格 -->&lt;link rel="icon" type="image/svg+xml" href="icon.svg"&gt;</td>
+                        <td> <!-- 表格单元格 -->矢量格式，可缩放</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->Apple Touch</td>
+                        <td> <!-- 表格单元格 -->&lt;link rel="apple-touch-icon" href="apple-icon.png"&gt;</td>
+                        <td> <!-- 表格单元格 -->iOS 设备图标</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-6" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-6" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 基本图标 --&gt;
+&lt;link rel="icon" href="favicon.ico"&gt;
+
+&lt;!-- PNG 图标 --&gt;
+&lt;link rel="icon" type="image/png" sizes="32x32" href="icon-32.png"&gt;
+&lt;link rel="icon" type="image/png" sizes="16x16" href="icon-16.png"&gt;
+
+&lt;!-- SVG 图标 --&gt;
+&lt;link rel="icon" type="image/svg+xml" href="icon.svg"&gt;
+
+&lt;!-- Apple Touch Icon --&gt;
+&lt;link rel="apple-touch-icon" sizes="180x180" href="apple-icon.png"&gt;</div>
+        </div>
+
+        <!-- 第7节：script 引入 JS -->
+        <div class="unit" id="unit-7"> <!-- 块级容器 -->
+            <h2>7. script 引入 JS</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;script&gt;</code> 标签用于引入 JavaScript 代码。</p> <!-- 段落标签 -->
+                <p><code>src</code> 引入外部文件，<code>type</code> 指定脚本类型（可省略）。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->引入方式：</div>
+                <table class="attr-table"> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th> <!-- 表格表头 -->方式</th>
+                        <th> <!-- 表格表头 -->代码</th>
+                        <th> <!-- 表格表头 -->适用场景</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->外部脚本</td>
+                        <td> <!-- 表格单元格 -->&lt;script src="app.js"&gt;&lt;/script&gt;</td>
+                        <td> <!-- 表格单元格 -->推荐，可缓存</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->内联脚本</td>
+                        <td> <!-- 表格单元格 -->&lt;script&gt;...&lt;/script&gt;</td>
+                        <td> <!-- 表格单元格 -->少量代码</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-7" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-7" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 外部脚本（推荐） --&gt;
+&lt;script src="app.js"&gt;&lt;/script&gt;
+
+&lt;!-- 内联脚本 --&gt;
+&lt;script&gt;
+    console.log('Hello!');
+    document.querySelector('h1').style.color = 'red';
+&lt;/script&gt;
+
+&lt;!-- 指定类型（可省略） --&gt;
+&lt;script type="text/javascript" src="app.js"&gt;&lt;/script&gt;</div>
+        </div>
+
+        <!-- 第8节：async/defer -->
+        <div class="unit" id="unit-8"> <!-- 块级容器 -->
+            <h2>8. async/defer</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>async</code> 和 <code>defer</code> 控制脚本的加载和执行时机：</p> <!-- 段落标签 -->
+                <p><strong>async</strong>：异步加载，加载完立即执行（不保证顺序）。</p> <!-- 段落标签 -->
+                <p><strong>defer</strong>：延迟执行，等 HTML 解析完再执行（保证顺序）。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->三种加载方式对比：</div>
+                <table class="attr-table"> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th> <!-- 表格表头 -->方式</th>
+                        <th> <!-- 表格表头 -->加载</th>
+                        <th> <!-- 表格表头 -->执行</th>
+                        <th> <!-- 表格表头 -->适用场景</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->无属性</td>
+                        <td> <!-- 表格单元格 -->同步阻塞</td>
+                        <td> <!-- 表格单元格 -->立即执行</td>
+                        <td> <!-- 表格单元格 -->需要立即执行的脚本</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->async</td>
+                        <td> <!-- 表格单元格 -->异步加载</td>
+                        <td> <!-- 表格单元格 -->加载完立即执行</td>
+                        <td> <!-- 表格单元格 -->独立脚本（如统计）</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->defer</td>
+                        <td> <!-- 表格单元格 -->异步加载</td>
+                        <td> <!-- 表格单元格 -->HTML解析完后执行</td>
+                        <td> <!-- 表格单元格 -->需要保证顺序的脚本</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->执行顺序图解：</div>
+                <p><strong>无属性</strong>：HTML 解析 → 遇到 script → 停止解析 → 下载脚本 → 执行脚本 → 继续解析</p> <!-- 段落标签 -->
+                <p><strong>async</strong>：HTML 解析 → 遇到 script → 继续解析 + 下载脚本 → 脚本下载完 → 执行脚本</p> <!-- 段落标签 -->
+                <p><strong>defer</strong>：HTML 解析 → 遇到 script → 继续解析 + 下载脚本 → HTML 解析完 → 执行脚本</p> <!-- 段落标签 -->
+            </div>
+
+            <input type="checkbox" id="code-8" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-8" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 同步加载（阻塞） --&gt;
+&lt;script src="app.js"&gt;&lt;/script&gt;
+
+&lt;!-- 异步加载（不保证顺序） --&gt;
+&lt;script src="analytics.js" async&gt;&lt;/script&gt;
+
+&lt;!-- 延迟执行（保证顺序） --&gt;
+&lt;script src="app.js" defer&gt;&lt;/script&gt;
+
+&lt;!-- 多个 defer 脚本按顺序执行 --&gt;
+&lt;script src="lib.js" defer&gt;&lt;/script&gt;
+&lt;script src="app.js" defer&gt;&lt;/script&gt;</div>
+        </div>
+
+    </main>
+</body>
+
+</html>

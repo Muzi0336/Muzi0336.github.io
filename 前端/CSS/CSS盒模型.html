@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS盒模型</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Microsoft YaHei', sans-serif; background: #f5f5f5; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; color: #2c3e50; margin: 30px 0; font-size: 2.5em; }
+        .section { background: white; border-radius: 12px; padding: 25px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .section h2 { color: #3498db; border-left: 4px solid #3498db; padding-left: 12px; margin-bottom: 20px; }
+        .concept { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 3px solid #3498db; }
+        .demo { background: #ecf0f1; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .demo-label { font-weight: bold; color: #7f8c8d; margin-bottom: 10px; }
+        .code-block { background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 8px; margin: 10px 0; overflow-x: auto; font-family: 'Consolas', monospace; }
+        .note { background: #fff3cd; padding: 12px; border-radius: 6px; margin: 10px 0; border-left: 3px solid #ffc107; }
+        .box-model-visual { display: flex; justify-content: center; margin: 20px 0; }
+        .margin-box { background: #e74c3c; padding: 20px; }
+        .border-box { border: 5px solid #f39c12; padding: 20px; }
+        .padding-box { background: #2ecc71; padding: 20px; }
+        .content-box { background: #3498db; color: white; padding: 20px; }
+        
+        /* 纯CSS展开折叠 */
+        .code-toggle { display: none; }
+        .toggle-label { 
+            display: inline-block; 
+            background: #3498db; 
+            color: white; 
+            padding: 8px 16px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 10px 0;
+        }
+        .toggle-label:hover { background: #2980b9; }
+        .hidden-code { 
+            display: none; 
+            margin-top: 10px; 
+        }
+        .code-toggle:checked ~ .hidden-code { display: block; }
+        .code-toggle:checked ~ .toggle-label { background: #e74c3c; }
+        .code-toggle:checked ~ .toggle-label::after { content: ' ▲'; }
+        .code-toggle:not(:checked) ~ .toggle-label::after { content: ' ▼'; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📦 CSS盒模型</h1>
+        
+        <div class="section">
+            <h2>1. 盒模型概念</h2>
+            <div class="concept">
+                <p>每个HTML元素都可以看作一个矩形盒子，由四部分组成：</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>content</strong>：内容区域（文字、图片等）</li>
+                    <li><strong>padding</strong>：内边距（内容与边框之间的距离）</li>
+                    <li><strong>border</strong>：边框</li>
+                    <li><strong>margin</strong>：外边距（元素与其他元素之间的距离）</li>
+                </ul>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 盒模型可视化演示</div>
+                <div class="box-model-visual">
+                    <div class="margin-box">
+                        margin（外边距）
+                        <div class="border-box">
+                            border（边框）
+                            <div class="padding-box">
+                                padding（内边距）
+                                <div class="content-box">
+                                    content（内容）
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. width / height</h2>
+            <div class="concept">
+                <p><strong>width</strong> 和 <strong>height</strong> 设置的是内容区域的宽高，不包含 padding 和 border。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 固定宽度 vs 最大宽度</div>
+                <div style="background: #eee; padding: 10px;">
+                    <div style="width: 300px; background: #3498db; color: white; padding: 10px; margin: 5px;">
+                        固定宽度 300px
+                    </div>
+                    <div style="max-width: 300px; background: #e74c3c; color: white; padding: 10px; margin: 5px;">
+                        最大宽度 300px（可缩小）
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-width" class="code-toggle">
+            <label for="code-width" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>&lt;div style="width: 300px;"&gt;固定宽度 300px&lt;/div&gt;
+&lt;div style="max-width: 300px;"&gt;最大宽度 300px&lt;/div&gt;</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. box-sizing</h2>
+            <div class="concept">
+                <p><strong>box-sizing</strong> 控制盒模型的计算方式：</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>content-box</strong>（默认）：width/height 只包含内容</li>
+                    <li><strong>border-box</strong>：width/height 包含 content + padding + border</li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>最佳实践</strong>：全局设置 <code>* { box-sizing: border-box; }</code></p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 box-sizing 对比演示</div>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">content-box（默认）</p>
+                        <div style="width: 200px; padding: 20px; border: 5px solid #3498db; background: #ecf0f1; box-sizing: content-box;">
+                            实际宽度：200 + 20×2 + 5×2 = 250px
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">border-box</p>
+                        <div style="width: 200px; padding: 20px; border: 5px solid #e74c3c; background: #ecf0f1; box-sizing: border-box;">
+                            实际宽度：200px（包含padding和border）
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-box-sizing" class="code-toggle">
+            <label for="code-box-sizing" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 全局设置 border-box */
+* {
+    box-sizing: border-box;
+}
+
+/* content-box（默认） */
+.box1 {
+    width: 200px;
+    padding: 20px;
+    border: 5px solid #3498db;
+    /* 实际宽度 = 200 + 20×2 + 5×2 = 250px */
+}
+
+/* border-box */
+.box2 {
+    width: 200px;
+    padding: 20px;
+    border: 5px solid #e74c3c;
+    box-sizing: border-box;
+    /* 实际宽度 = 200px（包含padding和border） */
+}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. padding（内边距）</h2>
+            <div class="concept">
+                <p><strong>padding</strong> 控制内容与边框之间的距离。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 padding 四个方向</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div style="padding: 20px; background: #3498db; color: white;">
+                        padding: 20px<br>四边都是20px
+                    </div>
+                    <div style="padding: 10px 20px; background: #e74c3c; color: white;">
+                        padding: 10px 20px<br>上下10px 左右20px
+                    </div>
+                    <div style="padding: 10px 20px 30px; background: #2ecc71; color: white;">
+                        padding: 10px 20px 30px<br>上10 左右20 下30
+                    </div>
+                    <div style="padding: 10px 20px 30px 40px; background: #f39c12; color: white;">
+                        padding: 10px 20px 30px 40px<br>上 右 下 左
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-padding" class="code-toggle">
+            <label for="code-padding" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 四个方向相同 */
+padding: 20px;
+
+/* 上下 | 左右 */
+padding: 10px 20px;
+
+/* 上 | 左右 | 下 */
+padding: 10px 20px 30px;
+
+/* 上 | 右 | 下 | 左（顺时针） */
+padding: 10px 20px 30px 40px;
+
+/* 单独设置 */
+padding-top: 10px;
+padding-right: 20px;
+padding-bottom: 30px;
+padding-left: 40px;</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. margin（外边距）</h2>
+            <div class="concept">
+                <p><strong>margin</strong> 控制元素与其他元素之间的距离。</p>
+                <p style="margin-top: 10px;"><strong>注意</strong>：margin 可以设置负值，让元素向反方向移动。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 margin 演示</div>
+                <div style="background: #ecf0f1; padding: 10px;">
+                    <div style="margin: 15px; padding: 10px; background: #3498db; color: white;">
+                        margin: 15px
+                    </div>
+                    <div style="margin: 15px; padding: 10px; background: #e74c3c; color: white;">
+                        margin: 15px
+                    </div>
+                </div>
+            </div>
+            
+            <div class="note">
+                <strong>💡 margin 居中技巧</strong>：设置 <code>margin: 0 auto;</code> 可以让块级元素水平居中。
+            </div>
+            
+            <input type="checkbox" id="code-margin" class="code-toggle">
+            <label for="code-margin" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 水平居中 */
+margin: 0 auto;
+
+/* 负margin */
+margin-top: -20px;  /* 向上移动 */
+
+/* margin 塌陷问题 */
+/* 父子元素的垂直margin会合并，取较大值 */
+.parent {
+    margin-top: 20px;
+}
+.child {
+    margin-top: 30px;
+    /* 实际父元素顶部margin = max(20, 30) = 30px */
+}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. border（边框）</h2>
+            <div class="concept">
+                <p><strong>border</strong> 设置元素边框，常用简写：<code>border: 宽度 样式 颜色</code></p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 不同边框样式</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div style="border: 2px solid #3498db; padding: 15px;">
+                        solid 实线
+                    </div>
+                    <div style="border: 2px dashed #e74c3c; padding: 15px;">
+                        dashed 虚线
+                    </div>
+                    <div style="border: 2px dotted #2ecc71; padding: 15px;">
+                        dotted 点线
+                    </div>
+                    <div style="border: 2px double #f39c12; padding: 15px;">
+                        double 双线
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-border" class="code-toggle">
+            <label for="code-border" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 简写 */
+border: 2px solid #3498db;
+
+/* 单独设置 */
+border-width: 2px;
+border-style: solid;
+border-color: #3498db;
+
+/* 单边设置 */
+border-top: 2px solid #e74c3c;
+border-bottom: 1px dashed #2ecc71;
+
+/* 无边框 */
+border: none;</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>7. border-radius（圆角）</h2>
+            <div class="concept">
+                <p><strong>border-radius</strong> 设置圆角，值可以是 px 或 %。</p>
+                <p style="margin-top: 10px;">设置 <code>border-radius: 50%</code> 可以变成圆形。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 不同圆角效果</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+                    <div style="width: 80px; height: 80px; background: #3498db; border-radius: 10px;">
+                        10px
+                    </div>
+                    <div style="width: 80px; height: 80px; background: #e74c3c; border-radius: 20px;">
+                        20px
+                    </div>
+                    <div style="width: 80px; height: 80px; background: #2ecc71; border-radius: 50%;">
+                        50%
+                    </div>
+                    <div style="width: 120px; height: 60px; background: #f39c12; border-radius: 30px;">
+                        胶囊形
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-radius" class="code-toggle">
+            <label for="code-radius" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 四角相同 */
+border-radius: 10px;
+
+/* 圆形（正方形元素） */
+border-radius: 50%;
+
+/* 胶囊形（长方形元素） */
+border-radius: 30px;
+
+/* 单独设置四角 */
+border-radius: 10px 20px 30px 40px;  /* 左上 右上 右下 左下 */</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>8. overflow（溢出处理）</h2>
+            <div class="concept">
+                <p><strong>overflow</strong> 控制内容超出容器时的处理方式。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 overflow 不同值对比</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">overflow: visible</p>
+                        <div style="width: 120px; height: 60px; border: 2px solid #3498db; overflow: visible; background: #ecf0f1;">
+                            这是一段很长的文字内容，会溢出容器显示在外面
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">overflow: hidden</p>
+                        <div style="width: 120px; height: 60px; border: 2px solid #e74c3c; overflow: hidden; background: #ecf0f1;">
+                            这是一段很长的文字内容，超出部分会被隐藏
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">overflow: auto</p>
+                        <div style="width: 120px; height: 60px; border: 2px solid #2ecc71; overflow: auto; background: #ecf0f1;">
+                            这是一段很长的文字内容，超出部分会出现滚动条
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-overflow" class="code-toggle">
+            <label for="code-overflow" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 默认，溢出内容可见 */
+overflow: visible;
+
+/* 溢出内容隐藏 */
+overflow: hidden;
+
+/* 溢出内容显示滚动条 */
+overflow: auto;
+
+/* 只显示横向滚动条 */
+overflow-x: auto;
+
+/* 只显示纵向滚动条 */
+overflow-y: auto;</code>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

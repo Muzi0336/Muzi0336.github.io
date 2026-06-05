@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表格进阶</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        nav h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        nav a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked ~ .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked ~ .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 演示区内的表格样式 */
+        .demo table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+        .demo th, .demo td { border: 1px solid #333; padding: 8px; text-align: center; }
+        .demo th { background: #f0f0f0; }
+        .demo caption { font-weight: bold; margin-bottom: 10px; }
+    </style>
+</head>
+
+<body>
+
+    <!-- 侧边导航 -->
+    <nav>
+        <h3>表格进阶</h3>
+        <a href="#unit-1">1. 表格结构分组</a>
+        <a href="#unit-2">2. 合并列 colspan</a>
+        <a href="#unit-3">3. 合并行 rowspan</a>
+        <a href="#unit-4">4. 综合示例</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- 第1节：表格结构分组 -->
+        <div class="unit" id="unit-1"> <!-- 块级容器 -->
+            <h2>1. 表格结构分组</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;thead&gt;</code> 表头 | <code>&lt;tbody&gt;</code> 表体 | <code>&lt;tfoot&gt;</code> 表尾</p> <!-- 段落标签 -->
+                <p><code>&lt;caption&gt;</code> 表格标题，让表格更语义化。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <table> <!-- 表格 -->
+                    <caption>学生成绩表</caption>
+                    <thead> <!-- 表格表头 -->
+                        <tr> <!-- 表格行 -->
+                            <th> <!-- 表格表头 -->姓名</th>
+                            <th> <!-- 表格表头 -->语文</th>
+                            <th> <!-- 表格表头 -->数学</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr> <!-- 表格行 -->
+                            <td> <!-- 表格单元格 -->张三</td>
+                            <td> <!-- 表格单元格 -->85</td>
+                            <td> <!-- 表格单元格 -->90</td>
+                        </tr>
+                        <tr> <!-- 表格行 -->
+                            <td> <!-- 表格单元格 -->李四</td>
+                            <td> <!-- 表格单元格 -->78</td>
+                            <td> <!-- 表格单元格 -->88</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr> <!-- 表格行 -->
+                            <td> <!-- 表格单元格 -->平均分</td>
+                            <td> <!-- 表格单元格 -->81.5</td>
+                            <td> <!-- 表格单元格 -->89</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-1" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-1" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;table&gt;
+    &lt;caption&gt;学生成绩表&lt;/caption&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;姓名&lt;/th&gt;
+            &lt;th&gt;语文&lt;/th&gt;
+            &lt;th&gt;数学&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt;张三&lt;/td&gt;
+            &lt;td&gt;85&lt;/td&gt;
+            &lt;td&gt;90&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+    &lt;tfoot&gt;
+        &lt;tr&gt;
+            &lt;td&gt;平均分&lt;/td&gt;
+            &lt;td&gt;81.5&lt;/td&gt;
+            &lt;td&gt;89&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tfoot&gt;
+&lt;/table&gt;</div>
+        </div>
+
+        <!-- 第2节：合并列 -->
+        <div class="unit" id="unit-2"> <!-- 块级容器 -->
+            <h2>2. 合并列 colspan</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>colspan</code> 属性让一个单元格横跨多列。</p> <!-- 段落标签 -->
+                <p>例如 <code>colspan="2"</code> 表示这个单元格占 2 列的位置。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <table> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th colspan="2"> <!-- 表格表头 -->个人信息</th>
+                        <th> <!-- 表格表头 -->成绩</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->张三</td>
+                        <td> <!-- 表格单元格 -->男</td>
+                        <td> <!-- 表格单元格 -->90</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-2" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-2" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th colspan="2"&gt;个人信息&lt;/th&gt;
+        &lt;th&gt;成绩&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;张三&lt;/td&gt;
+        &lt;td&gt;男&lt;/td&gt;
+        &lt;td&gt;90&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;</div>
+        </div>
+
+        <!-- 第3节：合并行 -->
+        <div class="unit" id="unit-3"> <!-- 块级容器 -->
+            <h2>3. 合并行 rowspan</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>rowspan</code> 属性让一个单元格纵跨多行。</p> <!-- 段落标签 -->
+                <p>例如 <code>rowspan="2"</code> 表示这个单元格占 2 行的位置。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <table> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th> <!-- 表格表头 -->姓名</th>
+                        <th> <!-- 表格表头 -->科目</th>
+                        <th> <!-- 表格表头 -->分数</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td rowspan="2"> <!-- 表格单元格 -->张三</td>
+                        <td> <!-- 表格单元格 -->语文</td>
+                        <td> <!-- 表格单元格 -->85</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->数学</td>
+                        <td> <!-- 表格单元格 -->90</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td rowspan="2"> <!-- 表格单元格 -->李四</td>
+                        <td> <!-- 表格单元格 -->语文</td>
+                        <td> <!-- 表格单元格 -->78</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->数学</td>
+                        <td> <!-- 表格单元格 -->88</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-3" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-3" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th&gt;姓名&lt;/th&gt;
+        &lt;th&gt;科目&lt;/th&gt;
+        &lt;th&gt;分数&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td rowspan="2"&gt;张三&lt;/td&gt;
+        &lt;td&gt;语文&lt;/td&gt;
+        &lt;td&gt;85&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;数学&lt;/td&gt;
+        &lt;td&gt;90&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;</div>
+        </div>
+
+        <!-- 第4节：综合示例 -->
+        <div class="unit" id="unit-4"> <!-- 块级容器 -->
+            <h2>4. 综合示例</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p>同时使用 <code>colspan</code> 和 <code>rowspan</code> 的复杂表格。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <table> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th colspan="2"> <!-- 表格表头 -->科目</th>
+                        <th rowspan="2"> <!-- 表格表头 -->总分</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <th> <!-- 表格表头 -->语文</th>
+                        <th> <!-- 表格表头 -->数学</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->85</td>
+                        <td> <!-- 表格单元格 -->90</td>
+                        <td> <!-- 表格单元格 -->175</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-4" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-4" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th colspan="2"&gt;科目&lt;/th&gt;
+        &lt;th rowspan="2"&gt;总分&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;th&gt;语文&lt;/th&gt;
+        &lt;th&gt;数学&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;85&lt;/td&gt;
+        &lt;td&gt;90&lt;/td&gt;
+        &lt;td&gt;175&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;</div>
+        </div>
+
+    </main>
+
+</body>
+
+</html>

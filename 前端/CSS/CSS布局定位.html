@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS布局定位</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Microsoft YaHei', sans-serif; background: #f5f5f5; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; color: #2c3e50; margin: 30px 0; font-size: 2.5em; }
+        .section { background: white; border-radius: 12px; padding: 25px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .section h2 { color: #9b59b6; border-left: 4px solid #9b59b6; padding-left: 12px; margin-bottom: 20px; }
+        .concept { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 3px solid #9b59b6; }
+        .demo { background: #ecf0f1; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .demo-label { font-weight: bold; color: #7f8c8d; margin-bottom: 10px; }
+        .code-block { background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 8px; margin: 10px 0; overflow-x: auto; font-family: 'Consolas', monospace; }
+        .note { background: #fff3cd; padding: 12px; border-radius: 6px; margin: 10px 0; border-left: 3px solid #ffc107; }
+        
+        /* 纯CSS展开折叠 */
+        .code-toggle { display: none; }
+        .toggle-label { 
+            display: inline-block; 
+            background: #9b59b6; 
+            color: white; 
+            padding: 8px 16px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 10px 0;
+        }
+        .toggle-label:hover { background: #8e44ad; }
+        .hidden-code { display: none; margin-top: 10px; }
+        .code-toggle:checked ~ .hidden-code { display: block; }
+        .code-toggle:checked ~ .toggle-label { background: #e74c3c; }
+        .code-toggle:checked ~ .toggle-label::after { content: ' ▲'; }
+        .code-toggle:not(:checked) ~ .toggle-label::after { content: ' ▼'; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📐 CSS布局定位</h1>
+        
+        <div class="section">
+            <h2>1. display（显示模式）</h2>
+            <div class="concept">
+                <p><strong>display</strong> 是布局的核心属性，决定元素的显示方式。</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>block</strong>：块级元素，独占一行</li>
+                    <li><strong>inline</strong>：行内元素，不能设置宽高</li>
+                    <li><strong>inline-block</strong>：行内块，既能设置宽高又不独占一行</li>
+                    <li><strong>flex</strong>：弹性布局</li>
+                    <li><strong>grid</strong>：网格布局</li>
+                    <li><strong>none</strong>：隐藏元素</li>
+                </ul>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 display 不同值对比</div>
+                <div style="background: #ecf0f1; padding: 10px;">
+                    <div style="display: block; background: #3498db; color: white; padding: 10px; margin: 5px;">
+                        block 块级元素（独占一行）
+                    </div>
+                    <div style="display: inline; background: #e74c3c; color: white; padding: 10px;">
+                        inline 行内元素
+                    </div>
+                    <div style="display: inline; background: #e74c3c; color: white; padding: 10px;">
+                        inline 行内元素
+                    </div>
+                    <div style="display: inline-block; width: 150px; background: #2ecc71; color: white; padding: 10px; margin: 5px;">
+                        inline-block 行内块
+                    </div>
+                    <div style="display: inline-block; width: 150px; background: #2ecc71; color: white; padding: 10px; margin: 5px;">
+                        inline-block 行内块
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-display" class="code-toggle">
+            <label for="code-display" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 块级元素 */
+div { display: block; }
+
+/* 行内元素 */
+span { display: inline; }
+
+/* 行内块 */
+a { display: inline-block; width: 100px; }
+
+/* 隐藏元素 */
+.hidden { display: none; }</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. position（定位方式）</h2>
+            <div class="concept">
+                <p><strong>position</strong> 配合 top/right/bottom/left 使用：</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>static</strong>（默认）：正常文档流</li>
+                    <li><strong>relative</strong>：相对定位，相对于自身原位置</li>
+                    <li><strong>absolute</strong>：绝对定位，相对于最近的已定位祖先</li>
+                    <li><strong>fixed</strong>：固定定位，相对于浏览器窗口</li>
+                    <li><strong>sticky</strong>：粘性定位，滚动时"粘"在某个位置</li>
+                </ul>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 relative 定位演示</div>
+                <div style="background: #ecf0f1; padding: 20px; position: relative;">
+                    <div style="background: #3498db; color: white; padding: 15px;">
+                        正常位置
+                    </div>
+                    <div style="background: #e74c3c; color: white; padding: 15px; position: relative; top: 10px; left: 20px;">
+                        relative 定位（top:10px, left:20px）
+                    </div>
+                    <div style="background: #2ecc71; color: white; padding: 15px;">
+                        正常位置
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-position" class="code-toggle">
+            <label for="code-position" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 相对定位 */
+.box {
+    position: relative;
+    top: 10px;
+    left: 20px;
+}
+
+/* 绝对定位 */
+.box {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+/* 固定定位（导航栏常用） */
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. z-index（层叠顺序）</h2>
+            <div class="concept">
+                <p><strong>z-index</strong> 控制定位元素的堆叠顺序，值越大越靠前。</p>
+                <p style="margin-top: 10px;">注意：只有 position 不为 static 时才生效。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 z-index 对比</div>
+                <div style="position: relative; height: 150px; background: #ecf0f1;">
+                    <div style="position: absolute; top: 20px; left: 20px; width: 100px; height: 100px; background: #3498db; color: white; display: flex; align-items: center; justify-content: center; z-index: 1;">
+                        z-index: 1
+                    </div>
+                    <div style="position: absolute; top: 40px; left: 60px; width: 100px; height: 100px; background: #e74c3c; color: white; display: flex; align-items: center; justify-content: center; z-index: 2;">
+                        z-index: 2
+                    </div>
+                    <div style="position: absolute; top: 60px; left: 100px; width: 100px; height: 100px; background: #2ecc71; color: white; display: flex; align-items: center; justify-content: center; z-index: 3;">
+                        z-index: 3
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-zindex" class="code-toggle">
+            <label for="code-zindex" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* z-index 必须配合 position 使用 */
+.box1 {
+    position: absolute;
+    z-index: 1;  /* 最底层 */
+}
+
+.box2 {
+    position: absolute;
+    z-index: 2;  /* 中间层 */
+}
+
+.box3 {
+    position: absolute;
+    z-index: 3;  /* 最顶层 */
+}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. visibility（可见性）</h2>
+            <div class="concept">
+                <p><strong>visibility</strong> 控制元素是否可见，但保留占据的空间。</p>
+                <p style="margin-top: 10px;">与 <code>display: none</code> 的区别：visibility 隐藏后仍占位。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 visibility vs display:none</div>
+                <div style="background: #ecf0f1; padding: 10px;">
+                    <div style="background: #3498db; color: white; padding: 10px; margin: 5px;">
+                        正常显示
+                    </div>
+                    <div style="background: #e74c3c; color: white; padding: 10px; margin: 5px; visibility: hidden;">
+                        visibility: hidden（隐藏但占位）
+                    </div>
+                    <div style="background: #2ecc71; color: white; padding: 10px; margin: 5px;">
+                        正常显示
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-visibility" class="code-toggle">
+            <label for="code-visibility" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 隐藏但占位 */
+.box {
+    visibility: hidden;
+}
+
+/* 完全隐藏不占位 */
+.box {
+    display: none;
+}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. float（浮动）</h2>
+            <div class="concept">
+                <p><strong>float</strong> 让元素脱离文档流，向左或向右浮动。</p>
+                <p style="margin-top: 10px;">现在多用 Flex/Grid 替代，但了解它有助于理解历史布局。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 float 演示</div>
+                <div style="background: #ecf0f1; padding: 10px; overflow: hidden;">
+                    <div style="float: left; width: 100px; height: 100px; background: #3498db; color: white; margin: 5px; display: flex; align-items: center; justify-content: center;">
+                        float: left
+                    </div>
+                    <div style="float: left; width: 100px; height: 100px; background: #e74c3c; color: white; margin: 5px; display: flex; align-items: center; justify-content: center;">
+                        float: left
+                    </div>
+                    <div style="float: left; width: 100px; height: 100px; background: #2ecc71; color: white; margin: 5px; display: flex; align-items: center; justify-content: center;">
+                        float: left
+                    </div>
+                </div>
+            </div>
+            
+            <div class="note">
+                <strong>⚠️ 清除浮动</strong>：浮动元素父容器需要清除浮动，否则高度塌陷。
+            </div>
+            
+            <input type="checkbox" id="code-float" class="code-toggle">
+            <label for="code-float" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 左浮动 */
+.box { float: left; }
+
+/* 右浮动 */
+.box { float: right; }
+
+/* 清除浮动（推荐） */
+.parent::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+/* 或者父容器设置 overflow */
+.parent { overflow: hidden; }</code>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

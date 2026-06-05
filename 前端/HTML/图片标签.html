@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片标签</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        nav h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        nav a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked ~ .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked ~ .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 演示区内的图片样式 */
+        .demo img {
+            max-width: 100%;
+            border-radius: 6px;
+            margin: 8px 0;
+        }
+
+        .demo .img-placeholder {
+            background: #ddd;
+            border: 2px dashed #999;
+            border-radius: 6px;
+            padding: 40px;
+            text-align: center;
+            color: #666;
+            margin: 8px 0;
+        }
+
+        .demo table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .demo th, .demo td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .demo th {
+            background: #f5f5f5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <h3>图片标签</h3>
+        <a href="#unit1">1. 基本用法</a>
+        <a href="#unit2">2. alt 替代文字</a>
+        <a href="#unit3">3. width/height 尺寸</a>
+        <a href="#unit4">4. 图片路径</a>
+        <a href="#unit5">5. loading 懒加载</a>
+        <a href="#unit6">6. srcset 响应式</a>
+        <a href="#unit7">7. 图片链接</a>
+    </nav>
+
+    <main>
+
+        <!-- 单元1：基本用法 -->
+        <div class="unit" id="unit1"> <!-- 块级容器 -->
+            <h2>1. 基本用法</h2> <!-- 标题标签，h1最大，h6最小 -->
+
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;img&gt;</code> 是<strong>自闭合标签</strong>（没有结束标签），用于在页面中显示图片。</p> <!-- 段落标签 -->
+                <p>必须属性：<code>src</code>（图片地址）和 <code>alt</code>（替代文字）。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->📝 代码演示</div>
+                <div class="img-placeholder"> <!-- 块级容器 -->📷 图片占位符</div>
+            </div>
+
+            <input type="checkbox" id="code1" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code1" class="toggle-label">📝 查看完整代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 基本写法 --&gt;
+&lt;img src="photo.jpg" alt="风景照片"&gt;
+
+&lt;!-- 带尺寸 --&gt;
+&lt;img src="logo.png" alt="网站Logo" width="200" height="100"&gt;</div>
+        </div>
+
+        <!-- 单元2：alt替代文字 -->
+        <div class="unit" id="unit2"> <!-- 块级容器 -->
+            <h2>2. alt 替代文字</h2> <!-- 标题标签，h1最大，h6最小 -->
+
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>alt</code> 是图片的<strong>替代文字</strong>，当图片无法显示时会显示这段文字。</p> <!-- 段落标签 -->
+                <p>作用：</p> <!-- 段落标签 -->
+                <p>• 图片加载失败时显示替代文字</p> <!-- 段落标签 -->
+                <p>• 屏幕阅读器会朗读alt文字（无障碍访问）</p> <!-- 段落标签 -->
+                <p>• 搜索引擎通过alt文字理解图片内容（SEO）</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->📝 代码演示</div>
+                <div class="structure-box"> <!-- 块级容器 -->
+                    <div class="level-0"> <!-- 块级容器 -->
+                        <span class="tag"> <!-- 行内容器 -->&lt;img src="cat.jpg" alt="一只橘猫在沙发上睡觉"&gt;</span>
+                        <span class="desc"> <!-- 行内容器 -->← 好的alt：描述图片内容</span>
+                    </div>
+                    <div class="level-0" style="margin-top: 10px;"> <!-- 块级容器 -->
+                        <span class="tag"> <!-- 行内容器 -->&lt;img src="cat.jpg" alt="图片"&gt;</span>
+                        <span class="desc"> <!-- 行内容器 -->← 不好的alt：太笼统，没有意义</span>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code2" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code2" class="toggle-label">📝 查看完整代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;!-- ✅ 好的alt：描述图片内容 --&gt;
+&lt;img src="cat.jpg" alt="一只橘猫在沙发上睡觉"&gt;
+
+&lt;!-- ❌ 不好的alt：太笼统 --&gt;
+&lt;img src="cat.jpg" alt="图片"&gt;
+
+&lt;!-- ❌ 不好的alt：关键词堆砌（SEO作弊） --&gt;
+&lt;img src="cat.jpg" alt="猫 橘猫 宠物 可爱 睡觉 沙发"&gt;
+
+&lt;!-- 纯装饰图片：alt留空 --&gt;
+&lt;img src="decoration.png" alt=""&gt;</div>
+        </div>
+
+        <!-- 单元3：width/height尺寸 -->
+        <div class="unit" id="unit3"> <!-- 块级容器 -->
+            <h2>3. width/height 尺寸</h2> <!-- 标题标签，h1最大，h6最小 -->
+
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>width</code> 和 <code>height</code> 设置图片的显示尺寸（单位是像素）。</p> <!-- 段落标签 -->
+                <p>建议：只设置一个，另一个会自动按比例缩放，避免图片变形。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->📝 代码演示</div>
+                <div class="structure-box"> <!-- 块级容器 -->
+                    <div class="level-0"> <!-- 块级容器 -->
+                        <span class="tag"> <!-- 行内容器 -->&lt;img src="photo.jpg" alt="照片" width="300"&gt;</span>
+                        <span class="desc"> <!-- 行内容器 -->← 只设宽度，高度自动按比例</span>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code3" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code3" class="toggle-label">📝 查看完整代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;!-- ✅ 推荐：只设一个维度，保持比例 --&gt;
+&lt;img src="photo.jpg" alt="照片" width="300"&gt;
+
+&lt;!-- ⚠️ 可以两个都设，但可能导致变形 --&gt;
+&lt;img src="photo.jpg" alt="照片" width="300" height="200"&gt;
+
+&lt;!-- 💡 实际开发中，尺寸通常用CSS控制 --&gt;
+&lt;img src="photo.jpg" alt="照片" style="width: 50%;"&gt;</div>
+        </div>
+
+        <!-- 单元4：图片路径 -->
+        <div class="unit" id="unit4"> <!-- 块级容器 -->
+            <h2>4. 图片路径</h2> <!-- 标题标签，h1最大，h6最小 -->
+
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>src</code> 属性的值是图片的<strong>路径</strong>，有两种写法：</p> <!-- 段落标签 -->
+                <p>• <strong>相对路径</strong>：相对于当前HTML文件的位置</p> <!-- 段落标签 -->
+                <p>• <strong>绝对路径</strong>：完整的URL地址</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->📝 路径说明</div>
+                <table> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th> <!-- 表格表头 -->写法</th>
+                        <th> <!-- 表格表头 -->示例</th>
+                        <th> <!-- 表格表头 -->说明</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->同级目录</td>
+                        <td> <!-- 表格单元格 --><code>src="photo.jpg"</code></td>
+                        <td> <!-- 表格单元格 -->图片和HTML在同一文件夹</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->子目录</td>
+                        <td> <!-- 表格单元格 --><code>src="images/photo.jpg"</code></td>
+                        <td> <!-- 表格单元格 -->图片在images文件夹里</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->上级目录</td>
+                        <td> <!-- 表格单元格 --><code>src="../photo.jpg"</code></td>
+                        <td> <!-- 表格单元格 -->图片在上一级文件夹</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->绝对URL</td>
+                        <td> <!-- 表格单元格 --><code>src="https://example.com/photo.jpg"</code></td>
+                        <td> <!-- 表格单元格 -->网络上的图片</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code4" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code4" class="toggle-label">📝 查看完整代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 同级目录：图片和HTML在同一文件夹 --&gt;
+&lt;img src="photo.jpg" alt="照片"&gt;
+
+&lt;!-- 子目录：图片在images文件夹里 --&gt;
+&lt;img src="images/photo.jpg" alt="照片"&gt;
+
+&lt;!-- 上级目录：../ 表示上一级 --&gt;
+&lt;img src="../photo.jpg" alt="照片"&gt;
+
+&lt;!-- 绝对URL：网络图片 --&gt;
+&lt;img src="https://via.placeholder.com/300" alt="占位图"&gt;</div>
+        </div>
+
+        <!-- 单元5：loading懒加载 -->
+        <div class="unit" id="unit5"> <!-- 块级容器 -->
+            <h2>5. loading 懒加载</h2> <!-- 标题标签，h1最大，h6最小 -->
+
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>loading="lazy"</code> 让图片<strong>延迟加载</strong>：只有滚动到图片附近时才开始加载。</p> <!-- 段落标签 -->
+                <p>作用：减少页面初始加载时间，节省用户流量。</p> <!-- 段落标签 -->
+                <p>适合：长页面中 below the fold（屏幕下方）的图片。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->📝 代码演示</div>
+                <div class="structure-box"> <!-- 块级容器 -->
+                    <div class="level-0"> <!-- 块级容器 -->
+                        <span class="tag"> <!-- 行内容器 -->&lt;img src="photo.jpg" alt="照片" loading="lazy"&gt;</span>
+                        <span class="desc"> <!-- 行内容器 -->← 滚动到附近才加载</span>
+                    </div>
+                    <div class="level-0" style="margin-top: 10px;"> <!-- 块级容器 -->
+                        <span class="tag"> <!-- 行内容器 -->&lt;img src="logo.png" alt="Logo" loading="eager"&gt;</span>
+                        <span class="desc"> <!-- 行内容器 -->← 立即加载（默认值）</span>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code5" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code5" class="toggle-label">📝 查看完整代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 懒加载：滚动到附近才加载 --&gt;
+&lt;img src="photo.jpg" alt="照片" loading="lazy"&gt;
+
+&lt;!-- 立即加载（默认）：首屏重要图片用这个 --&gt;
+&lt;img src="logo.png" alt="Logo" loading="eager"&gt;
+
+&lt;!-- 💡 首屏可见的图片不要用lazy，会影响用户体验 --&gt;</div>
+        </div>
+
+        <!-- 单元6：srcset响应式 -->
+        <div class="unit" id="unit6"> <!-- 块级容器 -->
+            <h2>6. srcset 响应式图片</h2> <!-- 标题标签，h1最大，h6最小 -->
+
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>srcset</code> 让浏览器根据<strong>屏幕大小和分辨率</strong>自动选择最合适的图片。</p> <!-- 段落标签 -->
+                <p>作用：手机加载小图（省流量），电脑加载大图（高清）。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->📝 代码演示</div>
+                <div class="structure-box"> <!-- 块级容器 -->
+                    <div class="level-0"> <!-- 块级容器 -->
+                        <span class="tag"> <!-- 行内容器 -->&lt;img 
+    src="photo-800.jpg"
+    srcset="photo-400.jpg 400w,
+            photo-800.jpg 800w,
+            photo-1200.jpg 1200w"
+    sizes="(max-width: 600px) 400px,
+           (max-width: 1000px) 800px,
+           1200px"
+    alt="风景照片"&gt;</span>
+                        <span class="desc"> <!-- 行内容器 -->← 浏览器自动选最合适的图片</span>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code6" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code6" class="toggle-label">📝 查看完整代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;!-- srcset: 提供多个图片供浏览器选择 --&gt;
+&lt;!-- w 表示图片实际宽度 --&gt;
+&lt;img 
+    src="photo-800.jpg"
+    srcset="photo-400.jpg 400w,
+            photo-800.jpg 800w,
+            photo-1200.jpg 1200w"
+    sizes="(max-width: 600px) 400px,
+           (max-width: 1000px) 800px,
+           1200px"
+    alt="风景照片"
+&gt;
+
+&lt;!-- 简单写法：告诉浏览器图片的像素密度 --&gt;
+&lt;img 
+    src="photo.jpg"
+    srcset="photo.jpg 1x, photo@2x.jpg 2x"
+    alt="照片"
+&gt;
+&lt;!-- 1x = 普通屏幕，2x = 高清屏幕（Retina） --&gt;</div>
+        </div>
+
+        <!-- 单元7：图片链接 -->
+        <div class="unit" id="unit7"> <!-- 块级容器 -->
+            <h2>7. 图片链接</h2> <!-- 标题标签，h1最大，h6最小 -->
+
+            <div class="explain"> <!-- 块级容器 -->
+                <p>用 <code>&lt;a&gt;</code> 标签包裹 <code>&lt;img&gt;</code>，点击图片就能跳转到指定页面。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->📝 代码演示</div>
+                <div class="structure-box"> <!-- 块级容器 -->
+                    <div class="level-0"> <!-- 块级容器 -->
+                        <span class="tag"> <!-- 行内容器 -->&lt;a href="https://www.example.com"&gt;</span>
+                        <div class="level-1"> <!-- 块级容器 -->
+                            <span class="tag"> <!-- 行内容器 -->&lt;img src="banner.jpg" alt="广告横幅"&gt;</span>
+                        </div>
+                        <span class="tag"> <!-- 行内容器 -->&lt;/a&gt;</span>
+                        <span class="desc"> <!-- 行内容器 -->← 点击图片跳转</span>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code7" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code7" class="toggle-label">📝 查看完整代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 点击图片跳转到指定页面 --&gt;
+&lt;a href="https://www.example.com" target="_blank"&gt;
+    &lt;img src="banner.jpg" alt="广告横幅" width="300"&gt;
+&lt;/a&gt;
+
+&lt;!-- 点击图片下载文件 --&gt;
+&lt;a href="images/photo.jpg" download="我的照片.jpg"&gt;
+    &lt;img src="images/photo.jpg" alt="点击下载" width="200"&gt;
+&lt;/a&gt;</div>
+        </div>
+
+    </main>
+
+</body>
+
+</html>

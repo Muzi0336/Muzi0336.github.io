@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Flex布局</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Microsoft YaHei', sans-serif; background: #f5f5f5; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; color: #2c3e50; margin: 30px 0; font-size: 2.5em; }
+        .section { background: white; border-radius: 12px; padding: 25px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .section h2 { color: #1abc9c; border-left: 4px solid #1abc9c; padding-left: 12px; margin-bottom: 20px; }
+        .concept { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 3px solid #1abc9c; }
+        .demo { background: #ecf0f1; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .demo-label { font-weight: bold; color: #7f8c8d; margin-bottom: 10px; }
+        .code-block { background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 8px; margin: 10px 0; overflow-x: auto; font-family: 'Consolas', monospace; }
+        .note { background: #fff3cd; padding: 12px; border-radius: 6px; margin: 10px 0; border-left: 3px solid #ffc107; }
+        .flex-item { background: #3498db; color: white; padding: 15px; text-align: center; border-radius: 5px; }
+        
+        /* 纯CSS展开折叠 */
+        .code-toggle { display: none; }
+        .toggle-label { 
+            display: inline-block; 
+            background: #1abc9c; 
+            color: white; 
+            padding: 8px 16px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 10px 0;
+        }
+        .toggle-label:hover { background: #16a085; }
+        .hidden-code { display: none; margin-top: 10px; }
+        .code-toggle:checked ~ .hidden-code { display: block; }
+        .code-toggle:checked ~ .toggle-label { background: #e74c3c; }
+        .code-toggle:checked ~ .toggle-label::after { content: ' ▲'; }
+        .code-toggle:not(:checked) ~ .toggle-label::after { content: ' ▼'; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 CSS Flex布局</h1>
+        
+        <div class="section">
+            <h2>1. Flex 基础概念</h2>
+            <div class="concept">
+                <p><strong>Flexbox</strong> 是一维布局的王牌，用于在一行或一列中排列元素。</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>容器</strong>：设置 <code>display: flex</code> 的元素</li>
+                    <li><strong>项目</strong>：容器的直接子元素</li>
+                    <li><strong>主轴</strong>：项目排列的方向（默认水平）</li>
+                    <li><strong>交叉轴</strong>：与主轴垂直的方向（默认垂直）</li>
+                </ul>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 最简单的 Flex 布局</div>
+                <div style="display: flex; gap: 10px; background: #ecf0f1; padding: 10px;">
+                    <div class="flex-item">1</div>
+                    <div class="flex-item">2</div>
+                    <div class="flex-item">3</div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-flex-basic" class="code-toggle">
+            <label for="code-flex-basic" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 容器设置 */
+.container {
+    display: flex;
+    gap: 10px;
+}
+
+/* 项目会自动排列在一行 */</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. flex-direction（主轴方向）</h2>
+            <div class="concept">
+                <p><strong>flex-direction</strong> 定义主轴方向，决定项目如何排列。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 flex-direction 不同值</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">row（默认）</p>
+                        <div style="display: flex; flex-direction: row; gap: 5px; background: #ecf0f1; padding: 10px;">
+                            <div class="flex-item">1</div>
+                            <div class="flex-item">2</div>
+                            <div class="flex-item">3</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">row-reverse</p>
+                        <div style="display: flex; flex-direction: row-reverse; gap: 5px; background: #ecf0f1; padding: 10px;">
+                            <div class="flex-item">1</div>
+                            <div class="flex-item">2</div>
+                            <div class="flex-item">3</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">column</p>
+                        <div style="display: flex; flex-direction: column; gap: 5px; background: #ecf0f1; padding: 10px;">
+                            <div class="flex-item">1</div>
+                            <div class="flex-item">2</div>
+                            <div class="flex-item">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-direction" class="code-toggle">
+            <label for="code-direction" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 水平排列（默认） */
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+/* 水平反向 */
+.container {
+    flex-direction: row-reverse;
+}
+
+/* 垂直排列 */
+.container {
+    flex-direction: column;
+}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. justify-content（主轴对齐）</h2>
+            <div class="concept">
+                <p><strong>justify-content</strong> 控制项目在主轴上的对齐方式。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 justify-content 不同值</div>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">flex-start（默认）</p>
+                        <div style="display: flex; justify-content: flex-start; gap: 5px; background: #ecf0f1; padding: 10px;">
+                            <div class="flex-item">1</div>
+                            <div class="flex-item">2</div>
+                            <div class="flex-item">3</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">center</p>
+                        <div style="display: flex; justify-content: center; gap: 5px; background: #ecf0f1; padding: 10px;">
+                            <div class="flex-item">1</div>
+                            <div class="flex-item">2</div>
+                            <div class="flex-item">3</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">space-between</p>
+                        <div style="display: flex; justify-content: space-between; background: #ecf0f1; padding: 10px;">
+                            <div class="flex-item">1</div>
+                            <div class="flex-item">2</div>
+                            <div class="flex-item">3</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">space-around</p>
+                        <div style="display: flex; justify-content: space-around; background: #ecf0f1; padding: 10px;">
+                            <div class="flex-item">1</div>
+                            <div class="flex-item">2</div>
+                            <div class="flex-item">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-justify" class="code-toggle">
+            <label for="code-justify" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 左对齐（默认） */
+.container {
+    justify-content: flex-start;
+}
+
+/* 居中 */
+.container {
+    justify-content: center;
+}
+
+/* 两端对齐 */
+.container {
+    justify-content: space-between;
+}
+
+/* 等间距 */
+.container {
+    justify-content: space-around;
+}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. align-items（交叉轴对齐）</h2>
+            <div class="concept">
+                <p><strong>align-items</strong> 控制项目在交叉轴上的对齐方式。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 align-items 不同值</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">stretch（默认）</p>
+                        <div style="display: flex; align-items: stretch; gap: 5px; background: #ecf0f1; padding: 10px; height: 120px;">
+                            <div class="flex-item">1</div>
+                            <div class="flex-item">2</div>
+                            <div class="flex-item">3</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">center</p>
+                        <div style="display: flex; align-items: center; gap: 5px; background: #ecf0f1; padding: 10px; height: 120px;">
+                            <div class="flex-item">1</div>
+                            <div class="flex-item">2</div>
+                            <div class="flex-item">3</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">flex-start</p>
+                        <div style="display: flex; align-items: flex-start; gap: 5px; background: #ecf0f1; padding: 10px; height: 120px;">
+                            <div class="flex-item">1</div>
+                            <div class="flex-item">2</div>
+                            <div class="flex-item">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-align" class="code-toggle">
+            <label for="code-align" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 拉伸（默认） */
+.container {
+    align-items: stretch;
+}
+
+/* 居中 */
+.container {
+    align-items: center;
+}
+
+/* 顶部对齐 */
+.container {
+    align-items: flex-start;
+}
+
+/* 底部对齐 */
+.container {
+    align-items: flex-end;
+}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. gap（间距）</h2>
+            <div class="concept">
+                <p><strong>gap</strong> 设置项目之间的间距，比 margin 更方便。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 gap 演示</div>
+                <div style="display: flex; gap: 20px; background: #ecf0f1; padding: 10px;">
+                    <div class="flex-item">1</div>
+                    <div class="flex-item">2</div>
+                    <div class="flex-item">3</div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-gap" class="code-toggle">
+            <label for="code-gap" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 统一间距 */
+.container {
+    gap: 20px;
+}
+
+/* 行列分别设置 */
+.container {
+    row-gap: 20px;
+    column-gap: 10px;
+}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. flex-wrap（换行）</h2>
+            <div class="concept">
+                <p><strong>flex-wrap</strong> 控制项目是否换行。</p>
+                <p style="margin-top: 10px;">默认不换行，项目会压缩以适应容器。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 flex-wrap 对比</div>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">nowrap（默认）</p>
+                        <div style="display: flex; flex-wrap: nowrap; gap: 10px; background: #ecf0f1; padding: 10px; width: 300px;">
+                            <div class="flex-item" style="min-width: 100px;">1</div>
+                            <div class="flex-item" style="min-width: 100px;">2</div>
+                            <div class="flex-item" style="min-width: 100px;">3</div>
+                            <div class="flex-item" style="min-width: 100px;">4</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">wrap</p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px; background: #ecf0f1; padding: 10px; width: 300px;">
+                            <div class="flex-item" style="min-width: 100px;">1</div>
+                            <div class="flex-item" style="min-width: 100px;">2</div>
+                            <div class="flex-item" style="min-width: 100px;">3</div>
+                            <div class="flex-item" style="min-width: 100px;">4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-wrap" class="code-toggle">
+            <label for="code-wrap" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 不换行（默认） */
+.container {
+    flex-wrap: nowrap;
+}
+
+/* 换行 */
+.container {
+    flex-wrap: wrap;
+}</code>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

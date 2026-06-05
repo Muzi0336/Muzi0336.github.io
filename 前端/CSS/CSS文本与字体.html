@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS文本与字体</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Microsoft YaHei', sans-serif; background: #f5f5f5; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; color: #2c3e50; margin: 30px 0; font-size: 2.5em; }
+        .section { background: white; border-radius: 12px; padding: 25px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .section h2 { color: #34495e; border-left: 4px solid #34495e; padding-left: 12px; margin-bottom: 20px; }
+        .concept { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 3px solid #34495e; }
+        .demo { background: #ecf0f1; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .demo-label { font-weight: bold; color: #7f8c8d; margin-bottom: 10px; }
+        .code-block { background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 8px; margin: 10px 0; overflow-x: auto; font-family: 'Consolas', monospace; }
+        .note { background: #fff3cd; padding: 12px; border-radius: 6px; margin: 10px 0; border-left: 3px solid #ffc107; }
+        
+        /* 纯CSS展开折叠 */
+        .code-toggle { display: none; }
+        .toggle-label { 
+            display: inline-block; 
+            background: #34495e; 
+            color: white; 
+            padding: 8px 16px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 10px 0;
+        }
+        .toggle-label:hover { background: #2c3e50; }
+        .hidden-code { display: none; margin-top: 10px; }
+        .code-toggle:checked ~ .hidden-code { display: block; }
+        .code-toggle:checked ~ .toggle-label { background: #e74c3c; }
+        .code-toggle:checked ~ .toggle-label::after { content: ' ▲'; }
+        .code-toggle:not(:checked) ~ .toggle-label::after { content: ' ▼'; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 CSS文本与字体</h1>
+        
+        <div class="section">
+            <h2>1. font-size（字体大小）</h2>
+            <div class="concept">
+                <p><strong>font-size</strong> 设置文字大小。</p>
+                <p style="margin-top: 10px;"><strong>推荐单位</strong>：rem（相对于根元素）或 px（绝对单位）。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 不同字体大小</div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <p style="font-size: 12px;">12px - 小号文字</p>
+                    <p style="font-size: 16px;">16px - 正文（默认）</p>
+                    <p style="font-size: 20px;">20px - 小标题</p>
+                    <p style="font-size: 24px;">24px - 标题</p>
+                    <p style="font-size: 1.5rem;">1.5rem - 使用rem单位</p>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-font-size" class="code-toggle">
+            <label for="code-font-size" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* px 绝对单位 */
+font-size: 16px;
+
+/* rem 相对根元素（推荐） */
+font-size: 1rem;
+
+/* em 相对父元素 */
+font-size: 1.2em;
+
+/* 百分比 */
+font-size: 120%;</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. font-weight（字体粗细）</h2>
+            <div class="concept">
+                <p><strong>font-weight</strong> 设置文字粗细。</p>
+                <p style="margin-top: 10px;">常用值：<code>normal</code>(400)、<code>bold</code>(700)。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 不同字体粗细</div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <p style="font-weight: 300;">300 - 细体</p>
+                    <p style="font-weight: 400;">400 - 正常（normal）</p>
+                    <p style="font-weight: 500;">500 - 中等</p>
+                    <p style="font-weight: 700;">700 - 粗体（bold）</p>
+                    <p style="font-weight: 900;">900 - 特粗</p>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-font-weight" class="code-toggle">
+            <label for="code-font-weight" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 关键字 */
+font-weight: normal;
+font-weight: bold;
+
+/* 数值（100-900） */
+font-weight: 400;  /* 等同 normal */
+font-weight: 700;  /* 等同 bold */</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. font-family（字体族）</h2>
+            <div class="concept">
+                <p><strong>font-family</strong> 设置字体，可以指定多个备选字体。</p>
+                <p style="margin-top: 10px;">中文字体名需要加引号。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 不同字体</div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <p style="font-family: 'Microsoft YaHei';">微软雅黑 - Microsoft YaHei</p>
+                    <p style="font-family: 'SimSun';">宋体 - SimSun</p>
+                    <p style="font-family: 'KaiTi';">楷体 - KaiTi</p>
+                    <p style="font-family: Arial, sans-serif;">Arial 无衬线字体</p>
+                    <p style="font-family: 'Times New Roman', serif;">Times New Roman 衬线字体</p>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-font-family" class="code-toggle">
+            <label for="code-font-family" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 单个字体 */
+font-family: 'Microsoft YaHei';
+
+/* 多个备选（从左到右优先级） */
+font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
+
+/* 常见字体分类 */
+/* 无衬线：Arial, Helvetica, sans-serif */
+/* 衬线：Times New Roman, serif */
+/* 等宽：Consolas, monospace */</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. line-height（行高）</h2>
+            <div class="concept">
+                <p><strong>line-height</strong> 设置行与行之间的距离。</p>
+                <p style="margin-top: 10px;">常用值：1.5-2（无单位，相对于字体大小）。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 不同行高对比</div>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div style="width: 200px; background: #ecf0f1; padding: 10px;">
+                        <p style="line-height: 1;">line-height: 1<br>这是一段测试文字<br>看看行高效果</p>
+                    </div>
+                    <div style="width: 200px; background: #ecf0f1; padding: 10px;">
+                        <p style="line-height: 1.5;">line-height: 1.5<br>这是一段测试文字<br>看看行高效果</p>
+                    </div>
+                    <div style="width: 200px; background: #ecf0f1; padding: 10px;">
+                        <p style="line-height: 2;">line-height: 2<br>这是一段测试文字<br>看看行高效果</p>
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-line-height" class="code-toggle">
+            <label for="code-line-height" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 无单位（推荐，相对于字体大小） */
+line-height: 1.5;
+
+/* 像素 */
+line-height: 24px;
+
+/* 百分比 */
+line-height: 150%;
+
+/* 垂直居中技巧 */
+.line-height-center {
+    line-height: 40px;  /* 等于容器高度 */
+    height: 40px;
+}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. color（文字颜色）</h2>
+            <div class="concept">
+                <p><strong>color</strong> 设置文字颜色。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 不同颜色表示法</div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <p style="color: red;">关键字：red</p>
+                    <p style="color: #3498db;">十六进制：#3498db</p>
+                    <p style="color: rgb(46, 204, 113);">RGB：rgb(46, 204, 113)</p>
+                    <p style="color: rgba(241, 196, 15, 0.8);">RGBA（带透明度）：rgba(241, 196, 15, 0.8)</p>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-color" class="code-toggle">
+            <label for="code-color" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 关键字 */
+color: red;
+
+/* 十六进制 */
+color: #3498db;
+color: #398;  /* 简写 */
+
+/* RGB */
+color: rgb(52, 152, 219);
+
+/* RGBA（带透明度） */
+color: rgba(52, 152, 219, 0.8);</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. text-align（文本对齐）</h2>
+            <div class="concept">
+                <p><strong>text-align</strong> 控制文本的水平对齐方式。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 不同对齐方式</div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="text-align: left; background: #ecf0f1; padding: 10px;">text-align: left 左对齐</div>
+                    <div style="text-align: center; background: #ecf0f1; padding: 10px;">text-align: center 居中</div>
+                    <div style="text-align: right; background: #ecf0f1; padding: 10px;">text-align: right 右对齐</div>
+                    <div style="text-align: justify; background: #ecf0f1; padding: 10px;">text-align: justify 两端对齐，这是一段较长的文字用来演示两端对齐的效果</div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-text-align" class="code-toggle">
+            <label for="code-text-align" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 左对齐（默认） */
+text-align: left;
+
+/* 居中 */
+text-align: center;
+
+/* 右对齐 */
+text-align: right;
+
+/* 两端对齐 */
+text-align: justify;</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>7. text-decoration（文本装饰）</h2>
+            <div class="concept">
+                <p><strong>text-decoration</strong> 添加下划线、删除线等装饰。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 不同装饰效果</div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <p style="text-decoration: none;">text-decoration: none（无装饰）</p>
+                    <p style="text-decoration: underline;">text-decoration: underline（下划线）</p>
+                    <p style="text-decoration: overline;">text-decoration: overline（上划线）</p>
+                    <p style="text-decoration: line-through;">text-decoration: line-through（删除线）</p>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-text-decoration" class="code-toggle">
+            <label for="code-text-decoration" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 无装饰（常用于去除链接下划线） */
+text-decoration: none;
+
+/* 下划线 */
+text-decoration: underline;
+
+/* 上划线 */
+text-decoration: overline;
+
+/* 删除线 */
+text-decoration: line-through;
+
+/* 组合 */
+text-decoration: underline wavy red;</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>💡 font 复合属性</strong>：可以一行设置多个字体属性：<code>font: bold 16px/1.5 'Microsoft YaHei';</code>（粗细 字号/行高 字体）
+        </div>
+    </div>
+</body>
+</html>

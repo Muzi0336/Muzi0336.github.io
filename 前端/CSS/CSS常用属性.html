@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS学习导航</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Microsoft YaHei', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .container { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 800px; width: 90%; }
+        h1 { text-align: center; color: #2c3e50; margin-bottom: 10px; font-size: 2.5em; }
+        .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 30px; }
+        .nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .nav-item { display: block; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border-radius: 12px; padding: 25px; text-decoration: none; color: #2c3e50; transition: all 0.3s ease; text-align: center; }
+        .nav-item:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .nav-item .icon { font-size: 2.5em; margin-bottom: 10px; }
+        .nav-item .title { font-size: 1.2em; font-weight: bold; margin-bottom: 5px; }
+        .nav-item .desc { font-size: 0.9em; color: #7f8c8d; }
+        .footer { text-align: center; margin-top: 30px; color: #95a5a6; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 CSS学习导航</h1>
+        <p class="subtitle">系统学习CSS核心知识，点击进入对应专题</p>
+        
+        <div class="nav-grid">
+            <a href="CSS选择器.html" class="nav-item">
+                <div class="icon">🎯</div>
+                <div class="title">CSS选择器</div>
+                <div class="desc">30个选择器详解</div>
+            </a>
+            
+            <a href="CSS盒模型.html" class="nav-item">
+                <div class="icon">📦</div>
+                <div class="title">CSS盒模型</div>
+                <div class="desc">width/padding/border/margin</div>
+            </a>
+            
+            <a href="CSS布局定位.html" class="nav-item">
+                <div class="icon">📐</div>
+                <div class="title">CSS布局定位</div>
+                <div class="desc">display/position/z-index</div>
+            </a>
+            
+            <a href="CSS Flex布局.html" class="nav-item">
+                <div class="icon">🎯</div>
+                <div class="title">CSS Flex布局</div>
+                <div class="desc">一维布局王牌</div>
+            </a>
+            
+            <a href="CSS Grid布局.html" class="nav-item">
+                <div class="icon">🔲</div>
+                <div class="title">CSS Grid布局</div>
+                <div class="desc">二维布局王牌</div>
+            </a>
+            
+            <a href="CSS文本与字体.html" class="nav-item">
+                <div class="icon">📝</div>
+                <div class="title">CSS文本与字体</div>
+                <div class="desc">font/color/text-align</div>
+            </a>
+            
+            <a href="CSS视觉美化.html" class="nav-item">
+                <div class="icon">🎨</div>
+                <div class="title">CSS视觉美化</div>
+                <div class="desc">background/shadow/opacity</div>
+            </a>
+            
+            <a href="CSS动效与变换.html" class="nav-item">
+                <div class="icon">✨</div>
+                <div class="title">CSS动效与变换</div>
+                <div class="desc">transition/transform/animation</div>
+            </a>
+            
+            <a href="CSS单位.html" class="nav-item">
+                <div class="icon">📏</div>
+                <div class="title">CSS单位</div>
+                <div class="desc">px/rem/em/vw/vh</div>
+            </a>
+            
+            <a href="CSS导入方式.html" class="nav-item">
+                <div class="icon">🔗</div>
+                <div class="title">CSS导入方式</div>
+                <div class="desc">内联/内部/外部</div>
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p>共 10 个专题 | 覆盖 CSS 核心知识体系</p>
+        </div>
+    </div>
+</body>
+</html>

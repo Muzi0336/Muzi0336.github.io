@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grid布局</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Microsoft YaHei', sans-serif; background: #f5f5f5; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; color: #2c3e50; margin: 30px 0; font-size: 2.5em; }
+        .section { background: white; border-radius: 12px; padding: 25px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .section h2 { color: #e67e22; border-left: 4px solid #e67e22; padding-left: 12px; margin-bottom: 20px; }
+        .concept { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 3px solid #e67e22; }
+        .demo { background: #ecf0f1; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .demo-label { font-weight: bold; color: #7f8c8d; margin-bottom: 10px; }
+        .code-block { background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 8px; margin: 10px 0; overflow-x: auto; font-family: 'Consolas', monospace; }
+        .note { background: #fff3cd; padding: 12px; border-radius: 6px; margin: 10px 0; border-left: 3px solid #ffc107; }
+        .grid-item { background: #3498db; color: white; padding: 20px; text-align: center; border-radius: 5px; }
+        
+        /* 纯CSS展开折叠 */
+        .code-toggle { display: none; }
+        .toggle-label { 
+            display: inline-block; 
+            background: #e67e22; 
+            color: white; 
+            padding: 8px 16px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 10px 0;
+        }
+        .toggle-label:hover { background: #d35400; }
+        .hidden-code { display: none; margin-top: 10px; }
+        .code-toggle:checked ~ .hidden-code { display: block; }
+        .code-toggle:checked ~ .toggle-label { background: #e74c3c; }
+        .code-toggle:checked ~ .toggle-label::after { content: ' ▲'; }
+        .code-toggle:not(:checked) ~ .toggle-label::after { content: ' ▼'; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔲 CSS Grid布局</h1>
+        
+        <div class="section">
+            <h2>1. Grid 基础概念</h2>
+            <div class="concept">
+                <p><strong>Grid</strong> 是二维布局的王牌，可以同时控制行和列。</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>容器</strong>：设置 <code>display: grid</code> 的元素</li>
+                    <li><strong>项目</strong>：容器的直接子元素</li>
+                    <li><strong>行</strong>：水平方向的轨道</li>
+                    <li><strong>列</strong>：垂直方向的轨道</li>
+                    <li><strong>单元格</strong>：行和列交叉形成的区域</li>
+                </ul>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 最简单的 Grid 布局</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; background: #ecf0f1; padding: 10px;">
+                    <div class="grid-item">1</div>
+                    <div class="grid-item">2</div>
+                    <div class="grid-item">3</div>
+                    <div class="grid-item">4</div>
+                    <div class="grid-item">5</div>
+                    <div class="grid-item">6</div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-grid-basic" class="code-toggle">
+            <label for="code-grid-basic" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 容器设置 */
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+/* fr 单位表示比例，1fr 1fr 1fr 表示三等分 */</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. grid-template-columns（定义列）</h2>
+            <div class="concept">
+                <p><strong>grid-template-columns</strong> 定义网格的列数和列宽。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 不同列定义方式</div>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">固定宽度</p>
+                        <div style="display: grid; grid-template-columns: 100px 150px 100px; gap: 10px; background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">100px</div>
+                            <div class="grid-item">150px</div>
+                            <div class="grid-item">100px</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">fr 比例</p>
+                        <div style="display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 10px; background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">1fr</div>
+                            <div class="grid-item">2fr</div>
+                            <div class="grid-item">1fr</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">repeat 重复</p>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">1</div>
+                            <div class="grid-item">2</div>
+                            <div class="grid-item">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-columns" class="code-toggle">
+            <label for="code-columns" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 固定宽度 */
+.container {
+    grid-template-columns: 100px 150px 100px;
+}
+
+/* fr 比例 */
+.container {
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+/* repeat 重复 */
+.container {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* auto-fit 自适应 */
+.container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. grid-template-rows（定义行）</h2>
+            <div class="concept">
+                <p><strong>grid-template-rows</strong> 定义网格的行数和行高。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 不同行定义方式</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">固定行高</p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 60px 100px; gap: 10px; background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">60px</div>
+                            <div class="grid-item">60px</div>
+                            <div class="grid-item">100px</div>
+                            <div class="grid-item">100px</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">auto 自动</p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr; gap: 10px; background: #ecf0f1; padding: 10px; height: 200px;">
+                            <div class="grid-item">auto</div>
+                            <div class="grid-item">auto</div>
+                            <div class="grid-item">1fr</div>
+                            <div class="grid-item">1fr</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-rows" class="code-toggle">
+            <label for="code-rows" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 固定行高 */
+.container {
+    grid-template-rows: 60px 100px;
+}
+
+/* 自动行高 */
+.container {
+    grid-template-rows: auto;
+}
+
+/* 混合 */
+.container {
+    grid-template-rows: 100px auto 1fr;
+}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. gap（间距）</h2>
+            <div class="concept">
+                <p><strong>gap</strong> 设置网格项目之间的间距。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 gap 演示</div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; background: #ecf0f1; padding: 10px;">
+                    <div class="grid-item">1</div>
+                    <div class="grid-item">2</div>
+                    <div class="grid-item">3</div>
+                    <div class="grid-item">4</div>
+                    <div class="grid-item">5</div>
+                    <div class="grid-item">6</div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-grid-gap" class="code-toggle">
+            <label for="code-grid-gap" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 统一间距 */
+.container {
+    gap: 20px;
+}
+
+/* 行列分别设置 */
+.container {
+    row-gap: 20px;
+    column-gap: 10px;
+}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. 跨列与跨行</h2>
+            <div class="concept">
+                <p><strong>grid-column</strong> 和 <strong>grid-row</strong> 让项目跨越多个单元格。</p>
+            </div>
+            
+            <div class="demo">
+                <div class="demo-label">👇 跨列演示</div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; background: #ecf0f1; padding: 10px;">
+                    <div class="grid-item" style="grid-column: span 2;">跨2列</div>
+                    <div class="grid-item">1</div>
+                    <div class="grid-item">1</div>
+                    <div class="grid-item">1</div>
+                    <div class="grid-item" style="grid-row: span 2;">跨2行</div>
+                </div>
+            </div>
+            
+            <input type="checkbox" id="code-span" class="code-toggle">
+            <label for="code-span" class="toggle-label">查看代码</label>
+            <div class="hidden-code">
+                <div class="code-block">
+                    <code>/* 跨列 */
+.item {
+    grid-column: span 2;
+}
+
+/* 跨行 */
+.item {
+    grid-row: span 2;
+}
+
+/* 指定列范围 */
+.item {
+    grid-column: 1 / 3;  /* 从第1列到第3列 */
+}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>💡 Grid vs Flex</strong>：Grid 适合二维布局（行+列），Flex 适合一维布局（行或列）。实际开发中可以结合使用。
+        </div>
+    </div>
+</body>
+</html>

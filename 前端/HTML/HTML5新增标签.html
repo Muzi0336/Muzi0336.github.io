@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5新增标签</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        nav h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        nav a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked ~ .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked ~ .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 演示区内的样式 */
+        .demo progress { margin: 10px 0; }
+        .demo meter { margin: 10px 0; }
+        .demo mark { padding: 2px 6px; }
+        .demo canvas { margin: 10px 0; }
+        
+        /* 纯CSS对话框 */
+        .dialog-checkbox { display: none; }
+        .dialog-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        .dialog-checkbox:checked ~ .dialog-overlay {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .dialog-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 300px;
+            position: relative;
+        }
+        .dialog-close {
+            position: absolute;
+            top: 10px; right: 10px;
+            background: none; border: none;
+            font-size: 20px; cursor: pointer;
+        }
+        .dialog-open-btn {
+            background: #3498db; color: white;
+            border: none; padding: 10px 20px;
+            border-radius: 5px; cursor: pointer;
+        }
+        .dialog-open-btn:hover { background: #2980b9; }
+    </style>
+</head>
+
+<body>
+
+    <!-- 侧边导航 -->
+    <nav>
+        <h3>HTML5新增标签</h3>
+        <a href="#unit-1">1. 折叠面板</a>
+        <a href="#unit-2">2. 对话框</a>
+        <a href="#unit-3">3. 进度条</a>
+        <a href="#unit-4">4. 度量衡</a>
+        <a href="#unit-5">5. 高亮文本</a>
+        <a href="#unit-6">6. 时间标签</a>
+        <a href="#unit-7">7. 画布 canvas</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- 第1节：折叠面板 -->
+        <div class="unit" id="unit-1"> <!-- 块级容器 -->
+            <h2>1. 折叠面板 details/summary</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;details&gt;</code> 定义折叠容器，<code>&lt;summary&gt;</code> 定义折叠标题。</p> <!-- 段落标签 -->
+                <p>点击标题可以展开/收起内容，<code>open</code> 属性默认展开。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <details>
+                    <summary>点击展开更多信息</summary>
+                    <p>这是隐藏的内容，点击标题可以展开或收起。</p> <!-- 段落标签 -->
+                    <p>不需要任何 JavaScript 就能实现折叠效果！</p> <!-- 段落标签 -->
+                </details>
+                
+                <details open>
+                    <summary>默认展开的面板</summary>
+                    <p>这个面板打开时就是展开状态（open 属性）。</p> <!-- 段落标签 -->
+                </details>
+            </div>
+
+            <input type="checkbox" id="code-1" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-1" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;details&gt;
+    &lt;summary&gt;点击展开更多信息&lt;/summary&gt;
+    &lt;p&gt;这是隐藏的内容&lt;/p&gt;
+&lt;/details&gt;
+
+&lt;details open&gt;
+    &lt;summary&gt;默认展开的面板&lt;/summary&gt;
+    &lt;p&gt;这个面板默认展开&lt;/p&gt;
+&lt;/details&gt;</div>
+        </div>
+
+        <!-- 第2节：对话框 -->
+        <div class="unit" id="unit-2"> <!-- 块级容器 -->
+            <h2>2. 对话框（纯CSS实现）</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p>使用 checkbox hack 实现纯 CSS 对话框，不需要 JavaScript。</p> <!-- 段落标签 -->
+                <p>点击按钮打开对话框，点击关闭按钮或遮罩层关闭。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <input type="checkbox" id="dialog-toggle" class="dialog-checkbox"> <!-- 输入框，单标签 -->
+                <label for="dialog-toggle" class="dialog-open-btn">打开对话框</label>
+                
+                <div class="dialog-overlay"> <!-- 块级容器 -->
+                    <div class="dialog-content"> <!-- 块级容器 -->
+                        <h3>提示</h3> <!-- 标题标签，h1最大，h6最小 -->
+                        <p>这是一个纯 CSS 实现的对话框</p> <!-- 段落标签 -->
+                        <p>不需要 JavaScript！</p> <!-- 段落标签 -->
+                        <label for="dialog-toggle" class="dialog-close">&times;</label>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-2" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-2" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;input type="checkbox" id="dialog-toggle" class="dialog-checkbox"&gt;
+&lt;label for="dialog-toggle" class="dialog-open-btn"&gt;打开对话框&lt;/label&gt;
+
+&lt;div class="dialog-overlay"&gt;
+    &lt;div class="dialog-content"&gt;
+        &lt;h3&gt;提示&lt;/h3&gt;
+        &lt;p&gt;这是一个纯 CSS 实现的对话框&lt;/p&gt;
+        &lt;label for="dialog-toggle" class="dialog-close"&gt;&amp;times;&lt;/label&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</div>
+        </div>
+
+        <!-- 第3节：进度条 -->
+        <div class="unit" id="unit-3"> <!-- 块级容器 -->
+            <h2>3. 进度条 progress</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;progress&gt;</code> 表示任务进度。</p> <!-- 段落标签 -->
+                <p><code>value</code> 当前值，<code>max</code> 最大值。不设置 value 则显示不确定进度。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <p>下载进度：</p> <!-- 段落标签 -->
+                <progress value="70" max="100"></progress> 70%
+                
+                <p>未知进度（加载中）：</p> <!-- 段落标签 -->
+                <progress></progress>
+            </div>
+
+            <input type="checkbox" id="code-3" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-3" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;progress value="70" max="100"&gt;&lt;/progress&gt; 70%
+
+&lt;!-- 未知进度 --&gt;
+&lt;progress&gt;&lt;/progress&gt;</div>
+        </div>
+
+        <!-- 第4节：度量衡 -->
+        <div class="unit" id="unit-4"> <!-- 块级容器 -->
+            <h2>4. 度量衡 meter</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;meter&gt;</code> 表示某个范围内的标量值。</p> <!-- 段落标签 -->
+                <p><code>min/max</code> 范围 | <code>low/high</code> 低/高阈值 | <code>optimum</code> 最优值</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <p>磁盘使用率：</p> <!-- 段落标签 -->
+                <meter min="0" max="100" low="30" high="70" optimum="20" value="85">85%</meter>
+                
+                <p>考试成绩：</p> <!-- 段落标签 -->
+                <meter min="0" max="100" low="60" high="90" optimum="100" value="92">92分</meter>
+            </div>
+
+            <input type="checkbox" id="code-4" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-4" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;meter min="0" max="100" low="30" high="70" optimum="20" value="85"&gt;85%&lt;/meter&gt;
+
+&lt;meter min="0" max="100" low="60" high="90" optimum="100" value="92"&gt;92分&lt;/meter&gt;</div>
+        </div>
+
+        <!-- 第5节：高亮文本 -->
+        <div class="unit" id="unit-5"> <!-- 块级容器 -->
+            <h2>5. 高亮文本 mark</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;mark&gt;</code> 标签用于高亮显示文本，默认黄色背景。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <p>这是一段文字，其中<mark>这部分被高亮</mark>了。</p> <!-- 段落标签 -->
+            </div>
+
+            <input type="checkbox" id="code-5" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-5" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;p&gt;这是一段文字，其中&lt;mark&gt;这部分被高亮&lt;/mark&gt;了。&lt;/p&gt;</div>
+        </div>
+
+        <!-- 第6节：时间标签 -->
+        <div class="unit" id="unit-6"> <!-- 块级容器 -->
+            <h2>6. 时间标签 time</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;time&gt;</code> 标签表示时间/日期。</p> <!-- 段落标签 -->
+                <p><code>datetime</code> 属性提供机器可读的时间格式。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <p>发布于 <time datetime="2026-06-05">今天</time></p> <!-- 段落标签 -->
+                <p>会议时间 <time datetime="2026-06-05T14:00:00">下午2点</time></p> <!-- 段落标签 -->
+            </div>
+
+            <input type="checkbox" id="code-6" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-6" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;p&gt;发布于 &lt;time datetime="2026-06-05"&gt;今天&lt;/time&gt;&lt;/p&gt;
+&lt;p&gt;会议时间 &lt;time datetime="2026-06-05T14:00:00"&gt;下午2点&lt;/time&gt;&lt;/p&gt;</div>
+        </div>
+
+        <!-- 第7节：画布 canvas -->
+        <div class="unit" id="unit-7"> <!-- 块级容器 -->
+            <h2>7. 画布 canvas（必须用JavaScript）</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;canvas&gt;</code> 标签用于 JS 绘制图形。</p> <!-- 段落标签 -->
+                <p><code>width/height</code> 设置画布尺寸。必须用 JavaScript 才能绘图。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <canvas id="myCanvas" width="400" height="200" style="border:1px solid #ccc;"></canvas>
+                <script>
+                    var canvas = document.getElementById('myCanvas');
+                    var ctx = canvas.getContext('2d');
+                    ctx.fillStyle = 'lightblue';
+                    ctx.fillRect(20, 20, 150, 80);
+                    ctx.beginPath();
+                    ctx.arc(300, 60, 40, 0, Math.PI * 2);
+                    ctx.fillStyle = 'lightcoral';
+                    ctx.fill();
+                    ctx.fillStyle = 'black';
+                    ctx.font = '16px Arial';
+                    ctx.fillText('Canvas 画布', 20, 140);
+                </script>
+            </div>
+
+            <input type="checkbox" id="code-7" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-7" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;canvas id="myCanvas" width="400" height="200" style="border:1px solid #ccc;"&gt;&lt;/canvas&gt;
+
+&lt;script&gt;
+    var canvas = document.getElementById('myCanvas');
+    var ctx = canvas.getContext('2d');
+    
+    // 画矩形
+    ctx.fillStyle = 'lightblue';
+    ctx.fillRect(20, 20, 150, 80);
+    
+    // 画圆
+    ctx.beginPath();
+    ctx.arc(300, 60, 40, 0, Math.PI * 2);
+    ctx.fillStyle = 'lightcoral';
+    ctx.fill();
+    
+    // 画文字
+    ctx.fillStyle = 'black';
+    ctx.font = '16px Arial';
+    ctx.fillText('Canvas 画布', 20, 140);
+&lt;/script&gt;</div>
+        </div>
+
+    </main>
+
+</body>
+
+</html>

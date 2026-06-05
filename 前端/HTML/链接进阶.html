@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>链接进阶</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        nav h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        nav a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked ~ .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked ~ .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 演示区内的链接样式 */
+        .demo a { color: #3498db; margin: 5px 10px 5px 0; }
+        .demo img { margin: 10px 0; }
+        .demo .spacer { height: 300px; background: #f0f0f0; margin: 10px 0; padding: 10px; }
+    </style>
+</head>
+
+<body>
+
+    <!-- 侧边导航 -->
+    <nav>
+        <h3>链接进阶</h3>
+        <a href="#unit-1">1. 锚点链接</a>
+        <a href="#unit-2">2. 邮件链接</a>
+        <a href="#unit-3">3. 下载链接</a>
+        <a href="#unit-4">4. 图片链接</a>
+        <a href="#unit-5">5. target 属性</a>
+        <a href="#unit-6">6. 电话链接</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- 第1节：锚点链接 -->
+        <div class="unit" id="unit-1"> <!-- 块级容器 -->
+            <h2>1. 锚点链接 #id</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p>锚点链接可以跳转到页面内指定位置。</p> <!-- 段落标签 -->
+                <p>第一步：给目标元素设置 <code>id</code>；第二步：<code>href="#id"</code>。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <a href="#section1">跳转到第一章</a> <!-- 超链接标签 --> |
+                <a href="#section2">跳转到第二章</a> <!-- 超链接标签 --> |
+                <a href="#top">回到顶部</a> <!-- 超链接标签 -->
+                
+                <div id="top" style="margin-top: 20px;"> <!-- 块级容器 -->
+                    <p>这里是页面顶部</p> <!-- 段落标签 -->
+                </div>
+                
+                <div class="spacer"> <!-- 块级容器 -->
+                    <p>（中间留空，方便观察跳转效果）</p> <!-- 段落标签 -->
+                </div>
+                
+                <div id="section1"> <!-- 块级容器 -->
+                    <h3>第一章</h3> <!-- 标题标签，h1最大，h6最小 -->
+                    <p>这是第一章的内容...</p> <!-- 段落标签 -->
+                </div>
+                
+                <div class="spacer"> <!-- 块级容器 -->
+                    <p>（中间留空，方便观察跳转效果）</p> <!-- 段落标签 -->
+                </div>
+                
+                <div id="section2"> <!-- 块级容器 -->
+                    <h3>第二章</h3> <!-- 标题标签，h1最大，h6最小 -->
+                    <p>这是第二章的内容...</p> <!-- 段落标签 -->
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-1" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-1" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;a href="#section1"&gt;跳转到第一章&lt;/a&gt;
+&lt;a href="#section2"&gt;跳转到第二章&lt;/a&gt;
+&lt;a href="#top"&gt;回到顶部&lt;/a&gt;
+
+&lt;div id="top"&gt;页面顶部&lt;/div&gt;
+&lt;div id="section1"&gt;第一章内容&lt;/div&gt;
+&lt;div id="section2"&gt;第二章内容&lt;/div&gt;</div>
+        </div>
+
+        <!-- 第2节：邮件链接 -->
+        <div class="unit" id="unit-2"> <!-- 块级容器 -->
+            <h2>2. 邮件链接 mailto:</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>mailto:</code> 点击后打开邮件客户端。</p> <!-- 段落标签 -->
+                <p>可以预填收件人、主题、正文。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <a href="mailto:test@example.com">发送邮件</a> <!-- 超链接标签 -->
+                <a href="mailto:test@example.com?subject=你好&body=这是邮件内容">发送带主题的邮件</a> <!-- 超链接标签 -->
+            </div>
+
+            <input type="checkbox" id="code-2" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-2" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;a href="mailto:test@example.com"&gt;发送邮件&lt;/a&gt;
+
+&lt;a href="mailto:test@example.com?subject=你好&body=这是邮件内容"&gt;
+    发送带主题的邮件
+&lt;/a&gt;</div>
+        </div>
+
+        <!-- 第3节：下载链接 -->
+        <div class="unit" id="unit-3"> <!-- 块级容器 -->
+            <h2>3. 下载链接 download</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>download</code> 属性让链接下载文件而不是跳转。</p> <!-- 段落标签 -->
+                <p>属性值是下载后的文件名（可选）。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <a href="file/test.pdf" download>下载PDF</a> <!-- 超链接标签 -->
+                <a href="file/image.jpg" download="我的图片.jpg">下载图片（自定义文件名）</a> <!-- 超链接标签 -->
+            </div>
+
+            <input type="checkbox" id="code-3" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-3" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;a href="file/test.pdf" download&gt;下载PDF&lt;/a&gt;
+
+&lt;a href="file/image.jpg" download="我的图片.jpg"&gt;
+    下载图片（自定义文件名）
+&lt;/a&gt;</div>
+        </div>
+
+        <!-- 第4节：图片链接 -->
+        <div class="unit" id="unit-4"> <!-- 块级容器 -->
+            <h2>4. 图片链接</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p>用 <code>&lt;a&gt;</code> 标签包裹 <code>&lt;img&gt;</code>，点击图片跳转。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <a href="https://www.example.com">
+                    <img src="https://via.placeholder.com/150" alt="点击跳转"> <!-- 图片标签，单标签 -->
+                </a>
+            </div>
+
+            <input type="checkbox" id="code-4" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-4" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;a href="https://www.example.com"&gt;
+    &lt;img src="https://via.placeholder.com/150" alt="点击跳转"&gt;
+&lt;/a&gt;</div>
+        </div>
+
+        <!-- 第5节：target 属性 -->
+        <div class="unit" id="unit-5"> <!-- 块级容器 -->
+            <h2>5. target 属性</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>target</code> 属性控制链接打开方式：</p> <!-- 段落标签 -->
+                <p><code>_blank</code> 新窗口 | <code>_self</code> 当前窗口（默认）</p> <!-- 段落标签 -->
+                <p><code>_parent</code> 父窗口 | <code>_top</code> 最顶层窗口</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <a href="https://www.example.com" target="_blank">_blank: 新窗口打开</a> <!-- 超链接标签 --><br>
+                <a href="https://www.example.com" target="_self">_self: 当前窗口打开</a> <!-- 超链接标签 --><br>
+                <a href="https://www.example.com" target="_parent">_parent: 父窗口打开</a> <!-- 超链接标签 --><br>
+                <a href="https://www.example.com" target="_top">_top: 最顶层窗口打开</a> <!-- 超链接标签 -->
+            </div>
+
+            <input type="checkbox" id="code-5" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-5" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;a href="https://www.example.com" target="_blank"&gt;_blank: 新窗口打开&lt;/a&gt;
+&lt;a href="https://www.example.com" target="_self"&gt;_self: 当前窗口打开&lt;/a&gt;
+&lt;a href="https://www.example.com" target="_parent"&gt;_parent: 父窗口打开&lt;/a&gt;
+&lt;a href="https://www.example.com" target="_top"&gt;_top: 最顶层窗口打开&lt;/a&gt;</div>
+        </div>
+
+        <!-- 第6节：电话链接 -->
+        <div class="unit" id="unit-6"> <!-- 块级容器 -->
+            <h2>6. 电话链接 tel:</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>tel:</code> 点击后拨打电话（手机端常用）。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <a href="tel:13800138000">拨打电话：13800138000</a> <!-- 超链接标签 -->
+            </div>
+
+            <input type="checkbox" id="code-6" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-6" class="toggle-label">查看源代码</label>
+            <div class="code-block"> <!-- 块级容器 -->&lt;a href="tel:13800138000"&gt;拨打电话：13800138000&lt;/a&gt;</div>
+        </div>
+
+    </main>
+
+</body>
+
+</html>
