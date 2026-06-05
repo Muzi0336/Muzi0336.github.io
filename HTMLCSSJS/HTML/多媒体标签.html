@@ -1,0 +1,60 @@
+<!--
+    多媒体标签
+    1. video: 视频播放
+    2. audio: 音频播放
+    3. source: 为video/audio提供多个格式源
+    4. 常用属性：controls、autoplay、loop、muted、poster
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多媒体标签</title>
+</head>
+
+<body>
+
+    <h1>视频标签 video</h1>
+
+    <!-- video: 视频标签 -->
+    <!-- controls: 显示播放控件 -->
+    <!-- autoplay: 自动播放（大多数浏览器会禁止带声音的自动播放） -->
+    <!-- loop: 循环播放 -->
+    <!-- muted: 静音 -->
+    <!-- poster: 视频加载前显示的封面图片 -->
+    <video src="video.mp4" controls width="400"></video>
+
+    <!-- 多格式兼容：不同浏览器支持不同格式，用source提供多个源 -->
+    <video controls width="400" poster="cover.jpg">
+        <source src="video.mp4" type="video/mp4">
+        <source src="video.webm" type="video/webm">
+        <source src="video.ogg" type="video/ogg">
+        您的浏览器不支持视频播放
+    </video>
+
+    <h1>音频标签 audio</h1>
+
+    <!-- audio: 音频标签 -->
+    <!-- 属性和video基本一样，但没有width/height/poster -->
+    <audio src="music.mp3" controls></audio>
+
+    <!-- 多格式兼容 -->
+    <audio controls>
+        <source src="music.mp3" type="audio/mpeg">
+        <source src="music.ogg" type="audio/ogg">
+        您的浏览器不支持音频播放
+    </audio>
+
+    <h1>嵌入外部内容 iframe</h1>
+
+    <!-- iframe: 嵌套其他网页 -->
+    <!-- src: 要嵌入的网页地址 -->
+    <!-- width/height: 尺寸 -->
+    <!-- frameborder: 边框（0或1） -->
+    <iframe src="https://www.example.com" width="600" height="400" frameborder="0"></iframe>
+
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!--
+    链接进阶
+    1. 锚点链接: 跳转到页面内指定位置
+    2. 邮件链接: mailto:
+    3. 下载链接: download 属性
+    4. 图片链接: a 标签包裹 img
+    5. target 的四种值
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>链接进阶</title>
+</head>
+
+<body>
+
+    <h1>锚点链接 #id</h1>
+
+    <!-- 锚点链接：点击跳转到页面内指定id的位置 -->
+    <!-- 第一步：给目标元素设置id -->
+    <!-- 第二步：a标签的href="#id" -->
+
+    <a href="#section1">跳转到第一章</a> |
+    <a href="#section2">跳转到第二章</a> |
+    <a href="#top">回到顶部</a>
+
+    <br><br>
+
+    <!-- 目标位置 -->
+    <div id="top">
+        <p>这里是页面顶部</p>
+    </div>
+
+    <div style="height: 500px; background: #f0f0f0;">
+        <p>（中间留空，方便观察跳转效果）</p>
+    </div>
+
+    <div id="section1">
+        <h2>第一章</h2>
+        <p>这是第一章的内容...</p>
+    </div>
+
+    <div style="height: 500px; background: #f0f0f0;">
+        <p>（中间留空，方便观察跳转效果）</p>
+    </div>
+
+    <div id="section2">
+        <h2>第二章</h2>
+        <p>这是第二章的内容...</p>
+    </div>
+
+    <br><br>
+
+    <h1>邮件链接 mailto:</h1>
+
+    <!-- mailto: 点击后打开邮件客户端 -->
+    <!-- 可以预填收件人、主题、正文 -->
+    <a href="mailto:test@example.com">发送邮件</a>
+
+    <!-- 预填主题和正文 -->
+    <a href="mailto:test@example.com?subject=你好&body=这是邮件内容">发送带主题的邮件</a>
+
+    <br><br>
+
+    <h1>下载链接 download</h1>
+
+    <!-- download: 点击后下载文件而不是跳转 -->
+    <!-- download属性的值是下载后的文件名（可选） -->
+    <a href="file/test.pdf" download>下载PDF</a>
+
+    <a href="file/image.jpg" download="我的图片.jpg">下载图片（自定义文件名）</a>
+
+    <br><br>
+
+    <h1>图片链接</h1>
+
+    <!-- a标签包裹img: 点击图片跳转 -->
+    <a href="https://www.example.com">
+        <img src="https://via.placeholder.com/150" alt="点击跳转">
+    </a>
+
+    <br><br>
+
+    <h1>target 四种值</h1>
+
+    <a href="https://www.example.com" target="_blank">_blank: 新窗口打开</a><br>
+    <a href="https://www.example.com" target="_self">_self: 当前窗口打开（默认）</a><br>
+    <a href="https://www.example.com" target="_parent">_parent: 父窗口打开</a><br>
+    <a href="https://www.example.com" target="_top">_top: 最顶层窗口打开</a>
+
+    <br><br>
+
+    <h1>电话链接 tel:</h1>
+
+    <!-- tel: 点击后拨打电话（手机端常用） -->
+    <a href="tel:13800138000">拨打电话：13800138000</a>
+
+</body>
+
+</html>

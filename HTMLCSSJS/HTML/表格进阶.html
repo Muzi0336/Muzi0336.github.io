@@ -1,0 +1,139 @@
+<!--
+    表格进阶
+    1. thead/tbody/tfoot: 表格结构分组
+    2. colspan: 合并列（跨列）
+    3. rowspan: 合并行（跨行）
+    4. caption: 表格标题
+    5. 边框合并：border-collapse
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表格进阶</title>
+    <style>
+        table { border-collapse: collapse; width: 500px; }
+        th, td { border: 1px solid #333; padding: 8px; text-align: center; }
+        th { background: #f0f0f0; }
+    </style>
+</head>
+
+<body>
+
+    <h1>表格结构分组 thead/tbody/tfoot</h1>
+
+    <table>
+        <!-- caption: 表格标题 -->
+        <caption>学生成绩表</caption>
+
+        <!-- thead: 表头 -->
+        <thead>
+            <tr>
+                <th>姓名</th>
+                <th>语文</th>
+                <th>数学</th>
+            </tr>
+        </thead>
+
+        <!-- tbody: 表体 -->
+        <tbody>
+            <tr>
+                <td>张三</td>
+                <td>85</td>
+                <td>90</td>
+            </tr>
+            <tr>
+                <td>李四</td>
+                <td>78</td>
+                <td>88</td>
+            </tr>
+        </tbody>
+
+        <!-- tfoot: 表尾（通常放汇总） -->
+        <tfoot>
+            <tr>
+                <td>平均分</td>
+                <td>81.5</td>
+                <td>89</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <br><br>
+
+    <h1>合并列 colspan</h1>
+
+    <!-- colspan: 一个单元格横跨多列 -->
+    <table border="1">
+        <tr>
+            <!-- 这个单元格占2列 -->
+            <th colspan="2">个人信息</th>
+            <th>成绩</th>
+        </tr>
+        <tr>
+            <td>张三</td>
+            <td>男</td>
+            <td>90</td>
+        </tr>
+    </table>
+
+    <br><br>
+
+    <h1>合并行 rowspan</h1>
+
+    <!-- rowspan: 一个单元格纵跨多行 -->
+    <table border="1">
+        <tr>
+            <th>姓名</th>
+            <th>科目</th>
+            <th>分数</th>
+        </tr>
+        <tr>
+            <!-- 这个单元格占2行 -->
+            <td rowspan="2">张三</td>
+            <td>语文</td>
+            <td>85</td>
+        </tr>
+        <tr>
+            <!-- 张三那格已经占了，这里不写 -->
+            <td>数学</td>
+            <td>90</td>
+        </tr>
+        <tr>
+            <td rowspan="2">李四</td>
+            <td>语文</td>
+            <td>78</td>
+        </tr>
+        <tr>
+            <td>数学</td>
+            <td>88</td>
+        </tr>
+    </table>
+
+    <br><br>
+
+    <h1>合并列+行 综合示例</h1>
+
+    <table border="1">
+        <tr>
+            <!-- 占2列 -->
+            <th colspan="2">科目</th>
+            <!-- 占2行 -->
+            <th rowspan="2">总分</th>
+        </tr>
+        <tr>
+            <th>语文</th>
+            <th>数学</th>
+        </tr>
+        <tr>
+            <td>85</td>
+            <td>90</td>
+            <td>175</td>
+        </tr>
+    </table>
+
+</body>
+
+</html>

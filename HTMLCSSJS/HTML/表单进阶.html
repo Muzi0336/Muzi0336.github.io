@@ -1,0 +1,129 @@
+<!--
+    表单进阶
+    1. select/option: 下拉选择框
+    2. textarea: 多行文本输入
+    3. datalist: 输入建议列表
+    4. fieldset/legend: 表单分组
+    5. 表单验证: required、pattern、min/max、minlength/maxlength
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表单进阶</title>
+</head>
+
+<body>
+
+    <h1>下拉选择框 select/option</h1>
+
+    <!-- select: 下拉框 -->
+    <!-- option: 下拉选项 -->
+    <!-- selected: 默认选中 -->
+    <!-- disabled: 禁用某个选项 -->
+    <label for="city">选择城市：</label>
+    <select id="city" name="city">
+        <option value="">请选择</option>
+        <option value="beijing" selected>北京</option>
+        <option value="shanghai">上海</option>
+        <option value="guangzhou">广州</option>
+        <option value="shenzhen">深圳</option>
+    </select>
+
+    <!-- optgroup: 选项分组 -->
+    <label for="car">选择车型：</label>
+    <select id="car" name="car">
+        <optgroup label="国产">
+            <option value="xiaomi">小米SU7</option>
+            <option value="byd">比亚迪</option>
+        </optgroup>
+        <optgroup label="进口">
+            <option value="tesla">特斯拉</option>
+            <option value="bmw">宝马</option>
+        </optgroup>
+    </select>
+
+    <br><br>
+
+    <h1>多行文本 textarea</h1>
+
+    <!-- textarea: 多行输入框 -->
+    <!-- rows: 可见行数 -->
+    <!-- cols: 可见列数 -->
+    <!-- placeholder: 提示文本 -->
+    <label for="bio">个人简介：</label><br>
+    <textarea id="bio" name="bio" rows="5" cols="40" placeholder="请输入你的简介..."></textarea>
+
+    <br><br>
+
+    <h1>输入建议列表 datalist</h1>
+
+    <!-- datalist: 为input提供输入建议 -->
+    <!-- input 的 list 属性关联 datalist 的 id -->
+    <label for="browser">选择浏览器：</label>
+    <input type="text" id="browser" name="browser" list="browsers" placeholder="输入或选择...">
+    <datalist id="browsers">
+        <option value="Chrome">
+        <option value="Firefox">
+        <option value="Safari">
+        <option value="Edge">
+        <option value="Opera">
+    </datalist>
+
+    <br><br>
+
+    <h1>表单分组 fieldset/legend</h1>
+
+    <!-- fieldset: 表单分组 -->
+    <!-- legend: 分组标题 -->
+    <form>
+        <fieldset>
+            <legend>个人信息</legend>
+            <label for="name">姓名：</label>
+            <input type="text" id="name" name="name"><br><br>
+            <label for="age">年龄：</label>
+            <input type="number" id="age" name="age">
+        </fieldset>
+
+        <fieldset>
+            <legend>账号信息</legend>
+            <label for="email">邮箱：</label>
+            <input type="email" id="email" name="email"><br><br>
+            <label for="pwd">密码：</label>
+            <input type="password" id="pwd" name="pwd">
+        </fieldset>
+
+        <br>
+        <input type="submit" value="提交">
+    </form>
+
+    <br><br>
+
+    <h1>表单验证</h1>
+
+    <form>
+        <!-- required: 必填 -->
+        <label for="r1">必填项：</label>
+        <input type="text" id="r1" required><br><br>
+
+        <!-- pattern: 正则表达式验证 -->
+        <!-- 这里要求输入6位数字 -->
+        <label for="p1">6位数字：</label>
+        <input type="text" id="p1" pattern="\d{6}" placeholder="如：123456"><br><br>
+
+        <!-- min/max: 数值范围 -->
+        <label for="n1">1-100的数字：</label>
+        <input type="number" id="n1" min="1" max="100"><br><br>
+
+        <!-- minlength/maxlength: 字符长度 -->
+        <label for="l1">3-10个字符：</label>
+        <input type="text" id="l1" minlength="3" maxlength="10"><br><br>
+
+        <input type="submit" value="提交">
+    </form>
+
+</body>
+
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>strong 标签示例</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            line-height: 1.8;
+            color: #333;
+        }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        .example {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .product {
+            background: #e8f5e9;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .product ul { list-style: none; padding: 0; }
+        .product li { padding: 8px 0; border-bottom: 1px solid #c8e6c9; }
+        .product li:last-child { border-bottom: none; }
+        code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        pre code { background: none; color: inherit; }
+    </style>
+</head>
+<body>
+    <h1>strong 标签示例</h1>
+
+    <h2>1. 基本用法</h2>
+    <div class="example">
+        <p>请<strong>务必</strong>在截止日期前提交</p>
+        <p>这是<strong>重要</strong>的内容</p>
+        <p>警告：<strong>禁止</strong>在运行时修改配置</p>
+    </div>
+
+    <h2>2. 嵌套使用（强调程度递增）</h2>
+    <div class="example">
+        <p>这是<strong>重要</strong>的内容</p>
+        <p>这是<strong><strong>非常重要</strong></strong>的内容</p>
+        <p>这是<strong><strong><strong>极其重要</strong></strong></strong>的内容</p>
+    </div>
+
+    <h2>3. 表单验证提示</h2>
+    <div class="example">
+        <form>
+            <div style="margin-bottom: 15px;">
+                <label>用户名：</label>
+                <input type="text" value="" style="border: 1px solid #dc3545; padding: 5px;">
+                <p class="error">用户名<strong>不能为空</strong></p>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label>密码：</label>
+                <input type="password" value="123" style="border: 1px solid #dc3545; padding: 5px;">
+                <p class="error">密码长度至少<strong>8位</strong></p>
+            </div>
+        </form>
+    </div>
+
+    <h2>4. 产品特性强调</h2>
+    <div class="product">
+        <h3>这款手机的三大亮点</h3>
+        <ul>
+            <li><strong>超长续航</strong>：5000mAh 大电池，重度使用也能撑一天</li>
+            <li><strong>极速充电</strong>：30 分钟充满 70%，告别电量焦虑</li>
+            <li><strong>顶级性能</strong>：最新旗舰芯片，游戏流畅不卡顿</li>
+        </ul>
+    </div>
+
+    <h2>5. 法律条款</h2>
+    <div class="warning">
+        <p>用户<strong>必须</strong>遵守以下条款，违反者将<strong>永久封禁</strong>账号</p>
+        <p>本服务<strong>不承诺</strong>无间断运行，维护期间<strong>暂停访问</strong></p>
+    </div>
+
+    <h2>6. strong vs b 的区别</h2>
+    <div class="example">
+        <p><b>这是 b 标签</b>（仅视觉加粗，无语义）</p>
+        <p><strong>这是 strong 标签</strong>（有语义，表示重要性）</p>
+        <p>💡 屏幕阅读器会强调读出 strong 内容，b 标签不会</p>
+    </div>
+
+    <h2>7. 对应代码</h2>
+    <pre><code>&lt;!-- 基本用法 --&gt;
+&lt;p&gt;请&lt;strong&gt;务必&lt;/strong&gt;在截止日期前提交&lt;/p&gt;
+
+&lt;!-- 嵌套使用 --&gt;
+&lt;p&gt;这是&lt;strong&gt;重要&lt;/strong&gt;的内容&lt;/p&gt;
+&lt;p&gt;这是&lt;strong&gt;&lt;strong&gt;非常重要&lt;/strong&gt;&lt;/strong&gt;的内容&lt;/p&gt;
+
+&lt;!-- 表单验证 --&gt;
+&lt;p class="error"&gt;密码&lt;strong&gt;不能为空&lt;/strong&gt;，且长度至少&lt;strong&gt;8位&lt;/strong&gt;&lt;/p&gt;
+
+&lt;!-- 产品特性 --&gt;
+&lt;li&gt;&lt;strong&gt;超长续航&lt;/strong&gt;：5000mAh大电池&lt;/li&gt;
+
+&lt;!-- 法律条款 --&gt;
+&lt;p&gt;用户&lt;strong&gt;必须&lt;/strong&gt;遵守以下条款&lt;/p&gt;</code></pre>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!--
+    嵌入与代码
+    1. iframe: 嵌套网页
+    2. pre/code: 代码展示
+    3. img 的 map/area: 图像热区
+    4. meta 标签: SEO 和页面信息
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>嵌入与代码</title>
+
+    <!-- SEO 相关 meta 标签 -->
+    <!-- description: 页面描述，搜索引擎会显示 -->
+    <meta name="description" content="这是一个HTML学习笔记页面">
+    <!-- keywords: 关键词（现在搜索引擎已经不太看重这个） -->
+    <meta name="keywords" content="HTML, 学习, 前端">
+    <!-- author: 作者 -->
+    <meta name="author" content="张三">
+
+    <!-- Open Graph: 社交媒体分享时显示的信息 -->
+    <meta property="og:title" content="页面标题">
+    <meta property="og:description" content="页面描述">
+    <meta property="og:image" content="preview.jpg">
+
+    <style>
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>嵌套网页 iframe</h1>
+
+    <!-- iframe: 嵌套其他网页 -->
+    <iframe src="https://www.example.com" width="600" height="300" frameborder="0"></iframe>
+
+    <!-- 常用属性 -->
+    <!-- src: 嵌入的网页地址 -->
+    <!-- width/height: 尺寸 -->
+    <!-- frameborder: 边框（0无边框，1有边框） -->
+    <!-- allowfullscreen: 允许全屏 -->
+    <!-- sandbox: 安全限制（限制iframe内的操作） -->
+
+    <br><br>
+
+    <h1>代码展示 pre/code</h1>
+
+    <!-- pre: 预格式化文本，保留空格和换行 -->
+    <!-- code: 代码文本（语义标签，本身无样式） -->
+    <!-- 通常 pre 和 code 一起用 -->
+
+    <p>行内代码：</p>
+    <p>使用 <code>&lt;p&gt;</code> 标签创建段落</p>
+
+    <p>代码块：</p>
+    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;我的页面&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;你好世界&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+    <br><br>
+
+    <h1>图像热区 map/area</h1>
+
+    <!-- map: 定义可点击区域 -->
+    <!-- area: 定义具体的可点击区域 -->
+    <!-- usemap: 关联map（值为 #map名） -->
+
+    <img src="https://via.placeholder.com/400x200" alt="示例图片" usemap="#workmap">
+
+    <map name="workmap">
+        <!-- shape: 区域形状（rect矩形、circle圆形、poly多边形） -->
+        <!-- coords: 坐标 -->
+        <!-- href: 点击后跳转的地址 -->
+        <area shape="rect" coords="0,0,200,200" href="https://www.example.com" alt="左侧">
+        <area shape="circle" coords="300,100,50" href="https://www.baidu.com" alt="右侧圆形">
+    </map>
+
+    <br><br>
+
+    <h1>script 标签的 async/defer</h1>
+
+    <!-- 正常加载：阻塞HTML解析 -->
+    <script src="normal.js"></script>
+
+    <!-- async: 异步加载，加载完立即执行（不保证顺序） -->
+    <script src="async.js" async></script>
+
+    <!-- defer: 延迟加载，HTML解析完再执行（保证顺序） -->
+    <script src="defer.js" defer></script>
+
+    <p>区别：
+        <br>- 正常：下载+执行都阻塞解析
+        <br>- async：下载不阻塞，下载完立即执行
+        <br>- defer：下载不阻塞，HTML解析完再按顺序执行
+    </p>
+
+</body>
+
+</html>
