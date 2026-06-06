@@ -148,6 +148,17 @@
             line-height: 1.6;
             margin-top: 8px;
         }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
@@ -344,17 +355,17 @@
             </div>
             <input type="checkbox" id="code-1" class="code-toggle">
             <label for="code-1" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 块级元素 */
-div { display: block; }
-
-/* 行内元素 */
-span { display: inline; }
-
-/* 行内块 */
-a { display: inline-block; width: 100px; }
-
-/* 隐藏元素 */
-.hidden { display: none; }</div>
+            <div class="code-block"><span>1</span>/* 块级元素 */
+<span>2</span>div { display: block; }
+<span>3</span>
+<span>4</span>/* 行内元素 */
+<span>5</span>span { display: inline; }
+<span>6</span>
+<span>7</span>/* 行内块 */
+<span>8</span>a { display: inline-block; width: 100px; }
+<span>9</span>
+<span>10</span>/* 隐藏元素 */
+<span>11</span>.hidden { display: none; }</div>
         </div>
 
         <!-- 二、position（定位方式） -->
@@ -380,27 +391,27 @@ a { display: inline-block; width: 100px; }
             </div>
             <input type="checkbox" id="code-2" class="code-toggle">
             <label for="code-2" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 相对定位 */
-.box {
-    position: relative;
-    top: 10px;
-    left: 20px;
-}
-
-/* 绝对定位 */
-.box {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-/* 固定定位（导航栏常用） */
-.nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-}</div>
+            <div class="code-block"><span>1</span>/* 相对定位 */
+<span>2</span>.box {
+<span>3</span>    position: relative;
+<span>4</span>    top: 10px;
+<span>5</span>    left: 20px;
+<span>6</span>}
+<span>7</span>
+<span>8</span>/* 绝对定位 */
+<span>9</span>.box {
+<span>10</span>    position: absolute;
+<span>11</span>    top: 0;
+<span>12</span>    right: 0;
+<span>13</span>}
+<span>14</span>
+<span>15</span>/* 固定定位（导航栏常用） */
+<span>16</span>.nav {
+<span>17</span>    position: fixed;
+<span>18</span>    top: 0;
+<span>19</span>    left: 0;
+<span>20</span>    width: 100%;
+<span>21</span>}</div>
         </div>
 
         <!-- 三、z-index（层叠顺序） -->
@@ -420,21 +431,21 @@ a { display: inline-block; width: 100px; }
             </div>
             <input type="checkbox" id="code-3" class="code-toggle">
             <label for="code-3" class="toggle-label">查看代码</label>
-            <div class="code-block">/* z-index 必须配合 position 使用 */
-.box1 {
-    position: absolute;
-    z-index: 1;  /* 最底层 */
-}
-
-.box2 {
-    position: absolute;
-    z-index: 2;  /* 中间层 */
-}
-
-.box3 {
-    position: absolute;
-    z-index: 3;  /* 最顶层 */
-}</div>
+            <div class="code-block"><span>1</span>/* z-index 必须配合 position 使用 */
+<span>2</span>.box1 {
+<span>3</span>    position: absolute;
+<span>4</span>    z-index: 1;  /* 最底层 */
+<span>5</span>}
+<span>6</span>
+<span>7</span>.box2 {
+<span>8</span>    position: absolute;
+<span>9</span>    z-index: 2;  /* 中间层 */
+<span>10</span>}
+<span>11</span>
+<span>12</span>.box3 {
+<span>13</span>    position: absolute;
+<span>14</span>    z-index: 3;  /* 最顶层 */
+<span>15</span>}</div>
         </div>
 
         <!-- 四、visibility（可见性） -->
@@ -456,15 +467,15 @@ a { display: inline-block; width: 100px; }
             </div>
             <input type="checkbox" id="code-4" class="code-toggle">
             <label for="code-4" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 隐藏但占位 */
-.box {
-    visibility: hidden;
-}
-
-/* 完全隐藏不占位 */
-.box {
-    display: none;
-}</div>
+            <div class="code-block"><span>1</span>/* 隐藏但占位 */
+<span>2</span>.box {
+<span>3</span>    visibility: hidden;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 完全隐藏不占位 */
+<span>7</span>.box {
+<span>8</span>    display: none;
+<span>9</span>}</div>
         </div>
 
         <!-- 五、float（浮动） -->
@@ -485,21 +496,21 @@ a { display: inline-block; width: 100px; }
             </div>
             <input type="checkbox" id="code-5" class="code-toggle">
             <label for="code-5" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 左浮动 */
-.box { float: left; }
-
-/* 右浮动 */
-.box { float: right; }
-
-/* 清除浮动（推荐） */
-.parent::after {
-    content: "";
-    display: block;
-    clear: both;
-}
-
-/* 或者父容器设置 overflow */
-.parent { overflow: hidden; }</div>
+            <div class="code-block"><span>1</span>/* 左浮动 */
+<span>2</span>.box { float: left; }
+<span>3</span>
+<span>4</span>/* 右浮动 */
+<span>5</span>.box { float: right; }
+<span>6</span>
+<span>7</span>/* 清除浮动（推荐） */
+<span>8</span>.parent::after {
+<span>9</span>    content: "";
+<span>10</span>    display: block;
+<span>11</span>    clear: both;
+<span>12</span>}
+<span>13</span>
+<span>14</span>/* 或者父容器设置 overflow */
+<span>15</span>.parent { overflow: hidden; }</div>
         </div>
     </main>
 </body>

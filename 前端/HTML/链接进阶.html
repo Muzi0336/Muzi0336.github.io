@@ -142,6 +142,17 @@
             line-height: 1.6;
             margin-top: 8px;
         }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
@@ -216,13 +227,13 @@
 
             <input type="checkbox" id="code-1" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-1" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;a href="#section1"&gt;跳转到第一章&lt;/a&gt;
-&lt;a href="#section2"&gt;跳转到第二章&lt;/a&gt;
-&lt;a href="#top"&gt;回到顶部&lt;/a&gt;
-
-&lt;div id="top"&gt;页面顶部&lt;/div&gt;
-&lt;div id="section1"&gt;第一章内容&lt;/div&gt;
-&lt;div id="section2"&gt;第二章内容&lt;/div&gt;</div>
+            <div class="code-block"><span>1</span>&lt;a href="#section1"&gt;跳转到第一章&lt;/a&gt;
+<span>2</span>&lt;a href="#section2"&gt;跳转到第二章&lt;/a&gt;
+<span>3</span>&lt;a href="#top"&gt;回到顶部&lt;/a&gt;
+<span>4</span>
+<span>5</span>&lt;div id="top"&gt;页面顶部&lt;/div&gt;
+<span>6</span>&lt;div id="section1"&gt;第一章内容&lt;/div&gt;
+<span>7</span>&lt;div id="section2"&gt;第二章内容&lt;/div&gt;</div>
         </div>
 
         <!-- 第2节：邮件链接 -->
@@ -242,11 +253,11 @@
 
             <input type="checkbox" id="code-2" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-2" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;a href="mailto:test@example.com"&gt;发送邮件&lt;/a&gt;
-
-&lt;a href="mailto:test@example.com?subject=你好&body=这是邮件内容"&gt;
-    发送带主题的邮件
-&lt;/a&gt;</div>
+            <div class="code-block"><span>1</span>&lt;a href="mailto:test@example.com"&gt;发送邮件&lt;/a&gt;
+<span>2</span>
+<span>3</span>&lt;a href="mailto:test@example.com?subject=你好&body=这是邮件内容"&gt;
+<span>4</span>    发送带主题的邮件
+<span>5</span>&lt;/a&gt;</div>
         </div>
 
         <!-- 第3节：下载链接 -->
@@ -266,11 +277,11 @@
 
             <input type="checkbox" id="code-3" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-3" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;a href="file/test.pdf" download&gt;下载PDF&lt;/a&gt;
-
-&lt;a href="file/image.jpg" download="我的图片.jpg"&gt;
-    下载图片（自定义文件名）
-&lt;/a&gt;</div>
+            <div class="code-block"><span>1</span>&lt;a href="file/test.pdf" download&gt;下载PDF&lt;/a&gt;
+<span>2</span>
+<span>3</span>&lt;a href="file/image.jpg" download="我的图片.jpg"&gt;
+<span>4</span>    下载图片（自定义文件名）
+<span>5</span>&lt;/a&gt;</div>
         </div>
 
         <!-- 第4节：图片链接 -->
@@ -290,9 +301,9 @@
 
             <input type="checkbox" id="code-4" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-4" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;a href="https://www.example.com"&gt;
-    &lt;img src="https://via.placeholder.com/150" alt="点击跳转"&gt;
-&lt;/a&gt;</div>
+            <div class="code-block"><span>1</span>&lt;a href="https://www.example.com"&gt;
+<span>2</span>    &lt;img src="https://via.placeholder.com/150" alt="点击跳转"&gt;
+<span>3</span>&lt;/a&gt;</div>
         </div>
 
         <!-- 第5节：target 属性 -->
@@ -315,10 +326,10 @@
 
             <input type="checkbox" id="code-5" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-5" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;a href="https://www.example.com" target="_blank"&gt;_blank: 新窗口打开&lt;/a&gt;
-&lt;a href="https://www.example.com" target="_self"&gt;_self: 当前窗口打开&lt;/a&gt;
-&lt;a href="https://www.example.com" target="_parent"&gt;_parent: 父窗口打开&lt;/a&gt;
-&lt;a href="https://www.example.com" target="_top"&gt;_top: 最顶层窗口打开&lt;/a&gt;</div>
+            <div class="code-block"><span>1</span>&lt;a href="https://www.example.com" target="_blank"&gt;_blank: 新窗口打开&lt;/a&gt;
+<span>2</span>&lt;a href="https://www.example.com" target="_self"&gt;_self: 当前窗口打开&lt;/a&gt;
+<span>3</span>&lt;a href="https://www.example.com" target="_parent"&gt;_parent: 父窗口打开&lt;/a&gt;
+<span>4</span>&lt;a href="https://www.example.com" target="_top"&gt;_top: 最顶层窗口打开&lt;/a&gt;</div>
         </div>
 
         <!-- 第6节：电话链接 -->
@@ -336,7 +347,7 @@
 
             <input type="checkbox" id="code-6" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-6" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;a href="tel:13800138000"&gt;拨打电话：13800138000&lt;/a&gt;</div>
+            <div class="code-block"><span>1</span>&lt;a href="tel:13800138000"&gt;拨打电话：13800138000&lt;/a&gt;</div>
         </div>
 
     </main>

@@ -149,6 +149,18 @@
             margin-top: 8px;
         }
 
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
             display: block;
@@ -306,27 +318,27 @@
             </div>
             <input type="checkbox" id="code-1" class="code-toggle">
             <label for="code-1" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 基础过渡 */
-.box {
-    transition: all 0.3s ease;
-}
-
-/* 悬停效果 */
-.box:hover {
-    background: #e74c3c;
-    transform: scale(1.1);
-}
-
-/* 单个属性过渡 */
-.box {
-    transition: transform 0.3s ease;
-}
-
-/* 多个属性分别设置 */
-.box {
-    transition: transform 0.3s ease, 
-                box-shadow 0.5s ease;
-}</div>
+            <div class="code-block"><span>1</span>/* 基础过渡 */
+<span>2</span>.box {
+<span>3</span>    transition: all 0.3s ease;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 悬停效果 */
+<span>7</span>.box:hover {
+<span>8</span>    background: #e74c3c;
+<span>9</span>    transform: scale(1.1);
+<span>10</span>}
+<span>11</span>
+<span>12</span>/* 单个属性过渡 */
+<span>13</span>.box {
+<span>14</span>    transition: transform 0.3s ease;
+<span>15</span>}
+<span>16</span>
+<span>17</span>/* 多个属性分别设置 */
+<span>18</span>.box {
+<span>19</span>    transition: transform 0.3s ease, 
+<span>20</span>                box-shadow 0.5s ease;
+<span>21</span>}</div>
         </div>
 
         <!-- 二、transform（变换） -->
@@ -360,24 +372,24 @@
             </div>
             <input type="checkbox" id="code-2" class="code-toggle">
             <label for="code-2" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 旋转 */
-transform: rotate(45deg);
-
-/* 缩放 */
-transform: scale(1.5);      /* 放大1.5倍 */
-transform: scale(0.8);      /* 缩小 */
-
-/* 移动 */
-transform: translate(20px, 10px);
-
-/* 倾斜 */
-transform: skew(10deg);
-
-/* 组合多个变换 */
-transform: rotate(45deg) scale(1.2);
-
-/* 原点 */
-transform-origin: center center;</div>
+            <div class="code-block"><span>1</span>/* 旋转 */
+<span>2</span>transform: rotate(45deg);
+<span>3</span>
+<span>4</span>/* 缩放 */
+<span>5</span>transform: scale(1.5);      /* 放大1.5倍 */
+<span>6</span>transform: scale(0.8);      /* 缩小 */
+<span>7</span>
+<span>8</span>/* 移动 */
+<span>9</span>transform: translate(20px, 10px);
+<span>10</span>
+<span>11</span>/* 倾斜 */
+<span>12</span>transform: skew(10deg);
+<span>13</span>
+<span>14</span>/* 组合多个变换 */
+<span>15</span>transform: rotate(45deg) scale(1.2);
+<span>16</span>
+<span>17</span>/* 原点 */
+<span>18</span>transform-origin: center center;</div>
         </div>
 
         <!-- 三、animation（动画） -->
@@ -407,34 +419,34 @@ transform-origin: center center;</div>
             </div>
             <input type="checkbox" id="code-3" class="code-toggle">
             <label for="code-3" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 定义动画 */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
-}
-
-/* 使用动画 */
-.box {
-    animation: pulse 1.5s infinite;
-}
-
-/* 动画属性 */
-animation: 名称 时长 缓动函数 延迟 次数 方向 填充模式;
-
-/* 常用值 */
-animation: spin 2s linear infinite;
-animation: bounce 1s ease-in-out infinite alternate;</div>
+            <div class="code-block"><span>1</span>/* 定义动画 */
+<span>2</span>@keyframes pulse {
+<span>3</span>    0% { transform: scale(1); }
+<span>4</span>    50% { transform: scale(1.1); }
+<span>5</span>    100% { transform: scale(1); }
+<span>6</span>}
+<span>7</span>
+<span>8</span>@keyframes spin {
+<span>9</span>    from { transform: rotate(0deg); }
+<span>10</span>    to { transform: rotate(360deg); }
+<span>11</span>}
+<span>12</span>
+<span>13</span>@keyframes bounce {
+<span>14</span>    0%, 100% { transform: translateY(0); }
+<span>15</span>    50% { transform: translateY(-20px); }
+<span>16</span>}
+<span>17</span>
+<span>18</span>/* 使用动画 */
+<span>19</span>.box {
+<span>20</span>    animation: pulse 1.5s infinite;
+<span>21</span>}
+<span>22</span>
+<span>23</span>/* 动画属性 */
+<span>24</span>animation: 名称 时长 缓动函数 延迟 次数 方向 填充模式;
+<span>25</span>
+<span>26</span>/* 常用值 */
+<span>27</span>animation: spin 2s linear infinite;
+<span>28</span>animation: bounce 1s ease-in-out infinite alternate;</div>
         </div>
     </main>
 </body>

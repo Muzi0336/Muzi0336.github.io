@@ -148,6 +148,17 @@
             line-height: 1.6;
             margin-top: 8px;
         }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
@@ -412,13 +423,13 @@
             </div>
             <input type="checkbox" id="code-1" class="code-toggle">
             <label for="code-1" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 容器设置 */
-.container {
-    display: flex;
-    gap: 10px;
-}
-
-/* 项目会自动排列在一行 */</div>
+            <div class="code-block"><span>1</span>/* 容器设置 */
+<span>2</span>.container {
+<span>3</span>    display: flex;
+<span>4</span>    gap: 10px;
+<span>5</span>}
+<span>6</span>
+<span>7</span>/* 项目会自动排列在一行 */</div>
         </div>
 
         <!-- 二、flex-direction -->
@@ -462,21 +473,21 @@
             </div>
             <input type="checkbox" id="code-2" class="code-toggle">
             <label for="code-2" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 水平排列（默认） */
-.container {
-    display: flex;
-    flex-direction: row;
-}
-
-/* 水平反向 */
-.container {
-    flex-direction: row-reverse;
-}
-
-/* 垂直排列 */
-.container {
-    flex-direction: column;
-}</div>
+            <div class="code-block"><span>1</span>/* 水平排列（默认） */
+<span>2</span>.container {
+<span>3</span>    display: flex;
+<span>4</span>    flex-direction: row;
+<span>5</span>}
+<span>6</span>
+<span>7</span>/* 水平反向 */
+<span>8</span>.container {
+<span>9</span>    flex-direction: row-reverse;
+<span>10</span>}
+<span>11</span>
+<span>12</span>/* 垂直排列 */
+<span>13</span>.container {
+<span>14</span>    flex-direction: column;
+<span>15</span>}</div>
         </div>
 
         <!-- 三、justify-content -->
@@ -529,25 +540,25 @@
             </div>
             <input type="checkbox" id="code-3" class="code-toggle">
             <label for="code-3" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 左对齐（默认） */
-.container {
-    justify-content: flex-start;
-}
-
-/* 居中 */
-.container {
-    justify-content: center;
-}
-
-/* 两端对齐 */
-.container {
-    justify-content: space-between;
-}
-
-/* 等间距 */
-.container {
-    justify-content: space-around;
-}</div>
+            <div class="code-block"><span>1</span>/* 左对齐（默认） */
+<span>2</span>.container {
+<span>3</span>    justify-content: flex-start;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 居中 */
+<span>7</span>.container {
+<span>8</span>    justify-content: center;
+<span>9</span>}
+<span>10</span>
+<span>11</span>/* 两端对齐 */
+<span>12</span>.container {
+<span>13</span>    justify-content: space-between;
+<span>14</span>}
+<span>15</span>
+<span>16</span>/* 等间距 */
+<span>17</span>.container {
+<span>18</span>    justify-content: space-around;
+<span>19</span>}</div>
         </div>
 
         <!-- 四、align-items -->
@@ -592,25 +603,25 @@
             </div>
             <input type="checkbox" id="code-4" class="code-toggle">
             <label for="code-4" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 拉伸（默认） */
-.container {
-    align-items: stretch;
-}
-
-/* 居中 */
-.container {
-    align-items: center;
-}
-
-/* 顶部对齐 */
-.container {
-    align-items: flex-start;
-}
-
-/* 底部对齐 */
-.container {
-    align-items: flex-end;
-}</div>
+            <div class="code-block"><span>1</span>/* 拉伸（默认） */
+<span>2</span>.container {
+<span>3</span>    align-items: stretch;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 居中 */
+<span>7</span>.container {
+<span>8</span>    align-items: center;
+<span>9</span>}
+<span>10</span>
+<span>11</span>/* 顶部对齐 */
+<span>12</span>.container {
+<span>13</span>    align-items: flex-start;
+<span>14</span>}
+<span>15</span>
+<span>16</span>/* 底部对齐 */
+<span>17</span>.container {
+<span>18</span>    align-items: flex-end;
+<span>19</span>}</div>
         </div>
 
         <!-- 五、gap -->
@@ -631,16 +642,16 @@
             </div>
             <input type="checkbox" id="code-5" class="code-toggle">
             <label for="code-5" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 统一间距 */
-.container {
-    gap: 20px;
-}
-
-/* 行列分别设置 */
-.container {
-    row-gap: 20px;
-    column-gap: 10px;
-}</div>
+            <div class="code-block"><span>1</span>/* 统一间距 */
+<span>2</span>.container {
+<span>3</span>    gap: 20px;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 行列分别设置 */
+<span>7</span>.container {
+<span>8</span>    row-gap: 20px;
+<span>9</span>    column-gap: 10px;
+<span>10</span>}</div>
         </div>
 
         <!-- 六、flex-wrap -->
@@ -677,15 +688,15 @@
             </div>
             <input type="checkbox" id="code-6" class="code-toggle">
             <label for="code-6" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 不换行（默认） */
-.container {
-    flex-wrap: nowrap;
-}
-
-/* 换行 */
-.container {
-    flex-wrap: wrap;
-}</div>
+            <div class="code-block"><span>1</span>/* 不换行（默认） */
+<span>2</span>.container {
+<span>3</span>    flex-wrap: nowrap;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 换行 */
+<span>7</span>.container {
+<span>8</span>    flex-wrap: wrap;
+<span>9</span>}</div>
         </div>
 
         <!-- 七、flex-grow -->
@@ -706,10 +717,10 @@
             </div>
             <input type="checkbox" id="code-7" class="code-toggle">
             <label for="code-7" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 放大比例 */
-.item-1 { flex-grow: 1; }
-.item-2 { flex-grow: 2; }  /* 占据更多空间 */
-.item-3 { flex-grow: 0; }  /* 默认，不放大 */</div>
+            <div class="code-block"><span>1</span>/* 放大比例 */
+<span>2</span>.item-1 { flex-grow: 1; }
+<span>3</span>.item-2 { flex-grow: 2; }  /* 占据更多空间 */
+<span>4</span>.item-3 { flex-grow: 0; }  /* 默认，不放大 */</div>
         </div>
 
         <!-- 八、flex-shrink -->
@@ -730,11 +741,11 @@
             </div>
             <input type="checkbox" id="code-8" class="code-toggle">
             <label for="code-8" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 不缩小 */
-.item-1 { flex-shrink: 0; }
-
-/* 默认缩小 */
-.item-2 { flex-shrink: 1; }</div>
+            <div class="code-block"><span>1</span>/* 不缩小 */
+<span>2</span>.item-1 { flex-shrink: 0; }
+<span>3</span>
+<span>4</span>/* 默认缩小 */
+<span>5</span>.item-2 { flex-shrink: 1; }</div>
         </div>
 
         <!-- 九、flex-basis -->
@@ -755,10 +766,10 @@
             </div>
             <input type="checkbox" id="code-9" class="code-toggle">
             <label for="code-9" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 初始大小 */
-.item-1 { flex-basis: 200px; }
-.item-2 { flex-basis: 100px; }
-.item-3 { flex-basis: auto; }  /* 默认 */</div>
+            <div class="code-block"><span>1</span>/* 初始大小 */
+<span>2</span>.item-1 { flex-basis: 200px; }
+<span>3</span>.item-2 { flex-basis: 100px; }
+<span>4</span>.item-3 { flex-basis: auto; }  /* 默认 */</div>
         </div>
 
         <!-- 十、flex 复合属性 -->
@@ -779,10 +790,10 @@
             </div>
             <input type="checkbox" id="code-10" class="code-toggle">
             <label for="code-10" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 复合属性 */
-.item-1 { flex: 1; }      /* flex: 1 1 0% */
-.item-2 { flex: 2; }      /* flex: 2 1 0% */
-.item-3 { flex: none; }   /* flex: 0 0 auto */</div>
+            <div class="code-block"><span>1</span>/* 复合属性 */
+<span>2</span>.item-1 { flex: 1; }      /* flex: 1 1 0% */
+<span>3</span>.item-2 { flex: 2; }      /* flex: 2 1 0% */
+<span>4</span>.item-3 { flex: none; }   /* flex: 0 0 auto */</div>
         </div>
 
         <!-- 十一、order -->
@@ -803,10 +814,10 @@
             </div>
             <input type="checkbox" id="code-11" class="code-toggle">
             <label for="code-11" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 排序 */
-.item-1 { order: 3; }  /* 最后 */
-.item-2 { order: 1; }  /* 第一 */
-.item-3 { order: 2; }  /* 第二 */</div>
+            <div class="code-block"><span>1</span>/* 排序 */
+<span>2</span>.item-1 { order: 3; }  /* 最后 */
+<span>3</span>.item-2 { order: 1; }  /* 第一 */
+<span>4</span>.item-3 { order: 2; }  /* 第二 */</div>
         </div>
 
         <!-- 十二、align-self -->
@@ -827,10 +838,10 @@
             </div>
             <input type="checkbox" id="code-12" class="code-toggle">
             <label for="code-12" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 单独对齐 */
-.item-1 { align-self: auto; }
-.item-2 { align-self: center; }
-.item-3 { align-self: flex-end; }</div>
+            <div class="code-block"><span>1</span>/* 单独对齐 */
+<span>2</span>.item-1 { align-self: auto; }
+<span>3</span>.item-2 { align-self: center; }
+<span>4</span>.item-3 { align-self: flex-end; }</div>
         </div>
 
         <!-- 十三、align-content -->
@@ -870,13 +881,13 @@
             </div>
             <input type="checkbox" id="code-13" class="code-toggle">
             <label for="code-13" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 多行对齐 */
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: center;
-    height: 200px;
-}</div>
+            <div class="code-block"><span>1</span>/* 多行对齐 */
+<span>2</span>.container {
+<span>3</span>    display: flex;
+<span>4</span>    flex-wrap: wrap;
+<span>5</span>    align-content: center;
+<span>6</span>    height: 200px;
+<span>7</span>}</div>
         </div>
     </main>
 </body>

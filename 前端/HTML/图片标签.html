@@ -142,6 +142,17 @@
             line-height: 1.6;
             margin-top: 8px;
         }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
@@ -219,11 +230,11 @@
 
             <input type="checkbox" id="code1" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code1" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 基本写法 --&gt;
-&lt;img src="photo.jpg" alt="风景照片"&gt;
-
-&lt;!-- 带尺寸 --&gt;
-&lt;img src="logo.png" alt="网站Logo" width="200" height="100"&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- 基本写法 --&gt;
+<span>2</span>&lt;img src="photo.jpg" alt="风景照片"&gt;
+<span>3</span>
+<span>4</span>&lt;!-- 带尺寸 --&gt;
+<span>5</span>&lt;img src="logo.png" alt="网站Logo" width="200" height="100"&gt;</div>
         </div>
 
         <!-- 单元2：alt替代文字 -->
@@ -254,17 +265,17 @@
 
             <input type="checkbox" id="code2" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code2" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- ✅ 好的alt：描述图片内容 --&gt;
-&lt;img src="cat.jpg" alt="一只橘猫在沙发上睡觉"&gt;
-
-&lt;!-- ❌ 不好的alt：太笼统 --&gt;
-&lt;img src="cat.jpg" alt="图片"&gt;
-
-&lt;!-- ❌ 不好的alt：关键词堆砌（SEO作弊） --&gt;
-&lt;img src="cat.jpg" alt="猫 橘猫 宠物 可爱 睡觉 沙发"&gt;
-
-&lt;!-- 纯装饰图片：alt留空 --&gt;
-&lt;img src="decoration.png" alt=""&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- ✅ 好的alt：描述图片内容 --&gt;
+<span>2</span>&lt;img src="cat.jpg" alt="一只橘猫在沙发上睡觉"&gt;
+<span>3</span>
+<span>4</span>&lt;!-- ❌ 不好的alt：太笼统 --&gt;
+<span>5</span>&lt;img src="cat.jpg" alt="图片"&gt;
+<span>6</span>
+<span>7</span>&lt;!-- ❌ 不好的alt：关键词堆砌（SEO作弊） --&gt;
+<span>8</span>&lt;img src="cat.jpg" alt="猫 橘猫 宠物 可爱 睡觉 沙发"&gt;
+<span>9</span>
+<span>10</span>&lt;!-- 纯装饰图片：alt留空 --&gt;
+<span>11</span>&lt;img src="decoration.png" alt=""&gt;</div>
         </div>
 
         <!-- 单元3：width/height尺寸 -->
@@ -288,14 +299,14 @@
 
             <input type="checkbox" id="code3" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code3" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- ✅ 推荐：只设一个维度，保持比例 --&gt;
-&lt;img src="photo.jpg" alt="照片" width="300"&gt;
-
-&lt;!-- ⚠️ 可以两个都设，但可能导致变形 --&gt;
-&lt;img src="photo.jpg" alt="照片" width="300" height="200"&gt;
-
-&lt;!-- 💡 实际开发中，尺寸通常用CSS控制 --&gt;
-&lt;img src="photo.jpg" alt="照片" style="width: 50%;"&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- ✅ 推荐：只设一个维度，保持比例 --&gt;
+<span>2</span>&lt;img src="photo.jpg" alt="照片" width="300"&gt;
+<span>3</span>
+<span>4</span>&lt;!-- ⚠️ 可以两个都设，但可能导致变形 --&gt;
+<span>5</span>&lt;img src="photo.jpg" alt="照片" width="300" height="200"&gt;
+<span>6</span>
+<span>7</span>&lt;!-- 💡 实际开发中，尺寸通常用CSS控制 --&gt;
+<span>8</span>&lt;img src="photo.jpg" alt="照片" style="width: 50%;"&gt;</div>
         </div>
 
         <!-- 单元4：图片路径 -->
@@ -341,17 +352,17 @@
 
             <input type="checkbox" id="code4" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code4" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 同级目录：图片和HTML在同一文件夹 --&gt;
-&lt;img src="photo.jpg" alt="照片"&gt;
-
-&lt;!-- 子目录：图片在images文件夹里 --&gt;
-&lt;img src="images/photo.jpg" alt="照片"&gt;
-
-&lt;!-- 上级目录：../ 表示上一级 --&gt;
-&lt;img src="../photo.jpg" alt="照片"&gt;
-
-&lt;!-- 绝对URL：网络图片 --&gt;
-&lt;img src="https://via.placeholder.com/300" alt="占位图"&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- 同级目录：图片和HTML在同一文件夹 --&gt;
+<span>2</span>&lt;img src="photo.jpg" alt="照片"&gt;
+<span>3</span>
+<span>4</span>&lt;!-- 子目录：图片在images文件夹里 --&gt;
+<span>5</span>&lt;img src="images/photo.jpg" alt="照片"&gt;
+<span>6</span>
+<span>7</span>&lt;!-- 上级目录：../ 表示上一级 --&gt;
+<span>8</span>&lt;img src="../photo.jpg" alt="照片"&gt;
+<span>9</span>
+<span>10</span>&lt;!-- 绝对URL：网络图片 --&gt;
+<span>11</span>&lt;img src="https://via.placeholder.com/300" alt="占位图"&gt;</div>
         </div>
 
         <!-- 单元5：loading懒加载 -->
@@ -380,13 +391,13 @@
 
             <input type="checkbox" id="code5" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code5" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 懒加载：滚动到附近才加载 --&gt;
-&lt;img src="photo.jpg" alt="照片" loading="lazy"&gt;
-
-&lt;!-- 立即加载（默认）：首屏重要图片用这个 --&gt;
-&lt;img src="logo.png" alt="Logo" loading="eager"&gt;
-
-&lt;!-- 💡 首屏可见的图片不要用lazy，会影响用户体验 --&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- 懒加载：滚动到附近才加载 --&gt;
+<span>2</span>&lt;img src="photo.jpg" alt="照片" loading="lazy"&gt;
+<span>3</span>
+<span>4</span>&lt;!-- 立即加载（默认）：首屏重要图片用这个 --&gt;
+<span>5</span>&lt;img src="logo.png" alt="Logo" loading="eager"&gt;
+<span>6</span>
+<span>7</span>&lt;!-- 💡 首屏可见的图片不要用lazy，会影响用户体验 --&gt;</div>
         </div>
 
         <!-- 单元6：srcset响应式 -->
@@ -418,26 +429,26 @@
 
             <input type="checkbox" id="code6" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code6" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- srcset: 提供多个图片供浏览器选择 --&gt;
-&lt;!-- w 表示图片实际宽度 --&gt;
-&lt;img 
-    src="photo-800.jpg"
-    srcset="photo-400.jpg 400w,
-            photo-800.jpg 800w,
-            photo-1200.jpg 1200w"
-    sizes="(max-width: 600px) 400px,
-           (max-width: 1000px) 800px,
-           1200px"
-    alt="风景照片"
-&gt;
-
-&lt;!-- 简单写法：告诉浏览器图片的像素密度 --&gt;
-&lt;img 
-    src="photo.jpg"
-    srcset="photo.jpg 1x, photo@2x.jpg 2x"
-    alt="照片"
-&gt;
-&lt;!-- 1x = 普通屏幕，2x = 高清屏幕（Retina） --&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- srcset: 提供多个图片供浏览器选择 --&gt;
+<span>2</span>&lt;!-- w 表示图片实际宽度 --&gt;
+<span>3</span>&lt;img 
+<span>4</span>    src="photo-800.jpg"
+<span>5</span>    srcset="photo-400.jpg 400w,
+<span>6</span>            photo-800.jpg 800w,
+<span>7</span>            photo-1200.jpg 1200w"
+<span>8</span>    sizes="(max-width: 600px) 400px,
+<span>9</span>           (max-width: 1000px) 800px,
+<span>10</span>           1200px"
+<span>11</span>    alt="风景照片"
+<span>12</span>&gt;
+<span>13</span>
+<span>14</span>&lt;!-- 简单写法：告诉浏览器图片的像素密度 --&gt;
+<span>15</span>&lt;img 
+<span>16</span>    src="photo.jpg"
+<span>17</span>    srcset="photo.jpg 1x, photo@2x.jpg 2x"
+<span>18</span>    alt="照片"
+<span>19</span>&gt;
+<span>20</span>&lt;!-- 1x = 普通屏幕，2x = 高清屏幕（Retina） --&gt;</div>
         </div>
 
         <!-- 单元7：图片链接 -->
@@ -464,15 +475,15 @@
 
             <input type="checkbox" id="code7" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code7" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 点击图片跳转到指定页面 --&gt;
-&lt;a href="https://www.example.com" target="_blank"&gt;
-    &lt;img src="banner.jpg" alt="广告横幅" width="300"&gt;
-&lt;/a&gt;
-
-&lt;!-- 点击图片下载文件 --&gt;
-&lt;a href="images/photo.jpg" download="我的照片.jpg"&gt;
-    &lt;img src="images/photo.jpg" alt="点击下载" width="200"&gt;
-&lt;/a&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- 点击图片跳转到指定页面 --&gt;
+<span>2</span>&lt;a href="https://www.example.com" target="_blank"&gt;
+<span>3</span>    &lt;img src="banner.jpg" alt="广告横幅" width="300"&gt;
+<span>4</span>&lt;/a&gt;
+<span>5</span>
+<span>6</span>&lt;!-- 点击图片下载文件 --&gt;
+<span>7</span>&lt;a href="images/photo.jpg" download="我的照片.jpg"&gt;
+<span>8</span>    &lt;img src="images/photo.jpg" alt="点击下载" width="200"&gt;
+<span>9</span>&lt;/a&gt;</div>
         </div>
 
     </main>

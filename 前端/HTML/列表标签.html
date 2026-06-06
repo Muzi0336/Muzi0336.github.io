@@ -142,6 +142,17 @@
             line-height: 1.6;
             margin-top: 8px;
         }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
@@ -208,13 +219,13 @@
 
             <input type="checkbox" id="code1" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code1" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;ul&gt;
-    &lt;li&gt;HTML 结构&lt;/li&gt;
-    &lt;li&gt;CSS 样式&lt;/li&gt;
-    &lt;li&gt;JavaScript 交互&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!-- 💡 ul 里只能放 li，不能直接放其他标签 --&gt;</div>
+            <div class="code-block"><span>1</span>&lt;ul&gt;
+<span>2</span>    &lt;li&gt;HTML 结构&lt;/li&gt;
+<span>3</span>    &lt;li&gt;CSS 样式&lt;/li&gt;
+<span>4</span>    &lt;li&gt;JavaScript 交互&lt;/li&gt;
+<span>5</span>&lt;/ul&gt;
+<span>6</span>
+<span>7</span>&lt;!-- 💡 ul 里只能放 li，不能直接放其他标签 --&gt;</div>
         </div>
 
         <!-- 单元2：有序列表 -->
@@ -237,32 +248,32 @@
 
             <input type="checkbox" id="code2" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code2" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 基本有序列表 --&gt;
-&lt;ol&gt;
-    &lt;li&gt;第一步&lt;/li&gt;
-    &lt;li&gt;第二步&lt;/li&gt;
-    &lt;li&gt;第三步&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;!-- 使用属性 --&gt;
-&lt;!-- type: 1(数字) A(大写) a(小写) I(大写罗马) i(小写罗马) --&gt;
-&lt;ol type="A"&gt;
-    &lt;li&gt;选项A&lt;/li&gt;
-    &lt;li&gt;选项B&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;!-- start: 起始编号 --&gt;
-&lt;ol start="5"&gt;
-    &lt;li&gt;从5开始&lt;/li&gt;
-    &lt;li&gt;第6个&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;!-- reversed: 倒序 --&gt;
-&lt;ol reversed&gt;
-    &lt;li&gt;第3名&lt;/li&gt;
-    &lt;li&gt;第2名&lt;/li&gt;
-    &lt;li&gt;第1名&lt;/li&gt;
-&lt;/ol&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- 基本有序列表 --&gt;
+<span>2</span>&lt;ol&gt;
+<span>3</span>    &lt;li&gt;第一步&lt;/li&gt;
+<span>4</span>    &lt;li&gt;第二步&lt;/li&gt;
+<span>5</span>    &lt;li&gt;第三步&lt;/li&gt;
+<span>6</span>&lt;/ol&gt;
+<span>7</span>
+<span>8</span>&lt;!-- 使用属性 --&gt;
+<span>9</span>&lt;!-- type: 1(数字) A(大写) a(小写) I(大写罗马) i(小写罗马) --&gt;
+<span>10</span>&lt;ol type="A"&gt;
+<span>11</span>    &lt;li&gt;选项A&lt;/li&gt;
+<span>12</span>    &lt;li&gt;选项B&lt;/li&gt;
+<span>13</span>&lt;/ol&gt;
+<span>14</span>
+<span>15</span>&lt;!-- start: 起始编号 --&gt;
+<span>16</span>&lt;ol start="5"&gt;
+<span>17</span>    &lt;li&gt;从5开始&lt;/li&gt;
+<span>18</span>    &lt;li&gt;第6个&lt;/li&gt;
+<span>19</span>&lt;/ol&gt;
+<span>20</span>
+<span>21</span>&lt;!-- reversed: 倒序 --&gt;
+<span>22</span>&lt;ol reversed&gt;
+<span>23</span>    &lt;li&gt;第3名&lt;/li&gt;
+<span>24</span>    &lt;li&gt;第2名&lt;/li&gt;
+<span>25</span>    &lt;li&gt;第1名&lt;/li&gt;
+<span>26</span>&lt;/ol&gt;</div>
         </div>
 
         <!-- 单元3：定义列表 -->
@@ -290,24 +301,24 @@
 
             <input type="checkbox" id="code3" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code3" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;dl&gt;
-    &lt;dt&gt;HTML&lt;/dt&gt;
-    &lt;dd&gt;超文本标记语言，用于构建网页结构&lt;/dd&gt;
-
-    &lt;dt&gt;CSS&lt;/dt&gt;
-    &lt;dd&gt;层叠样式表，用于美化页面&lt;/dd&gt;
-
-    &lt;dt&gt;JavaScript&lt;/dt&gt;
-    &lt;dd&gt;编程语言，用于实现页面交互&lt;/dd&gt;
-&lt;/dl&gt;
-
-&lt;!-- 一个dt可以对应多个dd --&gt;
-&lt;dl&gt;
-    &lt;dt&gt;水果&lt;/dt&gt;
-    &lt;dd&gt;苹果&lt;/dd&gt;
-    &lt;dd&gt;香蕉&lt;/dd&gt;
-    &lt;dd&gt;橙子&lt;/dd&gt;
-&lt;/dl&gt;</div>
+            <div class="code-block"><span>1</span>&lt;dl&gt;
+<span>2</span>    &lt;dt&gt;HTML&lt;/dt&gt;
+<span>3</span>    &lt;dd&gt;超文本标记语言，用于构建网页结构&lt;/dd&gt;
+<span>4</span>
+<span>5</span>    &lt;dt&gt;CSS&lt;/dt&gt;
+<span>6</span>    &lt;dd&gt;层叠样式表，用于美化页面&lt;/dd&gt;
+<span>7</span>
+<span>8</span>    &lt;dt&gt;JavaScript&lt;/dt&gt;
+<span>9</span>    &lt;dd&gt;编程语言，用于实现页面交互&lt;/dd&gt;
+<span>10</span>&lt;/dl&gt;
+<span>11</span>
+<span>12</span>&lt;!-- 一个dt可以对应多个dd --&gt;
+<span>13</span>&lt;dl&gt;
+<span>14</span>    &lt;dt&gt;水果&lt;/dt&gt;
+<span>15</span>    &lt;dd&gt;苹果&lt;/dd&gt;
+<span>16</span>    &lt;dd&gt;香蕉&lt;/dd&gt;
+<span>17</span>    &lt;dd&gt;橙子&lt;/dd&gt;
+<span>18</span>&lt;/dl&gt;</div>
         </div>
 
         <!-- 单元4：列表嵌套 -->
@@ -340,37 +351,37 @@
 
             <input type="checkbox" id="code4" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code4" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 无序列表嵌套 --&gt;
-&lt;ul&gt;
-    &lt;li&gt;前端开发
-        &lt;ul&gt;
-            &lt;li&gt;HTML&lt;/li&gt;
-            &lt;li&gt;CSS&lt;/li&gt;
-            &lt;li&gt;JavaScript&lt;/li&gt;
-        &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;后端开发
-        &lt;ul&gt;
-            &lt;li&gt;Python&lt;/li&gt;
-            &lt;li&gt;Java&lt;/li&gt;
-        &lt;/ul&gt;
-    &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!-- 有序+无序混合 --&gt;
-&lt;ol&gt;
-    &lt;li&gt;第一阶段
-        &lt;ul&gt;
-            &lt;li&gt;学习HTML&lt;/li&gt;
-            &lt;li&gt;学习CSS&lt;/li&gt;
-        &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;第二阶段
-        &lt;ul&gt;
-            &lt;li&gt;学习JavaScript&lt;/li&gt;
-        &lt;/ul&gt;
-    &lt;/li&gt;
-&lt;/ol&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- 无序列表嵌套 --&gt;
+<span>2</span>&lt;ul&gt;
+<span>3</span>    &lt;li&gt;前端开发
+<span>4</span>        &lt;ul&gt;
+<span>5</span>            &lt;li&gt;HTML&lt;/li&gt;
+<span>6</span>            &lt;li&gt;CSS&lt;/li&gt;
+<span>7</span>            &lt;li&gt;JavaScript&lt;/li&gt;
+<span>8</span>        &lt;/ul&gt;
+<span>9</span>    &lt;/li&gt;
+<span>10</span>    &lt;li&gt;后端开发
+<span>11</span>        &lt;ul&gt;
+<span>12</span>            &lt;li&gt;Python&lt;/li&gt;
+<span>13</span>            &lt;li&gt;Java&lt;/li&gt;
+<span>14</span>        &lt;/ul&gt;
+<span>15</span>    &lt;/li&gt;
+<span>16</span>&lt;/ul&gt;
+<span>17</span>
+<span>18</span>&lt;!-- 有序+无序混合 --&gt;
+<span>19</span>&lt;ol&gt;
+<span>20</span>    &lt;li&gt;第一阶段
+<span>21</span>        &lt;ul&gt;
+<span>22</span>            &lt;li&gt;学习HTML&lt;/li&gt;
+<span>23</span>            &lt;li&gt;学习CSS&lt;/li&gt;
+<span>24</span>        &lt;/ul&gt;
+<span>25</span>    &lt;/li&gt;
+<span>26</span>    &lt;li&gt;第二阶段
+<span>27</span>        &lt;ul&gt;
+<span>28</span>            &lt;li&gt;学习JavaScript&lt;/li&gt;
+<span>29</span>        &lt;/ul&gt;
+<span>30</span>    &lt;/li&gt;
+<span>31</span>&lt;/ol&gt;</div>
         </div>
 
         <!-- 单元5：列表属性 -->
@@ -408,24 +419,24 @@
 
             <input type="checkbox" id="code5" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code5" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- type属性：设置编号类型 --&gt;
-&lt;ol type="1"&gt;&lt;li&gt;数字：1, 2, 3&lt;/li&gt;&lt;/ol&gt;
-&lt;ol type="A"&gt;&lt;li&gt;大写字母：A, B, C&lt;/li&gt;&lt;/ol&gt;
-&lt;ol type="a"&gt;&lt;li&gt;小写字母：a, b, c&lt;/li&gt;&lt;/ol&gt;
-&lt;ol type="I"&gt;&lt;li&gt;大写罗马：I, II, III&lt;/li&gt;&lt;/ol&gt;
-&lt;ol type="i"&gt;&lt;li&gt;小写罗马：i, ii, iii&lt;/li&gt;&lt;/ol&gt;
-
-&lt;!-- start属性：起始编号 --&gt;
-&lt;ol start="10"&gt;
-    &lt;li&gt;从10开始&lt;/li&gt;
-    &lt;li&gt;11&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;!-- reversed属性：倒序 --&gt;
-&lt;ol reversed&gt;
-    &lt;li&gt;倒数第一&lt;/li&gt;
-    &lt;li&gt;倒数第二&lt;/li&gt;
-&lt;/ol&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- type属性：设置编号类型 --&gt;
+<span>2</span>&lt;ol type="1"&gt;&lt;li&gt;数字：1, 2, 3&lt;/li&gt;&lt;/ol&gt;
+<span>3</span>&lt;ol type="A"&gt;&lt;li&gt;大写字母：A, B, C&lt;/li&gt;&lt;/ol&gt;
+<span>4</span>&lt;ol type="a"&gt;&lt;li&gt;小写字母：a, b, c&lt;/li&gt;&lt;/ol&gt;
+<span>5</span>&lt;ol type="I"&gt;&lt;li&gt;大写罗马：I, II, III&lt;/li&gt;&lt;/ol&gt;
+<span>6</span>&lt;ol type="i"&gt;&lt;li&gt;小写罗马：i, ii, iii&lt;/li&gt;&lt;/ol&gt;
+<span>7</span>
+<span>8</span>&lt;!-- start属性：起始编号 --&gt;
+<span>9</span>&lt;ol start="10"&gt;
+<span>10</span>    &lt;li&gt;从10开始&lt;/li&gt;
+<span>11</span>    &lt;li&gt;11&lt;/li&gt;
+<span>12</span>&lt;/ol&gt;
+<span>13</span>
+<span>14</span>&lt;!-- reversed属性：倒序 --&gt;
+<span>15</span>&lt;ol reversed&gt;
+<span>16</span>    &lt;li&gt;倒数第一&lt;/li&gt;
+<span>17</span>    &lt;li&gt;倒数第二&lt;/li&gt;
+<span>18</span>&lt;/ol&gt;</div>
         </div>
 
     </main>

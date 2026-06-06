@@ -213,6 +213,19 @@
             background: #27ae60;
         }
 
+        /* 行号样式 - 不可选中 */
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
         /* 表格样式 */
         table {
             width: 100%;
@@ -294,12 +307,12 @@
             <div class="code-section">
                 <input type="checkbox" id="code-1" class="code-toggle">
                 <label for="code-1" class="toggle-label">查看源代码</label>
-                <div class="code-block">&lt;h1&gt;一级标题 h1&lt;/h1&gt;
-&lt;h2&gt;二级标题 h2&lt;/h2&gt;
-&lt;h3&gt;三级标题 h3&lt;/h3&gt;
-&lt;h4&gt;四级标题 h4&lt;/h4&gt;
-&lt;h5&gt;五级标题 h5&lt;/h5&gt;
-&lt;h6&gt;六级标题 h6&lt;/h6&gt;</div>
+                <div class="code-block"><span>1</span>&lt;h1&gt;一级标题 h1&lt;/h1&gt;
+<span>2</span>&lt;h2&gt;二级标题 h2&lt;/h2&gt;
+<span>3</span>&lt;h3&gt;三级标题 h3&lt;/h3&gt;
+<span>4</span>&lt;h4&gt;四级标题 h4&lt;/h4&gt;
+<span>5</span>&lt;h5&gt;五级标题 h5&lt;/h5&gt;
+<span>6</span>&lt;h6&gt;六级标题 h6&lt;/h6&gt;</div>
             </div>
         </div>
 
@@ -321,8 +334,8 @@
             <div class="code-section">
                 <input type="checkbox" id="code-2" class="code-toggle">
                 <label for="code-2" class="toggle-label">查看源代码</label>
-                <div class="code-block">&lt;p&gt;这是第一个段落。&lt;/p&gt;
-&lt;p&gt;这是第二个段落。&lt;/p&gt;</div>
+                <div class="code-block"><span>1</span>&lt;p&gt;这是第一个段落。&lt;/p&gt;
+<span>2</span>&lt;p&gt;这是第二个段落。&lt;/p&gt;</div>
             </div>
         </div>
 
@@ -352,13 +365,13 @@
             <div class="code-section">
                 <input type="checkbox" id="code-3" class="code-toggle">
                 <label for="code-3" class="toggle-label">查看源代码</label>
-                <div class="code-block">&lt;p&gt;&lt;b&gt;加粗文本&lt;/b&gt;&lt;/p&gt;
-&lt;p&gt;&lt;i&gt;斜体文本&lt;/i&gt;&lt;/p&gt;
-&lt;p&gt;&lt;u&gt;下划线文本&lt;/u&gt;&lt;/p&gt;
-&lt;p&gt;&lt;s&gt;删除线文本&lt;/s&gt;&lt;/p&gt;
-&lt;p&gt;&lt;mark&gt;高亮文本&lt;/mark&gt;&lt;/p&gt;
-&lt;p&gt;&lt;small&gt;小号文本&lt;/small&gt;&lt;/p&gt;
-&lt;p&gt;&lt;del&gt;删除文本&lt;/del&gt; &lt;ins&gt;插入文本&lt;/ins&gt;&lt;/p&gt;</div>
+                <div class="code-block"><span>1</span>&lt;p&gt;&lt;b&gt;加粗文本&lt;/b&gt;&lt;/p&gt;
+<span>2</span>&lt;p&gt;&lt;i&gt;斜体文本&lt;/i&gt;&lt;/p&gt;
+<span>3</span>&lt;p&gt;&lt;u&gt;下划线文本&lt;/u&gt;&lt;/p&gt;
+<span>4</span>&lt;p&gt;&lt;s&gt;删除线文本&lt;/s&gt;&lt;/p&gt;
+<span>5</span>&lt;p&gt;&lt;mark&gt;高亮文本&lt;/mark&gt;&lt;/p&gt;
+<span>6</span>&lt;p&gt;&lt;small&gt;小号文本&lt;/small&gt;&lt;/p&gt;
+<span>7</span>&lt;p&gt;&lt;del&gt;删除文本&lt;/del&gt; &lt;ins&gt;插入文本&lt;/ins&gt;&lt;/p&gt;</div>
             </div>
         </div>
 
@@ -380,7 +393,7 @@
             <div class="code-section">
                 <input type="checkbox" id="code-4a" class="code-toggle">
                 <label for="code-4a" class="toggle-label">查看源代码</label>
-                <div class="code-block">&lt;p&gt;这是一段普通文本，&lt;strong&gt;这是重要内容&lt;/strong&gt;，请特别注意。&lt;/p&gt;</div>
+                <div class="code-block"><span>1</span>&lt;p&gt;这是一段普通文本，&lt;strong&gt;这是重要内容&lt;/strong&gt;，请特别注意。&lt;/p&gt;</div>
             </div>
 
             <div class="demo">
@@ -391,8 +404,8 @@
             <div class="code-section">
                 <input type="checkbox" id="code-4b" class="code-toggle">
                 <label for="code-4b" class="toggle-label">查看源代码</label>
-                <div class="code-block">&lt;p&gt;普通文本 &lt;strong&gt;重要 &lt;strong&gt;非常重要
-&lt;strong&gt;极其重要&lt;/strong&gt;&lt;/strong&gt;&lt;/strong&gt;&lt;/p&gt;</div>
+                <div class="code-block"><span>1</span>&lt;p&gt;普通文本 &lt;strong&gt;重要 &lt;strong&gt;非常重要
+<span>2</span>&lt;strong&gt;极其重要&lt;/strong&gt;&lt;/strong&gt;&lt;/strong&gt;&lt;/p&gt;</div>
             </div>
 
             <div class="demo">
@@ -404,8 +417,8 @@
             <div class="code-section">
                 <input type="checkbox" id="code-4c" class="code-toggle">
                 <label for="code-4c" class="toggle-label">查看源代码</label>
-                <div class="code-block">&lt;p&gt;&lt;strong&gt;错误：&lt;/strong&gt;密码长度不能少于8位&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;警告：&lt;/strong&gt;此操作不可撤销&lt;/p&gt;</div>
+                <div class="code-block"><span>1</span>&lt;p&gt;&lt;strong&gt;错误：&lt;/strong&gt;密码长度不能少于8位&lt;/p&gt;
+<span>2</span>&lt;p&gt;&lt;strong&gt;警告：&lt;/strong&gt;此操作不可撤销&lt;/p&gt;</div>
             </div>
 
             <div class="demo">
@@ -421,12 +434,12 @@
             <div class="code-section">
                 <input type="checkbox" id="code-4d" class="code-toggle">
                 <label for="code-4d" class="toggle-label">查看源代码</label>
-                <div class="code-block">&lt;h3&gt;这款手机的三大亮点&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;超长续航&lt;/strong&gt;：5000mAh大电池&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;极速充电&lt;/strong&gt;：30分钟充满&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;专业影像&lt;/strong&gt;：1亿像素主摄&lt;/li&gt;
-&lt;/ul&gt;</div>
+                <div class="code-block"><span>1</span>&lt;h3&gt;这款手机的三大亮点&lt;/h3&gt;
+<span>2</span>&lt;ul&gt;
+<span>3</span>&lt;li&gt;&lt;strong&gt;超长续航&lt;/strong&gt;：5000mAh大电池&lt;/li&gt;
+<span>4</span>&lt;li&gt;&lt;strong&gt;极速充电&lt;/strong&gt;：30分钟充满&lt;/li&gt;
+<span>5</span>&lt;li&gt;&lt;strong&gt;专业影像&lt;/strong&gt;：1亿像素主摄&lt;/li&gt;
+<span>6</span>&lt;/ul&gt;</div>
             </div>
 
             <div class="demo">
@@ -437,7 +450,7 @@
             <div class="code-section">
                 <input type="checkbox" id="code-4e" class="code-toggle">
                 <label for="code-4e" class="toggle-label">查看源代码</label>
-                <div class="code-block">&lt;p&gt;用户协议：您必须年满18周岁才能注册。&lt;strong&gt;违反此规定将导致账户被封禁。&lt;/strong&gt;&lt;/p&gt;</div>
+                <div class="code-block"><span>1</span>&lt;p&gt;用户协议：您必须年满18周岁才能注册。&lt;strong&gt;违反此规定将导致账户被封禁。&lt;/strong&gt;&lt;/p&gt;</div>
             </div>
 
             <div class="demo">
@@ -479,11 +492,11 @@
             <div class="code-section">
                 <input type="checkbox" id="code-4f" class="code-toggle">
                 <label for="code-4f" class="toggle-label">查看源代码</label>
-                <div class="code-block">&lt;!-- strong：有语义，表示重要 --&gt;
-&lt;p&gt;&lt;strong&gt;警告：此操作不可撤销&lt;/strong&gt;&lt;/p&gt;
-
-&lt;!-- b：无语义，仅视觉加粗 --&gt;
-&lt;p&gt;欢迎使用 &lt;b&gt;小米&lt;/b&gt; 手机&lt;/p&gt;</div>
+                <div class="code-block"><span>1</span>&lt;!-- strong：有语义，表示重要 --&gt;
+<span>2</span>&lt;p&gt;&lt;strong&gt;警告：此操作不可撤销&lt;/strong&gt;&lt;/p&gt;
+<span>3</span>
+<span>4</span>&lt;!-- b：无语义，仅视觉加粗 --&gt;
+<span>5</span>&lt;p&gt;欢迎使用 &lt;b&gt;小米&lt;/b&gt; 手机&lt;/p&gt;</div>
             </div>
         </div>
 
@@ -508,11 +521,11 @@
             <div class="code-section">
                 <input type="checkbox" id="code-5" class="code-toggle">
                 <label for="code-5" class="toggle-label">查看源代码</label>
-                <div class="code-block">&lt;ul&gt;
-&lt;li&gt;HTML - 结构&lt;/li&gt;
-&lt;li&gt;CSS - 样式&lt;/li&gt;
-&lt;li&gt;JavaScript - 行为&lt;/li&gt;
-&lt;/ul&gt;</div>
+                <div class="code-block"><span>1</span>&lt;ul&gt;
+<span>2</span>&lt;li&gt;HTML - 结构&lt;/li&gt;
+<span>3</span>&lt;li&gt;CSS - 样式&lt;/li&gt;
+<span>4</span>&lt;li&gt;JavaScript - 行为&lt;/li&gt;
+<span>5</span>&lt;/ul&gt;</div>
             </div>
         </div>
 
@@ -548,26 +561,26 @@
             <div class="code-section">
                 <input type="checkbox" id="code-6" class="code-toggle">
                 <label for="code-6" class="toggle-label">查看源代码</label>
-                <div class="code-block">&lt;!-- 默认数字编号 --&gt;
-&lt;ol&gt;
-&lt;li&gt;学习 HTML&lt;/li&gt;
-&lt;li&gt;学习 CSS&lt;/li&gt;
-&lt;li&gt;学习 JavaScript&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;!-- 大写字母编号 --&gt;
-&lt;ol type="A"&gt;
-&lt;li&gt;第一步&lt;/li&gt;
-&lt;li&gt;第二步&lt;/li&gt;
-&lt;li&gt;第三步&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;!-- 从5开始编号 --&gt;
-&lt;ol start="5"&gt;
-&lt;li&gt;从5开始&lt;/li&gt;
-&lt;li&gt;第6项&lt;/li&gt;
-&lt;li&gt;第7项&lt;/li&gt;
-&lt;/ol&gt;</div>
+                <div class="code-block"><span>1</span>&lt;!-- 默认数字编号 --&gt;
+<span>2</span>&lt;ol&gt;
+<span>3</span>&lt;li&gt;学习 HTML&lt;/li&gt;
+<span>4</span>&lt;li&gt;学习 CSS&lt;/li&gt;
+<span>5</span>&lt;li&gt;学习 JavaScript&lt;/li&gt;
+<span>6</span>&lt;/ol&gt;
+<span>7</span>
+<span>8</span>&lt;!-- 大写字母编号 --&gt;
+<span>9</span>&lt;ol type="A"&gt;
+<span>10</span>&lt;li&gt;第一步&lt;/li&gt;
+<span>11</span>&lt;li&gt;第二步&lt;/li&gt;
+<span>12</span>&lt;li&gt;第三步&lt;/li&gt;
+<span>13</span>&lt;/ol&gt;
+<span>14</span>
+<span>15</span>&lt;!-- 从5开始编号 --&gt;
+<span>16</span>&lt;ol start="5"&gt;
+<span>17</span>&lt;li&gt;从5开始&lt;/li&gt;
+<span>18</span>&lt;li&gt;第6项&lt;/li&gt;
+<span>19</span>&lt;li&gt;第7项&lt;/li&gt;
+<span>20</span>&lt;/ol&gt;</div>
             </div>
         </div>
 
@@ -610,28 +623,28 @@
             <div class="code-section">
                 <input type="checkbox" id="code-7" class="code-toggle">
                 <label for="code-7" class="toggle-label">查看源代码</label>
-                <div class="code-block">&lt;table&gt;
-&lt;tr&gt;
-&lt;th&gt;标签&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;table&lt;/td&gt;
-&lt;td&gt;表格容器&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;tr&lt;/td&gt;
-&lt;td&gt;表格行&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;th&lt;/td&gt;
-&lt;td&gt;表头单元格（加粗居中）&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;td&lt;/td&gt;
-&lt;td&gt;数据单元格&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;</div>
+                <div class="code-block"><span>1</span>&lt;table&gt;
+<span>2</span>&lt;tr&gt;
+<span>3</span>&lt;th&gt;标签&lt;/th&gt;
+<span>4</span>&lt;th&gt;说明&lt;/th&gt;
+<span>5</span>&lt;/tr&gt;
+<span>6</span>&lt;tr&gt;
+<span>7</span>&lt;td&gt;table&lt;/td&gt;
+<span>8</span>&lt;td&gt;表格容器&lt;/td&gt;
+<span>9</span>&lt;/tr&gt;
+<span>10</span>&lt;tr&gt;
+<span>11</span>&lt;td&gt;tr&lt;/td&gt;
+<span>12</span>&lt;td&gt;表格行&lt;/td&gt;
+<span>13</span>&lt;/tr&gt;
+<span>14</span>&lt;tr&gt;
+<span>15</span>&lt;td&gt;th&lt;/td&gt;
+<span>16</span>&lt;td&gt;表头单元格（加粗居中）&lt;/td&gt;
+<span>17</span>&lt;/tr&gt;
+<span>18</span>&lt;tr&gt;
+<span>19</span>&lt;td&gt;td&lt;/td&gt;
+<span>20</span>&lt;td&gt;数据单元格&lt;/td&gt;
+<span>21</span>&lt;/tr&gt;
+<span>22</span>&lt;/table&gt;</div>
             </div>
         </div>
 

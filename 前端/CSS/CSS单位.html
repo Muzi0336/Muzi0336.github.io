@@ -149,6 +149,18 @@
             margin-top: 8px;
         }
 
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
             display: block;
@@ -217,13 +229,13 @@
             </div>
             <input type="checkbox" id="code-1" class="code-toggle">
             <label for="code-1" class="toggle-label">查看代码</label>
-            <div class="code-block">/* px 像素（最常用） */
-font-size: 16px;
-width: 200px;
-margin: 10px;
-
-/* 其他绝对单位（很少用） */
-cm, mm, in, pt, pc</div>
+            <div class="code-block"><span>1</span>/* px 像素（最常用） */
+<span>2</span>font-size: 16px;
+<span>3</span>width: 200px;
+<span>4</span>margin: 10px;
+<span>5</span>
+<span>6</span>/* 其他绝对单位（很少用） */
+<span>7</span>cm, mm, in, pt, pc</div>
         </div>
 
         <!-- 二、相对单位 -->
@@ -257,17 +269,17 @@ cm, mm, in, pt, pc</div>
             </div>
             <input type="checkbox" id="code-2" class="code-toggle">
             <label for="code-2" class="toggle-label">查看代码</label>
-            <div class="code-block">/* rem 相对于根元素（html 的 font-size） */
-html { font-size: 16px; }
-.box { font-size: 1rem; }  /* = 16px */
-.box { font-size: 1.5rem; }  /* = 24px */
-
-/* em 相对于父元素 */
-.parent { font-size: 20px; }
-.child { font-size: 1em; }  /* = 20px */
-.child { font-size: 1.5em; }  /* = 30px */
-
-/* 推荐：用 rem 做布局，用 em 做组件内部 */</div>
+            <div class="code-block"><span>1</span>/* rem 相对于根元素（html 的 font-size） */
+<span>2</span>html { font-size: 16px; }
+<span>3</span>.box { font-size: 1rem; }  /* = 16px */
+<span>4</span>.box { font-size: 1.5rem; }  /* = 24px */
+<span>5</span>
+<span>6</span>/* em 相对于父元素 */
+<span>7</span>.parent { font-size: 20px; }
+<span>8</span>.child { font-size: 1em; }  /* = 20px */
+<span>9</span>.child { font-size: 1.5em; }  /* = 30px */
+<span>10</span>
+<span>11</span>/* 推荐：用 rem 做布局，用 em 做组件内部 */</div>
         </div>
 
         <!-- 三、视口单位 -->
@@ -294,24 +306,24 @@ html { font-size: 16px; }
             </div>
             <input type="checkbox" id="code-3" class="code-toggle">
             <label for="code-3" class="toggle-label">查看代码</label>
-            <div class="code-block">/* vw 视口宽度 */
-.full-width { width: 100vw; }
-.half-width { width: 50vw; }
-
-/* vh 视口高度 */
-.full-height { height: 100vh; }
-
-/* vmin/vmax */
-.box { font-size: 5vmin; }  /* 取 vw 和 vh 中较小的 */
-
-/* 常见用法：全屏英雄区 */
-.hero {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}</div>
+            <div class="code-block"><span>1</span>/* vw 视口宽度 */
+<span>2</span>.full-width { width: 100vw; }
+<span>3</span>.half-width { width: 50vw; }
+<span>4</span>
+<span>5</span>/* vh 视口高度 */
+<span>6</span>.full-height { height: 100vh; }
+<span>7</span>
+<span>8</span>/* vmin/vmax */
+<span>9</span>.box { font-size: 5vmin; }  /* 取 vw 和 vh 中较小的 */
+<span>10</span>
+<span>11</span>/* 常见用法：全屏英雄区 */
+<span>12</span>.hero {
+<span>13</span>    width: 100vw;
+<span>14</span>    height: 100vh;
+<span>15</span>    display: flex;
+<span>16</span>    align-items: center;
+<span>17</span>    justify-content: center;
+<span>18</span>}</div>
         </div>
 
         <!-- 四、单位对比表 -->

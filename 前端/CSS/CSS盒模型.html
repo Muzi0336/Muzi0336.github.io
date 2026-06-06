@@ -149,6 +149,18 @@
             margin-top: 8px;
         }
 
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
             display: block;
@@ -272,14 +284,14 @@
             </div>
             <input type="checkbox" id="code-1" class="code-toggle">
             <label for="code-1" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 固定宽度 */
-width: 300px;
-
-/* 最大宽度（推荐） */
-max-width: 300px;
-
-/* 最小宽度 */
-min-width: 200px;</div>
+            <div class="code-block"><span>1</span>/* 固定宽度 */
+<span>2</span>width: 300px;
+<span>3</span>
+<span>4</span>/* 最大宽度（推荐） */
+<span>5</span>max-width: 300px;
+<span>6</span>
+<span>7</span>/* 最小宽度 */
+<span>8</span>min-width: 200px;</div>
         </div>
 
         <!-- 三、box-sizing -->
@@ -310,27 +322,27 @@ min-width: 200px;</div>
             </div>
             <input type="checkbox" id="code-2" class="code-toggle">
             <label for="code-2" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 全局设置 border-box */
-* {
-    box-sizing: border-box;
-}
-
-/* content-box（默认） */
-.box1 {
-    width: 200px;
-    padding: 20px;
-    border: 5px solid #3498db;
-    /* 实际宽度 = 200 + 20×2 + 5×2 = 250px */
-}
-
-/* border-box */
-.box2 {
-    width: 200px;
-    padding: 20px;
-    border: 5px solid #e74c3c;
-    box-sizing: border-box;
-    /* 实际宽度 = 200px（包含padding和border） */
-}</div>
+            <div class="code-block"><span>1</span>/* 全局设置 border-box */
+<span>2</span>* {
+<span>3</span>    box-sizing: border-box;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* content-box（默认） */
+<span>7</span>.box1 {
+<span>8</span>    width: 200px;
+<span>9</span>    padding: 20px;
+<span>10</span>    border: 5px solid #3498db;
+<span>11</span>    /* 实际宽度 = 200 + 20×2 + 5×2 = 250px */
+<span>12</span>}
+<span>13</span>
+<span>14</span>/* border-box */
+<span>15</span>.box2 {
+<span>16</span>    width: 200px;
+<span>17</span>    padding: 20px;
+<span>18</span>    border: 5px solid #e74c3c;
+<span>19</span>    box-sizing: border-box;
+<span>20</span>    /* 实际宽度 = 200px（包含padding和border） */
+<span>21</span>}</div>
         </div>
 
         <!-- 四、padding（内边距） -->
@@ -359,23 +371,23 @@ min-width: 200px;</div>
             </div>
             <input type="checkbox" id="code-3" class="code-toggle">
             <label for="code-3" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 四个方向相同 */
-padding: 20px;
-
-/* 上下 | 左右 */
-padding: 10px 20px;
-
-/* 上 | 左右 | 下 */
-padding: 10px 20px 30px;
-
-/* 上 | 右 | 下 | 左（顺时针） */
-padding: 10px 20px 30px 40px;
-
-/* 单独设置 */
-padding-top: 10px;
-padding-right: 20px;
-padding-bottom: 30px;
-padding-left: 40px;</div>
+            <div class="code-block"><span>1</span>/* 四个方向相同 */
+<span>2</span>padding: 20px;
+<span>3</span>
+<span>4</span>/* 上下 | 左右 */
+<span>5</span>padding: 10px 20px;
+<span>6</span>
+<span>7</span>/* 上 | 左右 | 下 */
+<span>8</span>padding: 10px 20px 30px;
+<span>9</span>
+<span>10</span>/* 上 | 右 | 下 | 左（顺时针） */
+<span>11</span>padding: 10px 20px 30px 40px;
+<span>12</span>
+<span>13</span>/* 单独设置 */
+<span>14</span>padding-top: 10px;
+<span>15</span>padding-right: 20px;
+<span>16</span>padding-bottom: 30px;
+<span>17</span>padding-left: 40px;</div>
         </div>
 
         <!-- 五、margin（外边距） -->
@@ -399,21 +411,21 @@ padding-left: 40px;</div>
             </div>
             <input type="checkbox" id="code-4" class="code-toggle">
             <label for="code-4" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 水平居中 */
-margin: 0 auto;
-
-/* 负margin */
-margin-top: -20px;  /* 向上移动 */
-
-/* margin 塌陷问题 */
-/* 父子元素的垂直margin会合并，取较大值 */
-.parent {
-    margin-top: 20px;
-}
-.child {
-    margin-top: 30px;
-    /* 实际父元素顶部margin = max(20, 30) = 30px */
-}</div>
+            <div class="code-block"><span>1</span>/* 水平居中 */
+<span>2</span>margin: 0 auto;
+<span>3</span>
+<span>4</span>/* 负margin */
+<span>5</span>margin-top: -20px;  /* 向上移动 */
+<span>6</span>
+<span>7</span>/* margin 塌陷问题 */
+<span>8</span>/* 父子元素的垂直margin会合并，取较大值 */
+<span>9</span>.parent {
+<span>10</span>    margin-top: 20px;
+<span>11</span>}
+<span>12</span>.child {
+<span>13</span>    margin-top: 30px;
+<span>14</span>    /* 实际父元素顶部margin = max(20, 30) = 30px */
+<span>15</span>}</div>
         </div>
 
         <!-- 六、border（边框） -->
@@ -442,20 +454,20 @@ margin-top: -20px;  /* 向上移动 */
             </div>
             <input type="checkbox" id="code-5" class="code-toggle">
             <label for="code-5" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 简写 */
-border: 2px solid #3498db;
-
-/* 单独设置 */
-border-width: 2px;
-border-style: solid;
-border-color: #3498db;
-
-/* 单边设置 */
-border-top: 2px solid #e74c3c;
-border-bottom: 1px dashed #2ecc71;
-
-/* 无边框 */
-border: none;</div>
+            <div class="code-block"><span>1</span>/* 简写 */
+<span>2</span>border: 2px solid #3498db;
+<span>3</span>
+<span>4</span>/* 单独设置 */
+<span>5</span>border-width: 2px;
+<span>6</span>border-style: solid;
+<span>7</span>border-color: #3498db;
+<span>8</span>
+<span>9</span>/* 单边设置 */
+<span>10</span>border-top: 2px solid #e74c3c;
+<span>11</span>border-bottom: 1px dashed #2ecc71;
+<span>12</span>
+<span>13</span>/* 无边框 */
+<span>14</span>border: none;</div>
         </div>
 
         <!-- 七、border-radius（圆角） -->
@@ -484,17 +496,17 @@ border: none;</div>
             </div>
             <input type="checkbox" id="code-6" class="code-toggle">
             <label for="code-6" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 四角相同 */
-border-radius: 10px;
-
-/* 圆形（正方形元素） */
-border-radius: 50%;
-
-/* 胶囊形（长方形元素） */
-border-radius: 30px;
-
-/* 单独设置四角 */
-border-radius: 10px 20px 30px 40px;  /* 左上 右上 右下 左下 */</div>
+            <div class="code-block"><span>1</span>/* 四角相同 */
+<span>2</span>border-radius: 10px;
+<span>3</span>
+<span>4</span>/* 圆形（正方形元素） */
+<span>5</span>border-radius: 50%;
+<span>6</span>
+<span>7</span>/* 胶囊形（长方形元素） */
+<span>8</span>border-radius: 30px;
+<span>9</span>
+<span>10</span>/* 单独设置四角 */
+<span>11</span>border-radius: 10px 20px 30px 40px;  /* 左上 右上 右下 左下 */</div>
         </div>
 
         <!-- 八、overflow（溢出处理） -->
@@ -529,20 +541,20 @@ border-radius: 10px 20px 30px 40px;  /* 左上 右上 右下 左下 */</div>
             </div>
             <input type="checkbox" id="code-7" class="code-toggle">
             <label for="code-7" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 默认，溢出内容可见 */
-overflow: visible;
-
-/* 溢出内容隐藏 */
-overflow: hidden;
-
-/* 溢出内容显示滚动条 */
-overflow: auto;
-
-/* 只显示横向滚动条 */
-overflow-x: auto;
-
-/* 只显示纵向滚动条 */
-overflow-y: auto;</div>
+            <div class="code-block"><span>1</span>/* 默认，溢出内容可见 */
+<span>2</span>overflow: visible;
+<span>3</span>
+<span>4</span>/* 溢出内容隐藏 */
+<span>5</span>overflow: hidden;
+<span>6</span>
+<span>7</span>/* 溢出内容显示滚动条 */
+<span>8</span>overflow: auto;
+<span>9</span>
+<span>10</span>/* 只显示横向滚动条 */
+<span>11</span>overflow-x: auto;
+<span>12</span>
+<span>13</span>/* 只显示纵向滚动条 */
+<span>14</span>overflow-y: auto;</div>
         </div>
     </main>
 </body>

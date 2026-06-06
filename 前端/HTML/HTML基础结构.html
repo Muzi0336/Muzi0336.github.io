@@ -142,6 +142,17 @@
             line-height: 1.6;
             margin-top: 8px;
         }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
@@ -228,16 +239,16 @@
 
             <input type="checkbox" id="code1" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code1" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!DOCTYPE html&gt;
-&lt;html lang="zh-CN"&gt;
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;我的页面&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;h1&gt;Hello World&lt;/h1&gt;
-&lt;/body&gt;
-&lt;/html&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;我的页面&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;Hello World&lt;/h1&gt;
+<span>9</span>&lt;/body&gt;
+<span>10</span>&lt;/html&gt;</div>
         </div>
 
         <!-- 单元2：html根元素 -->
@@ -271,11 +282,11 @@
 
             <input type="checkbox" id="code2" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code2" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- lang属性告诉浏览器和搜索引擎页面语言 --&gt;
-&lt;html lang="zh-CN"&gt;
-    &lt;head&gt;...&lt;/head&gt;
-    &lt;body&gt;...&lt;/body&gt;
-&lt;/html&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- lang属性告诉浏览器和搜索引擎页面语言 --&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>    &lt;head&gt;...&lt;/head&gt;
+<span>4</span>    &lt;body&gt;...&lt;/body&gt;
+<span>5</span>&lt;/html&gt;</div>
         </div>
 
         <!-- 单元3：head头部信息 -->
@@ -319,22 +330,22 @@
 
             <input type="checkbox" id="code3" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code3" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;head&gt;
-    &lt;!-- 字符编码：必须放在head最前面，否则中文可能乱码 --&gt;
-    &lt;meta charset="UTF-8"&gt;
-
-    &lt;!-- 视口设置：让页面在手机上正常显示 --&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-
-    &lt;!-- 页面标题：显示在浏览器标签页 --&gt;
-    &lt;title&gt;我的网页&lt;/title&gt;
-
-    &lt;!-- SEO描述：搜索引擎结果中显示的描述文字 --&gt;
-    &lt;meta name="description" content="这是一个学习HTML的页面"&gt;
-
-    &lt;!-- SEO关键词（现在权重很低） --&gt;
-    &lt;meta name="keywords" content="HTML, 学习, 前端"&gt;
-&lt;/head&gt;</div>
+            <div class="code-block"><span>1</span>&lt;head&gt;
+<span>2</span>    &lt;!-- 字符编码：必须放在head最前面，否则中文可能乱码 --&gt;
+<span>3</span>    &lt;meta charset="UTF-8"&gt;
+<span>4</span>
+<span>5</span>    &lt;!-- 视口设置：让页面在手机上正常显示 --&gt;
+<span>6</span>    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+<span>7</span>
+<span>8</span>    &lt;!-- 页面标题：显示在浏览器标签页 --&gt;
+<span>9</span>    &lt;title&gt;我的网页&lt;/title&gt;
+<span>10</span>
+<span>11</span>    &lt;!-- SEO描述：搜索引擎结果中显示的描述文字 --&gt;
+<span>12</span>    &lt;meta name="description" content="这是一个学习HTML的页面"&gt;
+<span>13</span>
+<span>14</span>    &lt;!-- SEO关键词（现在权重很低） --&gt;
+<span>15</span>    &lt;meta name="keywords" content="HTML, 学习, 前端"&gt;
+<span>16</span>&lt;/head&gt;</div>
         </div>
 
         <!-- 单元4：body页面主体 -->
@@ -367,12 +378,12 @@
 
             <input type="checkbox" id="code4" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code4" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;body&gt;
-    &lt;!-- 这里放用户能看到的所有内容 --&gt;
-    &lt;h1&gt;欢迎来到我的网站&lt;/h1&gt;
-    &lt;p&gt;这是一个段落&lt;/p&gt;
-    &lt;img src="photo.jpg" alt="照片"&gt;
-&lt;/body&gt;</div>
+            <div class="code-block"><span>1</span>&lt;body&gt;
+<span>2</span>    &lt;!-- 这里放用户能看到的所有内容 --&gt;
+<span>3</span>    &lt;h1&gt;欢迎来到我的网站&lt;/h1&gt;
+<span>4</span>    &lt;p&gt;这是一个段落&lt;/p&gt;
+<span>5</span>    &lt;img src="photo.jpg" alt="照片"&gt;
+<span>6</span>&lt;/body&gt;</div>
         </div>
 
         <!-- 单元5：注释 -->
@@ -401,19 +412,19 @@
 
             <input type="checkbox" id="code5" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code5" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 这是单行注释 --&gt;
-
-&lt;!-- 
-    这是多行注释
-    可以写很多行
-    常用于标记大段代码
---&gt;
-
-&lt;h1&gt;标题&lt;/h1&gt; &lt;!-- 也可以在代码后面写注释 --&gt;
-
-&lt;!-- 临时隐藏一段代码（注释掉）：
-&lt;p&gt;这段代码被注释了，不会显示&lt;/p&gt;
---&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- 这是单行注释 --&gt;
+<span>2</span>
+<span>3</span>&lt;!-- 
+<span>4</span>    这是多行注释
+<span>5</span>    可以写很多行
+<span>6</span>    常用于标记大段代码
+<span>7</span>--&gt;
+<span>8</span>
+<span>9</span>&lt;h1&gt;标题&lt;/h1&gt; &lt;!-- 也可以在代码后面写注释 --&gt;
+<span>10</span>
+<span>11</span>&lt;!-- 临时隐藏一段代码（注释掉）：
+<span>12</span>&lt;p&gt;这段代码被注释了，不会显示&lt;/p&gt;
+<span>13</span>--&gt;</div>
         </div>
 
         <!-- 单元6：完整模板 -->
@@ -463,20 +474,20 @@
 
             <input type="checkbox" id="code6" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code6" class="toggle-label">📝 查看完整代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!DOCTYPE html&gt;
-&lt;html lang="zh-CN"&gt;
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;我的页面&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-
-    &lt;h1&gt;Hello World&lt;/h1&gt;
-    &lt;p&gt;这是我的第一个网页&lt;/p&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+<span>6</span>    &lt;title&gt;我的页面&lt;/title&gt;
+<span>7</span>&lt;/head&gt;
+<span>8</span>&lt;body&gt;
+<span>9</span>
+<span>10</span>    &lt;h1&gt;Hello World&lt;/h1&gt;
+<span>11</span>    &lt;p&gt;这是我的第一个网页&lt;/p&gt;
+<span>12</span>
+<span>13</span>&lt;/body&gt;
+<span>14</span>&lt;/html&gt;</div>
         </div>
 
     </main>

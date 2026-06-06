@@ -148,6 +148,17 @@
             line-height: 1.6;
             margin-top: 8px;
         }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
@@ -512,15 +523,15 @@
             </div>
             <input type="checkbox" id="code-1" class="code-toggle">
             <label for="code-1" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-p {
-    color: red;
-    font-size: 16px;
-}
-
-/* HTML */
-&lt;p&gt;我是段落内容&lt;/p&gt;
-&lt;p&gt;我也是段落内容&lt;/p&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>p {
+<span>3</span>    color: red;
+<span>4</span>    font-size: 16px;
+<span>5</span>}
+<span>6</span>
+<span>7</span>/* HTML */
+<span>8</span>&lt;p&gt;我是段落内容&lt;/p&gt;
+<span>9</span>&lt;p&gt;我也是段落内容&lt;/p&gt;</div>
         </div>
 
         <!-- 二、类选择器 -->
@@ -540,20 +551,20 @@ p {
             </div>
             <input type="checkbox" id="code-2" class="code-toggle">
             <label for="code-2" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-.highlight {
-    color: orange;
-    font-weight: bold;
-}
-
-.text-blue {
-    color: blue;
-}
-
-/* HTML */
-&lt;p&gt;普通文字&lt;/p&gt;
-&lt;p class="highlight"&gt;高亮文字&lt;/p&gt;
-&lt;p class="text-blue"&gt;蓝色文字&lt;/p&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>.highlight {
+<span>3</span>    color: orange;
+<span>4</span>    font-weight: bold;
+<span>5</span>}
+<span>6</span>
+<span>7</span>.text-blue {
+<span>8</span>    color: blue;
+<span>9</span>}
+<span>10</span>
+<span>11</span>/* HTML */
+<span>12</span>&lt;p&gt;普通文字&lt;/p&gt;
+<span>13</span>&lt;p class="highlight"&gt;高亮文字&lt;/p&gt;
+<span>14</span>&lt;p class="text-blue"&gt;蓝色文字&lt;/p&gt;</div>
         </div>
 
         <!-- 三、ID 选择器 -->
@@ -572,15 +583,15 @@ p {
             </div>
             <input type="checkbox" id="code-3" class="code-toggle">
             <label for="code-3" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-#special {
-    color: purple;
-    font-size: 18px;
-}
-
-/* HTML */
-&lt;p&gt;普通段落&lt;/p&gt;
-&lt;p id="special"&gt;特殊段落&lt;/p&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>#special {
+<span>3</span>    color: purple;
+<span>4</span>    font-size: 18px;
+<span>5</span>}
+<span>6</span>
+<span>7</span>/* HTML */
+<span>8</span>&lt;p&gt;普通段落&lt;/p&gt;
+<span>9</span>&lt;p id="special"&gt;特殊段落&lt;/p&gt;</div>
         </div>
 
         <!-- 四、通配符选择器 -->
@@ -597,12 +608,12 @@ p {
             </div>
             <input type="checkbox" id="code-4" class="code-toggle">
             <label for="code-4" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS — 通常放在最前面 */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}</div>
+            <div class="code-block"><span>1</span>/* CSS — 通常放在最前面 */
+<span>2</span>* {
+<span>3</span>    margin: 0;
+<span>4</span>    padding: 0;
+<span>5</span>    box-sizing: border-box;
+<span>6</span>}</div>
         </div>
 
         <!-- 五、后代选择器 -->
@@ -624,19 +635,19 @@ p {
             </div>
             <input type="checkbox" id="code-5" class="code-toggle">
             <label for="code-5" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-.ancestor span {
-    color: green;
-    font-weight: bold;
-}
-
-/* HTML */
-&lt;div class="ancestor"&gt;
-    &lt;span&gt;直接子 span&lt;/span&gt;
-    &lt;div&gt;
-        &lt;span&gt;孙辈 span&lt;/span&gt;  &lt;!-- 也被选中 --&gt;
-    &lt;/div&gt;
-&lt;/div&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>.ancestor span {
+<span>3</span>    color: green;
+<span>4</span>    font-weight: bold;
+<span>5</span>}
+<span>6</span>
+<span>7</span>/* HTML */
+<span>8</span>&lt;div class="ancestor"&gt;
+<span>9</span>    &lt;span&gt;直接子 span&lt;/span&gt;
+<span>10</span>    &lt;div&gt;
+<span>11</span>        &lt;span&gt;孙辈 span&lt;/span&gt;  &lt;!-- 也被选中 --&gt;
+<span>12</span>    &lt;/div&gt;
+<span>13</span>&lt;/div&gt;</div>
         </div>
 
         <!-- 六、子元素选择器 -->
@@ -658,18 +669,18 @@ p {
             </div>
             <input type="checkbox" id="code-6" class="code-toggle">
             <label for="code-6" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-.parent > p {
-    color: red;
-}
-
-/* HTML */
-&lt;div class="parent"&gt;
-    &lt;p&gt;直接子 p → 红色&lt;/p&gt;
-    &lt;div&gt;
-        &lt;p&gt;孙辈 p → 不变&lt;/p&gt;
-    &lt;/div&gt;
-&lt;/div&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>.parent > p {
+<span>3</span>    color: red;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* HTML */
+<span>7</span>&lt;div class="parent"&gt;
+<span>8</span>    &lt;p&gt;直接子 p → 红色&lt;/p&gt;
+<span>9</span>    &lt;div&gt;
+<span>10</span>        &lt;p&gt;孙辈 p → 不变&lt;/p&gt;
+<span>11</span>    &lt;/div&gt;
+<span>12</span>&lt;/div&gt;</div>
         </div>
 
         <!-- 七、相邻兄弟选择器 -->
@@ -690,16 +701,16 @@ p {
             </div>
             <input type="checkbox" id="code-7" class="code-toggle">
             <label for="code-7" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-.adjacent h3 + p {
-    color: purple;
-    font-weight: bold;
-}
-
-/* HTML */
-&lt;h3&gt;标题&lt;/h3&gt;
-&lt;p&gt;紧跟的 p → 紫色&lt;/p&gt;
-&lt;p&gt;第二个 p → 不变&lt;/p&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>.adjacent h3 + p {
+<span>3</span>    color: purple;
+<span>4</span>    font-weight: bold;
+<span>5</span>}
+<span>6</span>
+<span>7</span>/* HTML */
+<span>8</span>&lt;h3&gt;标题&lt;/h3&gt;
+<span>9</span>&lt;p&gt;紧跟的 p → 紫色&lt;/p&gt;
+<span>10</span>&lt;p&gt;第二个 p → 不变&lt;/p&gt;</div>
         </div>
 
         <!-- 八、通用兄弟选择器 -->
@@ -721,16 +732,16 @@ p {
             </div>
             <input type="checkbox" id="code-8" class="code-toggle">
             <label for="code-8" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-.sibling h3 ~ p {
-    color: blue;
-}
-
-/* HTML */
-&lt;h3&gt;标题&lt;/h3&gt;
-&lt;p&gt;第一个 p → 蓝色&lt;/p&gt;
-&lt;p&gt;第二个 p → 蓝色&lt;/p&gt;
-&lt;p&gt;第三个 p → 蓝色&lt;/p&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>.sibling h3 ~ p {
+<span>3</span>    color: blue;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* HTML */
+<span>7</span>&lt;h3&gt;标题&lt;/h3&gt;
+<span>8</span>&lt;p&gt;第一个 p → 蓝色&lt;/p&gt;
+<span>9</span>&lt;p&gt;第二个 p → 蓝色&lt;/p&gt;
+<span>10</span>&lt;p&gt;第三个 p → 蓝色&lt;/p&gt;</div>
         </div>
 
         <!-- 九、分组选择器 -->
@@ -751,16 +762,16 @@ p {
             </div>
             <input type="checkbox" id="code-9" class="code-toggle">
             <label for="code-9" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-.group h3,
-.group p {
-    color: orange;
-}
-
-/* HTML */
-&lt;h3&gt;标题 → 橙色&lt;/h3&gt;
-&lt;p&gt;段落 → 橙色&lt;/p&gt;
-&lt;span&gt;span → 不变&lt;/span&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>.group h3,
+<span>3</span>.group p {
+<span>4</span>    color: orange;
+<span>5</span>}
+<span>6</span>
+<span>7</span>/* HTML */
+<span>8</span>&lt;h3&gt;标题 → 橙色&lt;/h3&gt;
+<span>9</span>&lt;p&gt;段落 → 橙色&lt;/p&gt;
+<span>10</span>&lt;span&gt;span → 不变&lt;/span&gt;</div>
         </div>
 
         <!-- 十、属性选择器 -->
@@ -787,18 +798,18 @@ p {
             </div>
             <input type="checkbox" id="code-10" class="code-toggle">
             <label for="code-10" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-[title] { border: 2px solid red; }
-[type="text"] { border: 2px solid blue; }
-[href^="https"] { color: green; font-weight: bold; }
-[href$=".pdf"] { color: red; }
-[href*="github"] { color: purple; text-decoration: underline; }
-
-/* HTML */
-&lt;p title="提示"&gt;有 title 的段落&lt;/p&gt;
-&lt;input type="text"&gt;
-&lt;a href="https://github.com"&gt;GitHub&lt;/a&gt;
-&lt;a href="file.pdf"&gt;PDF 文件&lt;/a&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>[title] { border: 2px solid red; }
+<span>3</span>[type="text"] { border: 2px solid blue; }
+<span>4</span>[href^="https"] { color: green; font-weight: bold; }
+<span>5</span>[href$=".pdf"] { color: red; }
+<span>6</span>[href*="github"] { color: purple; text-decoration: underline; }
+<span>7</span>
+<span>8</span>/* HTML */
+<span>9</span>&lt;p title="提示"&gt;有 title 的段落&lt;/p&gt;
+<span>10</span>&lt;input type="text"&gt;
+<span>11</span>&lt;a href="https://github.com"&gt;GitHub&lt;/a&gt;
+<span>12</span>&lt;a href="file.pdf"&gt;PDF 文件&lt;/a&gt;</div>
         </div>
 
         <!-- 十一、:hover -->
@@ -815,18 +826,18 @@ p {
             </div>
             <input type="checkbox" id="code-11" class="code-toggle">
             <label for="code-11" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-.hover-box {
-    padding: 15px;
-    background: #ecf0f1;
-    transition: all 0.3s;
-}
-
-.hover-box:hover {
-    background: #3498db;
-    color: white;
-    transform: scale(1.02);
-}</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>.hover-box {
+<span>3</span>    padding: 15px;
+<span>4</span>    background: #ecf0f1;
+<span>5</span>    transition: all 0.3s;
+<span>6</span>}
+<span>7</span>
+<span>8</span>.hover-box:hover {
+<span>9</span>    background: #3498db;
+<span>10</span>    color: white;
+<span>11</span>    transform: scale(1.02);
+<span>12</span>}</div>
         </div>
 
         <!-- 十二、:active -->
@@ -843,12 +854,12 @@ p {
             </div>
             <input type="checkbox" id="code-12" class="code-toggle">
             <label for="code-12" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-.active-box:active {
-    background: red;
-    color: white;
-    transform: scale(0.98);
-}</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>.active-box:active {
+<span>3</span>    background: red;
+<span>4</span>    color: white;
+<span>5</span>    transform: scale(0.98);
+<span>6</span>}</div>
         </div>
 
         <!-- 十三、:focus -->
@@ -865,17 +876,17 @@ p {
             </div>
             <input type="checkbox" id="code-13" class="code-toggle">
             <label for="code-13" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-.focus-input {
-    border: 2px solid #bdc3c7;
-    outline: none;
-    transition: border 0.3s;
-}
-
-.focus-input:focus {
-    border-color: #3498db;
-    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
-}</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>.focus-input {
+<span>3</span>    border: 2px solid #bdc3c7;
+<span>4</span>    outline: none;
+<span>5</span>    transition: border 0.3s;
+<span>6</span>}
+<span>7</span>
+<span>8</span>.focus-input:focus {
+<span>9</span>    border-color: #3498db;
+<span>10</span>    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+<span>11</span>}</div>
         </div>
 
         <!-- 十四、:first-child / :last-child -->
@@ -897,17 +908,17 @@ p {
             </div>
             <input type="checkbox" id="code-14" class="code-toggle">
             <label for="code-14" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-li:first-child { color: red; font-weight: bold; }
-li:last-child { color: blue; font-weight: bold; }
-
-/* HTML */
-&lt;ul&gt;
-    &lt;li&gt;第一个 → 红色&lt;/li&gt;
-    &lt;li&gt;第二个&lt;/li&gt;
-    &lt;li&gt;第三个&lt;/li&gt;
-    &lt;li&gt;第四个 → 蓝色&lt;/li&gt;
-&lt;/ul&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>li:first-child { color: red; font-weight: bold; }
+<span>3</span>li:last-child { color: blue; font-weight: bold; }
+<span>4</span>
+<span>5</span>/* HTML */
+<span>6</span>&lt;ul&gt;
+<span>7</span>    &lt;li&gt;第一个 → 红色&lt;/li&gt;
+<span>8</span>    &lt;li&gt;第二个&lt;/li&gt;
+<span>9</span>    &lt;li&gt;第三个&lt;/li&gt;
+<span>10</span>    &lt;li&gt;第四个 → 蓝色&lt;/li&gt;
+<span>11</span>&lt;/ul&gt;</div>
         </div>
 
         <!-- 十五、:nth-child -->
@@ -932,10 +943,10 @@ li:last-child { color: blue; font-weight: bold; }
             </div>
             <input type="checkbox" id="code-15" class="code-toggle">
             <label for="code-15" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-li:nth-child(odd) { background: #ebf5fb; }
-li:nth-child(even) { background: #fdebd0; }
-li:nth-child(3) { color: red; font-weight: bold; }</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>li:nth-child(odd) { background: #ebf5fb; }
+<span>3</span>li:nth-child(even) { background: #fdebd0; }
+<span>4</span>li:nth-child(3) { color: red; font-weight: bold; }</div>
         </div>
 
         <!-- 十六、:not -->
@@ -956,14 +967,14 @@ li:nth-child(3) { color: red; font-weight: bold; }</div>
             </div>
             <input type="checkbox" id="code-16" class="code-toggle">
             <label for="code-16" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-p { color: gray; }
-p:not(.skip) { color: green; font-weight: bold; }
-
-/* HTML */
-&lt;p&gt;普通 p → 绿色&lt;/p&gt;
-&lt;p class="skip"&gt;.skip → 灰色&lt;/p&gt;
-&lt;p&gt;普通 p → 绿色&lt;/p&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>p { color: gray; }
+<span>3</span>p:not(.skip) { color: green; font-weight: bold; }
+<span>4</span>
+<span>5</span>/* HTML */
+<span>6</span>&lt;p&gt;普通 p → 绿色&lt;/p&gt;
+<span>7</span>&lt;p class="skip"&gt;.skip → 灰色&lt;/p&gt;
+<span>8</span>&lt;p&gt;普通 p → 绿色&lt;/p&gt;</div>
         </div>
 
         <!-- 十七、::before / ::after -->
@@ -983,18 +994,18 @@ p:not(.skip) { color: green; font-weight: bold; }
             </div>
             <input type="checkbox" id="code-17" class="code-toggle">
             <label for="code-17" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-p::before {
-    content: "👉 ";
-}
-
-p::after {
-    content: " 👈";
-}
-
-/* HTML */
-&lt;p&gt;我是段落内容&lt;/p&gt;
-/* 渲染结果：👉 我是段落内容 👈 */</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>p::before {
+<span>3</span>    content: "👉 ";
+<span>4</span>}
+<span>5</span>
+<span>6</span>p::after {
+<span>7</span>    content: " 👈";
+<span>8</span>}
+<span>9</span>
+<span>10</span>/* HTML */
+<span>11</span>&lt;p&gt;我是段落内容&lt;/p&gt;
+<span>12</span>/* 渲染结果：👉 我是段落内容 👈 */</div>
         </div>
 
         <!-- 十八、::first-letter -->
@@ -1013,16 +1024,16 @@ p::after {
             </div>
             <input type="checkbox" id="code-18" class="code-toggle">
             <label for="code-18" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-p::first-letter {
-    font-size: 32px;
-    color: red;
-    font-weight: bold;
-}
-
-/* HTML */
-&lt;p&gt;hello world&lt;/p&gt;
-/* 渲染结果：第一个字母 h 变成红色大号 */</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>p::first-letter {
+<span>3</span>    font-size: 32px;
+<span>4</span>    color: red;
+<span>5</span>    font-weight: bold;
+<span>6</span>}
+<span>7</span>
+<span>8</span>/* HTML */
+<span>9</span>&lt;p&gt;hello world&lt;/p&gt;
+<span>10</span>/* 渲染结果：第一个字母 h 变成红色大号 */</div>
         </div>
 
         <!-- 十九、::first-line -->
@@ -1041,15 +1052,15 @@ p::first-letter {
             </div>
             <input type="checkbox" id="code-19" class="code-toggle">
             <label for="code-19" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-p::first-line {
-    color: blue;
-    font-weight: bold;
-}
-
-/* HTML */
-&lt;p&gt;这是一段比较长的文字...&lt;/p&gt;
-/* 只有第一行变蓝，窗口宽度变化时范围动态调整 */</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>p::first-line {
+<span>3</span>    color: blue;
+<span>4</span>    font-weight: bold;
+<span>5</span>}
+<span>6</span>
+<span>7</span>/* HTML */
+<span>8</span>&lt;p&gt;这是一段比较长的文字...&lt;/p&gt;
+<span>9</span>/* 只有第一行变蓝，窗口宽度变化时范围动态调整 */</div>
         </div>
 
         <!-- 二十、::selection -->
@@ -1068,14 +1079,14 @@ p::first-line {
             </div>
             <input type="checkbox" id="code-20" class="code-toggle">
             <label for="code-20" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-p::selection {
-    background: #f1c40f;
-    color: #2c3e50;
-}
-
-/* HTML */
-&lt;p&gt;选中我试试&lt;/p&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>p::selection {
+<span>3</span>    background: #f1c40f;
+<span>4</span>    color: #2c3e50;
+<span>5</span>}
+<span>6</span>
+<span>7</span>/* HTML */
+<span>8</span>&lt;p&gt;选中我试试&lt;/p&gt;</div>
         </div>
 
         <!-- 二十一、:root -->
@@ -1094,16 +1105,16 @@ p::selection {
             </div>
             <input type="checkbox" id="code-21" class="code-toggle">
             <label for="code-21" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-:root {
-    --main-color: #3498db;
-}
-
-p {
-    color: var(--main-color);
-}
-
-/* 修改 :root 中的变量，所有使用它的地方都会变 */</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>:root {
+<span>3</span>    --main-color: #3498db;
+<span>4</span>}
+<span>5</span>
+<span>6</span>p {
+<span>7</span>    color: var(--main-color);
+<span>8</span>}
+<span>9</span>
+<span>10</span>/* 修改 :root 中的变量，所有使用它的地方都会变 */</div>
         </div>
 
         <!-- 二十二、:empty -->
@@ -1125,20 +1136,20 @@ p {
             </div>
             <input type="checkbox" id="code-22" class="code-toggle">
             <label for="code-22" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-div:empty {
-    background: #fadbd8;
-}
-div:empty::after {
-    content: "这个 div 是空的";
-    color: red;
-}
-
-/* HTML */
-&lt;div&gt;有内容&lt;/div&gt;
-&lt;div&gt;&lt;/div&gt; &lt;!-- 空的，会变红 --&gt;
-&lt;div&gt;有内容&lt;/div&gt;
-&lt;div&gt;&lt;/div&gt; &lt;!-- 空的，会变红 --&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>div:empty {
+<span>3</span>    background: #fadbd8;
+<span>4</span>}
+<span>5</span>div:empty::after {
+<span>6</span>    content: "这个 div 是空的";
+<span>7</span>    color: red;
+<span>8</span>}
+<span>9</span>
+<span>10</span>/* HTML */
+<span>11</span>&lt;div&gt;有内容&lt;/div&gt;
+<span>12</span>&lt;div&gt;&lt;/div&gt; &lt;!-- 空的，会变红 --&gt;
+<span>13</span>&lt;div&gt;有内容&lt;/div&gt;
+<span>14</span>&lt;div&gt;&lt;/div&gt; &lt;!-- 空的，会变红 --&gt;</div>
         </div>
 
         <!-- 二十三、:checked -->
@@ -1159,16 +1170,16 @@ div:empty::after {
             </div>
             <input type="checkbox" id="code-23" class="code-toggle">
             <label for="code-23" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-input[type="checkbox"]:checked + label {
-    color: green;
-    font-weight: bold;
-    text-decoration: line-through;
-}
-
-/* HTML */
-&lt;input type="checkbox" id="c1"&gt;
-&lt;label for="c1"&gt;学习 HTML&lt;/label&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>input[type="checkbox"]:checked + label {
+<span>3</span>    color: green;
+<span>4</span>    font-weight: bold;
+<span>5</span>    text-decoration: line-through;
+<span>6</span>}
+<span>7</span>
+<span>8</span>/* HTML */
+<span>9</span>&lt;input type="checkbox" id="c1"&gt;
+<span>10</span>&lt;label for="c1"&gt;学习 HTML&lt;/label&gt;</div>
         </div>
 
         <!-- 二十四、:disabled / :enabled -->
@@ -1187,13 +1198,13 @@ input[type="checkbox"]:checked + label {
             </div>
             <input type="checkbox" id="code-24" class="code-toggle">
             <label for="code-24" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-input:disabled { background: #ecf0f1; cursor: not-allowed; }
-input:enabled { border: 2px solid blue; }
-
-/* HTML */
-&lt;input type="text" value="可用"&gt;
-&lt;input type="text" value="禁用" disabled&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>input:disabled { background: #ecf0f1; cursor: not-allowed; }
+<span>3</span>input:enabled { border: 2px solid blue; }
+<span>4</span>
+<span>5</span>/* HTML */
+<span>6</span>&lt;input type="text" value="可用"&gt;
+<span>7</span>&lt;input type="text" value="禁用" disabled&gt;</div>
         </div>
 
         <!-- 二十五、:valid / :invalid -->
@@ -1213,14 +1224,14 @@ input:enabled { border: 2px solid blue; }
             </div>
             <input type="checkbox" id="code-25" class="code-toggle">
             <label for="code-25" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-input:valid { border: 2px solid green; }
-input:invalid { border: 2px solid red; }
-
-/* HTML */
-&lt;input type="email" placeholder="输入邮箱"&gt;
-/* 输入 abc → 红色（不合法）*/
-/* 输入 abc@123.com → 绿色（合法）*/</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>input:valid { border: 2px solid green; }
+<span>3</span>input:invalid { border: 2px solid red; }
+<span>4</span>
+<span>5</span>/* HTML */
+<span>6</span>&lt;input type="email" placeholder="输入邮箱"&gt;
+<span>7</span>/* 输入 abc → 红色（不合法）*/
+<span>8</span>/* 输入 abc@123.com → 绿色（合法）*/</div>
         </div>
 
         <!-- 二十六、:only-child -->
@@ -1245,21 +1256,21 @@ input:invalid { border: 2px solid red; }
             </div>
             <input type="checkbox" id="code-26" class="code-toggle">
             <label for="code-26" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-li:only-child {
-    color: red;
-    font-weight: bold;
-    background: #fadbd8;
-}
-
-/* HTML */
-&lt;ul&gt;
-    &lt;li&gt;唯一的 li → 红色&lt;/li&gt;
-&lt;/ul&gt;
-&lt;ul&gt;
-    &lt;li&gt;有兄弟&lt;/li&gt;
-    &lt;li&gt;也有兄弟&lt;/li&gt;
-&lt;/ul&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>li:only-child {
+<span>3</span>    color: red;
+<span>4</span>    font-weight: bold;
+<span>5</span>    background: #fadbd8;
+<span>6</span>}
+<span>7</span>
+<span>8</span>/* HTML */
+<span>9</span>&lt;ul&gt;
+<span>10</span>    &lt;li&gt;唯一的 li → 红色&lt;/li&gt;
+<span>11</span>&lt;/ul&gt;
+<span>12</span>&lt;ul&gt;
+<span>13</span>    &lt;li&gt;有兄弟&lt;/li&gt;
+<span>14</span>    &lt;li&gt;也有兄弟&lt;/li&gt;
+<span>15</span>&lt;/ul&gt;</div>
         </div>
 
         <!-- 二十七、:first-of-type / :last-of-type -->
@@ -1282,15 +1293,15 @@ li:only-child {
             </div>
             <input type="checkbox" id="code-27" class="code-toggle">
             <label for="code-27" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-p:first-of-type { color: green; font-weight: bold; }
-p:last-of-type { color: purple; font-weight: bold; }
-
-/* HTML */
-&lt;h3&gt;标题&lt;/h3&gt;
-&lt;p&gt;第一个 p → 绿色&lt;/p&gt;
-&lt;p&gt;第二个 p&lt;/p&gt;
-&lt;p&gt;第三个 p → 紫色&lt;/p&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>p:first-of-type { color: green; font-weight: bold; }
+<span>3</span>p:last-of-type { color: purple; font-weight: bold; }
+<span>4</span>
+<span>5</span>/* HTML */
+<span>6</span>&lt;h3&gt;标题&lt;/h3&gt;
+<span>7</span>&lt;p&gt;第一个 p → 绿色&lt;/p&gt;
+<span>8</span>&lt;p&gt;第二个 p&lt;/p&gt;
+<span>9</span>&lt;p&gt;第三个 p → 紫色&lt;/p&gt;</div>
         </div>
 
         <!-- 二十八、:nth-of-type -->
@@ -1313,15 +1324,15 @@ p:last-of-type { color: purple; font-weight: bold; }
             </div>
             <input type="checkbox" id="code-28" class="code-toggle">
             <label for="code-28" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
-p:nth-of-type(odd) { background: #ebf5fb; }
-p:nth-of-type(even) { background: #fdebd0; }
-
-/* HTML */
-&lt;h3&gt;标题不参与计算&lt;/h3&gt;
-&lt;p&gt;第一个 p（奇数）&lt;/p&gt;
-&lt;p&gt;第二个 p（偶数）&lt;/p&gt;
-&lt;p&gt;第三个 p（奇数）&lt;/p&gt;</div>
+            <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>p:nth-of-type(odd) { background: #ebf5fb; }
+<span>3</span>p:nth-of-type(even) { background: #fdebd0; }
+<span>4</span>
+<span>5</span>/* HTML */
+<span>6</span>&lt;h3&gt;标题不参与计算&lt;/h3&gt;
+<span>7</span>&lt;p&gt;第一个 p（奇数）&lt;/p&gt;
+<span>8</span>&lt;p&gt;第二个 p（偶数）&lt;/p&gt;
+<span>9</span>&lt;p&gt;第三个 p（奇数）&lt;/p&gt;</div>
         </div>
 
         <!-- 二十九、:required / :optional -->
@@ -1341,13 +1352,13 @@ p:nth-of-type(even) { background: #fdebd0; }
             </div>
             <input type="checkbox" id="code-29" class="code-toggle">
             <label for="code-29" class="toggle-label">查看代码</label>
-                        <div class="code-block">/* CSS */
-input:required { border: 2px solid red; }
-input:optional { border: 2px solid green; }
-
-/* HTML */
-&lt;input type="text" required&gt; &lt;!-- 必填 → 红色 --&gt;
-&lt;input type="text"&gt; &lt;!-- 选填 → 绿色 --&gt;</div>
+                        <div class="code-block"><span>1</span>/* CSS */
+<span>2</span>input:required { border: 2px solid red; }
+<span>3</span>input:optional { border: 2px solid green; }
+<span>4</span>
+<span>5</span>/* HTML */
+<span>6</span>&lt;input type="text" required&gt; &lt;!-- 必填 → 红色 --&gt;
+<span>7</span>&lt;input type="text"&gt; &lt;!-- 选填 → 绿色 --&gt;</div>
         </div>
 
         <!-- 三十、优先级 -->
@@ -1370,16 +1381,16 @@ input:optional { border: 2px solid green; }
             </div>
             <input type="checkbox" id="code-30" class="code-toggle">
             <label for="code-30" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS — 三个选择器都选中了这个 p */
-p { color: gray; } /* 权重 1 */
-.specific { color: blue; } /* 权重 10 */
-#very-specific { color: red; font-weight: bold; } /* 权重 100 ✓ */
-
-/* HTML */
-&lt;p id="very-specific" class="specific"&gt;最终显示红色&lt;/p&gt;
-
-/* 如果要强制覆盖，可以用 !important（但不推荐滥用）*/
-/* p { color: gray !important; } */</div>
+            <div class="code-block"><span>1</span>/* CSS — 三个选择器都选中了这个 p */
+<span>2</span>p { color: gray; } /* 权重 1 */
+<span>3</span>.specific { color: blue; } /* 权重 10 */
+<span>4</span>#very-specific { color: red; font-weight: bold; } /* 权重 100 ✓ */
+<span>5</span>
+<span>6</span>/* HTML */
+<span>7</span>&lt;p id="very-specific" class="specific"&gt;最终显示红色&lt;/p&gt;
+<span>8</span>
+<span>9</span>/* 如果要强制覆盖，可以用 !important（但不推荐滥用）*/
+<span>10</span>/* p { color: gray !important; } */</div>
         </div>
 
     </main>

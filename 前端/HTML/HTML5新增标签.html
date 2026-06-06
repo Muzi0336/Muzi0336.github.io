@@ -142,6 +142,17 @@
             line-height: 1.6;
             margin-top: 8px;
         }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
@@ -237,15 +248,15 @@
 
             <input type="checkbox" id="code-1" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-1" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;details&gt;
-    &lt;summary&gt;点击展开更多信息&lt;/summary&gt;
-    &lt;p&gt;这是隐藏的内容&lt;/p&gt;
-&lt;/details&gt;
-
-&lt;details open&gt;
-    &lt;summary&gt;默认展开的面板&lt;/summary&gt;
-    &lt;p&gt;这个面板默认展开&lt;/p&gt;
-&lt;/details&gt;</div>
+            <div class="code-block"><span>1</span>&lt;details&gt;
+<span>2</span>    &lt;summary&gt;点击展开更多信息&lt;/summary&gt;
+<span>3</span>    &lt;p&gt;这是隐藏的内容&lt;/p&gt;
+<span>4</span>&lt;/details&gt;
+<span>5</span>
+<span>6</span>&lt;details open&gt;
+<span>7</span>    &lt;summary&gt;默认展开的面板&lt;/summary&gt;
+<span>8</span>    &lt;p&gt;这个面板默认展开&lt;/p&gt;
+<span>9</span>&lt;/details&gt;</div>
         </div>
 
         <!-- 第2节：对话框 -->
@@ -274,16 +285,16 @@
 
             <input type="checkbox" id="code-2" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-2" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;input type="checkbox" id="dialog-toggle" class="dialog-checkbox"&gt;
-&lt;label for="dialog-toggle" class="dialog-open-btn"&gt;打开对话框&lt;/label&gt;
-
-&lt;div class="dialog-overlay"&gt;
-    &lt;div class="dialog-content"&gt;
-        &lt;h3&gt;提示&lt;/h3&gt;
-        &lt;p&gt;这是一个纯 CSS 实现的对话框&lt;/p&gt;
-        &lt;label for="dialog-toggle" class="dialog-close"&gt;&amp;times;&lt;/label&gt;
-    &lt;/div&gt;
-&lt;/div&gt;</div>
+            <div class="code-block"><span>1</span>&lt;input type="checkbox" id="dialog-toggle" class="dialog-checkbox"&gt;
+<span>2</span>&lt;label for="dialog-toggle" class="dialog-open-btn"&gt;打开对话框&lt;/label&gt;
+<span>3</span>
+<span>4</span>&lt;div class="dialog-overlay"&gt;
+<span>5</span>    &lt;div class="dialog-content"&gt;
+<span>6</span>        &lt;h3&gt;提示&lt;/h3&gt;
+<span>7</span>        &lt;p&gt;这是一个纯 CSS 实现的对话框&lt;/p&gt;
+<span>8</span>        &lt;label for="dialog-toggle" class="dialog-close"&gt;&amp;times;&lt;/label&gt;
+<span>9</span>    &lt;/div&gt;
+<span>10</span>&lt;/div&gt;</div>
         </div>
 
         <!-- 第3节：进度条 -->
@@ -306,10 +317,10 @@
 
             <input type="checkbox" id="code-3" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-3" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;progress value="70" max="100"&gt;&lt;/progress&gt; 70%
-
-&lt;!-- 未知进度 --&gt;
-&lt;progress&gt;&lt;/progress&gt;</div>
+            <div class="code-block"><span>1</span>&lt;progress value="70" max="100"&gt;&lt;/progress&gt; 70%
+<span>2</span>
+<span>3</span>&lt;!-- 未知进度 --&gt;
+<span>4</span>&lt;progress&gt;&lt;/progress&gt;</div>
         </div>
 
         <!-- 第4节：度量衡 -->
@@ -332,9 +343,9 @@
 
             <input type="checkbox" id="code-4" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-4" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;meter min="0" max="100" low="30" high="70" optimum="20" value="85"&gt;85%&lt;/meter&gt;
-
-&lt;meter min="0" max="100" low="60" high="90" optimum="100" value="92"&gt;92分&lt;/meter&gt;</div>
+            <div class="code-block"><span>1</span>&lt;meter min="0" max="100" low="30" high="70" optimum="20" value="85"&gt;85%&lt;/meter&gt;
+<span>2</span>
+<span>3</span>&lt;meter min="0" max="100" low="60" high="90" optimum="100" value="92"&gt;92分&lt;/meter&gt;</div>
         </div>
 
         <!-- 第5节：高亮文本 -->
@@ -352,7 +363,7 @@
 
             <input type="checkbox" id="code-5" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-5" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;p&gt;这是一段文字，其中&lt;mark&gt;这部分被高亮&lt;/mark&gt;了。&lt;/p&gt;</div>
+            <div class="code-block"><span>1</span>&lt;p&gt;这是一段文字，其中&lt;mark&gt;这部分被高亮&lt;/mark&gt;了。&lt;/p&gt;</div>
         </div>
 
         <!-- 第6节：时间标签 -->
@@ -372,8 +383,8 @@
 
             <input type="checkbox" id="code-6" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-6" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;p&gt;发布于 &lt;time datetime="2026-06-05"&gt;今天&lt;/time&gt;&lt;/p&gt;
-&lt;p&gt;会议时间 &lt;time datetime="2026-06-05T14:00:00"&gt;下午2点&lt;/time&gt;&lt;/p&gt;</div>
+            <div class="code-block"><span>1</span>&lt;p&gt;发布于 &lt;time datetime="2026-06-05"&gt;今天&lt;/time&gt;&lt;/p&gt;
+<span>2</span>&lt;p&gt;会议时间 &lt;time datetime="2026-06-05T14:00:00"&gt;下午2点&lt;/time&gt;&lt;/p&gt;</div>
         </div>
 
         <!-- 第7节：画布 canvas -->
@@ -405,27 +416,27 @@
 
             <input type="checkbox" id="code-7" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-7" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;canvas id="myCanvas" width="400" height="200" style="border:1px solid #ccc;"&gt;&lt;/canvas&gt;
-
-&lt;script&gt;
-    var canvas = document.getElementById('myCanvas');
-    var ctx = canvas.getContext('2d');
-    
-    // 画矩形
-    ctx.fillStyle = 'lightblue';
-    ctx.fillRect(20, 20, 150, 80);
-    
-    // 画圆
-    ctx.beginPath();
-    ctx.arc(300, 60, 40, 0, Math.PI * 2);
-    ctx.fillStyle = 'lightcoral';
-    ctx.fill();
-    
-    // 画文字
-    ctx.fillStyle = 'black';
-    ctx.font = '16px Arial';
-    ctx.fillText('Canvas 画布', 20, 140);
-&lt;/script&gt;</div>
+            <div class="code-block"><span>1</span>&lt;canvas id="myCanvas" width="400" height="200" style="border:1px solid #ccc;"&gt;&lt;/canvas&gt;
+<span>2</span>
+<span>3</span>&lt;script&gt;
+<span>4</span>    var canvas = document.getElementById('myCanvas');
+<span>5</span>    var ctx = canvas.getContext('2d');
+<span>6</span>    
+<span>7</span>    // 画矩形
+<span>8</span>    ctx.fillStyle = 'lightblue';
+<span>9</span>    ctx.fillRect(20, 20, 150, 80);
+<span>10</span>    
+<span>11</span>    // 画圆
+<span>12</span>    ctx.beginPath();
+<span>13</span>    ctx.arc(300, 60, 40, 0, Math.PI * 2);
+<span>14</span>    ctx.fillStyle = 'lightcoral';
+<span>15</span>    ctx.fill();
+<span>16</span>    
+<span>17</span>    // 画文字
+<span>18</span>    ctx.fillStyle = 'black';
+<span>19</span>    ctx.font = '16px Arial';
+<span>20</span>    ctx.fillText('Canvas 画布', 20, 140);
+<span>21</span>&lt;/script&gt;</div>
         </div>
 
     </main>

@@ -148,6 +148,17 @@
             line-height: 1.6;
             margin-top: 8px;
         }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
@@ -225,25 +236,25 @@
             </div>
             <input type="checkbox" id="code-1" class="code-toggle">
             <label for="code-1" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 背景色 */
-background-color: #3498db;
-
-/* 背景图 */
-background-image: url('image.jpg');
-
-/* 背景尺寸 */
-background-size: cover;    /* 覆盖整个容器 */
-background-size: contain;  /* 完整显示 */
-
-/* 背景位置 */
-background-position: center;
-background-position: top right;
-
-/* 背景重复 */
-background-repeat: no-repeat;
-
-/* 简写 */
-background: #3498db url('image.jpg') center/cover no-repeat;</div>
+            <div class="code-block"><span>1</span>/* 背景色 */
+<span>2</span>background-color: #3498db;
+<span>3</span>
+<span>4</span>/* 背景图 */
+<span>5</span>background-image: url('image.jpg');
+<span>6</span>
+<span>7</span>/* 背景尺寸 */
+<span>8</span>background-size: cover;    /* 覆盖整个容器 */
+<span>9</span>background-size: contain;  /* 完整显示 */
+<span>10</span>
+<span>11</span>/* 背景位置 */
+<span>12</span>background-position: center;
+<span>13</span>background-position: top right;
+<span>14</span>
+<span>15</span>/* 背景重复 */
+<span>16</span>background-repeat: no-repeat;
+<span>17</span>
+<span>18</span>/* 简写 */
+<span>19</span>background: #3498db url('image.jpg') center/cover no-repeat;</div>
         </div>
 
         <!-- 二、box-shadow（盒阴影） -->
@@ -272,21 +283,21 @@ background: #3498db url('image.jpg') center/cover no-repeat;</div>
             </div>
             <input type="checkbox" id="code-2" class="code-toggle">
             <label for="code-2" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 基础阴影 */
-box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
-
-/* 发光效果 */
-box-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
-
-/* 浮起效果 */
-box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-
-/* 内阴影 */
-box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
-
-/* 多重阴影 */
-box-shadow: 0 2px 4px rgba(0,0,0,0.1), 
-            0 8px 16px rgba(0,0,0,0.1);</div>
+            <div class="code-block"><span>1</span>/* 基础阴影 */
+<span>2</span>box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
+<span>3</span>
+<span>4</span>/* 发光效果 */
+<span>5</span>box-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
+<span>6</span>
+<span>7</span>/* 浮起效果 */
+<span>8</span>box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+<span>9</span>
+<span>10</span>/* 内阴影 */
+<span>11</span>box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+<span>12</span>
+<span>13</span>/* 多重阴影 */
+<span>14</span>box-shadow: 0 2px 4px rgba(0,0,0,0.1), 
+<span>15</span>            0 8px 16px rgba(0,0,0,0.1);</div>
         </div>
 
         <!-- 三、opacity（透明度） -->
@@ -315,18 +326,18 @@ box-shadow: 0 2px 4px rgba(0,0,0,0.1),
             </div>
             <input type="checkbox" id="code-3" class="code-toggle">
             <label for="code-3" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 完全不透明（默认） */
-opacity: 1;
-
-/* 半透明 */
-opacity: 0.5;
-
-/* 完全透明 */
-opacity: 0;
-
-/* 对比：rgba 只影响背景，不影响文字 */
-background: rgba(52, 152, 219, 0.5);  /* 只有背景半透明 */
-opacity: 0.5;  /* 整个元素（包括文字）半透明 */</div>
+            <div class="code-block"><span>1</span>/* 完全不透明（默认） */
+<span>2</span>opacity: 1;
+<span>3</span>
+<span>4</span>/* 半透明 */
+<span>5</span>opacity: 0.5;
+<span>6</span>
+<span>7</span>/* 完全透明 */
+<span>8</span>opacity: 0;
+<span>9</span>
+<span>10</span>/* 对比：rgba 只影响背景，不影响文字 */
+<span>11</span>background: rgba(52, 152, 219, 0.5);  /* 只有背景半透明 */
+<span>12</span>opacity: 0.5;  /* 整个元素（包括文字）半透明 */</div>
         </div>
 
         <!-- 四、cursor（鼠标样式） -->
@@ -348,26 +359,26 @@ opacity: 0.5;  /* 整个元素（包括文字）半透明 */</div>
             </div>
             <input type="checkbox" id="code-4" class="code-toggle">
             <label for="code-4" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 默认箭头 */
-cursor: default;
-
-/* 手型（链接/按钮） */
-cursor: pointer;
-
-/* 文本选择 */
-cursor: text;
-
-/* 移动 */
-cursor: move;
-
-/* 禁止 */
-cursor: not-allowed;
-
-/* 等待 */
-cursor: wait;
-
-/* 自定义图片 */
-cursor: url('custom.cur'), auto;</div>
+            <div class="code-block"><span>1</span>/* 默认箭头 */
+<span>2</span>cursor: default;
+<span>3</span>
+<span>4</span>/* 手型（链接/按钮） */
+<span>5</span>cursor: pointer;
+<span>6</span>
+<span>7</span>/* 文本选择 */
+<span>8</span>cursor: text;
+<span>9</span>
+<span>10</span>/* 移动 */
+<span>11</span>cursor: move;
+<span>12</span>
+<span>13</span>/* 禁止 */
+<span>14</span>cursor: not-allowed;
+<span>15</span>
+<span>16</span>/* 等待 */
+<span>17</span>cursor: wait;
+<span>18</span>
+<span>19</span>/* 自定义图片 */
+<span>20</span>cursor: url('custom.cur'), auto;</div>
         </div>
 
         <!-- 五、border-radius（圆角） -->
@@ -396,17 +407,17 @@ cursor: url('custom.cur'), auto;</div>
             </div>
             <input type="checkbox" id="code-5" class="code-toggle">
             <label for="code-5" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 四角相同 */
-border-radius: 10px;
-
-/* 圆形（正方形元素） */
-border-radius: 50%;
-
-/* 胶囊形（长方形元素） */
-border-radius: 30px;
-
-/* 单独设置四角 */
-border-radius: 10px 20px 30px 40px;  /* 左上 右上 右下 左下 */</div>
+            <div class="code-block"><span>1</span>/* 四角相同 */
+<span>2</span>border-radius: 10px;
+<span>3</span>
+<span>4</span>/* 圆形（正方形元素） */
+<span>5</span>border-radius: 50%;
+<span>6</span>
+<span>7</span>/* 胶囊形（长方形元素） */
+<span>8</span>border-radius: 30px;
+<span>9</span>
+<span>10</span>/* 单独设置四角 */
+<span>11</span>border-radius: 10px 20px 30px 40px;  /* 左上 右上 右下 左下 */</div>
         </div>
     </main>
 </body>

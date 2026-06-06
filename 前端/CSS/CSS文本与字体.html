@@ -148,6 +148,17 @@
             line-height: 1.6;
             margin-top: 8px;
         }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
@@ -211,17 +222,17 @@
             </div>
             <input type="checkbox" id="code-1" class="code-toggle">
             <label for="code-1" class="toggle-label">查看代码</label>
-            <div class="code-block">/* px 绝对单位 */
-font-size: 16px;
-
-/* rem 相对根元素（推荐） */
-font-size: 1rem;
-
-/* em 相对父元素 */
-font-size: 1.2em;
-
-/* 百分比 */
-font-size: 120%;</div>
+            <div class="code-block"><span>1</span>/* px 绝对单位 */
+<span>2</span>font-size: 16px;
+<span>3</span>
+<span>4</span>/* rem 相对根元素（推荐） */
+<span>5</span>font-size: 1rem;
+<span>6</span>
+<span>7</span>/* em 相对父元素 */
+<span>8</span>font-size: 1.2em;
+<span>9</span>
+<span>10</span>/* 百分比 */
+<span>11</span>font-size: 120%;</div>
         </div>
 
         <!-- 二、font-weight -->
@@ -243,13 +254,13 @@ font-size: 120%;</div>
             </div>
             <input type="checkbox" id="code-2" class="code-toggle">
             <label for="code-2" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 关键字 */
-font-weight: normal;
-font-weight: bold;
-
-/* 数值（100-900） */
-font-weight: 400;  /* 等同 normal */
-font-weight: 700;  /* 等同 bold */</div>
+            <div class="code-block"><span>1</span>/* 关键字 */
+<span>2</span>font-weight: normal;
+<span>3</span>font-weight: bold;
+<span>4</span>
+<span>5</span>/* 数值（100-900） */
+<span>6</span>font-weight: 400;  /* 等同 normal */
+<span>7</span>font-weight: 700;  /* 等同 bold */</div>
         </div>
 
         <!-- 三、font-family -->
@@ -271,16 +282,16 @@ font-weight: 700;  /* 等同 bold */</div>
             </div>
             <input type="checkbox" id="code-3" class="code-toggle">
             <label for="code-3" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 单个字体 */
-font-family: 'Microsoft YaHei';
-
-/* 多个备选（从左到右优先级） */
-font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
-
-/* 常见字体分类 */
-/* 无衬线：Arial, Helvetica, sans-serif */
-/* 衬线：Times New Roman, serif */
-/* 等宽：Consolas, monospace */</div>
+            <div class="code-block"><span>1</span>/* 单个字体 */
+<span>2</span>font-family: 'Microsoft YaHei';
+<span>3</span>
+<span>4</span>/* 多个备选（从左到右优先级） */
+<span>5</span>font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
+<span>6</span>
+<span>7</span>/* 常见字体分类 */
+<span>8</span>/* 无衬线：Arial, Helvetica, sans-serif */
+<span>9</span>/* 衬线：Times New Roman, serif */
+<span>10</span>/* 等宽：Consolas, monospace */</div>
         </div>
 
         <!-- 四、line-height -->
@@ -306,20 +317,20 @@ font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
             </div>
             <input type="checkbox" id="code-4" class="code-toggle">
             <label for="code-4" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 无单位（推荐，相对于字体大小） */
-line-height: 1.5;
-
-/* 像素 */
-line-height: 24px;
-
-/* 百分比 */
-line-height: 150%;
-
-/* 垂直居中技巧 */
-.line-height-center {
-    line-height: 40px;  /* 等于容器高度 */
-    height: 40px;
-}</div>
+            <div class="code-block"><span>1</span>/* 无单位（推荐，相对于字体大小） */
+<span>2</span>line-height: 1.5;
+<span>3</span>
+<span>4</span>/* 像素 */
+<span>5</span>line-height: 24px;
+<span>6</span>
+<span>7</span>/* 百分比 */
+<span>8</span>line-height: 150%;
+<span>9</span>
+<span>10</span>/* 垂直居中技巧 */
+<span>11</span>.line-height-center {
+<span>12</span>    line-height: 40px;  /* 等于容器高度 */
+<span>13</span>    height: 40px;
+<span>14</span>}</div>
         </div>
 
         <!-- 五、color -->
@@ -340,18 +351,18 @@ line-height: 150%;
             </div>
             <input type="checkbox" id="code-5" class="code-toggle">
             <label for="code-5" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 关键字 */
-color: red;
-
-/* 十六进制 */
-color: #3498db;
-color: #398;  /* 简写 */
-
-/* RGB */
-color: rgb(52, 152, 219);
-
-/* RGBA（带透明度） */
-color: rgba(52, 152, 219, 0.8);</div>
+            <div class="code-block"><span>1</span>/* 关键字 */
+<span>2</span>color: red;
+<span>3</span>
+<span>4</span>/* 十六进制 */
+<span>5</span>color: #3498db;
+<span>6</span>color: #398;  /* 简写 */
+<span>7</span>
+<span>8</span>/* RGB */
+<span>9</span>color: rgb(52, 152, 219);
+<span>10</span>
+<span>11</span>/* RGBA（带透明度） */
+<span>12</span>color: rgba(52, 152, 219, 0.8);</div>
         </div>
 
         <!-- 六、text-align -->
@@ -372,17 +383,17 @@ color: rgba(52, 152, 219, 0.8);</div>
             </div>
             <input type="checkbox" id="code-6" class="code-toggle">
             <label for="code-6" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 左对齐（默认） */
-text-align: left;
-
-/* 居中 */
-text-align: center;
-
-/* 右对齐 */
-text-align: right;
-
-/* 两端对齐 */
-text-align: justify;</div>
+            <div class="code-block"><span>1</span>/* 左对齐（默认） */
+<span>2</span>text-align: left;
+<span>3</span>
+<span>4</span>/* 居中 */
+<span>5</span>text-align: center;
+<span>6</span>
+<span>7</span>/* 右对齐 */
+<span>8</span>text-align: right;
+<span>9</span>
+<span>10</span>/* 两端对齐 */
+<span>11</span>text-align: justify;</div>
         </div>
 
         <!-- 七、text-decoration -->
@@ -403,20 +414,20 @@ text-align: justify;</div>
             </div>
             <input type="checkbox" id="code-7" class="code-toggle">
             <label for="code-7" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 无装饰（常用于去除链接下划线） */
-text-decoration: none;
-
-/* 下划线 */
-text-decoration: underline;
-
-/* 上划线 */
-text-decoration: overline;
-
-/* 删除线 */
-text-decoration: line-through;
-
-/* 组合 */
-text-decoration: underline wavy red;</div>
+            <div class="code-block"><span>1</span>/* 无装饰（常用于去除链接下划线） */
+<span>2</span>text-decoration: none;
+<span>3</span>
+<span>4</span>/* 下划线 */
+<span>5</span>text-decoration: underline;
+<span>6</span>
+<span>7</span>/* 上划线 */
+<span>8</span>text-decoration: overline;
+<span>9</span>
+<span>10</span>/* 删除线 */
+<span>11</span>text-decoration: line-through;
+<span>12</span>
+<span>13</span>/* 组合 */
+<span>14</span>text-decoration: underline wavy red;</div>
         </div>
     </main>
 </body>

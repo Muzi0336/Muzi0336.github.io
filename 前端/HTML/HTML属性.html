@@ -143,6 +143,18 @@
             margin-top: 8px;
         }
 
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
             display: block;
@@ -191,8 +203,8 @@
 
             <input type="checkbox" id="code-1" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-1" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;h1 style="color:blue;"&gt;这是一个蓝色标题&lt;/h1&gt;
-&lt;p style="color:red; font-size:18px;"&gt;这是一个红色大号文字&lt;/p&gt;</div>
+            <div class="code-block"> <!-- 块级容器 --><span>1</span>&lt;h1 style="color:blue;"&gt;这是一个蓝色标题&lt;/h1&gt;
+<span>2</span>&lt;p style="color:red; font-size:18px;"&gt;这是一个红色大号文字&lt;/p&gt;</div>
         </div>
 
         <!-- 第2节：class 和 id -->
@@ -212,8 +224,8 @@
 
             <input type="checkbox" id="code-2" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-2" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;p class="text" id="paragraph1"&gt;这是一个段落，具有 class 和 id 属性。&lt;/p&gt;
-&lt;p class="text"&gt;这是另一个段落，共享相同的 class。&lt;/p&gt;</div>
+            <div class="code-block"> <!-- 块级容器 --><span>1</span>&lt;p class="text" id="paragraph1"&gt;这是一个段落，具有 class 和 id 属性。&lt;/p&gt;
+<span>2</span>&lt;p class="text"&gt;这是另一个段落，共享相同的 class。&lt;/p&gt;</div>
         </div>
 
         <!-- 第3节：超链接 -->
@@ -234,8 +246,8 @@
 
             <input type="checkbox" id="code-3" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-3" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;a href="https://www.example.com" target="_blank"&gt;新窗口打开&lt;/a&gt;
-&lt;a href="https://www.example.com" target="_self"&gt;当前窗口打开&lt;/a&gt;</div>
+            <div class="code-block"> <!-- 块级容器 --><span>1</span>&lt;a href="https://www.example.com" target="_blank"&gt;新窗口打开&lt;/a&gt;
+<span>2</span>&lt;a href="https://www.example.com" target="_self"&gt;当前窗口打开&lt;/a&gt;</div>
         </div>
 
         <!-- 第4节：图片标签 -->
@@ -254,11 +266,11 @@
 
             <input type="checkbox" id="code-4" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-4" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;img src="https://via.placeholder.com/150" 
-     alt="示例图片" 
-     title="这是一个示例图片" 
-     width="150" 
-     height="150"&gt;</div>
+            <div class="code-block"> <!-- 块级容器 --><span>1</span>&lt;img src="https://via.placeholder.com/150" 
+<span>2</span>     alt="示例图片" 
+<span>3</span>     title="这是一个示例图片" 
+<span>4</span>     width="150" 
+<span>5</span>     height="150"&gt;</div>
         </div>
 
     </main>

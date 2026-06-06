@@ -142,6 +142,17 @@
             line-height: 1.6;
             margin-top: 8px;
         }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
@@ -245,9 +256,9 @@
 
             <input type="checkbox" id="code-1" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-1" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;p&gt;&amp;lt; 小于号&lt;/p&gt;
-&lt;p&gt;&amp;gt; 大于号&lt;/p&gt;
-&lt;p&gt;&amp;amp; 和号&lt;/p&gt;</div>
+            <div class="code-block"><span>1</span>&lt;p&gt;&amp;lt; 小于号&lt;/p&gt;
+<span>2</span>&lt;p&gt;&amp;gt; 大于号&lt;/p&gt;
+<span>3</span>&lt;p&gt;&amp;amp; 和号&lt;/p&gt;</div>
         </div>
 
         <!-- 第2节：常用字符实体 -->
@@ -396,18 +407,18 @@
 
             <input type="checkbox" id="code-3" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-3" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;head&gt;
-    &lt;title&gt;页面标题 - 网站名&lt;/title&gt;
-    &lt;meta name="description" content="页面描述，150字以内，包含关键词"&gt;
-    &lt;meta name="keywords" content="关键词1, 关键词2, 关键词3"&gt;
-    &lt;meta name="author" content="作者名"&gt;
-&lt;/head&gt;
-
-&lt;body&gt;
-    &lt;h1&gt;页面主标题（唯一）&lt;/h1&gt;
-    &lt;h2&gt;章节标题&lt;/h2&gt;
-    &lt;img src="image.jpg" alt="准确的图片描述"&gt;
-&lt;/body&gt;</div>
+            <div class="code-block"><span>1</span>&lt;head&gt;
+<span>2</span>    &lt;title&gt;页面标题 - 网站名&lt;/title&gt;
+<span>3</span>    &lt;meta name="description" content="页面描述，150字以内，包含关键词"&gt;
+<span>4</span>    &lt;meta name="keywords" content="关键词1, 关键词2, 关键词3"&gt;
+<span>5</span>    &lt;meta name="author" content="作者名"&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>
+<span>8</span>&lt;body&gt;
+<span>9</span>    &lt;h1&gt;页面主标题（唯一）&lt;/h1&gt;
+<span>10</span>    &lt;h2&gt;章节标题&lt;/h2&gt;
+<span>11</span>    &lt;img src="image.jpg" alt="准确的图片描述"&gt;
+<span>12</span>&lt;/body&gt;</div>
         </div>
 
         <!-- 第4节：Open Graph -->
@@ -462,19 +473,19 @@
 
             <input type="checkbox" id="code-4" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-4" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- Open Graph --&gt;
-&lt;meta property="og:title" content="页面标题"&gt;
-&lt;meta property="og:description" content="页面描述"&gt;
-&lt;meta property="og:image" content="https://example.com/image.jpg"&gt;
-&lt;meta property="og:url" content="https://example.com/page"&gt;
-&lt;meta property="og:type" content="website"&gt;
-&lt;meta property="og:site_name" content="我的网站"&gt;
-
-&lt;!-- Twitter Card --&gt;
-&lt;meta name="twitter:card" content="summary_large_image"&gt;
-&lt;meta name="twitter:title" content="页面标题"&gt;
-&lt;meta name="twitter:description" content="页面描述"&gt;
-&lt;meta name="twitter:image" content="https://example.com/image.jpg"&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- Open Graph --&gt;
+<span>2</span>&lt;meta property="og:title" content="页面标题"&gt;
+<span>3</span>&lt;meta property="og:description" content="页面描述"&gt;
+<span>4</span>&lt;meta property="og:image" content="https://example.com/image.jpg"&gt;
+<span>5</span>&lt;meta property="og:url" content="https://example.com/page"&gt;
+<span>6</span>&lt;meta property="og:type" content="website"&gt;
+<span>7</span>&lt;meta property="og:site_name" content="我的网站"&gt;
+<span>8</span>
+<span>9</span>&lt;!-- Twitter Card --&gt;
+<span>10</span>&lt;meta name="twitter:card" content="summary_large_image"&gt;
+<span>11</span>&lt;meta name="twitter:title" content="页面标题"&gt;
+<span>12</span>&lt;meta name="twitter:description" content="页面描述"&gt;
+<span>13</span>&lt;meta name="twitter:image" content="https://example.com/image.jpg"&gt;</div>
         </div>
 
         <!-- 第5节：link 引入 CSS -->
@@ -514,18 +525,18 @@
 
             <input type="checkbox" id="code-5" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-5" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 外部样式表（推荐） --&gt;
-&lt;link rel="stylesheet" href="style.css"&gt;
-
-&lt;!-- 多个样式表 --&gt;
-&lt;link rel="stylesheet" href="reset.css"&gt;
-&lt;link rel="stylesheet" href="main.css"&gt;
-
-&lt;!-- 内部样式 --&gt;
-&lt;style&gt;
-    body { font-family: sans-serif; }
-    .container { max-width: 1200px; }
-&lt;/style&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- 外部样式表（推荐） --&gt;
+<span>2</span>&lt;link rel="stylesheet" href="style.css"&gt;
+<span>3</span>
+<span>4</span>&lt;!-- 多个样式表 --&gt;
+<span>5</span>&lt;link rel="stylesheet" href="reset.css"&gt;
+<span>6</span>&lt;link rel="stylesheet" href="main.css"&gt;
+<span>7</span>
+<span>8</span>&lt;!-- 内部样式 --&gt;
+<span>9</span>&lt;style&gt;
+<span>10</span>    body { font-family: sans-serif; }
+<span>11</span>    .container { max-width: 1200px; }
+<span>12</span>&lt;/style&gt;</div>
         </div>
 
         <!-- 第6节：link 引入图标 -->
@@ -569,18 +580,18 @@
 
             <input type="checkbox" id="code-6" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-6" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 基本图标 --&gt;
-&lt;link rel="icon" href="favicon.ico"&gt;
-
-&lt;!-- PNG 图标 --&gt;
-&lt;link rel="icon" type="image/png" sizes="32x32" href="icon-32.png"&gt;
-&lt;link rel="icon" type="image/png" sizes="16x16" href="icon-16.png"&gt;
-
-&lt;!-- SVG 图标 --&gt;
-&lt;link rel="icon" type="image/svg+xml" href="icon.svg"&gt;
-
-&lt;!-- Apple Touch Icon --&gt;
-&lt;link rel="apple-touch-icon" sizes="180x180" href="apple-icon.png"&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- 基本图标 --&gt;
+<span>2</span>&lt;link rel="icon" href="favicon.ico"&gt;
+<span>3</span>
+<span>4</span>&lt;!-- PNG 图标 --&gt;
+<span>5</span>&lt;link rel="icon" type="image/png" sizes="32x32" href="icon-32.png"&gt;
+<span>6</span>&lt;link rel="icon" type="image/png" sizes="16x16" href="icon-16.png"&gt;
+<span>7</span>
+<span>8</span>&lt;!-- SVG 图标 --&gt;
+<span>9</span>&lt;link rel="icon" type="image/svg+xml" href="icon.svg"&gt;
+<span>10</span>
+<span>11</span>&lt;!-- Apple Touch Icon --&gt;
+<span>12</span>&lt;link rel="apple-touch-icon" sizes="180x180" href="apple-icon.png"&gt;</div>
         </div>
 
         <!-- 第7节：script 引入 JS -->
@@ -615,17 +626,17 @@
 
             <input type="checkbox" id="code-7" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-7" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 外部脚本（推荐） --&gt;
-&lt;script src="app.js"&gt;&lt;/script&gt;
-
-&lt;!-- 内联脚本 --&gt;
-&lt;script&gt;
-    console.log('Hello!');
-    document.querySelector('h1').style.color = 'red';
-&lt;/script&gt;
-
-&lt;!-- 指定类型（可省略） --&gt;
-&lt;script type="text/javascript" src="app.js"&gt;&lt;/script&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- 外部脚本（推荐） --&gt;
+<span>2</span>&lt;script src="app.js"&gt;&lt;/script&gt;
+<span>3</span>
+<span>4</span>&lt;!-- 内联脚本 --&gt;
+<span>5</span>&lt;script&gt;
+<span>6</span>    console.log('Hello!');
+<span>7</span>    document.querySelector('h1').style.color = 'red';
+<span>8</span>&lt;/script&gt;
+<span>9</span>
+<span>10</span>&lt;!-- 指定类型（可省略） --&gt;
+<span>11</span>&lt;script type="text/javascript" src="app.js"&gt;&lt;/script&gt;</div>
         </div>
 
         <!-- 第8节：async/defer -->
@@ -677,18 +688,18 @@
 
             <input type="checkbox" id="code-8" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-8" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;!-- 同步加载（阻塞） --&gt;
-&lt;script src="app.js"&gt;&lt;/script&gt;
-
-&lt;!-- 异步加载（不保证顺序） --&gt;
-&lt;script src="analytics.js" async&gt;&lt;/script&gt;
-
-&lt;!-- 延迟执行（保证顺序） --&gt;
-&lt;script src="app.js" defer&gt;&lt;/script&gt;
-
-&lt;!-- 多个 defer 脚本按顺序执行 --&gt;
-&lt;script src="lib.js" defer&gt;&lt;/script&gt;
-&lt;script src="app.js" defer&gt;&lt;/script&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- 同步加载（阻塞） --&gt;
+<span>2</span>&lt;script src="app.js"&gt;&lt;/script&gt;
+<span>3</span>
+<span>4</span>&lt;!-- 异步加载（不保证顺序） --&gt;
+<span>5</span>&lt;script src="analytics.js" async&gt;&lt;/script&gt;
+<span>6</span>
+<span>7</span>&lt;!-- 延迟执行（保证顺序） --&gt;
+<span>8</span>&lt;script src="app.js" defer&gt;&lt;/script&gt;
+<span>9</span>
+<span>10</span>&lt;!-- 多个 defer 脚本按顺序执行 --&gt;
+<span>11</span>&lt;script src="lib.js" defer&gt;&lt;/script&gt;
+<span>12</span>&lt;script src="app.js" defer&gt;&lt;/script&gt;</div>
         </div>
 
     </main>

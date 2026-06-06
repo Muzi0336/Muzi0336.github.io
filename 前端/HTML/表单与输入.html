@@ -142,6 +142,17 @@
             line-height: 1.6;
             margin-top: 8px;
         }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
@@ -281,11 +292,11 @@
 
             <input type="checkbox" id="code-1" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-1" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;form action="/submit" method="post"&gt;
-    &lt;label&gt;用户名：&lt;input type="text" name="username"&gt;&lt;/label&gt;&lt;br&gt;
-    &lt;label&gt;密码：&lt;input type="password" name="password"&gt;&lt;/label&gt;&lt;br&gt;
-    &lt;input type="submit" value="提交"&gt;
-&lt;/form&gt;</div>
+            <div class="code-block"><span>1</span>&lt;form action="/submit" method="post"&gt;
+<span>2</span>    &lt;label&gt;用户名：&lt;input type="text" name="username"&gt;&lt;/label&gt;&lt;br&gt;
+<span>3</span>    &lt;label&gt;密码：&lt;input type="password" name="password"&gt;&lt;/label&gt;&lt;br&gt;
+<span>4</span>    &lt;input type="submit" value="提交"&gt;
+<span>5</span>&lt;/form&gt;</div>
         </div>
 
         <!-- 第2节：输入框类型 -->
@@ -312,15 +323,15 @@
 
             <input type="checkbox" id="code-2" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-2" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;form&gt;
-    &lt;label&gt;文本：&lt;input type="text" name="text"&gt;&lt;/label&gt;&lt;br&gt;
-    &lt;label&gt;密码：&lt;input type="password" name="password"&gt;&lt;/label&gt;&lt;br&gt;
-    &lt;label&gt;邮箱：&lt;input type="email" name="email"&gt;&lt;/label&gt;&lt;br&gt;
-    &lt;label&gt;数字：&lt;input type="number" name="number"&gt;&lt;/label&gt;&lt;br&gt;
-    &lt;label&gt;电话：&lt;input type="tel" name="tel"&gt;&lt;/label&gt;&lt;br&gt;
-    &lt;label&gt;网址：&lt;input type="url" name="url"&gt;&lt;/label&gt;&lt;br&gt;
-    &lt;label&gt;日期：&lt;input type="date" name="date"&gt;&lt;/label&gt;&lt;br&gt;
-&lt;/form&gt;</div>
+            <div class="code-block"><span>1</span>&lt;form&gt;
+<span>2</span>    &lt;label&gt;文本：&lt;input type="text" name="text"&gt;&lt;/label&gt;&lt;br&gt;
+<span>3</span>    &lt;label&gt;密码：&lt;input type="password" name="password"&gt;&lt;/label&gt;&lt;br&gt;
+<span>4</span>    &lt;label&gt;邮箱：&lt;input type="email" name="email"&gt;&lt;/label&gt;&lt;br&gt;
+<span>5</span>    &lt;label&gt;数字：&lt;input type="number" name="number"&gt;&lt;/label&gt;&lt;br&gt;
+<span>6</span>    &lt;label&gt;电话：&lt;input type="tel" name="tel"&gt;&lt;/label&gt;&lt;br&gt;
+<span>7</span>    &lt;label&gt;网址：&lt;input type="url" name="url"&gt;&lt;/label&gt;&lt;br&gt;
+<span>8</span>    &lt;label&gt;日期：&lt;input type="date" name="date"&gt;&lt;/label&gt;&lt;br&gt;
+<span>9</span>&lt;/form&gt;</div>
         </div>
 
         <!-- 第3节：单选和复选 -->
@@ -349,17 +360,17 @@
 
             <input type="checkbox" id="code-3" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-3" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;form&gt;
-    &lt;p&gt;性别：&lt;/p&gt;
-    &lt;label&gt;&lt;input type="radio" name="gender" value="male"&gt; 男&lt;/label&gt;
-    &lt;label&gt;&lt;input type="radio" name="gender" value="female"&gt; 女&lt;/label&gt;
-    &lt;label&gt;&lt;input type="radio" name="gender" value="other"&gt; 其他&lt;/label&gt;
-    
-    &lt;p&gt;爱好：&lt;/p&gt;
-    &lt;label&gt;&lt;input type="checkbox" name="hobby" value="reading" checked&gt; 阅读&lt;/label&gt;
-    &lt;label&gt;&lt;input type="checkbox" name="hobby" value="gaming"&gt; 游戏&lt;/label&gt;
-    &lt;label&gt;&lt;input type="checkbox" name="hobby" value="music"&gt; 音乐&lt;/label&gt;
-&lt;/form&gt;</div>
+            <div class="code-block"><span>1</span>&lt;form&gt;
+<span>2</span>    &lt;p&gt;性别：&lt;/p&gt;
+<span>3</span>    &lt;label&gt;&lt;input type="radio" name="gender" value="male"&gt; 男&lt;/label&gt;
+<span>4</span>    &lt;label&gt;&lt;input type="radio" name="gender" value="female"&gt; 女&lt;/label&gt;
+<span>5</span>    &lt;label&gt;&lt;input type="radio" name="gender" value="other"&gt; 其他&lt;/label&gt;
+<span>6</span>    
+<span>7</span>    &lt;p&gt;爱好：&lt;/p&gt;
+<span>8</span>    &lt;label&gt;&lt;input type="checkbox" name="hobby" value="reading" checked&gt; 阅读&lt;/label&gt;
+<span>9</span>    &lt;label&gt;&lt;input type="checkbox" name="hobby" value="gaming"&gt; 游戏&lt;/label&gt;
+<span>10</span>    &lt;label&gt;&lt;input type="checkbox" name="hobby" value="music"&gt; 音乐&lt;/label&gt;
+<span>11</span>&lt;/form&gt;</div>
         </div>
 
         <!-- 第4节：下拉选择框 -->
@@ -401,30 +412,30 @@
 
             <input type="checkbox" id="code-4" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-4" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;form&gt;
-    &lt;label&gt;城市：&lt;/label&gt;
-    &lt;select name="city"&gt;
-        &lt;option value=""&gt;请选择&lt;/option&gt;
-        &lt;option value="beijing" selected&gt;北京&lt;/option&gt;
-        &lt;option value="shanghai"&gt;上海&lt;/option&gt;
-        &lt;option value="guangzhou"&gt;广州&lt;/option&gt;
-        &lt;option value="shenzhen"&gt;深圳&lt;/option&gt;
-    &lt;/select&gt;
-    
-    &lt;br&gt;&lt;br&gt;
-    
-    &lt;label&gt;分组下拉：&lt;/label&gt;
-    &lt;select name="grouped"&gt;
-        &lt;optgroup label="华北"&gt;
-            &lt;option value="beijing"&gt;北京&lt;/option&gt;
-            &lt;option value="tianjin"&gt;天津&lt;/option&gt;
-        &lt;/optgroup&gt;
-        &lt;optgroup label="华东"&gt;
-            &lt;option value="shanghai"&gt;上海&lt;/option&gt;
-            &lt;option value="hangzhou"&gt;杭州&lt;/option&gt;
-        &lt;/optgroup&gt;
-    &lt;/select&gt;
-&lt;/form&gt;</div>
+            <div class="code-block"><span>1</span>&lt;form&gt;
+<span>2</span>    &lt;label&gt;城市：&lt;/label&gt;
+<span>3</span>    &lt;select name="city"&gt;
+<span>4</span>        &lt;option value=""&gt;请选择&lt;/option&gt;
+<span>5</span>        &lt;option value="beijing" selected&gt;北京&lt;/option&gt;
+<span>6</span>        &lt;option value="shanghai"&gt;上海&lt;/option&gt;
+<span>7</span>        &lt;option value="guangzhou"&gt;广州&lt;/option&gt;
+<span>8</span>        &lt;option value="shenzhen"&gt;深圳&lt;/option&gt;
+<span>9</span>    &lt;/select&gt;
+<span>10</span>    
+<span>11</span>    &lt;br&gt;&lt;br&gt;
+<span>12</span>    
+<span>13</span>    &lt;label&gt;分组下拉：&lt;/label&gt;
+<span>14</span>    &lt;select name="grouped"&gt;
+<span>15</span>        &lt;optgroup label="华北"&gt;
+<span>16</span>            &lt;option value="beijing"&gt;北京&lt;/option&gt;
+<span>17</span>            &lt;option value="tianjin"&gt;天津&lt;/option&gt;
+<span>18</span>        &lt;/optgroup&gt;
+<span>19</span>        &lt;optgroup label="华东"&gt;
+<span>20</span>            &lt;option value="shanghai"&gt;上海&lt;/option&gt;
+<span>21</span>            &lt;option value="hangzhou"&gt;杭州&lt;/option&gt;
+<span>22</span>        &lt;/optgroup&gt;
+<span>23</span>    &lt;/select&gt;
+<span>24</span>&lt;/form&gt;</div>
         </div>
 
         <!-- 第5节：多行文本 -->
@@ -446,10 +457,10 @@
 
             <input type="checkbox" id="code-5" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-5" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;form&gt;
-    &lt;label&gt;留言：&lt;/label&gt;&lt;br&gt;
-    &lt;textarea name="message" rows="5" cols="30" placeholder="请输入留言内容..."&gt;&lt;/textarea&gt;
-&lt;/form&gt;</div>
+            <div class="code-block"><span>1</span>&lt;form&gt;
+<span>2</span>    &lt;label&gt;留言：&lt;/label&gt;&lt;br&gt;
+<span>3</span>    &lt;textarea name="message" rows="5" cols="30" placeholder="请输入留言内容..."&gt;&lt;/textarea&gt;
+<span>4</span>&lt;/form&gt;</div>
         </div>
 
         <!-- 第6节：输入建议 -->
@@ -478,17 +489,17 @@
 
             <input type="checkbox" id="code-6" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-6" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;form&gt;
-    &lt;label&gt;浏览器：&lt;/label&gt;
-    &lt;input type="text" name="browser" list="browsers"&gt;
-    &lt;datalist id="browsers"&gt;
-        &lt;option value="Chrome"&gt;
-        &lt;option value="Firefox"&gt;
-        &lt;option value="Safari"&gt;
-        &lt;option value="Edge"&gt;
-        &lt;option value="Opera"&gt;
-    &lt;/datalist&gt;
-&lt;/form&gt;</div>
+            <div class="code-block"><span>1</span>&lt;form&gt;
+<span>2</span>    &lt;label&gt;浏览器：&lt;/label&gt;
+<span>3</span>    &lt;input type="text" name="browser" list="browsers"&gt;
+<span>4</span>    &lt;datalist id="browsers"&gt;
+<span>5</span>        &lt;option value="Chrome"&gt;
+<span>6</span>        &lt;option value="Firefox"&gt;
+<span>7</span>        &lt;option value="Safari"&gt;
+<span>8</span>        &lt;option value="Edge"&gt;
+<span>9</span>        &lt;option value="Opera"&gt;
+<span>10</span>    &lt;/datalist&gt;
+<span>11</span>&lt;/form&gt;</div>
         </div>
 
         <!-- 第7节：表单分组 -->
@@ -518,19 +529,19 @@
 
             <input type="checkbox" id="code-7" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-7" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;form&gt;
-    &lt;fieldset&gt;
-        &lt;legend&gt;个人信息&lt;/legend&gt;
-        &lt;label&gt;姓名：&lt;input type="text" name="name"&gt;&lt;/label&gt;&lt;br&gt;
-        &lt;label&gt;邮箱：&lt;input type="email" name="email"&gt;&lt;/label&gt;
-    &lt;/fieldset&gt;
-    
-    &lt;fieldset&gt;
-        &lt;legend&gt;账户设置&lt;/legend&gt;
-        &lt;label&gt;用户名：&lt;input type="text" name="username"&gt;&lt;/label&gt;&lt;br&gt;
-        &lt;label&gt;密码：&lt;input type="password" name="password"&gt;&lt;/label&gt;
-    &lt;/fieldset&gt;
-&lt;/form&gt;</div>
+            <div class="code-block"><span>1</span>&lt;form&gt;
+<span>2</span>    &lt;fieldset&gt;
+<span>3</span>        &lt;legend&gt;个人信息&lt;/legend&gt;
+<span>4</span>        &lt;label&gt;姓名：&lt;input type="text" name="name"&gt;&lt;/label&gt;&lt;br&gt;
+<span>5</span>        &lt;label&gt;邮箱：&lt;input type="email" name="email"&gt;&lt;/label&gt;
+<span>6</span>    &lt;/fieldset&gt;
+<span>7</span>    
+<span>8</span>    &lt;fieldset&gt;
+<span>9</span>        &lt;legend&gt;账户设置&lt;/legend&gt;
+<span>10</span>        &lt;label&gt;用户名：&lt;input type="text" name="username"&gt;&lt;/label&gt;&lt;br&gt;
+<span>11</span>        &lt;label&gt;密码：&lt;input type="password" name="password"&gt;&lt;/label&gt;
+<span>12</span>    &lt;/fieldset&gt;
+<span>13</span>&lt;/form&gt;</div>
         </div>
 
         <!-- 第8节：表单验证 -->
@@ -556,14 +567,14 @@
 
             <input type="checkbox" id="code-8" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-8" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;form&gt;
-    &lt;label&gt;必填：&lt;input type="text" name="required" required&gt;&lt;/label&gt;&lt;br&gt;
-    &lt;label&gt;禁用：&lt;input type="text" name="disabled" disabled&gt;&lt;/label&gt;&lt;br&gt;
-    &lt;label&gt;只读：&lt;input type="text" name="readonly" value="不可修改" readonly&gt;&lt;/label&gt;&lt;br&gt;
-    &lt;label&gt;正则（6位数字）：&lt;input type="text" name="pattern" pattern="\d{6}"&gt;&lt;/label&gt;&lt;br&gt;
-    &lt;label&gt;范围（1-100）：&lt;input type="number" name="range" min="1" max="100"&gt;&lt;/label&gt;&lt;br&gt;
-    &lt;input type="submit" value="提交"&gt;
-&lt;/form&gt;</div>
+            <div class="code-block"><span>1</span>&lt;form&gt;
+<span>2</span>    &lt;label&gt;必填：&lt;input type="text" name="required" required&gt;&lt;/label&gt;&lt;br&gt;
+<span>3</span>    &lt;label&gt;禁用：&lt;input type="text" name="disabled" disabled&gt;&lt;/label&gt;&lt;br&gt;
+<span>4</span>    &lt;label&gt;只读：&lt;input type="text" name="readonly" value="不可修改" readonly&gt;&lt;/label&gt;&lt;br&gt;
+<span>5</span>    &lt;label&gt;正则（6位数字）：&lt;input type="text" name="pattern" pattern="\d{6}"&gt;&lt;/label&gt;&lt;br&gt;
+<span>6</span>    &lt;label&gt;范围（1-100）：&lt;input type="number" name="range" min="1" max="100"&gt;&lt;/label&gt;&lt;br&gt;
+<span>7</span>    &lt;input type="submit" value="提交"&gt;
+<span>8</span>&lt;/form&gt;</div>
 
             <div class="demo"> <!-- 块级容器 -->
                 <div class="demo-label"> <!-- 块级容器 -->验证属性说明：</div>

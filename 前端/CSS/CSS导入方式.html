@@ -149,6 +149,18 @@
             margin-top: 8px;
         }
 
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
             display: block;
@@ -223,9 +235,9 @@
             </div>
             <input type="checkbox" id="code-1" class="code-toggle">
             <label for="code-1" class="toggle-label">查看代码</label>
-            <div class="code-block">&lt;!-- 内联样式 --&gt;
-&lt;p style="color: blue; font-size: 16px;"&gt;这是一个段落&lt;/p&gt;
-&lt;h1 style="color: green; font-size: 20px;"&gt;这是一个标题&lt;/h1&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- 内联样式 --&gt;
+<span>2</span>&lt;p style="color: blue; font-size: 16px;"&gt;这是一个段落&lt;/p&gt;
+<span>3</span>&lt;h1 style="color: green; font-size: 20px;"&gt;这是一个标题&lt;/h1&gt;</div>
         </div>
 
         <!-- 二、内部样式表 -->
@@ -246,19 +258,19 @@
             </div>
             <input type="checkbox" id="code-2" class="code-toggle">
             <label for="code-2" class="toggle-label">查看代码</label>
-            <div class="code-block">&lt;head&gt;
-    &lt;style&gt;
-        p {
-            color: blue;
-            font-size: 16px;
-        }
-
-        h2 {
-            color: red;
-            font-size: 24px;
-        }
-    &lt;/style&gt;
-&lt;/head&gt;</div>
+            <div class="code-block"><span>1</span>&lt;head&gt;
+<span>2</span>    &lt;style&gt;
+<span>3</span>        p {
+<span>4</span>            color: blue;
+<span>5</span>            font-size: 16px;
+<span>6</span>        }
+<span>7</span>
+<span>8</span>        h2 {
+<span>9</span>            color: red;
+<span>10</span>            font-size: 24px;
+<span>11</span>        }
+<span>12</span>    &lt;/style&gt;
+<span>13</span>&lt;/head&gt;</div>
         </div>
 
         <!-- 三、外部样式表 -->
@@ -279,21 +291,21 @@
             </div>
             <input type="checkbox" id="code-3" class="code-toggle">
             <label for="code-3" class="toggle-label">查看代码</label>
-            <div class="code-block">&lt;!-- HTML 文件 --&gt;
-&lt;head&gt;
-    &lt;link rel="stylesheet" href="style.css"&gt;
-&lt;/head&gt;
-
-/* style.css 文件 */
-p {
-    color: blue;
-    font-size: 16px;
-}
-
-h3 {
-    color: blue;
-    font-size: 18px;
-}</div>
+            <div class="code-block"><span>1</span>&lt;!-- HTML 文件 --&gt;
+<span>2</span>&lt;head&gt;
+<span>3</span>    &lt;link rel="stylesheet" href="style.css"&gt;
+<span>4</span>&lt;/head&gt;
+<span>5</span>
+<span>6</span>/* style.css 文件 */
+<span>7</span>p {
+<span>8</span>    color: blue;
+<span>9</span>    font-size: 16px;
+<span>10</span>}
+<span>11</span>
+<span>12</span>h3 {
+<span>13</span>    color: blue;
+<span>14</span>    font-size: 18px;
+<span>15</span>}</div>
         </div>
 
         <!-- 四、@import 导入 -->
@@ -321,23 +333,23 @@ h3 {
             </div>
             <input type="checkbox" id="code-4" class="code-toggle">
             <label for="code-4" class="toggle-label">查看代码</label>
-            <div class="code-block">/* link vs @import 对比 */
-
-/* ✅ 推荐：link 方式 */
-&lt;head&gt;
-    &lt;link rel="stylesheet" href="style.css"&gt;
-&lt;/head&gt;
-
-/* ⚠️ 不推荐：@import 方式 */
-&lt;style&gt;
-    @import url("style.css");
-&lt;/style&gt;
-
-/* @import 的唯一优势：可以在 CSS 文件内部合并 */
-/* main.css */
-@import url("header.css");
-@import url("footer.css");
-body { margin: 0; }</div>
+            <div class="code-block"><span>1</span>/* link vs @import 对比 */
+<span>2</span>
+<span>3</span>/* ✅ 推荐：link 方式 */
+<span>4</span>&lt;head&gt;
+<span>5</span>    &lt;link rel="stylesheet" href="style.css"&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>
+<span>8</span>/* ⚠️ 不推荐：@import 方式 */
+<span>9</span>&lt;style&gt;
+<span>10</span>    @import url("style.css");
+<span>11</span>&lt;/style&gt;
+<span>12</span>
+<span>13</span>/* @import 的唯一优势：可以在 CSS 文件内部合并 */
+<span>14</span>/* main.css */
+<span>15</span>@import url("header.css");
+<span>16</span>@import url("footer.css");
+<span>17</span>body { margin: 0; }</div>
         </div>
 
         <!-- 五、优先级对比 -->
@@ -359,14 +371,14 @@ body { margin: 0; }</div>
             </div>
             <input type="checkbox" id="code-5" class="code-toggle">
             <label for="code-5" class="toggle-label">查看代码</label>
-            <div class="code-block">&lt;!-- 优先级演示 --&gt;
-&lt;style&gt;
-    p { color: blue; }  /* 内部样式 */
-&lt;/style&gt;
-
-&lt;p style="color: red;"&gt;内联样式（红色）会覆盖内部样式（蓝色）&lt;/p&gt;
-
-/* 最终显示红色，因为内联样式优先级更高 */</div>
+            <div class="code-block"><span>1</span>&lt;!-- 优先级演示 --&gt;
+<span>2</span>&lt;style&gt;
+<span>3</span>    p { color: blue; }  /* 内部样式 */
+<span>4</span>&lt;/style&gt;
+<span>5</span>
+<span>6</span>&lt;p style="color: red;"&gt;内联样式（红色）会覆盖内部样式（蓝色）&lt;/p&gt;
+<span>7</span>
+<span>8</span>/* 最终显示红色，因为内联样式优先级更高 */</div>
         </div>
     </main>
 </body>

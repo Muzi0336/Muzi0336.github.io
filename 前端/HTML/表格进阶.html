@@ -142,6 +142,17 @@
             line-height: 1.6;
             margin-top: 8px;
         }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
@@ -219,30 +230,30 @@
 
             <input type="checkbox" id="code-1" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-1" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;table&gt;
-    &lt;caption&gt;学生成绩表&lt;/caption&gt;
-    &lt;thead&gt;
-        &lt;tr&gt;
-            &lt;th&gt;姓名&lt;/th&gt;
-            &lt;th&gt;语文&lt;/th&gt;
-            &lt;th&gt;数学&lt;/th&gt;
-        &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-        &lt;tr&gt;
-            &lt;td&gt;张三&lt;/td&gt;
-            &lt;td&gt;85&lt;/td&gt;
-            &lt;td&gt;90&lt;/td&gt;
-        &lt;/tr&gt;
-    &lt;/tbody&gt;
-    &lt;tfoot&gt;
-        &lt;tr&gt;
-            &lt;td&gt;平均分&lt;/td&gt;
-            &lt;td&gt;81.5&lt;/td&gt;
-            &lt;td&gt;89&lt;/td&gt;
-        &lt;/tr&gt;
-    &lt;/tfoot&gt;
-&lt;/table&gt;</div>
+            <div class="code-block"><span>1</span>&lt;table&gt;
+<span>2</span>    &lt;caption&gt;学生成绩表&lt;/caption&gt;
+<span>3</span>    &lt;thead&gt;
+<span>4</span>        &lt;tr&gt;
+<span>5</span>            &lt;th&gt;姓名&lt;/th&gt;
+<span>6</span>            &lt;th&gt;语文&lt;/th&gt;
+<span>7</span>            &lt;th&gt;数学&lt;/th&gt;
+<span>8</span>        &lt;/tr&gt;
+<span>9</span>    &lt;/thead&gt;
+<span>10</span>    &lt;tbody&gt;
+<span>11</span>        &lt;tr&gt;
+<span>12</span>            &lt;td&gt;张三&lt;/td&gt;
+<span>13</span>            &lt;td&gt;85&lt;/td&gt;
+<span>14</span>            &lt;td&gt;90&lt;/td&gt;
+<span>15</span>        &lt;/tr&gt;
+<span>16</span>    &lt;/tbody&gt;
+<span>17</span>    &lt;tfoot&gt;
+<span>18</span>        &lt;tr&gt;
+<span>19</span>            &lt;td&gt;平均分&lt;/td&gt;
+<span>20</span>            &lt;td&gt;81.5&lt;/td&gt;
+<span>21</span>            &lt;td&gt;89&lt;/td&gt;
+<span>22</span>        &lt;/tr&gt;
+<span>23</span>    &lt;/tfoot&gt;
+<span>24</span>&lt;/table&gt;</div>
         </div>
 
         <!-- 第2节：合并列 -->
@@ -271,17 +282,17 @@
 
             <input type="checkbox" id="code-2" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-2" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;table&gt;
-    &lt;tr&gt;
-        &lt;th colspan="2"&gt;个人信息&lt;/th&gt;
-        &lt;th&gt;成绩&lt;/th&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-        &lt;td&gt;张三&lt;/td&gt;
-        &lt;td&gt;男&lt;/td&gt;
-        &lt;td&gt;90&lt;/td&gt;
-    &lt;/tr&gt;
-&lt;/table&gt;</div>
+            <div class="code-block"><span>1</span>&lt;table&gt;
+<span>2</span>    &lt;tr&gt;
+<span>3</span>        &lt;th colspan="2"&gt;个人信息&lt;/th&gt;
+<span>4</span>        &lt;th&gt;成绩&lt;/th&gt;
+<span>5</span>    &lt;/tr&gt;
+<span>6</span>    &lt;tr&gt;
+<span>7</span>        &lt;td&gt;张三&lt;/td&gt;
+<span>8</span>        &lt;td&gt;男&lt;/td&gt;
+<span>9</span>        &lt;td&gt;90&lt;/td&gt;
+<span>10</span>    &lt;/tr&gt;
+<span>11</span>&lt;/table&gt;</div>
         </div>
 
         <!-- 第3节：合并行 -->
@@ -324,22 +335,22 @@
 
             <input type="checkbox" id="code-3" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-3" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;table&gt;
-    &lt;tr&gt;
-        &lt;th&gt;姓名&lt;/th&gt;
-        &lt;th&gt;科目&lt;/th&gt;
-        &lt;th&gt;分数&lt;/th&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-        &lt;td rowspan="2"&gt;张三&lt;/td&gt;
-        &lt;td&gt;语文&lt;/td&gt;
-        &lt;td&gt;85&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-        &lt;td&gt;数学&lt;/td&gt;
-        &lt;td&gt;90&lt;/td&gt;
-    &lt;/tr&gt;
-&lt;/table&gt;</div>
+            <div class="code-block"><span>1</span>&lt;table&gt;
+<span>2</span>    &lt;tr&gt;
+<span>3</span>        &lt;th&gt;姓名&lt;/th&gt;
+<span>4</span>        &lt;th&gt;科目&lt;/th&gt;
+<span>5</span>        &lt;th&gt;分数&lt;/th&gt;
+<span>6</span>    &lt;/tr&gt;
+<span>7</span>    &lt;tr&gt;
+<span>8</span>        &lt;td rowspan="2"&gt;张三&lt;/td&gt;
+<span>9</span>        &lt;td&gt;语文&lt;/td&gt;
+<span>10</span>        &lt;td&gt;85&lt;/td&gt;
+<span>11</span>    &lt;/tr&gt;
+<span>12</span>    &lt;tr&gt;
+<span>13</span>        &lt;td&gt;数学&lt;/td&gt;
+<span>14</span>        &lt;td&gt;90&lt;/td&gt;
+<span>15</span>    &lt;/tr&gt;
+<span>16</span>&lt;/table&gt;</div>
         </div>
 
         <!-- 第4节：综合示例 -->
@@ -371,21 +382,21 @@
 
             <input type="checkbox" id="code-4" class="code-toggle"> <!-- 输入框，单标签 -->
             <label for="code-4" class="toggle-label">查看源代码</label>
-            <div class="code-block"> <!-- 块级容器 -->&lt;table&gt;
-    &lt;tr&gt;
-        &lt;th colspan="2"&gt;科目&lt;/th&gt;
-        &lt;th rowspan="2"&gt;总分&lt;/th&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-        &lt;th&gt;语文&lt;/th&gt;
-        &lt;th&gt;数学&lt;/th&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-        &lt;td&gt;85&lt;/td&gt;
-        &lt;td&gt;90&lt;/td&gt;
-        &lt;td&gt;175&lt;/td&gt;
-    &lt;/tr&gt;
-&lt;/table&gt;</div>
+            <div class="code-block"><span>1</span>&lt;table&gt;
+<span>2</span>    &lt;tr&gt;
+<span>3</span>        &lt;th colspan="2"&gt;科目&lt;/th&gt;
+<span>4</span>        &lt;th rowspan="2"&gt;总分&lt;/th&gt;
+<span>5</span>    &lt;/tr&gt;
+<span>6</span>    &lt;tr&gt;
+<span>7</span>        &lt;th&gt;语文&lt;/th&gt;
+<span>8</span>        &lt;th&gt;数学&lt;/th&gt;
+<span>9</span>    &lt;/tr&gt;
+<span>10</span>    &lt;tr&gt;
+<span>11</span>        &lt;td&gt;85&lt;/td&gt;
+<span>12</span>        &lt;td&gt;90&lt;/td&gt;
+<span>13</span>        &lt;td&gt;175&lt;/td&gt;
+<span>14</span>    &lt;/tr&gt;
+<span>15</span>&lt;/table&gt;</div>
         </div>
 
     </main>

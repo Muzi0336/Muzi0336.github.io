@@ -148,6 +148,17 @@
             line-height: 1.6;
             margin-top: 8px;
         }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
@@ -405,14 +416,14 @@
             </div>
             <input type="checkbox" id="code-1" class="code-toggle">
             <label for="code-1" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 容器设置 */
-.container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-}
-
-/* fr 单位表示比例，1fr 1fr 1fr 表示三等分 */</div>
+            <div class="code-block"><span>1</span>/* 容器设置 */
+<span>2</span>.container {
+<span>3</span>    display: grid;
+<span>4</span>    grid-template-columns: 1fr 1fr 1fr;
+<span>5</span>    gap: 10px;
+<span>6</span>}
+<span>7</span>
+<span>8</span>/* fr 单位表示比例，1fr 1fr 1fr 表示三等分 */</div>
         </div>
 
         <!-- 二、grid-template-columns -->
@@ -456,25 +467,25 @@
             </div>
             <input type="checkbox" id="code-2" class="code-toggle">
             <label for="code-2" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 固定宽度 */
-.container {
-    grid-template-columns: 100px 150px 100px;
-}
-
-/* fr 比例 */
-.container {
-    grid-template-columns: 1fr 2fr 1fr;
-}
-
-/* repeat 重复 */
-.container {
-    grid-template-columns: repeat(3, 1fr);
-}
-
-/* auto-fit 自适应 */
-.container {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-}</div>
+            <div class="code-block"><span>1</span>/* 固定宽度 */
+<span>2</span>.container {
+<span>3</span>    grid-template-columns: 100px 150px 100px;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* fr 比例 */
+<span>7</span>.container {
+<span>8</span>    grid-template-columns: 1fr 2fr 1fr;
+<span>9</span>}
+<span>10</span>
+<span>11</span>/* repeat 重复 */
+<span>12</span>.container {
+<span>13</span>    grid-template-columns: repeat(3, 1fr);
+<span>14</span>}
+<span>15</span>
+<span>16</span>/* auto-fit 自适应 */
+<span>17</span>.container {
+<span>18</span>    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+<span>19</span>}</div>
         </div>
 
         <!-- 三、grid-template-rows -->
@@ -512,20 +523,20 @@
             </div>
             <input type="checkbox" id="code-3" class="code-toggle">
             <label for="code-3" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 固定行高 */
-.container {
-    grid-template-rows: 60px 100px;
-}
-
-/* 自动行高 */
-.container {
-    grid-template-rows: auto;
-}
-
-/* 混合 */
-.container {
-    grid-template-rows: 100px auto 1fr;
-}</div>
+            <div class="code-block"><span>1</span>/* 固定行高 */
+<span>2</span>.container {
+<span>3</span>    grid-template-rows: 60px 100px;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 自动行高 */
+<span>7</span>.container {
+<span>8</span>    grid-template-rows: auto;
+<span>9</span>}
+<span>10</span>
+<span>11</span>/* 混合 */
+<span>12</span>.container {
+<span>13</span>    grid-template-rows: 100px auto 1fr;
+<span>14</span>}</div>
         </div>
 
         <!-- 四、gap -->
@@ -549,16 +560,16 @@
             </div>
             <input type="checkbox" id="code-4" class="code-toggle">
             <label for="code-4" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 统一间距 */
-.container {
-    gap: 20px;
-}
-
-/* 行列分别设置 */
-.container {
-    row-gap: 20px;
-    column-gap: 10px;
-}</div>
+            <div class="code-block"><span>1</span>/* 统一间距 */
+<span>2</span>.container {
+<span>3</span>    gap: 20px;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 行列分别设置 */
+<span>7</span>.container {
+<span>8</span>    row-gap: 20px;
+<span>9</span>    column-gap: 10px;
+<span>10</span>}</div>
         </div>
 
         <!-- 五、跨列与跨行 -->
@@ -581,20 +592,20 @@
             </div>
             <input type="checkbox" id="code-5" class="code-toggle">
             <label for="code-5" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 跨列 */
-.item {
-    grid-column: span 2;
-}
-
-/* 跨行 */
-.item {
-    grid-row: span 2;
-}
-
-/* 指定列范围 */
-.item {
-    grid-column: 1 / 3;  /* 从第1列到第3列 */
-}</div>
+            <div class="code-block"><span>1</span>/* 跨列 */
+<span>2</span>.item {
+<span>3</span>    grid-column: span 2;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 跨行 */
+<span>7</span>.item {
+<span>8</span>    grid-row: span 2;
+<span>9</span>}
+<span>10</span>
+<span>11</span>/* 指定列范围 */
+<span>12</span>.item {
+<span>13</span>    grid-column: 1 / 3;  /* 从第1列到第3列 */
+<span>14</span>}</div>
         </div>
 
         <!-- 六、grid-template-areas -->
@@ -617,23 +628,23 @@
             </div>
             <input type="checkbox" id="code-6" class="code-toggle">
             <label for="code-6" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 容器设置 */
-.container {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: 60px 1fr 60px;
-    grid-template-areas:
-        "header header header"
-        "sidebar main aside"
-        "footer footer footer";
-}
-
-/* 项目设置 */
-.header { grid-area: header; }
-.sidebar { grid-area: sidebar; }
-.main { grid-area: main; }
-.aside { grid-area: aside; }
-.footer { grid-area: footer; }</div>
+            <div class="code-block"><span>1</span>/* 容器设置 */
+<span>2</span>.container {
+<span>3</span>    display: grid;
+<span>4</span>    grid-template-columns: 1fr 2fr 1fr;
+<span>5</span>    grid-template-rows: 60px 1fr 60px;
+<span>6</span>    grid-template-areas:
+<span>7</span>        "header header header"
+<span>8</span>        "sidebar main aside"
+<span>9</span>        "footer footer footer";
+<span>10</span>}
+<span>11</span>
+<span>12</span>/* 项目设置 */
+<span>13</span>.header { grid-area: header; }
+<span>14</span>.sidebar { grid-area: sidebar; }
+<span>15</span>.main { grid-area: main; }
+<span>16</span>.aside { grid-area: aside; }
+<span>17</span>.footer { grid-area: footer; }</div>
         </div>
 
         <!-- 七、justify-items -->
@@ -670,20 +681,20 @@
             </div>
             <input type="checkbox" id="code-7" class="code-toggle">
             <label for="code-7" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 左对齐 */
-.container {
-    justify-items: start;
-}
-
-/* 居中 */
-.container {
-    justify-items: center;
-}
-
-/* 右对齐 */
-.container {
-    justify-items: end;
-}</div>
+            <div class="code-block"><span>1</span>/* 左对齐 */
+<span>2</span>.container {
+<span>3</span>    justify-items: start;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 居中 */
+<span>7</span>.container {
+<span>8</span>    justify-items: center;
+<span>9</span>}
+<span>10</span>
+<span>11</span>/* 右对齐 */
+<span>12</span>.container {
+<span>13</span>    justify-items: end;
+<span>14</span>}</div>
         </div>
 
         <!-- 八、align-items -->
@@ -720,20 +731,20 @@
             </div>
             <input type="checkbox" id="code-8" class="code-toggle">
             <label for="code-8" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 顶部对齐 */
-.container {
-    align-items: start;
-}
-
-/* 居中 */
-.container {
-    align-items: center;
-}
-
-/* 底部对齐 */
-.container {
-    align-items: end;
-}</div>
+            <div class="code-block"><span>1</span>/* 顶部对齐 */
+<span>2</span>.container {
+<span>3</span>    align-items: start;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 居中 */
+<span>7</span>.container {
+<span>8</span>    align-items: center;
+<span>9</span>}
+<span>10</span>
+<span>11</span>/* 底部对齐 */
+<span>12</span>.container {
+<span>13</span>    align-items: end;
+<span>14</span>}</div>
         </div>
 
         <!-- 九、justify-content -->
@@ -767,15 +778,15 @@
             </div>
             <input type="checkbox" id="code-9" class="code-toggle">
             <label for="code-9" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 居中 */
-.container {
-    justify-content: center;
-}
-
-/* 两端对齐 */
-.container {
-    justify-content: space-between;
-}</div>
+            <div class="code-block"><span>1</span>/* 居中 */
+<span>2</span>.container {
+<span>3</span>    justify-content: center;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 两端对齐 */
+<span>7</span>.container {
+<span>8</span>    justify-content: space-between;
+<span>9</span>}</div>
         </div>
 
         <!-- 十、align-content -->
@@ -799,14 +810,14 @@
             </div>
             <input type="checkbox" id="code-10" class="code-toggle">
             <label for="code-10" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 垂直居中 */
-.container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    align-content: center;
-    height: 300px;
-}</div>
+            <div class="code-block"><span>1</span>/* 垂直居中 */
+<span>2</span>.container {
+<span>3</span>    display: grid;
+<span>4</span>    grid-template-columns: repeat(3, 1fr);
+<span>5</span>    grid-template-rows: repeat(3, 1fr);
+<span>6</span>    align-content: center;
+<span>7</span>    height: 300px;
+<span>8</span>}</div>
         </div>
 
         <!-- 十一、grid-auto-flow -->
@@ -846,20 +857,20 @@
             </div>
             <input type="checkbox" id="code-11" class="code-toggle">
             <label for="code-11" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 按行排列（默认） */
-.container {
-    grid-auto-flow: row;
-}
-
-/* 按列排列 */
-.container {
-    grid-auto-flow: column;
-}
-
-/* 填充空隙 */
-.container {
-    grid-auto-flow: dense;
-}</div>
+            <div class="code-block"><span>1</span>/* 按行排列（默认） */
+<span>2</span>.container {
+<span>3</span>    grid-auto-flow: row;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 按列排列 */
+<span>7</span>.container {
+<span>8</span>    grid-auto-flow: column;
+<span>9</span>}
+<span>10</span>
+<span>11</span>/* 填充空隙 */
+<span>12</span>.container {
+<span>13</span>    grid-auto-flow: dense;
+<span>14</span>}</div>
         </div>
 
         <!-- 十二、minmax -->
@@ -883,10 +894,10 @@
             </div>
             <input type="checkbox" id="code-12" class="code-toggle">
             <label for="code-12" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 最小100px，最大1fr */
-.container {
-    grid-template-columns: repeat(3, minmax(100px, 1fr));
-}</div>
+            <div class="code-block"><span>1</span>/* 最小100px，最大1fr */
+<span>2</span>.container {
+<span>3</span>    grid-template-columns: repeat(3, minmax(100px, 1fr));
+<span>4</span>}</div>
         </div>
 
         <!-- 十三、auto-fit -->
@@ -910,16 +921,16 @@
             </div>
             <input type="checkbox" id="code-13" class="code-toggle">
             <label for="code-13" class="toggle-label">查看代码</label>
-            <div class="code-block">/* 自适应列数 */
-.container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-}
-
-/* auto-fit vs auto-fill：
-   auto-fit: 项目拉伸填满空隙
-   auto-fill: 保持项目原始尺寸 */</div>
+            <div class="code-block"><span>1</span>/* 自适应列数 */
+<span>2</span>.container {
+<span>3</span>    display: grid;
+<span>4</span>    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+<span>5</span>    gap: 10px;
+<span>6</span>}
+<span>7</span>
+<span>8</span>/* auto-fit vs auto-fill：
+<span>9</span>   auto-fit: 项目拉伸填满空隙
+<span>10</span>   auto-fill: 保持项目原始尺寸 */</div>
         </div>
     </main>
 </body>

@@ -11,16 +11,127 @@
             box-sizing: border-box;
         }
 
-        body {
+                body {
             font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: url('bg.jpg') no-repeat center center fixed;
+            background-size: cover;
             min-height: 100vh;
             padding: 40px 20px;
+            padding-bottom: 100px;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+        }
+
+        /* 两侧装饰栏 */
+                .side-decor {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 200px;
+            color: rgba(255,255,255,0.85);
+            font-size: 0.88rem;
+            line-height: 1.8;
+            pointer-events: auto;
+            z-index: 5;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: rgba(0,0,0,0.25);
+            padding: 16px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+        .side-decor:hover {
+            background: rgba(0,0,0,0.4);
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        .side-decor::-webkit-scrollbar {
+            width: 3px;
+        }
+        .side-decor::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+        }
+
+                .side-decor.left {
+            left: 15px;
+            text-align: left;
+            width: 195px;
+        }
+
+        .side-decor.right {
+            right: 15px;
+            text-align: left;
+            width: 185px;
+        }
+
+                .side-decor .decor-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.9);
+            letter-spacing: 1px;
+        }
+
+                .side-decor .decor-item {
+            margin: 4px 0;
+            padding: 3px 0;
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .side-decor .decor-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            opacity: 0.7;
+            text-align: center;
+        }
+
+        .side-decor .decor-section {
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed rgba(255,255,255,0.15);
+        }
+        .side-decor .decor-section:last-child {
+            border-bottom: none;
+        }
+
+                .side-decor .decor-section-title {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.75);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+                .side-decor .decor-code {
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+            padding: 10px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.75rem;
+            line-height: 1.4;
+            margin: 8px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            border: 1px solid rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* 窗口宽度小于1400px时隐藏装饰 */
+        @media (max-width: 1400px) {
+            .side-decor {
+                display: none;
+            }
         }
 
         header {
@@ -32,12 +143,18 @@
         header h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            color: #ffffff;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.3);
+            padding: 10px 30px;
+            border-radius: 10px;
+            display: inline-block;
         }
 
         header p {
             font-size: 1.1rem;
-            opacity: 0.9;
+            color: #ffffff;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
         }
 
         .section {
@@ -115,12 +232,10 @@
             text-align: center;
             color: #999;
         }
-
         .js-placeholder .icon {
             font-size: 3rem;
             margin-bottom: 15px;
         }
-
         .js-placeholder p {
             font-size: 1rem;
         }
@@ -132,99 +247,255 @@
             opacity: 0.8;
             font-size: 0.9rem;
         }
+
+                /* 右下角AI开发标识 */
+        .ai-credit {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, rgba(0,40,60,0.9), rgba(0,80,100,0.85));
+            color: #ffffff;
+            padding: 16px 22px;
+            border-radius: 14px;
+            text-align: center;
+            z-index: 100;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(0,255,200,0.6);
+            box-shadow: 0 0 30px rgba(0,255,200,0.4), 0 0 60px rgba(0,255,200,0.15), inset 0 0 20px rgba(0,255,200,0.05);
+            animation: creditBounceIn 1s cubic-bezier(0.68, -0.55, 0.265, 1.55), creditPulse 2s ease-in-out infinite;
+            cursor: default;
+            overflow: hidden;
+        }
+        .ai-credit::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(0,255,200,0.15), transparent, rgba(0,255,200,0.1), transparent);
+            animation: creditSpin 4s linear infinite;
+        }
+        .ai-credit::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(0,30,50,0.95), rgba(0,60,80,0.9));
+            z-index: -1;
+        }
+        .ai-credit-main {
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #00ffc8;
+            text-shadow: 0 0 10px rgba(0,255,200,0.8), 0 0 20px rgba(0,255,200,0.5), 0 0 40px rgba(0,255,200,0.3);
+            animation: creditTextPulse 1.5s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+        .ai-credit-time {
+            font-size: 0.72rem;
+            color: rgba(200,255,240,0.8);
+            text-shadow: 0 0 5px rgba(0,255,200,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes creditBounceIn {
+            0% { opacity: 0; transform: scale(0.3) translateY(50px); }
+            50% { opacity: 1; transform: scale(1.08) translateY(-5px); }
+            70% { transform: scale(0.95) translateY(2px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes creditPulse {
+            0%, 100% {
+                box-shadow: 0 0 25px rgba(0,255,200,0.3), 0 0 50px rgba(0,255,200,0.1), inset 0 0 15px rgba(0,255,200,0.05);
+                border-color: rgba(0,255,200,0.5);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(0,255,200,0.6), 0 0 80px rgba(0,255,200,0.25), inset 0 0 30px rgba(0,255,200,0.1);
+                border-color: rgba(0,255,200,0.9);
+                transform: scale(1.03);
+            }
+        }
+        @keyframes creditSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes creditTextPulse {
+            0%, 100% {
+                color: #00ffc8;
+                text-shadow: 0 0 10px rgba(0,255,200,0.8), 0 0 20px rgba(0,255,200,0.5);
+            }
+            50% {
+                color: #80ffe0;
+                text-shadow: 0 0 15px rgba(0,255,200,1), 0 0 30px rgba(0,255,200,0.7), 0 0 50px rgba(0,255,200,0.4);
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- 左侧装饰 -->
+    <div class="side-decor left">
+        <div class="decor-icon"> </div>
+        <div class="decor-title">学习小贴士</div>
+
+        <div class="decor-section">
+            <div class="decor-section-title">  学习方法</div>
+            <div class="decor-item">  多写代码，少看不练=白学</div>
+            <div class="decor-item">  ️ F12打开DevTools是你的超能力</div>
+            <div class="decor-item">  遇到问题先搜MDN文档</div>
+            <div class="decor-item">  每天坚持写一点，哪怕10行</div>
+            <div class="decor-item">  看别人的代码也是学习</div>
+            <div class="decor-item">  学会用AI辅助编程</div>
+        </div>
+
+        <div class="decor-section">
+            <div class="decor-section-title">  常用快捷键</div>
+            <div class="decor-item">Ctrl + S → 保存文件</div>
+            <div class="decor-item">Ctrl + / → 注释代码</div>
+            <div class="decor-item">Ctrl + D → 选中相同词</div>
+            <div class="decor-item">Ctrl + F → 搜索内容</div>
+            <div class="decor-item">Ctrl + H → 查找替换</div>
+            <div class="decor-item">Alt + ↑↓ → 移动行</div>
+            <div class="decor-item">Shift + Alt + ↑↓ → 复制行</div>
+            <div class="decor-item">Ctrl + Shift + K → 删除行</div>
+        </div>
+
+            </div>
+
+        <!-- 右侧装饰 -->
+    <div class="side-decor right">
+        <div class="decor-icon"> </div>
+        <div class="decor-title">前端技术栈</div>
+
+        <div class="decor-section">
+            <div class="decor-section-title">核心三件套</div>
+            <div class="decor-item"><a href="https://developer.mozilla.org/zh-CN/docs/Learn/HTML" target="_blank" style="color: inherit; text-decoration: none;">HTML5 - 页面结构</a></div>
+            <div class="decor-item"><a href="https://developer.mozilla.org/zh-CN/docs/Learn/CSS" target="_blank" style="color: inherit; text-decoration: none;">CSS3 - 样式美化</a></div>
+            <div class="decor-item"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript" target="_blank" style="color: inherit; text-decoration: none;">JavaScript - 交互逻辑</a></div>
+        </div>
+
+                <div class="decor-section">
+            <div class="decor-section-title">进阶技术</div>
+            <div class="decor-item"><a href="https://www.typescriptlang.org/" target="_blank" style="color: inherit; text-decoration: none;">TypeScript - 类型安全</a></div>
+            <div class="decor-item"><a href="https://es6.ruanyifeng.com/" target="_blank" style="color: inherit; text-decoration: none;">ES6+ - 现代语法</a></div>
+            <div class="decor-item"><a href="https://react.dev/" target="_blank" style="color: inherit; text-decoration: none;">React</a> / <a href="https://vuejs.org/" target="_blank" style="color: inherit; text-decoration: none;">Vue</a> / <a href="https://angular.dev/" target="_blank" style="color: inherit; text-decoration: none;">Angular</a></div>
+            <div class="decor-item"><a href="https://webpack.js.org/" target="_blank" style="color: inherit; text-decoration: none;">Webpack</a> - 构建工具</div>
+            <div class="decor-item"><a href="https://tailwindcss.com/" target="_blank" style="color: inherit; text-decoration: none;">Tailwind CSS - 原子化CSS</a></div>
+        </div>
+
+        <div class="decor-title" style="margin-top: 15px;">学习资源</div>
+
+                <div class="decor-section">
+            <div class="decor-item"><a href="https://developer.mozilla.org/zh-CN/" target="_blank" style="color: inherit; text-decoration: none;">  MDN Web Docs</a></div>
+            <div class="decor-item"><a href="https://www.w3school.com.cn/" target="_blank" style="color: inherit; text-decoration: none;">  W3School</a></div>
+            <div class="decor-item"><a href="https://web.developers.google.cn/learn/css" target="_blank" style="color: inherit; text-decoration: none;">  Google CSS</a></div>
+        </div>
+    </div>
+
     <div class="container">
         <header>
-            <h1>📚 HTML & CSS 学习导航</h1>
-            <p>从基础到进阶，系统学习前端开发</p>
+            <h1>  HTML & CSS 学习导航</h1>
+            <p>系统化前端学习资料，从零到一</p>
         </header>
 
         <!-- HTML 学习模块 -->
         <div class="section">
             <h2 class="section-title">
-                <span class="icon"> </span>
+                <span class="icon"> ️</span>
                 HTML 学习
             </h2>
+            <p style="font-size:0.85rem; color:#888; margin:-10px 0 20px 38px;">序号对应文档目录章节，括号内为该文件合并的其他章节</p>
             <div class="file-grid">
-                <a href="HTML/HTML基础结构.html" class="file-card">
-                    <div class="file-name">HTML基础结构</div>
-                    <div class="file-desc">文档声明、HTML根元素、head和body</div>
+                <a href="https://developer.mozilla.org/zh-CN/docs/Learn/HTML" target="_blank" class="file-card">
+                    <div class="file-name">1.1 HTML基础</div>
+                    <div class="file-desc">标签、属性、文本、列表、图片、链接</div>
                 </a>
-                <a href="HTML/常见文本标签.html" class="file-card">
-                    <div class="file-name">常见文本标签</div>
-                    <div class="file-desc">标题、段落、强调、代码标签</div>
+                <a href="HTML/HTML结构.html" class="file-card">
+                    <div class="file-name">1.2 HTML结构</div>
+                    <div class="file-desc">区块、div、行内块元素</div>
                 </a>
-                <a href="HTML/列表标签.html" class="file-card">
-                    <div class="file-name">列表标签</div>
-                    <div class="file-desc">无序列表、有序列表、定义列表</div>
-                </a>
-                <a href="HTML/链接进阶.html" class="file-card">
-                    <div class="file-name">链接进阶</div>
-                    <div class="file-desc">超链接、锚点、target属性</div>
-                </a>
-                <a href="HTML/图片标签.html" class="file-card">
-                    <div class="file-name">图片标签</div>
-                    <div class="file-desc">img标签、alt属性、图片映射</div>
-                </a>
-                <a href="HTML/语义化与结构.html" class="file-card">
-                    <div class="file-name">语义化与结构</div>
-                    <div class="file-desc">语义化标签、header、nav、main</div>
-                </a>
-                <a href="HTML/表格进阶.html" class="file-card">
-                    <div class="file-name">表格进阶</div>
-                    <div class="file-desc">表格结构、合并单元格、样式</div>
-                </a>
-                <a href="HTML/多媒体与嵌入.html" class="file-card">
-                    <div class="file-name">多媒体与嵌入</div>
-                    <div class="file-desc">视频、音频、iframe、canvas</div>
-                </a>
-                <a href="HTML/表单与输入.html" class="file-card">
-                    <div class="file-name">表单与输入</div>
-                    <div class="file-desc">表单元素、输入类型、验证</div>
+                <a href="HTML/HTML模板.html" class="file-card">
+                    <div class="file-name">1.3 HTML模板</div>
+                    <div class="file-desc">HTML文件基本骨架、完整HTML模板</div>
                 </a>
                 <a href="HTML/HTML属性.html" class="file-card">
-                    <div class="file-name">HTML属性</div>
-                    <div class="file-desc">全局属性、自定义属性</div>
+                    <div class="file-name">1.4 HTML属性</div>
+                    <div class="file-desc">全局属性、事件属性、style/class/id</div>
+                </a>
+                <a href="HTML/常见文本标签.html" class="file-card">
+                    <div class="file-name">1.5 常见文本标签</div>
+                    <div class="file-desc">标题、段落、强调、行内元素</div>
+                </a>
+                <a href="HTML/列表标签.html" class="file-card">
+                    <div class="file-name">1.5.1 列表标签</div>
+                    <div class="file-desc">有序列表、无序列表、定义列表</div>
+                </a>
+                <a href="HTML/语义化与结构.html" class="file-card">
+                    <div class="file-name">1.6 HTML区块（2.1 语义化标签）</div>
+                    <div class="file-desc">语义化标签、页面结构、div/span</div>
+                </a>
+                <a href="HTML/表单与输入.html" class="file-card">
+                    <div class="file-name">1.7 HTML表单（2.4 表单进阶）</div>
+                    <div class="file-desc">表单验证、fieldset分组、datalist</div>
+                </a>
+                <a href="HTML/图片标签.html" class="file-card">
+                    <div class="file-name">2.2 多媒体标签（图片）</div>
+                    <div class="file-desc">img标签、alt属性、懒加载、响应式图片</div>
+                </a>
+                <a href="HTML/表格进阶.html" class="file-card">
+                    <div class="file-name">2.3 表格进阶</div>
+                    <div class="file-desc">表格结构、合并单元格</div>
+                </a>
+                <a href="HTML/链接进阶.html" class="file-card">
+                    <div class="file-name">2.5 链接进阶</div>
+                    <div class="file-desc">锚点、邮件、下载链接、base标签</div>
                 </a>
                 <a href="HTML/HTML5新增标签.html" class="file-card">
-                    <div class="file-name">HTML5新增标签</div>
-                    <div class="file-desc">新语义标签、新API</div>
+                    <div class="file-name">2.6 HTML5新增标签</div>
+                    <div class="file-desc">结构标签、input新类型、进度条</div>
+                </a>
+                <a href="HTML/多媒体与嵌入.html" class="file-card">
+                    <div class="file-name">2.7 嵌入与代码</div>
+                    <div class="file-desc">音频、视频、iframe嵌入</div>
                 </a>
                 <a href="HTML/进阶与兼容.html" class="file-card">
-                    <div class="file-name">进阶与兼容</div>
-                    <div class="file-desc">SEO、无障碍、浏览器兼容</div>
+                    <div class="file-name">2.8, 2.9 进阶与兼容</div>
+                    <div class="file-desc">字符实体、link引入CSS与图标</div>
                 </a>
             </div>
         </div>
 
-        <!-- HTML 简化版 -->
+        <!-- HTML 学习模块 - 简化版 -->
         <div class="section">
             <h2 class="section-title">
                 <span class="icon"> </span>
-                HTML 简化版（快速入门）
+                HTML 学习（简化版）
             </h2>
+            <p style="font-size:0.85rem; color:#888; margin:-10px 0 20px 38px;">精简版教程，覆盖核心知识点，适合快速入门</p>
             <div class="file-grid">
                 <a href="HTML/HTML基础_simple.html" class="file-card">
-                    <div class="file-name">HTML基础 <span class="simple-badge">简化版</span></div>
-                    <div class="file-desc">核心知识点，适合快速复习</div>
+                    <div class="file-name">1.1 HTML基础 <span class="simple-badge">简化版</span></div>
+                    <div class="file-desc">标签、属性、文本、列表、图片、链接</div>
                 </a>
                 <a href="HTML/HTML结构_simple.html" class="file-card">
-                    <div class="file-name">HTML结构 <span class="simple-badge">简化版</span></div>
-                    <div class="file-desc">语义化标签和表格</div>
+                    <div class="file-name">1.2 HTML结构 <span class="simple-badge">简化版</span></div>
+                    <div class="file-desc">区块、div、行内块元素</div>
                 </a>
                 <a href="HTML/HTML交互_simple.html" class="file-card">
-                    <div class="file-name">HTML交互 <span class="simple-badge">简化版</span></div>
-                    <div class="file-desc">表单和链接</div>
+                    <div class="file-name">1.3 HTML交互 <span class="simple-badge">简化版</span></div>
+                    <div class="file-desc">表单、输入框、按钮、验证</div>
                 </a>
                 <a href="HTML/HTML媒体_simple.html" class="file-card">
-                    <div class="file-name">HTML媒体 <span class="simple-badge">简化版</span></div>
-                    <div class="file-desc">视频、音频、多媒体</div>
+                    <div class="file-name">1.4 HTML媒体 <span class="simple-badge">简化版</span></div>
+                    <div class="file-desc">音频、视频、iframe嵌入</div>
                 </a>
                 <a href="HTML/HTML进阶_simple.html" class="file-card">
-                    <div class="file-name">HTML进阶 <span class="simple-badge">简化版</span></div>
-                    <div class="file-desc">属性、事件、SEO</div>
+                    <div class="file-name">1.5 HTML进阶 <span class="simple-badge">简化版</span></div>
+                    <div class="file-desc">字符实体、SEO、link引入</div>
                 </a>
             </div>
         </div>
@@ -235,67 +506,73 @@
                 <span class="icon"> </span>
                 CSS 学习
             </h2>
+            <p style="font-size:0.85rem; color:#888; margin:-10px 0 20px 38px;">序号对应文档目录章节，括号内为该文件合并的其他章节</p>
             <div class="file-grid">
                 <a href="CSS/CSS导入方式.html" class="file-card">
-                    <div class="file-name">CSS导入方式</div>
-                    <div class="file-desc">内联、内部、外部样式表</div>
+                    <div class="file-name">1.3 CSS导入方式</div>
+                    <div class="file-desc">内联样式、内部样式表、外部样式表</div>
                 </a>
-                <a href="CSS/CSS选择器.html" class="file-card">
-                    <div class="file-name">CSS选择器</div>
-                    <div class="file-desc">基础选择器、复合选择器</div>
-                </a>
-
-                <a href="CSS/CSS盒模型.html" class="file-card">
-                    <div class="file-name">CSS盒模型</div>
-                    <div class="file-desc">margin、padding、border</div>
-                </a>
-                <a href="CSS/CSS文本与字体.html" class="file-card">
-                    <div class="file-name">CSS文本与字体</div>
-                    <div class="file-desc">字体、文本样式、行高</div>
-                </a>
-                <a href="CSS/CSS布局定位.html" class="file-card">
-                    <div class="file-name">CSS布局定位</div>
-                    <div class="file-desc">display、position、float</div>
-                </a>
-                <a href="CSS/CSS Flex布局.html" class="file-card">
-                    <div class="file-name">CSS Flex布局</div>
-                    <div class="file-desc">弹性盒子、主轴、交叉轴</div>
-                </a>
-                <a href="CSS/CSS Grid布局.html" class="file-card">
-                    <div class="file-name">CSS Grid布局</div>
-                    <div class="file-desc">网格布局、行列定义</div>
-                </a>
-                <a href="CSS/CSS视觉美化.html" class="file-card">
-                    <div class="file-name">CSS视觉美化</div>
-                    <div class="file-desc">阴影、圆角、渐变</div>
-                </a>
-                <a href="CSS/CSS动效与变换.html" class="file-card">
-                    <div class="file-name">CSS动效与变换</div>
-                    <div class="file-desc">transition、animation、transform</div>
+                <a href="https://developer.mozilla.org/zh-CN/docs/Learn/CSS" target="_blank" class="file-card">
+                    <div class="file-name">1.4 CSS选择器</div>
+                    <div class="file-desc">基础选择器、组合选择器、伪类、伪元素</div>
                 </a>
                 <a href="CSS/CSS单位.html" class="file-card">
-                    <div class="file-name">CSS单位</div>
-                    <div class="file-desc">px、em、rem、vw、vh</div>
+                    <div class="file-name">1.5 CSS单位</div>
+                    <div class="file-desc">px、em、rem、vw、vh、%</div>
+                </a>
+                <a href="CSS/CSS文本与字体.html" class="file-card">
+                    <div class="file-name">1.6 CSS文本与字体</div>
+                    <div class="file-desc">字体属性、文本样式、行高、对齐</div>
+                </a>
+                <a href="CSS/CSS盒模型.html" class="file-card">
+                    <div class="file-name">2.1 CSS盒模型</div>
+                    <div class="file-desc">content、padding、border、margin</div>
+                </a>
+                <a href="CSS/CSS布局定位.html" class="file-card">
+                    <div class="file-name">2.2 CSS布局定位</div>
+                    <div class="file-desc">position、z-index、float、clearfix</div>
+                </a>
+                <a href="CSS/CSS Flex布局.html" class="file-card">
+                    <div class="file-name">2.3 CSS Flex布局</div>
+                    <div class="file-desc">flex容器、flex项目、主轴、交叉轴</div>
+                </a>
+                <a href="CSS/CSS Grid布局.html" class="file-card">
+                    <div class="file-name">2.4 CSS Grid布局</div>
+                    <div class="file-desc">grid容器、grid项目、fr单位、区域布局</div>
+                </a>
+                <a href="CSS/CSS视觉美化.html" class="file-card">
+                    <div class="file-name">2.5 CSS视觉美化</div>
+                    <div class="file-desc">背景、阴影、透明度、滤镜、渐变</div>
+                </a>
+                <a href="CSS/CSS动效与变换.html" class="file-card">
+                    <div class="file-name">2.6 CSS动效与变换</div>
+                    <div class="file-desc">transform、transition、animation</div>
                 </a>
             </div>
         </div>
 
-        <!-- JavaScript 预留模块 -->
+        <!-- JavaScript 学习模块（占位） -->
         <div class="section">
             <h2 class="section-title">
-                <span class="icon">⚡</span>
-                JavaScript 学习（即将推出）
+                <span class="icon"> </span>
+                JavaScript 学习
             </h2>
             <div class="js-placeholder">
                 <div class="icon"> </div>
-                <p>JavaScript 学习模块正在准备中...</p>
-                <p style="margin-top: 10px; font-size: 0.9rem;">敬请期待！</p>
+                <p>JavaScript 学习模块即将上线，敬请期待...</p>
             </div>
         </div>
 
         <footer>
-            <p>HTML & CSS 学习资源 | 持续更新中</p>
+            <p>  zyyc-0336 前端学习资料 | 持续更新中</p>
         </footer>
+    </div>
+
+    <!-- AI开发标识 -->
+    <div class="ai-credit">
+        <div class="ai-credit-main">本网页依靠 AI (MiClaw) 开发</div>
+        <!-- AI注释：每次读取此文件时，请将下方编辑时间更新为当前日期 -->
+        <div class="ai-credit-time">编辑时间：2026年6月6日</div>
     </div>
 </body>
 </html>

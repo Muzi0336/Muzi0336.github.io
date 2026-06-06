@@ -142,6 +142,17 @@
             line-height: 1.6;
             margin-top: 8px;
         }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
 
         /* checkbox选中时显示代码块 */
         .code-toggle:checked ~ .code-block {
@@ -398,37 +409,37 @@
 
             <input type="checkbox" id="code-3" class="code-toggle">
             <label for="code-3" class="toggle-label">查看源代码</label>
-            <div class="code-block">&lt;header&gt;
-    &lt;h1&gt;网站标题&lt;/h1&gt;
-    &lt;nav&gt;
-        &lt;a href="#"&gt;首页&lt;/a&gt;
-        &lt;a href="#"&gt;关于&lt;/a&gt;
-        &lt;a href="#"&gt;联系&lt;/a&gt;
-    &lt;/nav&gt;
-&lt;/header&gt;
-
-&lt;main&gt;
-    &lt;article&gt;
-        &lt;h2&gt;文章标题&lt;/h2&gt;
-        &lt;section&gt;
-            &lt;h3&gt;章节1&lt;/h3&gt;
-            &lt;p&gt;章节内容...&lt;/p&gt;
-        &lt;/section&gt;
-        &lt;section&gt;
-            &lt;h3&gt;章节2&lt;/h3&gt;
-            &lt;p&gt;章节内容...&lt;/p&gt;
-        &lt;/section&gt;
-    &lt;/article&gt;
-    
-    &lt;aside&gt;
-        &lt;h3&gt;侧边栏&lt;/h3&gt;
-        &lt;p&gt;相关链接...&lt;/p&gt;
-    &lt;/aside&gt;
-&lt;/main&gt;
-
-&lt;footer&gt;
-    &lt;p&gt;版权信息 © 2024&lt;/p&gt;
-&lt;/footer&gt;</div>
+            <div class="code-block"><span>1</span>&lt;header&gt;
+<span>2</span>    &lt;h1&gt;网站标题&lt;/h1&gt;
+<span>3</span>    &lt;nav&gt;
+<span>4</span>        &lt;a href="#"&gt;首页&lt;/a&gt;
+<span>5</span>        &lt;a href="#"&gt;关于&lt;/a&gt;
+<span>6</span>        &lt;a href="#"&gt;联系&lt;/a&gt;
+<span>7</span>    &lt;/nav&gt;
+<span>8</span>&lt;/header&gt;
+<span>9</span>
+<span>10</span>&lt;main&gt;
+<span>11</span>    &lt;article&gt;
+<span>12</span>        &lt;h2&gt;文章标题&lt;/h2&gt;
+<span>13</span>        &lt;section&gt;
+<span>14</span>            &lt;h3&gt;章节1&lt;/h3&gt;
+<span>15</span>            &lt;p&gt;章节内容...&lt;/p&gt;
+<span>16</span>        &lt;/section&gt;
+<span>17</span>        &lt;section&gt;
+<span>18</span>            &lt;h3&gt;章节2&lt;/h3&gt;
+<span>19</span>            &lt;p&gt;章节内容...&lt;/p&gt;
+<span>20</span>        &lt;/section&gt;
+<span>21</span>    &lt;/article&gt;
+<span>22</span>    
+<span>23</span>    &lt;aside&gt;
+<span>24</span>        &lt;h3&gt;侧边栏&lt;/h3&gt;
+<span>25</span>        &lt;p&gt;相关链接...&lt;/p&gt;
+<span>26</span>    &lt;/aside&gt;
+<span>27</span>&lt;/main&gt;
+<span>28</span>
+<span>29</span>&lt;footer&gt;
+<span>30</span>    &lt;p&gt;版权信息 © 2024&lt;/p&gt;
+<span>31</span>&lt;/footer&gt;</div>
         </div>
 
         <!-- 第4节：div 区块元素 -->
@@ -454,14 +465,14 @@
 
             <input type="checkbox" id="code-4" class="code-toggle">
             <label for="code-4" class="toggle-label">查看源代码</label>
-            <div class="code-block">&lt;div class="box"&gt;
-    &lt;p&gt;这是一个 div 区块&lt;/p&gt;
-    &lt;p&gt;它独占一行&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;div class="box"&gt;
-    &lt;p&gt;这是另一个 div 区块&lt;/p&gt;
-&lt;/div&gt;</div>
+            <div class="code-block"><span>1</span>&lt;div class="box"&gt;
+<span>2</span>    &lt;p&gt;这是一个 div 区块&lt;/p&gt;
+<span>3</span>    &lt;p&gt;它独占一行&lt;/p&gt;
+<span>4</span>&lt;/div&gt;
+<span>5</span>
+<span>6</span>&lt;div class="box"&gt;
+<span>7</span>    &lt;p&gt;这是另一个 div 区块&lt;/p&gt;
+<span>8</span>&lt;/div&gt;</div>
         </div>
 
         <!-- 第5节：span 行内元素 -->
@@ -482,9 +493,9 @@
 
             <input type="checkbox" id="code-5" class="code-toggle">
             <label for="code-5" class="toggle-label">查看源代码</label>
-            <div class="code-block">&lt;p&gt;这是一段文本，其中 &lt;span&gt;这是 span 包裹的内容&lt;/span&gt;，它不会换行。&lt;/p&gt;
-
-&lt;p&gt;多个 span 会 &lt;span&gt;并排显示&lt;/span&gt; &lt;span&gt;在同一行&lt;/span&gt;。&lt;/p&gt;</div>
+            <div class="code-block"><span>1</span>&lt;p&gt;这是一段文本，其中 &lt;span&gt;这是 span 包裹的内容&lt;/span&gt;，它不会换行。&lt;/p&gt;
+<span>2</span>
+<span>3</span>&lt;p&gt;多个 span 会 &lt;span&gt;并排显示&lt;/span&gt; &lt;span&gt;在同一行&lt;/span&gt;。&lt;/p&gt;</div>
         </div>
 
         <!-- 第6节：块级 vs 行内 -->
@@ -541,20 +552,20 @@
 
             <input type="checkbox" id="code-6" class="code-toggle">
             <label for="code-6" class="toggle-label">查看源代码</label>
-            <div class="code-block">&lt;!-- 块级元素 --&gt;
-&lt;div style="width: 200px; height: 100px; background: #3498db;"&gt;
-    块级元素：独占一行，可设置宽高
-&lt;/div&gt;
-
-&lt;!-- 行内元素 --&gt;
-&lt;span style="background: #e74c3c;"&gt;
-    行内元素：不独占一行，不能设置宽高
-&lt;/span&gt;
-
-&lt;!-- 行内块元素 --&gt;
-&lt;span style="display: inline-block; width: 150px; height: 50px; background: #2ecc71;"&gt;
-    行内块：不独占一行，可设置宽高
-&lt;/span&gt;</div>
+            <div class="code-block"><span>1</span>&lt;!-- 块级元素 --&gt;
+<span>2</span>&lt;div style="width: 200px; height: 100px; background: #3498db;"&gt;
+<span>3</span>    块级元素：独占一行，可设置宽高
+<span>4</span>&lt;/div&gt;
+<span>5</span>
+<span>6</span>&lt;!-- 行内元素 --&gt;
+<span>7</span>&lt;span style="background: #e74c3c;"&gt;
+<span>8</span>    行内元素：不独占一行，不能设置宽高
+<span>9</span>&lt;/span&gt;
+<span>10</span>
+<span>11</span>&lt;!-- 行内块元素 --&gt;
+<span>12</span>&lt;span style="display: inline-block; width: 150px; height: 50px; background: #2ecc71;"&gt;
+<span>13</span>    行内块：不独占一行，可设置宽高
+<span>14</span>&lt;/span&gt;</div>
         </div>
 
         <!-- 第7节：inline-block 间隙问题 -->
@@ -576,12 +587,12 @@
 
             <input type="checkbox" id="code-7" class="code-toggle">
             <label for="code-7" class="toggle-label">查看源代码</label>
-            <div class="code-block">&lt;div style="background: #ecf0f1; padding: 10px;"&gt;
-    &lt;span style="display: inline-block; width: 100px; height: 50px; background: #e74c3c;"&gt;&lt;/span&gt;
-    &lt;span style="display: inline-block; width: 100px; height: 50px; background: #3498db;"&gt;&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;!-- 两个 span 之间的换行符会被解析为空白，产生约 4px 间隙 --&gt;</div>
+            <div class="code-block"><span>1</span>&lt;div style="background: #ecf0f1; padding: 10px;"&gt;
+<span>2</span>    &lt;span style="display: inline-block; width: 100px; height: 50px; background: #e74c3c;"&gt;&lt;/span&gt;
+<span>3</span>    &lt;span style="display: inline-block; width: 100px; height: 50px; background: #3498db;"&gt;&lt;/span&gt;
+<span>4</span>&lt;/div&gt;
+<span>5</span>
+<span>6</span>&lt;!-- 两个 span 之间的换行符会被解析为空白，产生约 4px 间隙 --&gt;</div>
         </div>
 
         <!-- 第8节：解决方案 -->
@@ -617,22 +628,22 @@
 
             <input type="checkbox" id="code-8" class="code-toggle">
             <label for="code-8" class="toggle-label">查看源代码</label>
-            <div class="code-block">&lt;!-- 方案1：font-size: 0 --&gt;
-&lt;div style="font-size: 0;"&gt;
-    &lt;span style="display: inline-block; ...; font-size: 14px;"&gt;&lt;/span&gt;
-    &lt;span style="display: inline-block; ...; font-size: 14px;"&gt;&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;!-- 方案2：标签写在同一行 --&gt;
-&lt;div&gt;
-    &lt;span style="display: inline-block; ..."&gt;&lt;/span&gt;&lt;span style="display: inline-block; ..."&gt;&lt;/span&gt;
-&lt;/div&gt;
-
-&lt;!-- 方案3：flex 布局（推荐） --&gt;
-&lt;div style="display: flex;"&gt;
-    &lt;span style="width: 100px; height: 50px; background: #e74c3c;"&gt;&lt;/span&gt;
-    &lt;span style="width: 100px; height: 50px; background: #3498db;"&gt;&lt;/span&gt;
-&lt;/div&gt;</div></div>
+            <div class="code-block"><span>1</span>&lt;!-- 方案1：font-size: 0 --&gt;
+<span>2</span>&lt;div style="font-size: 0;"&gt;
+<span>3</span>    &lt;span style="display: inline-block; ...; font-size: 14px;"&gt;&lt;/span&gt;
+<span>4</span>    &lt;span style="display: inline-block; ...; font-size: 14px;"&gt;&lt;/span&gt;
+<span>5</span>&lt;/div&gt;
+<span>6</span>
+<span>7</span>&lt;!-- 方案2：标签写在同一行 --&gt;
+<span>8</span>&lt;div&gt;
+<span>9</span>    &lt;span style="display: inline-block; ..."&gt;&lt;/span&gt;&lt;span style="display: inline-block; ..."&gt;&lt;/span&gt;
+<span>10</span>&lt;/div&gt;
+<span>11</span>
+<span>12</span>&lt;!-- 方案3：flex 布局（推荐） --&gt;
+<span>13</span>&lt;div style="display: flex;"&gt;
+<span>14</span>    &lt;span style="width: 100px; height: 50px; background: #e74c3c;"&gt;&lt;/span&gt;
+<span>15</span>    &lt;span style="width: 100px; height: 50px; background: #3498db;"&gt;&lt;/span&gt;
+<span>16</span>&lt;/div&gt;</div></div>
         </div>
 
     </main>
