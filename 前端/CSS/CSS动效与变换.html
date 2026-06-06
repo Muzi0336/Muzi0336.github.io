@@ -1,76 +1,312 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS动效与变换</title>
+    <title>CSS 动效与变换</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Microsoft YaHei', sans-serif; background: #f5f5f5; color: #333; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        h1 { text-align: center; color: #2c3e50; margin: 30px 0; font-size: 2.5em; }
-        .section { background: white; border-radius: 12px; padding: 25px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .section h2 { color: #27ae60; border-left: 4px solid #27ae60; padding-left: 12px; margin-bottom: 20px; }
-        .concept { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 3px solid #27ae60; }
-        .demo { background: #ecf0f1; padding: 20px; border-radius: 8px; margin: 15px 0; }
-        .demo-label { font-weight: bold; color: #7f8c8d; margin-bottom: 10px; }
-        .code-block { background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 8px; margin: 10px 0; overflow-x: auto; font-family: 'Consolas', monospace; }
-        .note { background: #fff3cd; padding: 12px; border-radius: 6px; margin: 10px 0; border-left: 3px solid #ffc107; }
-        .box { width: 80px; height: 80px; background: #3498db; color: white; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
-        
-        /* 纯CSS展开折叠 */
-        .code-toggle { display: none; }
-        .toggle-label { 
-            display: inline-block; 
-            background: #27ae60; 
-            color: white; 
-            padding: 8px 16px; 
-            border-radius: 5px; 
-            cursor: pointer; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        nav h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        nav a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .unit h3 {
+            font-size: 15px;
+            color: #555;
+            margin: 15px 0 8px;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
             margin: 10px 0;
         }
-        .toggle-label:hover { background: #229954; }
-        .hidden-code { display: none; margin-top: 10px; }
-        .code-toggle:checked ~ .hidden-code { display: block; }
-        .code-toggle:checked ~ .toggle-label { background: #e74c3c; }
-        .code-toggle:checked ~ .toggle-label::after { content: ' ▲'; }
-        .code-toggle:not(:checked) ~ .toggle-label::after { content: ' ▼'; }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked ~ .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked ~ .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* ========================================
+           以下为各动效知识点的演示样式
+           ======================================== */
+
+        /* 演示盒子基础样式 */
+        .box {
+            width: 80px;
+            height: 80px;
+            background: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        /* 一、transition（过渡） */
+        .transition-demo {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .transition-color {
+            transition: background 0.3s ease;
+        }
+
+        .transition-color:hover {
+            background: #e74c3c;
+        }
+
+        .transition-scale {
+            transition: transform 0.3s ease;
+        }
+
+        .transition-scale:hover {
+            transform: scale(1.2);
+        }
+
+        .transition-radius {
+            transition: border-radius 0.3s ease;
+        }
+
+        .transition-radius:hover {
+            border-radius: 50%;
+        }
+
+        .transition-shadow {
+            transition: box-shadow 0.3s ease;
+        }
+
+        .transition-shadow:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 二、transform（变换） */
+        .transform-demo {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .transform-rotate {
+            transform: rotate(15deg);
+        }
+
+        .transform-scale {
+            transform: scale(1.2);
+        }
+
+        .transform-translate {
+            transform: translate(20px, -10px);
+        }
+
+        .transform-skew {
+            transform: skew(10deg);
+        }
+
+        /* 三、animation（动画） */
+        .animation-demo {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .animation-pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        .animation-spin {
+            animation: spin 2s linear infinite;
+        }
+
+        .animation-bounce {
+            animation: bounce 1s infinite;
+        }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>✨ CSS动效与变换</h1>
-        
-        <div class="section">
-            <h2>1. transition（过渡）</h2>
-            <div class="concept">
-                <p><strong>transition</strong> 实现属性的平滑过渡，最简单的动效方式。</p>
-                <p style="margin-top: 10px;">语法：<code>transition: 属性 时长 缓动函数;</code></p>
+    <!-- 侧边导航 -->
+    <nav>
+        <h3>CSS 动效与变换目录</h3>
+        <a href="#unit-1">一、transition（过渡）</a>
+        <a href="#unit-2">二、transform（变换）</a>
+        <a href="#unit-3">三、animation（动画）</a>
+    </nav>
+
+    <!-- 主内容 -->
+    <main>
+        <!-- 一、transition（过渡） -->
+        <div class="unit" id="unit-1">
+            <h2>一、transition（过渡）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>transition</code> 实现属性的平滑过渡，最简单的动效方式。<br>
+                <strong>语法：</strong><code>transition: 属性 时长 缓动函数;</code><br>
+                <strong>常用场景：</strong>悬停效果、状态切换等。
             </div>
-            
             <div class="demo">
                 <div class="demo-label">👇 鼠标悬停查看过渡效果</div>
-                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                    <div class="box" style="transition: all 0.3s ease;">
-                        颜色过渡
-                    </div>
-                    <div class="box" style="transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
-                        缩放
-                    </div>
-                    <div class="box" style="transition: border-radius 0.3s ease;" onmouseover="this.style.borderRadius='50%'" onmouseout="this.style.borderRadius='8px'">
-                        圆角
-                    </div>
-                    <div class="box" style="transition: box-shadow 0.3s ease;" onmouseover="this.style.boxShadow='0 10px 20px rgba(0,0,0,0.3)'" onmouseout="this.style.boxShadow='none'">
-                        阴影
-                    </div>
+                <div class="transition-demo">
+                    <div class="box transition-color">颜色过渡</div>
+                    <div class="box transition-scale">缩放</div>
+                    <div class="box transition-radius">圆角</div>
+                    <div class="box transition-shadow">阴影</div>
                 </div>
             </div>
-            
-            <input type="checkbox" id="code-transition" class="code-toggle">
-            <label for="code-transition" class="toggle-label">查看代码</label>
-            <div class="hidden-code">
-                <div class="code-block">
-                    <code>/* 基础过渡 */
+            <input type="checkbox" id="code-1" class="code-toggle">
+            <label for="code-1" class="toggle-label">查看代码</label>
+            <div class="code-block">/* 基础过渡 */
 .box {
     transition: all 0.3s ease;
 }
@@ -90,45 +326,41 @@
 .box {
     transition: transform 0.3s ease, 
                 box-shadow 0.5s ease;
-}</code>
-                </div>
-            </div>
+}</div>
         </div>
 
-        <div class="section">
-            <h2>2. transform（变换）</h2>
-            <div class="concept">
-                <p><strong>transform</strong> 对元素进行2D或3D变换，不会影响其他元素。</p>
-                <p style="margin-top: 10px;">常用变换：<code>rotate</code>、<code>scale</code>、<code>translate</code>、<code>skew</code></p>
+        <!-- 二、transform（变换） -->
+        <div class="unit" id="unit-2">
+            <h2>二、transform（变换）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>transform</code> 对元素进行2D或3D变换，不会影响其他元素。<br>
+                <strong>常用变换：</strong><code>rotate</code>、<code>scale</code>、<code>translate</code>、<code>skew</code><br>
+                <strong>常用场景：</strong>图标旋转、图片缩放、元素移动等。
             </div>
-            
             <div class="demo">
                 <div class="demo-label">👇 不同变换效果</div>
-                <div style="display: flex; gap: 30px; flex-wrap: wrap; justify-content: center;">
+                <div class="transform-demo">
                     <div>
                         <p style="margin-bottom: 10px; text-align: center;">rotate 旋转</p>
-                        <div class="box" style="transform: rotate(15deg);">15°</div>
+                        <div class="box transform-rotate">15°</div>
                     </div>
                     <div>
                         <p style="margin-bottom: 10px; text-align: center;">scale 缩放</p>
-                        <div class="box" style="transform: scale(1.2);">1.2x</div>
+                        <div class="box transform-scale">1.2x</div>
                     </div>
                     <div>
                         <p style="margin-bottom: 10px; text-align: center;">translate 移动</p>
-                        <div class="box" style="transform: translate(20px, -10px);">移动</div>
+                        <div class="box transform-translate">移动</div>
                     </div>
                     <div>
                         <p style="margin-bottom: 10px; text-align: center;">skew 倾斜</p>
-                        <div class="box" style="transform: skew(10deg);">倾斜</div>
+                        <div class="box transform-skew">倾斜</div>
                     </div>
                 </div>
             </div>
-            
-            <input type="checkbox" id="code-transform" class="code-toggle">
-            <label for="code-transform" class="toggle-label">查看代码</label>
-            <div class="hidden-code">
-                <div class="code-block">
-                    <code>/* 旋转 */
+            <input type="checkbox" id="code-2" class="code-toggle">
+            <label for="code-2" class="toggle-label">查看代码</label>
+            <div class="code-block">/* 旋转 */
 transform: rotate(45deg);
 
 /* 缩放 */
@@ -145,41 +377,37 @@ transform: skew(10deg);
 transform: rotate(45deg) scale(1.2);
 
 /* 原点 */
-transform-origin: center center;</code>
-                </div>
-            </div>
+transform-origin: center center;</div>
         </div>
 
-        <div class="section">
-            <h2>3. animation（动画）</h2>
-            <div class="concept">
-                <p><strong>animation</strong> 配合 <code>@keyframes</code> 实现复杂动画。</p>
-                <p style="margin-top: 10px;">比 transition 更强大，可以定义多个关键帧。</p>
+        <!-- 三、animation（动画） -->
+        <div class="unit" id="unit-3">
+            <h2>三、animation（动画）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>animation</code> 配合 <code>@keyframes</code> 实现复杂动画。<br>
+                <strong>优势：</strong>比 transition 更强大，可以定义多个关键帧。<br>
+                <strong>常用场景：</strong>加载动画、页面过渡、游戏角色等。
             </div>
-            
             <div class="demo">
                 <div class="demo-label">👇 动画效果演示</div>
-                <div style="display: flex; gap: 30px; flex-wrap: wrap; justify-content: center;">
+                <div class="animation-demo">
                     <div>
                         <p style="margin-bottom: 10px; text-align: center;">脉冲动画</p>
-                        <div class="box" style="animation: pulse 1.5s infinite;">脉冲</div>
+                        <div class="box animation-pulse">脉冲</div>
                     </div>
                     <div>
                         <p style="margin-bottom: 10px; text-align: center;">旋转动画</p>
-                        <div class="box" style="animation: spin 2s linear infinite;">旋转</div>
+                        <div class="box animation-spin">旋转</div>
                     </div>
                     <div>
                         <p style="margin-bottom: 10px; text-align: center;">弹跳动画</p>
-                        <div class="box" style="animation: bounce 1s infinite;">弹跳</div>
+                        <div class="box animation-bounce">弹跳</div>
                     </div>
                 </div>
             </div>
-            
-            <input type="checkbox" id="code-animation" class="code-toggle">
-            <label for="code-animation" class="toggle-label">查看代码</label>
-            <div class="hidden-code">
-                <div class="code-block">
-                    <code>/* 定义动画 */
+            <input type="checkbox" id="code-3" class="code-toggle">
+            <label for="code-3" class="toggle-label">查看代码</label>
+            <div class="code-block">/* 定义动画 */
 @keyframes pulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.1); }
@@ -206,17 +434,9 @@ animation: 名称 时长 缓动函数 延迟 次数 方向 填充模式;
 
 /* 常用值 */
 animation: spin 2s linear infinite;
-animation: bounce 1s ease-in-out infinite alternate;</code>
-                </div>
-            </div>
+animation: bounce 1s ease-in-out infinite alternate;</div>
         </div>
-
-        <div class="note">
-            <strong>💡 性能提示</strong>：
-            <br>• 只用 <code>transform</code> 和 <code>opacity</code> 做动画，性能最好
-            <br>• 避免用 <code>width</code>、<code>height</code>、<code>margin</code> 做动画，会触发重排
-            <br>• <code>will-change</code> 属性可以提前告知浏览器优化
-        </div>
-    </div>
+    </main>
 </body>
+
 </html>

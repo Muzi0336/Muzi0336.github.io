@@ -518,9 +518,9 @@ p {
     font-size: 16px;
 }
 
-<!-- HTML -->
-<p>我是段落内容</p>
-<p>我也是段落内容</p></div>
+/* HTML */
+&lt;p&gt;我是段落内容&lt;/p&gt;
+&lt;p&gt;我也是段落内容&lt;/p&gt;</div>
         </div>
 
         <!-- 二、类选择器 -->
@@ -550,10 +550,10 @@ p {
     color: blue;
 }
 
-<!-- HTML -->
-<p>普通文字</p>
-<p class="highlight">高亮文字</p>
-<p class="text-blue">蓝色文字</p></div>
+/* HTML */
+&lt;p&gt;普通文字&lt;/p&gt;
+&lt;p class="highlight"&gt;高亮文字&lt;/p&gt;
+&lt;p class="text-blue"&gt;蓝色文字&lt;/p&gt;</div>
         </div>
 
         <!-- 三、ID 选择器 -->
@@ -578,9 +578,9 @@ p {
     font-size: 18px;
 }
 
-<!-- HTML -->
-<p>普通段落</p>
-<p id="special">特殊段落</p></div>
+/* HTML */
+&lt;p&gt;普通段落&lt;/p&gt;
+&lt;p id="special"&gt;特殊段落&lt;/p&gt;</div>
         </div>
 
         <!-- 四、通配符选择器 -->
@@ -630,13 +630,13 @@ p {
     font-weight: bold;
 }
 
-<!-- HTML -->
-<div class="ancestor">
-    <span>直接子 span</span>
-    <div>
-        <span>孙辈 span</span>  <!-- 也被选中 -->
-    </div>
-</div></div>
+/* HTML */
+&lt;div class="ancestor"&gt;
+    &lt;span&gt;直接子 span&lt;/span&gt;
+    &lt;div&gt;
+        &lt;span&gt;孙辈 span&lt;/span&gt;  &lt;!-- 也被选中 --&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</div>
         </div>
 
         <!-- 六、子元素选择器 -->
@@ -663,13 +663,13 @@ p {
     color: red;
 }
 
-<!-- HTML -->
-<div class="parent">
-    <p>直接子 p → 红色</p>
-    <div>
-        <p>孙辈 p → 不变</p>
-    </div>
-</div></div>
+/* HTML */
+&lt;div class="parent"&gt;
+    &lt;p&gt;直接子 p → 红色&lt;/p&gt;
+    &lt;div&gt;
+        &lt;p&gt;孙辈 p → 不变&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</div>
         </div>
 
         <!-- 七、相邻兄弟选择器 -->
@@ -696,10 +696,10 @@ p {
     font-weight: bold;
 }
 
-<!-- HTML -->
-<h3>标题</h3>
-<p>紧跟的 p → 紫色</p>
-<p>第二个 p → 不变</p></div>
+/* HTML */
+&lt;h3&gt;标题&lt;/h3&gt;
+&lt;p&gt;紧跟的 p → 紫色&lt;/p&gt;
+&lt;p&gt;第二个 p → 不变&lt;/p&gt;</div>
         </div>
 
         <!-- 八、通用兄弟选择器 -->
@@ -726,11 +726,11 @@ p {
     color: blue;
 }
 
-<!-- HTML -->
-<h3>标题</h3>
-<p>第一个 p → 蓝色</p>
-<p>第二个 p → 蓝色</p>
-<p>第三个 p → 蓝色</p></div>
+/* HTML */
+&lt;h3&gt;标题&lt;/h3&gt;
+&lt;p&gt;第一个 p → 蓝色&lt;/p&gt;
+&lt;p&gt;第二个 p → 蓝色&lt;/p&gt;
+&lt;p&gt;第三个 p → 蓝色&lt;/p&gt;</div>
         </div>
 
         <!-- 九、分组选择器 -->
@@ -757,10 +757,10 @@ p {
     color: orange;
 }
 
-<!-- HTML -->
-<h3>标题 → 橙色</h3>
-<p>段落 → 橙色</p>
-<span>span → 不变</span></div>
+/* HTML */
+&lt;h3&gt;标题 → 橙色&lt;/h3&gt;
+&lt;p&gt;段落 → 橙色&lt;/p&gt;
+&lt;span&gt;span → 不变&lt;/span&gt;</div>
         </div>
 
         <!-- 十、属性选择器 -->
@@ -794,11 +794,11 @@ p {
 [href$=".pdf"] { color: red; }
 [href*="github"] { color: purple; text-decoration: underline; }
 
-<!-- HTML -->
-<p title="提示">有 title 的段落</p>
-<input type="text">
-<a href="https://github.com">GitHub</a>
-<a href="file.pdf">PDF 文件</a></div>
+/* HTML */
+&lt;p title="提示"&gt;有 title 的段落&lt;/p&gt;
+&lt;input type="text"&gt;
+&lt;a href="https://github.com"&gt;GitHub&lt;/a&gt;
+&lt;a href="file.pdf"&gt;PDF 文件&lt;/a&gt;</div>
         </div>
 
         <!-- 十一、:hover -->
@@ -901,13 +901,13 @@ p {
 li:first-child { color: red; font-weight: bold; }
 li:last-child { color: blue; font-weight: bold; }
 
-<!-- HTML -->
-<ul>
-    <li>第一个 → 红色</li>
-    <li>第二个</li>
-    <li>第三个</li>
-    <li>第四个 → 蓝色</li>
-</ul></div>
+/* HTML */
+&lt;ul&gt;
+    &lt;li&gt;第一个 → 红色&lt;/li&gt;
+    &lt;li&gt;第二个&lt;/li&gt;
+    &lt;li&gt;第三个&lt;/li&gt;
+    &lt;li&gt;第四个 → 蓝色&lt;/li&gt;
+&lt;/ul&gt;</div>
         </div>
 
         <!-- 十五、:nth-child -->
@@ -960,10 +960,10 @@ li:nth-child(3) { color: red; font-weight: bold; }</div>
 p { color: gray; }
 p:not(.skip) { color: green; font-weight: bold; }
 
-<!-- HTML -->
-<p>普通 p → 绿色</p>
-<p class="skip">.skip → 灰色</p>
-<p>普通 p → 绿色</p></div>
+/* HTML */
+&lt;p&gt;普通 p → 绿色&lt;/p&gt;
+&lt;p class="skip"&gt;.skip → 灰色&lt;/p&gt;
+&lt;p&gt;普通 p → 绿色&lt;/p&gt;</div>
         </div>
 
         <!-- 十七、::before / ::after -->
@@ -992,9 +992,9 @@ p::after {
     content: " 👈";
 }
 
-<!-- HTML -->
-<p>我是段落内容</p>
-<!-- 渲染结果：👉 我是段落内容 👈 --></div>
+/* HTML */
+&lt;p&gt;我是段落内容&lt;/p&gt;
+/* 渲染结果：👉 我是段落内容 👈 */</div>
         </div>
 
         <!-- 十八、::first-letter -->
@@ -1020,9 +1020,9 @@ p::first-letter {
     font-weight: bold;
 }
 
-<!-- HTML -->
-<p>hello world</p>
-<!-- 渲染结果：第一个字母 h 变成红色大号 --></div>
+/* HTML */
+&lt;p&gt;hello world&lt;/p&gt;
+/* 渲染结果：第一个字母 h 变成红色大号 */</div>
         </div>
 
         <!-- 十九、::first-line -->
@@ -1047,9 +1047,9 @@ p::first-line {
     font-weight: bold;
 }
 
-<!-- HTML -->
-<p>这是一段比较长的文字...</p>
-<!-- 只有第一行变蓝，窗口宽度变化时范围动态调整 --></div>
+/* HTML */
+&lt;p&gt;这是一段比较长的文字...&lt;/p&gt;
+/* 只有第一行变蓝，窗口宽度变化时范围动态调整 */</div>
         </div>
 
         <!-- 二十、::selection -->
@@ -1074,8 +1074,8 @@ p::selection {
     color: #2c3e50;
 }
 
-<!-- HTML -->
-<p>选中我试试</p></div>
+/* HTML */
+&lt;p&gt;选中我试试&lt;/p&gt;</div>
         </div>
 
         <!-- 二十一、:root -->
@@ -1103,7 +1103,7 @@ p {
     color: var(--main-color);
 }
 
-<!-- 修改 :root 中的变量，所有使用它的地方都会变 --></div>
+/* 修改 :root 中的变量，所有使用它的地方都会变 */</div>
         </div>
 
         <!-- 二十二、:empty -->
@@ -1134,11 +1134,11 @@ div:empty::after {
     color: red;
 }
 
-<!-- HTML -->
-<div>有内容</div>
-<div></div> <!-- 空的，会变红 -->
-<div>有内容</div>
-<div></div> <!-- 空的，会变红 --></div>
+/* HTML */
+&lt;div&gt;有内容&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt; &lt;!-- 空的，会变红 --&gt;
+&lt;div&gt;有内容&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt; &lt;!-- 空的，会变红 --&gt;</div>
         </div>
 
         <!-- 二十三、:checked -->
@@ -1166,9 +1166,9 @@ input[type="checkbox"]:checked + label {
     text-decoration: line-through;
 }
 
-<!-- HTML -->
-<input type="checkbox" id="c1">
-<label for="c1">学习 HTML</label></div>
+/* HTML */
+&lt;input type="checkbox" id="c1"&gt;
+&lt;label for="c1"&gt;学习 HTML&lt;/label&gt;</div>
         </div>
 
         <!-- 二十四、:disabled / :enabled -->
@@ -1191,9 +1191,9 @@ input[type="checkbox"]:checked + label {
 input:disabled { background: #ecf0f1; cursor: not-allowed; }
 input:enabled { border: 2px solid blue; }
 
-<!-- HTML -->
-<input type="text" value="可用">
-<input type="text" value="禁用" disabled></div>
+/* HTML */
+&lt;input type="text" value="可用"&gt;
+&lt;input type="text" value="禁用" disabled&gt;</div>
         </div>
 
         <!-- 二十五、:valid / :invalid -->
@@ -1217,10 +1217,10 @@ input:enabled { border: 2px solid blue; }
 input:valid { border: 2px solid green; }
 input:invalid { border: 2px solid red; }
 
-<!-- HTML -->
-<input type="email" placeholder="输入邮箱">
-<!-- 输入 abc → 红色（不合法）-->
-<!-- 输入 abc@123.com → 绿色（合法）--></div>
+/* HTML */
+&lt;input type="email" placeholder="输入邮箱"&gt;
+/* 输入 abc → 红色（不合法）*/
+/* 输入 abc@123.com → 绿色（合法）*/</div>
         </div>
 
         <!-- 二十六、:only-child -->
@@ -1252,14 +1252,14 @@ li:only-child {
     background: #fadbd8;
 }
 
-<!-- HTML -->
-<ul>
-    <li>唯一的 li → 红色</li>
-</ul>
-<ul>
-    <li>有兄弟</li>
-    <li>也有兄弟</li>
-</ul></div>
+/* HTML */
+&lt;ul&gt;
+    &lt;li&gt;唯一的 li → 红色&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+    &lt;li&gt;有兄弟&lt;/li&gt;
+    &lt;li&gt;也有兄弟&lt;/li&gt;
+&lt;/ul&gt;</div>
         </div>
 
         <!-- 二十七、:first-of-type / :last-of-type -->
@@ -1286,11 +1286,11 @@ li:only-child {
 p:first-of-type { color: green; font-weight: bold; }
 p:last-of-type { color: purple; font-weight: bold; }
 
-<!-- HTML -->
-<h3>标题</h3>
-<p>第一个 p → 绿色</p>
-<p>第二个 p</p>
-<p>第三个 p → 紫色</p></div>
+/* HTML */
+&lt;h3&gt;标题&lt;/h3&gt;
+&lt;p&gt;第一个 p → 绿色&lt;/p&gt;
+&lt;p&gt;第二个 p&lt;/p&gt;
+&lt;p&gt;第三个 p → 紫色&lt;/p&gt;</div>
         </div>
 
         <!-- 二十八、:nth-of-type -->
@@ -1317,11 +1317,11 @@ p:last-of-type { color: purple; font-weight: bold; }
 p:nth-of-type(odd) { background: #ebf5fb; }
 p:nth-of-type(even) { background: #fdebd0; }
 
-<!-- HTML -->
-<h3>标题不参与计算</h3>
-<p>第一个 p（奇数）</p>
-<p>第二个 p（偶数）</p>
-<p>第三个 p（奇数）</p></div>
+/* HTML */
+&lt;h3&gt;标题不参与计算&lt;/h3&gt;
+&lt;p&gt;第一个 p（奇数）&lt;/p&gt;
+&lt;p&gt;第二个 p（偶数）&lt;/p&gt;
+&lt;p&gt;第三个 p（奇数）&lt;/p&gt;</div>
         </div>
 
         <!-- 二十九、:required / :optional -->
@@ -1341,13 +1341,13 @@ p:nth-of-type(even) { background: #fdebd0; }
             </div>
             <input type="checkbox" id="code-29" class="code-toggle">
             <label for="code-29" class="toggle-label">查看代码</label>
-            <div class="code-block">/* CSS */
+                        <div class="code-block">/* CSS */
 input:required { border: 2px solid red; }
 input:optional { border: 2px solid green; }
 
-<!-- HTML -->
-<input type="text" required> <!-- 必填 → 红色 -->
-<input type="text"> <!-- 选填 → 绿色 --></div>
+/* HTML */
+&lt;input type="text" required&gt; &lt;!-- 必填 → 红色 --&gt;
+&lt;input type="text"&gt; &lt;!-- 选填 → 绿色 --&gt;</div>
         </div>
 
         <!-- 三十、优先级 -->
@@ -1375,10 +1375,10 @@ p { color: gray; } /* 权重 1 */
 .specific { color: blue; } /* 权重 10 */
 #very-specific { color: red; font-weight: bold; } /* 权重 100 ✓ */
 
-<!-- HTML -->
-<p id="very-specific" class="specific">最终显示红色</p>
+/* HTML */
+&lt;p id="very-specific" class="specific"&gt;最终显示红色&lt;/p&gt;
 
-<!-- 如果要强制覆盖，可以用 !important（但不推荐滥用）-->
+/* 如果要强制覆盖，可以用 !important（但不推荐滥用）*/
 /* p { color: gray !important; } */</div>
         </div>
 
