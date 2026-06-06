@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多媒体与嵌入</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        nav h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        nav a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked ~ .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked ~ .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 演示区内的媒体样式 */
+        .demo video, .demo audio, .demo iframe {
+            margin: 10px 0;
+        }
+
+        .demo pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: Consolas, monospace;
+        }
+
+        .demo code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 属性表格 */
+        .attr-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .attr-table th, .attr-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .attr-table th {
+            background: #3498db;
+            color: white;
+        }
+
+        .attr-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav>
+        <h3>多媒体与嵌入</h3>
+        <a href="#unit-1">1. 视频标签 video</a>
+        <a href="#unit-2">2. 音频标签 audio</a>
+        <a href="#unit-3">3. 嵌入外部内容 iframe</a>
+        <a href="#unit-4">4. 代码展示 pre/code</a>
+        <a href="#unit-5">5. 图像热区 map/area</a>
+        <a href="#unit-6">6. meta 标签</a>
+        <a href="#unit-7">7. script 的 async/defer</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- 第1节：视频标签 -->
+        <div class="unit" id="unit-1"> <!-- 块级容器 -->
+            <h2>1. 视频标签 video</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;video&gt;</code> 标签用于嵌入视频，<code>controls</code> 属性显示播放控件。</p> <!-- 段落标签 -->
+                <p>常用属性：<code>autoplay</code> 自动播放 | <code>loop</code> 循环 | <code>muted</code> 静音 | <code>poster</code> 封面图</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <video src="video.mp4" controls width="400"> <!-- 视频标签 --></video>
+            </div>
+
+            <input type="checkbox" id="code-1" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-1" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;video src="video.mp4" controls width="400"&gt;&lt;/video&gt;
+<span>2</span>
+<span>3</span>&lt;!-- 完整写法 --&gt;
+<span>4</span>&lt;video src="video.mp4" 
+<span>5</span>       controls 
+<span>6</span>       autoplay 
+<span>7</span>       loop 
+<span>8</span>       muted 
+<span>9</span>       poster="cover.jpg"
+<span>10</span>       width="400"&gt;
+<span>11</span>    您的浏览器不支持视频播放
+<span>12</span>&lt;/video&gt;</div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->video 属性说明：</div>
+                <table class="attr-table"> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th> <!-- 表格表头 -->属性</th>
+                        <th> <!-- 表格表头 -->说明</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->controls</td>
+                        <td> <!-- 表格单元格 -->显示播放控件</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->autoplay</td>
+                        <td> <!-- 表格单元格 -->自动播放（需配合 muted）</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->loop</td>
+                        <td> <!-- 表格单元格 -->循环播放</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->muted</td>
+                        <td> <!-- 表格单元格 -->静音</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->poster</td>
+                        <td> <!-- 表格单元格 -->封面图 URL</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->width/height</td>
+                        <td> <!-- 表格单元格 -->尺寸</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 第2节：音频标签 -->
+        <div class="unit" id="unit-2"> <!-- 块级容器 -->
+            <h2>2. 音频标签 audio</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;audio&gt;</code> 标签用于嵌入音频，用法与 video 类似。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <audio src="audio.mp3" controls> <!-- 音频标签 --></audio>
+            </div>
+
+            <input type="checkbox" id="code-2" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-2" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;audio src="audio.mp3" controls&gt;&lt;/audio&gt;
+<span>2</span>
+<span>3</span>&lt;!-- 多格式兼容 --&gt;
+<span>4</span>&lt;audio controls&gt;
+<span>5</span>    &lt;source src="audio.mp3" type="audio/mpeg"&gt;
+<span>6</span>    &lt;source src="audio.ogg" type="audio/ogg"&gt;
+<span>7</span>    您的浏览器不支持音频播放
+<span>8</span>&lt;/audio&gt;</div>
+        </div>
+
+        <!-- 第3节：iframe -->
+        <div class="unit" id="unit-3"> <!-- 块级容器 -->
+            <h2>3. 嵌入外部内容 iframe</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;iframe&gt;</code> 标签用于在网页中嵌入另一个网页或外部内容。</p> <!-- 段落标签 -->
+                <p>常用场景：嵌入地图、视频、第三方内容等。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <iframe src="https://www.example.com" width="400" height="300" frameborder="0"> <!-- 内嵌框架 --></iframe>
+            </div>
+
+            <input type="checkbox" id="code-3" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-3" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;iframe src="https://www.example.com" 
+<span>2</span>        width="400" 
+<span>3</span>        height="300" 
+<span>4</span>        frameborder="0"&gt;
+<span>5</span>&lt;/iframe&gt;
+<span>6</span>
+<span>7</span>&lt;!-- 常用属性 --&gt;
+<span>8</span>&lt;iframe src="map.html" 
+<span>9</span>        width="100%" 
+<span>10</span>        height="400" 
+<span>11</span>        frameborder="0"
+<span>12</span>        allowfullscreen&gt;
+<span>13</span>&lt;/iframe&gt;</div>
+        </div>
+
+        <!-- 第4节：pre/code -->
+        <div class="unit" id="unit-4"> <!-- 块级容器 -->
+            <h2>4. 代码展示 pre/code</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;pre&gt;</code> 标签保留文本中的空格和换行，<code>&lt;code&gt;</code> 标签表示代码。</p> <!-- 段落标签 -->
+                <p>两者常结合使用，用于展示代码片段。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <pre><code>&lt;!-- HTML 代码示例 --&gt;
+&lt;div class="container"&gt;
+    &lt;h1&gt;标题&lt;/h1&gt;
+    &lt;p&gt;段落文本&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+
+            <input type="checkbox" id="code-4" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-4" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;pre&gt;&lt;code&gt;&amp;lt;!-- HTML 代码示例 --&amp;gt;
+<span>2</span>&amp;lt;div class="container"&amp;gt;
+<span>3</span>    &amp;lt;h1&amp;gt;标题&amp;lt;/h1&amp;gt;
+<span>4</span>    &amp;lt;p&amp;gt;段落文本&amp;lt;/p&amp;gt;
+<span>5</span>&amp;lt;/div&amp;gt;&lt;/code&gt;&lt;/pre&gt;</div>
+        </div>
+
+        <!-- 第5节：图像热区 -->
+        <div class="unit" id="unit-5"> <!-- 块级容器 -->
+            <h2>5. 图像热区 map/area</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;map&gt;</code> 和 <code>&lt;area&gt;</code> 标签用于创建图像热区，点击图片不同区域跳转不同链接。</p> <!-- 段落标签 -->
+                <p><code>shape</code> 属性：rect（矩形）、circle（圆形）、poly（多边形）。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <img src="image.jpg" alt="示例图片" usemap="#workmap" width="400"> <!-- 图片标签，单标签 -->
+                <map name="workmap">
+                    <area shape="rect" coords="0,0,100,100" href="link1.html" alt="区域1">
+                    <area shape="circle" coords="200,200,50" href="link2.html" alt="区域2">
+                </map>
+            </div>
+
+            <input type="checkbox" id="code-5" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-5" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;img src="image.jpg" alt="示例图片" usemap="#workmap" width="400"&gt;
+<span>2</span>
+<span>3</span>&lt;map name="workmap"&gt;
+<span>4</span>    &lt;area shape="rect" coords="0,0,100,100" href="link1.html" alt="区域1"&gt;
+<span>5</span>    &lt;area shape="circle" coords="200,200,50" href="link2.html" alt="区域2"&gt;
+<span>6</span>&lt;/map&gt;</div>
+        </div>
+
+        <!-- 第6节：meta 标签 -->
+        <div class="unit" id="unit-6"> <!-- 块级容器 -->
+            <h2>6. meta 标签</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;meta&gt;</code> 标签定义文档的元数据，如字符集、视口、SEO 信息等。</p> <!-- 段落标签 -->
+                <p>常用属性：<code>charset</code>、<code>name</code>、<code>content</code>、<code>http-equiv</code>。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->常用 meta 标签：</div>
+                <pre><code>&lt;!-- 字符集 --&gt;
+&lt;meta charset="UTF-8"&gt;
+
+&lt;!-- 视口（移动端适配） --&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+
+&lt;!-- SEO 描述 --&gt;
+&lt;meta name="description" content="网页描述，150字以内"&gt;
+
+&lt;!-- SEO 关键词 --&gt;
+&lt;meta name="keywords" content="HTML, CSS, JavaScript"&gt;
+
+&lt;!-- 作者 --&gt;
+&lt;meta name="author" content="作者名"&gt;
+
+&lt;!-- 自动刷新 --&gt;
+&lt;meta http-equiv="refresh" content="30"&gt;
+
+&lt;!-- 跳转 --&gt;
+&lt;meta http-equiv="refresh" content="5;url=https://www.example.com"&gt;</code></pre>
+            </div>
+
+            <input type="checkbox" id="code-6" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-6" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;meta charset="UTF-8"&gt;
+<span>2</span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+<span>3</span>&lt;meta name="description" content="网页描述，150字以内"&gt;
+<span>4</span>&lt;meta name="keywords" content="HTML, CSS, JavaScript"&gt;
+<span>5</span>&lt;meta name="author" content="作者名"&gt;
+<span>6</span>&lt;meta http-equiv="refresh" content="30"&gt;</div>
+        </div>
+
+        <!-- 第7节：script async/defer -->
+        <div class="unit" id="unit-7"> <!-- 块级容器 -->
+            <h2>7. script 的 async/defer</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;script&gt;</code> 标签用于引入 JavaScript，<code>async</code> 和 <code>defer</code> 控制加载方式。</p> <!-- 段落标签 -->
+                <p><strong>async</strong>：异步加载，加载完立即执行（不保证顺序）。</p> <!-- 段落标签 -->
+                <p><strong>defer</strong>：延迟执行，等 HTML 解析完再执行（保证顺序）。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->三种加载方式对比：</div>
+                <table class="attr-table"> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th> <!-- 表格表头 -->方式</th>
+                        <th> <!-- 表格表头 -->加载</th>
+                        <th> <!-- 表格表头 -->执行</th>
+                        <th> <!-- 表格表头 -->适用场景</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->无属性</td>
+                        <td> <!-- 表格单元格 -->同步阻塞</td>
+                        <td> <!-- 表格单元格 -->立即执行</td>
+                        <td> <!-- 表格单元格 -->需要立即执行的脚本</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->async</td>
+                        <td> <!-- 表格单元格 -->异步加载</td>
+                        <td> <!-- 表格单元格 -->加载完立即执行</td>
+                        <td> <!-- 表格单元格 -->独立脚本（如统计）</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->defer</td>
+                        <td> <!-- 表格单元格 -->异步加载</td>
+                        <td> <!-- 表格单元格 -->HTML解析完后执行</td>
+                        <td> <!-- 表格单元格 -->需要保证顺序的脚本</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-7" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-7" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;!-- 同步加载（阻塞） --&gt;
+<span>2</span>&lt;script src="app.js"&gt;&lt;/script&gt;
+<span>3</span>
+<span>4</span>&lt;!-- 异步加载（不保证顺序） --&gt;
+<span>5</span>&lt;script src="analytics.js" async&gt;&lt;/script&gt;
+<span>6</span>
+<span>7</span>&lt;!-- 延迟执行（保证顺序） --&gt;
+<span>8</span>&lt;script src="app.js" defer&gt;&lt;/script&gt;
+<span>9</span>
+<span>10</span>&lt;!-- 内联脚本 --&gt;
+<span>11</span>&lt;script&gt;
+<span>12</span>    console.log('Hello!');
+<span>13</span>&lt;/script&gt;</div>
+        </div>
+
+    </main>
+</body>
+
+</html>

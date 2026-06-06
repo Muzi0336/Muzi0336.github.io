@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 单位</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        nav h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        nav a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .unit h3 {
+            font-size: 15px;
+            color: #555;
+            margin: 15px 0 8px;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked ~ .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked ~ .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* ========================================
+           以下为各单位知识点的演示样式
+           ======================================== */
+
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #34495e;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav>
+        <h3>CSS 单位目录</h3>
+        <a href="#unit-1">一、绝对单位</a>
+        <a href="#unit-2">二、相对单位</a>
+        <a href="#unit-3">三、视口单位</a>
+        <a href="#unit-4">四、单位对比表</a>
+    </nav>
+
+    <!-- 主内容 -->
+    <main>
+        <!-- 一、绝对单位 -->
+        <div class="unit" id="unit-1">
+            <h2>一、绝对单位</h2>
+            <div class="explain">
+                <strong>概念：</strong>绝对单位是固定大小，不随环境变化。<br>
+                <strong>常用单位：</strong><code>px</code>（像素）<br>
+                <strong>其他单位：</strong><code>cm</code>、<code>mm</code>、<code>in</code>、<code>pt</code>、<code>pc</code>（很少用）
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 px 像素演示</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div style="width: 50px; height: 50px; background: #3498db; color: white; font-size: 12px; display: flex; align-items: center; justify-content: center;">12px</div>
+                    <div style="width: 60px; height: 60px; background: #e74c3c; color: white; font-size: 16px; display: flex; align-items: center; justify-content: center;">16px</div>
+                    <div style="width: 70px; height: 70px; background: #2ecc71; color: white; font-size: 20px; display: flex; align-items: center; justify-content: center;">20px</div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-1" class="code-toggle">
+            <label for="code-1" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* px 像素（最常用） */
+<span>2</span>font-size: 16px;
+<span>3</span>width: 200px;
+<span>4</span>margin: 10px;
+<span>5</span>
+<span>6</span>/* 其他绝对单位（很少用） */
+<span>7</span>cm, mm, in, pt, pc</div>
+        </div>
+
+        <!-- 二、相对单位 -->
+        <div class="unit" id="unit-2">
+            <h2>二、相对单位</h2>
+            <div class="explain">
+                <strong>概念：</strong>相对单位是相对于其他值变化，更适合响应式设计。<br>
+                <strong>常用单位：</strong><code>rem</code>（相对于根元素）、<code>em</code>（相对于父元素）<br>
+                <strong>推荐用法：</strong>用 rem 做布局，用 em 做组件内部
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 rem vs em 对比</div>
+                <div style="font-size: 16px;">
+                    <p style="margin-bottom: 10px;">父元素 font-size: 16px</p>
+                    <p style="font-size: 1rem; background: #3498db; color: white; padding: 10px; margin: 5px;">
+                        1rem = 16px（相对于根元素）
+                    </p>
+                    <p style="font-size: 1.5rem; background: #e74c3c; color: white; padding: 10px; margin: 5px;">
+                        1.5rem = 24px
+                    </p>
+                    <div style="font-size: 20px;">
+                        <p style="margin-bottom: 5px;">父元素 font-size: 20px</p>
+                        <p style="font-size: 1em; background: #2ecc71; color: white; padding: 10px; margin: 5px;">
+                            1em = 20px（相对于父元素）
+                        </p>
+                        <p style="font-size: 1.5em; background: #f39c12; color: white; padding: 10px; margin: 5px;">
+                            1.5em = 30px
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-2" class="code-toggle">
+            <label for="code-2" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* rem 相对于根元素（html 的 font-size） */
+<span>2</span>html { font-size: 16px; }
+<span>3</span>.box { font-size: 1rem; }  /* = 16px */
+<span>4</span>.box { font-size: 1.5rem; }  /* = 24px */
+<span>5</span>
+<span>6</span>/* em 相对于父元素 */
+<span>7</span>.parent { font-size: 20px; }
+<span>8</span>.child { font-size: 1em; }  /* = 20px */
+<span>9</span>.child { font-size: 1.5em; }  /* = 30px */
+<span>10</span>
+<span>11</span>/* 推荐：用 rem 做布局，用 em 做组件内部 */</div>
+        </div>
+
+        <!-- 三、视口单位 -->
+        <div class="unit" id="unit-3">
+            <h2>三、视口单位</h2>
+            <div class="explain">
+                <strong>概念：</strong>视口单位是相对于浏览器窗口大小，非常适合响应式设计。<br>
+                <strong>常用单位：</strong><br>
+                <code>vw</code> — 视口宽度的 1%<br>
+                <code>vh</code> — 视口高度的 1%<br>
+                <code>vmin</code> — vw 和 vh 中较小的那个<br>
+                <code>vmax</code> — vw 和 vh 中较大的那个
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 视口单位演示</div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="width: 50vw; height: 40px; background: #3498db; color: white; display: flex; align-items: center; justify-content: center;">
+                        width: 50vw（视口宽度的50%）
+                    </div>
+                    <div style="width: 80vw; height: 40px; background: #e74c3c; color: white; display: flex; align-items: center; justify-content: center;">
+                        width: 80vw（视口宽度的80%）
+                    </div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-3" class="code-toggle">
+            <label for="code-3" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* vw 视口宽度 */
+<span>2</span>.full-width { width: 100vw; }
+<span>3</span>.half-width { width: 50vw; }
+<span>4</span>
+<span>5</span>/* vh 视口高度 */
+<span>6</span>.full-height { height: 100vh; }
+<span>7</span>
+<span>8</span>/* vmin/vmax */
+<span>9</span>.box { font-size: 5vmin; }  /* 取 vw 和 vh 中较小的 */
+<span>10</span>
+<span>11</span>/* 常见用法：全屏英雄区 */
+<span>12</span>.hero {
+<span>13</span>    width: 100vw;
+<span>14</span>    height: 100vh;
+<span>15</span>    display: flex;
+<span>16</span>    align-items: center;
+<span>17</span>    justify-content: center;
+<span>18</span>}</div>
+        </div>
+
+        <!-- 四、单位对比表 -->
+        <div class="unit" id="unit-4">
+            <h2>四、单位对比表</h2>
+            <div class="demo">
+                <table>
+                    <tr>
+                        <th>单位</th>
+                        <th>参照物</th>
+                        <th>适用场景</th>
+                    </tr>
+                    <tr>
+                        <td>px</td>
+                        <td>无（绝对）</td>
+                        <td>边框、阴影、精确尺寸</td>
+                    </tr>
+                    <tr>
+                        <td>rem</td>
+                        <td>根元素 font-size</td>
+                        <td>字体、间距、布局</td>
+                    </tr>
+                    <tr>
+                        <td>em</td>
+                        <td>父元素 font-size</td>
+                        <td>组件内部相对缩放</td>
+                    </tr>
+                    <tr>
+                        <td>%</td>
+                        <td>父元素对应属性</td>
+                        <td>响应式布局</td>
+                    </tr>
+                    <tr>
+                        <td>vw/vh</td>
+                        <td>视口宽/高</td>
+                        <td>全屏布局、响应式</td>
+                    </tr>
+                    <tr>
+                        <td>vmin/vmax</td>
+                        <td>视口较小/较大值</td>
+                        <td>移动端适配</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
