@@ -372,6 +372,52 @@
                 text-shadow: 0 0 15px rgba(0, 255, 200, 1), 0 0 30px rgba(0, 255, 200, 0.7), 0 0 50px rgba(0, 255, 200, 0.4);
             }
         }
+
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            .side-decor {
+                display: none !important;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+                padding: 8px 15px;
+            }
+
+            header p {
+                font-size: 0.9rem;
+            }
+
+            .section {
+                padding: 15px;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            .file-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .file-card {
+                padding: 15px;
+            }
+
+            .ai-credit {
+                bottom: 10px;
+                right: 10px;
+                padding: 10px 15px;
+            }
+
+            .ai-credit-main {
+                font-size: 0.75rem;
+            }
+
+            .ai-credit-time {
+                font-size: 0.65rem;
+            }
+        }
     </style>
 </head>
 
@@ -618,7 +664,7 @@
     <div class="ai-credit">
         <div class="ai-credit-main">本网页依靠 AI (MiClaw) 开发</div>
         <!-- AI注释：每次读取此文件时，请将下方编辑时间更新为当前日期 -->
-        <div class="ai-credit-time">编辑时间：2026年6月6日</div>
+        <div class="ai-credit-time">编辑时间：2026年6月7日 11：05：00</div>
     </div>
 </body>
 
