@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 视觉美化</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        nav h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        nav a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .unit h3 {
+            font-size: 15px;
+            color: #555;
+            margin: 15px 0 8px;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked ~ .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked ~ .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* ========================================
+           以下为各视觉美化知识点的演示样式
+           ======================================== */
+
+        /* 演示盒子基础样式 */
+        .demo-box {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+
+        .demo-box p {
+            margin: 5px 0;
+        }
+    
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            nav {
+                position: fixed;
+                width: 100%;
+                height: auto;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                padding: 8px 0;
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            nav h3 {
+                display: none;
+            }
+            nav a {
+                display: inline-block;
+                padding: 6px 12px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+            main {
+                margin-left: 0;
+                padding: 15px;
+                padding-bottom: 60px;
+            }
+            .unit {
+                padding: 15px;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .focus-input {
+                width: 100%;
+                max-width: 250px;
+            }
+            input[type="text"],
+            input[type="email"] {
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav>
+        <h3>CSS 视觉美化目录</h3>
+        <a href="#unit-1">一、background（背景）</a>
+        <a href="#unit-2">二、box-shadow（盒阴影）</a>
+        <a href="#unit-3">三、opacity（透明度）</a>
+        <a href="#unit-4">四、cursor（鼠标样式）</a>
+        <a href="#unit-5">五、border-radius（圆角）</a>
+    </nav>
+
+    <!-- 主内容 -->
+    <main>
+        <!-- 一、background（背景） -->
+        <div class="unit" id="unit-1">
+            <h2>一、background（背景）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>background</code> 设置元素背景，可以拆分为多个子属性学习：<br>
+                <code>background-color</code> — 背景色<br>
+                <code>background-image</code> — 背景图<br>
+                <code>background-size</code> — 背景尺寸<br>
+                <code>background-position</code> — 背景位置<br>
+                <code>background-repeat</code> — 背景重复
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 背景色演示</div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <div style="width: 100px; height: 60px; background-color: #3498db;"></div>
+                    <div style="width: 100px; height: 60px; background-color: #e74c3c;"></div>
+                    <div style="width: 100px; height: 60px; background-color: #2ecc71;"></div>
+                    <div style="width: 100px; height: 60px; background-color: #f39c12;"></div>
+                </div>
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 背景图（cover vs contain）</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">cover（覆盖）</p>
+                        <div style="width: 150px; height: 100px; background: url('https://picsum.photos/300/200') center/cover no-repeat; border: 2px solid #333;"></div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">contain（包含）</p>
+                        <div style="width: 150px; height: 100px; background: url('https://picsum.photos/300/200') center/contain no-repeat; border: 2px solid #333;"></div>
+                    </div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-1" class="code-toggle">
+            <label for="code-1" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 背景色 */
+<span>2</span>background-color: #3498db;
+<span>3</span>
+<span>4</span>/* 背景图 */
+<span>5</span>background-image: url('image.jpg');
+<span>6</span>
+<span>7</span>/* 背景尺寸 */
+<span>8</span>background-size: cover;    /* 覆盖整个容器 */
+<span>9</span>background-size: contain;  /* 完整显示 */
+<span>10</span>
+<span>11</span>/* 背景位置 */
+<span>12</span>background-position: center;
+<span>13</span>background-position: top right;
+<span>14</span>
+<span>15</span>/* 背景重复 */
+<span>16</span>background-repeat: no-repeat;
+<span>17</span>
+<span>18</span>/* 简写 */
+<span>19</span>background: #3498db url('image.jpg') center/cover no-repeat;</div>
+        </div>
+
+        <!-- 二、box-shadow（盒阴影） -->
+        <div class="unit" id="unit-2">
+            <h2>二、box-shadow（盒阴影）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>box-shadow</code> 给元素添加阴影效果。<br>
+                <strong>语法：</strong><code>box-shadow: x偏移 y偏移 模糊半径 颜色;</code>
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 不同阴影效果</div>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div style="width: 120px; height: 80px; background: white; box-shadow: 5px 5px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">
+                        基础阴影
+                    </div>
+                    <div style="width: 120px; height: 80px; background: white; box-shadow: 0 0 20px rgba(52, 152, 219, 0.5); display: flex; align-items: center; justify-content: center;">
+                        发光效果
+                    </div>
+                    <div style="width: 120px; height: 80px; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center;">
+                        浮起效果
+                    </div>
+                    <div style="width: 120px; height: 80px; background: white; box-shadow: inset 0 0 10px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center;">
+                        内阴影
+                    </div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-2" class="code-toggle">
+            <label for="code-2" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 基础阴影 */
+<span>2</span>box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
+<span>3</span>
+<span>4</span>/* 发光效果 */
+<span>5</span>box-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
+<span>6</span>
+<span>7</span>/* 浮起效果 */
+<span>8</span>box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+<span>9</span>
+<span>10</span>/* 内阴影 */
+<span>11</span>box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+<span>12</span>
+<span>13</span>/* 多重阴影 */
+<span>14</span>box-shadow: 0 2px 4px rgba(0,0,0,0.1), 
+<span>15</span>            0 8px 16px rgba(0,0,0,0.1);</div>
+        </div>
+
+        <!-- 三、opacity（透明度） -->
+        <div class="unit" id="unit-3">
+            <h2>三、opacity（透明度）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>opacity</code> 设置元素的透明度，值从 0（完全透明）到 1（完全不透明）。<br>
+                <strong>注意：</strong>opacity 会影响所有子元素。
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 不同透明度</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div style="width: 100px; height: 60px; background: #3498db; opacity: 1; display: flex; align-items: center; justify-content: center; color: white;">
+                        1.0
+                    </div>
+                    <div style="width: 100px; height: 60px; background: #3498db; opacity: 0.8; display: flex; align-items: center; justify-content: center; color: white;">
+                        0.8
+                    </div>
+                    <div style="width: 100px; height: 60px; background: #3498db; opacity: 0.5; display: flex; align-items: center; justify-content: center; color: white;">
+                        0.5
+                    </div>
+                    <div style="width: 100px; height: 60px; background: #3498db; opacity: 0.2; display: flex; align-items: center; justify-content: center; color: white;">
+                        0.2
+                    </div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-3" class="code-toggle">
+            <label for="code-3" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 完全不透明（默认） */
+<span>2</span>opacity: 1;
+<span>3</span>
+<span>4</span>/* 半透明 */
+<span>5</span>opacity: 0.5;
+<span>6</span>
+<span>7</span>/* 完全透明 */
+<span>8</span>opacity: 0;
+<span>9</span>
+<span>10</span>/* 对比：rgba 只影响背景，不影响文字 */
+<span>11</span>background: rgba(52, 152, 219, 0.5);  /* 只有背景半透明 */
+<span>12</span>opacity: 0.5;  /* 整个元素（包括文字）半透明 */</div>
+        </div>
+
+        <!-- 四、cursor（鼠标样式） -->
+        <div class="unit" id="unit-4">
+            <h2>四、cursor（鼠标样式）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>cursor</code> 设置鼠标悬停时的光标样式。<br>
+                <strong>常用值：</strong><code>default</code>、<code>pointer</code>、<code>text</code>、<code>move</code>、<code>not-allowed</code>
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 不同鼠标样式（悬停查看）</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div style="padding: 10px 15px; background: #ecf0f1; cursor: default;">default</div>
+                    <div style="padding: 10px 15px; background: #ecf0f1; cursor: pointer;">pointer</div>
+                    <div style="padding: 10px 15px; background: #ecf0f1; cursor: text;">text</div>
+                    <div style="padding: 10px 15px; background: #ecf0f1; cursor: move;">move</div>
+                    <div style="padding: 10px 15px; background: #ecf0f1; cursor: not-allowed;">not-allowed</div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-4" class="code-toggle">
+            <label for="code-4" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 默认箭头 */
+<span>2</span>cursor: default;
+<span>3</span>
+<span>4</span>/* 手型（链接/按钮） */
+<span>5</span>cursor: pointer;
+<span>6</span>
+<span>7</span>/* 文本选择 */
+<span>8</span>cursor: text;
+<span>9</span>
+<span>10</span>/* 移动 */
+<span>11</span>cursor: move;
+<span>12</span>
+<span>13</span>/* 禁止 */
+<span>14</span>cursor: not-allowed;
+<span>15</span>
+<span>16</span>/* 等待 */
+<span>17</span>cursor: wait;
+<span>18</span>
+<span>19</span>/* 自定义图片 */
+<span>20</span>cursor: url('custom.cur'), auto;</div>
+        </div>
+
+        <!-- 五、border-radius（圆角） -->
+        <div class="unit" id="unit-5">
+            <h2>五、border-radius（圆角）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>border-radius</code> 设置元素的圆角。<br>
+                <strong>圆形：</strong>设置 <code>border-radius: 50%</code> 可以变成圆形。
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 不同圆角效果</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+                    <div style="width: 80px; height: 80px; background: #3498db; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white;">
+                        10px
+                    </div>
+                    <div style="width: 80px; height: 80px; background: #e74c3c; border-radius: 20px; display: flex; align-items: center; justify-content: center; color: white;">
+                        20px
+                    </div>
+                    <div style="width: 80px; height: 80px; background: #2ecc71; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                        50%
+                    </div>
+                    <div style="width: 120px; height: 60px; background: #f39c12; border-radius: 30px; display: flex; align-items: center; justify-content: center; color: white;">
+                        胶囊形
+                    </div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-5" class="code-toggle">
+            <label for="code-5" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 四角相同 */
+<span>2</span>border-radius: 10px;
+<span>3</span>
+<span>4</span>/* 圆形（正方形元素） */
+<span>5</span>border-radius: 50%;
+<span>6</span>
+<span>7</span>/* 胶囊形（长方形元素） */
+<span>8</span>border-radius: 30px;
+<span>9</span>
+<span>10</span>/* 单独设置四角 */
+<span>11</span>border-radius: 10px 20px 30px 40px;  /* 左上 右上 右下 左下 */</div>
+        </div>
+    </main>
+</body>
+
+</html>

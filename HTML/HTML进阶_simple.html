@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML进阶</title>
+
+    <style>
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .unit {
+                padding: 15px;
+                margin: 10px 0;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .structure-box {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .structure-box .level-1 {
+                margin-left: 10px;
+            }
+            .structure-box .level-2 {
+                margin-left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML进阶</h1>
+
+
+        <!-- 第1节：字符实体 -->
+        <div class="unit" id="unit-1">
+            <h2>1. 字符实体</h2>
+            
+            <div class="explain">
+                <p>HTML 中有些字符有特殊含义（如 <code>&lt;</code> <code>&gt;</code>），直接写会被当成标签解析。</p>
+                <p><strong>字符实体</strong>（Character Entities）用特殊代码来显示这些字符。</p>
+                <p>格式：<code>&amp;实体名;</code> 或 <code>&amp;#实体编号;</code></p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <div class="entity-demo">
+                    <span>&lt; 小于号</span>
+                    <span>&gt; 大于号</span>
+                    <span>&amp; 和号</span>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <!-- 第2节：常用字符实体 -->
+        <div class="unit" id="unit-2">
+            <h2>2. 常用字符实体</h2>
+            
+            <div class="explain">
+                <p>以下是常用的字符实体：</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">字符实体对照表：</div>
+                <table>
+                    <tr>
+                        <th>实体</th>
+                        <th>编号</th>
+                        <th>显示</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>&amp;lt;</td>
+                        <td>&amp;#60;</td>
+                        <td>&lt;</td>
+                        <td>小于号</td>
+                    </tr>
+                    <tr>
+                        <td>&amp;gt;</td>
+                        <td>&amp;#62;</td>
+                        <td>&gt;</td>
+                        <td>大于号</td>
+                    </tr>
+                    <tr>
+                        <td>&amp;amp;</td>
+                        <td>&amp;#38;</td>
+                        <td>&amp;</td>
+                        <td>和号</td>
+                    </tr>
+                    <tr>
+                        <td>&amp;nbsp;</td>
+                        <td>&amp;#160;</td>
+                        <td>&nbsp;</td>
+                        <td>不换行空格</td>
+                    </tr>
+                    <tr>
+                        <td>&amp;quot;</td>
+                        <td>&amp;#34;</td>
+                        <td>&quot;</td>
+                        <td>双引号</td>
+                    </tr>
+                    <tr>
+                        <td>&amp;apos;</td>
+                        <td>&amp;#39;</td>
+                        <td>&apos;</td>
+                        <td>单引号</td>
+                    </tr>
+                    <tr>
+                        <td>&amp;copy;</td>
+                        <td>&amp;#169;</td>
+                        <td>&copy;</td>
+                        <td>版权符号</td>
+                    </tr>
+                    <tr>
+                        <td>&amp;reg;</td>
+                        <td>&amp;#174;</td>
+                        <td>&reg;</td>
+                        <td>注册商标</td>
+                    </tr>
+                    <tr>
+                        <td>&amp;trade;</td>
+                        <td>&amp;#8482;</td>
+                        <td>&trade;</td>
+                        <td>商标符号</td>
+                    </tr>
+                    <tr>
+                        <td>&amp;times;</td>
+                        <td>&amp;#215;</td>
+                        <td>&times;</td>
+                        <td>乘号</td>
+                    </tr>
+                    <tr>
+                        <td>&amp;divide;</td>
+                        <td>&amp;#247;</td>
+                        <td>&divide;</td>
+                        <td>除号</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">使用场景：</div>
+                <p>1. 显示 HTML 代码：<code>&amp;lt;div&amp;gt;内容&amp;lt;/div&amp;gt;</code></p>
+                <p>2. 多个空格：<code>第一&amp;nbsp;&amp;nbsp;&amp;nbsp;第二</code>（普通空格会被合并）</p>
+                <p>3. 版权信息：<code>&amp;copy; 2024 版权所有</code></p>
+            </div>
+        </div>
+
+        <!-- 第3节：SEO 基础 -->
+        <div class="unit" id="unit-3">
+            <h2>3. SEO 基础</h2>
+            
+            <div class="explain">
+                <p><strong>SEO</strong>（Search Engine Optimization）搜索引擎优化，让网页更容易被搜索引擎收录和排名。</p>
+                <p>HTML 中影响 SEO 的关键元素：</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">SEO 关键元素：</div>
+                <table class="attr-table">
+                    <tr>
+                        <th>元素</th>
+                        <th>作用</th>
+                        <th>最佳实践</th>
+                    </tr>
+                    <tr>
+                        <td>title</td>
+                        <td>页面标题</td>
+                        <td>30-60字符，包含关键词</td>
+                    </tr>
+                    <tr>
+                        <td>meta description</td>
+                        <td>页面描述</td>
+                        <td>150-160字符，吸引点击</td>
+                    </tr>
+                    <tr>
+                        <td>meta keywords</td>
+                        <td>关键词</td>
+                        <td>3-5个，用逗号分隔</td>
+                    </tr>
+                    <tr>
+                        <td>h1-h6</td>
+                        <td>标题层级</td>
+                        <td>一个页面只有一个 h1</td>
+                    </tr>
+                    <tr>
+                        <td>alt 属性</td>
+                        <td>图片描述</td>
+                        <td>准确描述图片内容</td>
+                    </tr>
+                    <tr>
+                        <td>语义化标签</td>
+                        <td>结构清晰</td>
+                        <td>使用 header/nav/main 等</td>
+                    </tr>
+                </table>
+            </div>
+
+            
+        </div>
+
+        <!-- 第4节：Open Graph -->
+        <div class="unit" id="unit-4">
+            <h2>4. Open Graph</h2>
+            
+            <div class="explain">
+                <p><strong>Open Graph</strong>（OG）是 Facebook 推出的协议，用于控制网页在社交媒体分享时的显示内容。</p>
+                <p>其他平台（Twitter、微信等）也支持类似协议。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">常用 OG 标签：</div>
+                <table class="attr-table">
+                    <tr>
+                        <th>标签</th>
+                        <th>说明</th>
+                        <th>示例值</th>
+                    </tr>
+                    <tr>
+                        <td>og:title</td>
+                        <td>标题</td>
+                        <td>页面标题</td>
+                    </tr>
+                    <tr>
+                        <td>og:description</td>
+                        <td>描述</td>
+                        <td>页面描述</td>
+                    </tr>
+                    <tr>
+                        <td>og:image</td>
+                        <td>封面图</td>
+                        <td>https://example.com/image.jpg</td>
+                    </tr>
+                    <tr>
+                        <td>og:url</td>
+                        <td>页面 URL</td>
+                        <td>https://example.com/page</td>
+                    </tr>
+                    <tr>
+                        <td>og:type</td>
+                        <td>类型</td>
+                        <td>website、article、product</td>
+                    </tr>
+                    <tr>
+                        <td>og:site_name</td>
+                        <td>网站名</td>
+                        <td>我的网站</td>
+                    </tr>
+                </table>
+            </div>
+
+            
+        </div>
+
+        <!-- 第5节：link 引入 CSS -->
+        <div class="unit" id="unit-5">
+            <h2>5. link 引入 CSS</h2>
+            
+            <div class="explain">
+                <p><code>&lt;link&gt;</code> 标签用于引入<strong>外部资源</strong>，最常用的是引入 CSS 样式表。</p>
+                <p><code>rel</code> 定义关系，<code>href</code> 定义资源地址。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">引入方式：</div>
+                <table class="attr-table">
+                    <tr>
+                        <th>方式</th>
+                        <th>代码</th>
+                        <th>适用场景</th>
+                    </tr>
+                    <tr>
+                        <td>外部样式表</td>
+                        <td>&lt;link rel="stylesheet" href="style.css"&gt;</td>
+                        <td>推荐，可缓存</td>
+                    </tr>
+                    <tr>
+                        <td>内部样式</td>
+                        <td>&lt;style&gt;...&lt;/style&gt;</td>
+                        <td>少量样式</td>
+                    </tr>
+                    <tr>
+                        <td>内联样式</td>
+                        <td>&lt;div style="..."&gt;</td>
+                        <td>特殊覆盖</td>
+                    </tr>
+                </table>
+            </div>
+
+            
+        </div>
+
+        <!-- 第6节：link 引入图标 -->
+        <div class="unit" id="unit-6">
+            <h2>6. link 引入图标</h2>
+            
+            <div class="explain">
+                <p><code>&lt;link rel="icon"&gt;</code> 用于设置网页图标（favicon），显示在浏览器标签页上。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">图标格式：</div>
+                <table class="attr-table">
+                    <tr>
+                        <th>格式</th>
+                        <th>代码</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>ICO</td>
+                        <td>&lt;link rel="icon" href="favicon.ico"&gt;</td>
+                        <td>传统格式，兼容性最好</td>
+                    </tr>
+                    <tr>
+                        <td>PNG</td>
+                        <td>&lt;link rel="icon" type="image/png" href="icon.png"&gt;</td>
+                        <td>现代格式，支持透明</td>
+                    </tr>
+                    <tr>
+                        <td>SVG</td>
+                        <td>&lt;link rel="icon" type="image/svg+xml" href="icon.svg"&gt;</td>
+                        <td>矢量格式，可缩放</td>
+                    </tr>
+                    <tr>
+                        <td>Apple Touch</td>
+                        <td>&lt;link rel="apple-touch-icon" href="apple-icon.png"&gt;</td>
+                        <td>iOS 设备图标</td>
+                    </tr>
+                </table>
+            </div>
+
+            
+        </div>
+
+        <!-- 第7节：script 引入 JS -->
+        <div class="unit" id="unit-7">
+            <h2>7. script 引入 JS</h2>
+            
+            <div class="explain">
+                <p><code>&lt;script&gt;</code> 标签用于引入 JavaScript 代码。</p>
+                <p><code>src</code> 引入外部文件，<code>type</code> 指定脚本类型（可省略）。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">引入方式：</div>
+                <table class="attr-table">
+                    <tr>
+                        <th>方式</th>
+                        <th>代码</th>
+                        <th>适用场景</th>
+                    </tr>
+                    <tr>
+                        <td>外部脚本</td>
+                        <td>&lt;script src="app.js"&gt;&lt;/script&gt;</td>
+                        <td>推荐，可缓存</td>
+                    </tr>
+                    <tr>
+                        <td>内联脚本</td>
+                        <td>&lt;script&gt;...&lt;/script&gt;</td>
+                        <td>少量代码</td>
+                    </tr>
+                </table>
+            </div>
+
+            
+        </div>
+
+        <!-- 第8节：async/defer -->
+        <div class="unit" id="unit-8">
+            <h2>8. async/defer</h2>
+            
+            <div class="explain">
+                <p><code>async</code> 和 <code>defer</code> 控制脚本的加载和执行时机：</p>
+                <p><strong>async</strong>：异步加载，加载完立即执行（不保证顺序）。</p>
+                <p><strong>defer</strong>：延迟执行，等 HTML 解析完再执行（保证顺序）。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">三种加载方式对比：</div>
+                <table class="attr-table">
+                    <tr>
+                        <th>方式</th>
+                        <th>加载</th>
+                        <th>执行</th>
+                        <th>适用场景</th>
+                    </tr>
+                    <tr>
+                        <td>无属性</td>
+                        <td>同步阻塞</td>
+                        <td>立即执行</td>
+                        <td>需要立即执行的脚本</td>
+                    </tr>
+                    <tr>
+                        <td>async</td>
+                        <td>异步加载</td>
+                        <td>加载完立即执行</td>
+                        <td>独立脚本（如统计）</td>
+                    </tr>
+                    <tr>
+                        <td>defer</td>
+                        <td>异步加载</td>
+                        <td>HTML解析完后执行</td>
+                        <td>需要保证顺序的脚本</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">执行顺序图解：</div>
+                <p><strong>无属性</strong>：HTML 解析 → 遇到 script → 停止解析 → 下载脚本 → 执行脚本 → 继续解析</p>
+                <p><strong>async</strong>：HTML 解析 → 遇到 script → 继续解析 + 下载脚本 → 脚本下载完 → 执行脚本</p>
+                <p><strong>defer</strong>：HTML 解析 → 遇到 script → 继续解析 + 下载脚本 → HTML 解析完 → 执行脚本</p>
+            </div>
+
+            
+        </div>
+
+    
+
+
+        <!-- 第1节：内联样式 -->
+        <div class="unit" id="unit-1">
+            <h2>1. 内联样式 style</h2>
+            
+            <div class="explain">
+                <p><code>style</code> 属性用于设置元素的内联样式，直接在标签上写 CSS。</p>
+                <p>格式：<code>style="属性:值"</code>，多个属性用分号分隔。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <h1 style="color:blue;">这是一个蓝色标题</h1>
+                <p style="color:red; font-size:18px;">这是一个红色大号文字</p>
+            </div>
+
+            
+        </div>
+
+        <!-- 第2节：class 和 id -->
+        <div class="unit" id="unit-2">
+            <h2>2. class 和 id</h2>
+            
+            <div class="explain">
+                <p><code>class</code> 用于定义元素的类名，可以被多个元素共享。</p>
+                <p><code>id</code> 用于定义元素的唯一标识符，一个页面中只能使用一次。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <p class="text" id="paragraph1">这是一个段落，具有 class 和 id 属性。</p>
+                <p class="text">这是另一个段落，共享相同的 class。</p>
+            </div>
+
+            
+        </div>
+
+        <!-- 第3节：超链接 -->
+        <div class="unit" id="unit-3">
+            <h2>3. 超链接 a</h2>
+            
+            <div class="explain">
+                <p><code>&lt;a&gt;</code> 标签定义超链接，<code>href</code> 属性指定链接地址。</p>
+                <p><code>target</code> 属性控制链接打开方式：</p>
+                <p><code>_blank</code> 新窗口 | <code>_self</code> 当前窗口（默认）</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <a href="https://www.example.com" target="_blank">新窗口打开</a>
+                <a href="https://www.example.com" target="_self">当前窗口打开</a>
+            </div>
+
+            
+        </div>
+
+        <!-- 第4节：图片标签 -->
+        <div class="unit" id="unit-4">
+            <h2>4. 图片标签 img</h2>
+            
+            <div class="explain">
+                <p><code>&lt;img&gt;</code> 标签用于插入图片，是自闭合标签。</p>
+                <p><code>src</code> 指定图片地址，<code>alt</code> 提供替代文本，<code>title</code> 提供悬停提示。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <img src="https://via.placeholder.com/150" alt="示例图片" title="这是一个示例图片" width="150" height="150">
+            </div>
+
+            
+        </div>
+
+    
+
+</body>
+</html>

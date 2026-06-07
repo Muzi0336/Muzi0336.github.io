@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表单与输入</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        nav h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        nav a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked ~ .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked ~ .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 演示区内的表单样式 */
+        .demo form {
+            margin-bottom: 15px;
+        }
+
+        .demo input, .demo select, .demo textarea {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .demo input[type="text"],
+        .demo input[type="password"],
+        .demo input[type="email"],
+        .demo input[type="number"],
+        .demo input[type="tel"],
+        .demo input[type="url"],
+        .demo input[type="date"] {
+            width: 250px;
+        }
+
+        .demo input[type="submit"],
+        .demo input[type="reset"],
+        .demo input[type="button"] {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .demo input[type="submit"]:hover,
+        .demo input[type="reset"]:hover,
+        .demo input[type="button"]:hover {
+            background: #2980b9;
+        }
+
+        .demo label {
+            display: inline-block;
+            margin: 5px 0;
+            cursor: pointer;
+        }
+
+        .demo select {
+            width: 250px;
+        }
+
+        .demo textarea {
+            width: 250px;
+            height: 100px;
+            resize: vertical;
+        }
+
+        .demo fieldset {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .demo legend {
+            font-weight: bold;
+            padding: 0 10px;
+        }
+
+        /* 属性表格 */
+        .attr-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .attr-table th, .attr-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .attr-table th {
+            background: #3498db;
+            color: white;
+        }
+
+        .attr-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav>
+        <h3>表单与输入</h3>
+        <a href="#unit-1">1. 表单基本结构</a>
+        <a href="#unit-2">2. 输入框类型</a>
+        <a href="#unit-3">3. 单选和复选</a>
+        <a href="#unit-4">4. 下拉选择框</a>
+        <a href="#unit-5">5. 多行文本 textarea</a>
+        <a href="#unit-6">6. 输入建议 datalist</a>
+        <a href="#unit-7">7. 表单分组 fieldset</a>
+        <a href="#unit-8">8. 表单验证</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- 第1节：表单基本结构 -->
+        <div class="unit" id="unit-1"> <!-- 块级容器 -->
+            <h2>1. 表单基本结构</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;form&gt;</code> 标签用于创建表单，<code>action</code> 指定提交地址，<code>method</code> 指定提交方式（GET/POST）。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <form action="/submit" method="post"> <!-- 表单 -->
+                    <label>用户名：<input type="text" name="username"> <!-- 输入框，单标签 --></label><br>
+                    <label>密码：<input type="password" name="password"> <!-- 输入框，单标签 --></label><br>
+                    <input type="submit" value="提交"> <!-- 输入框，单标签 -->
+                </form>
+            </div>
+
+            <input type="checkbox" id="code-1" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-1" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;form action="/submit" method="post"&gt;
+<span>2</span>    &lt;label&gt;用户名：&lt;input type="text" name="username"&gt;&lt;/label&gt;&lt;br&gt;
+<span>3</span>    &lt;label&gt;密码：&lt;input type="password" name="password"&gt;&lt;/label&gt;&lt;br&gt;
+<span>4</span>    &lt;input type="submit" value="提交"&gt;
+<span>5</span>&lt;/form&gt;</div>
+        </div>
+
+        <!-- 第2节：输入框类型 -->
+        <div class="unit" id="unit-2"> <!-- 块级容器 -->
+            <h2>2. 输入框类型</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;input&gt;</code> 标签的 <code>type</code> 属性定义输入类型：</p> <!-- 段落标签 -->
+                <p><code>text</code> 文本 | <code>password</code> 密码 | <code>email</code> 邮箱 | <code>number</code> 数字 | <code>tel</code> 电话 | <code>url</code> 网址 | <code>date</code> 日期</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <form> <!-- 表单 -->
+                    <label>文本：<input type="text" name="text"> <!-- 输入框，单标签 --></label><br>
+                    <label>密码：<input type="password" name="password"> <!-- 输入框，单标签 --></label><br>
+                    <label>邮箱：<input type="email" name="email"> <!-- 输入框，单标签 --></label><br>
+                    <label>数字：<input type="number" name="number"> <!-- 输入框，单标签 --></label><br>
+                    <label>电话：<input type="tel" name="tel"> <!-- 输入框，单标签 --></label><br>
+                    <label>网址：<input type="url" name="url"> <!-- 输入框，单标签 --></label><br>
+                    <label>日期：<input type="date" name="date"> <!-- 输入框，单标签 --></label><br>
+                </form>
+            </div>
+
+            <input type="checkbox" id="code-2" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-2" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;form&gt;
+<span>2</span>    &lt;label&gt;文本：&lt;input type="text" name="text"&gt;&lt;/label&gt;&lt;br&gt;
+<span>3</span>    &lt;label&gt;密码：&lt;input type="password" name="password"&gt;&lt;/label&gt;&lt;br&gt;
+<span>4</span>    &lt;label&gt;邮箱：&lt;input type="email" name="email"&gt;&lt;/label&gt;&lt;br&gt;
+<span>5</span>    &lt;label&gt;数字：&lt;input type="number" name="number"&gt;&lt;/label&gt;&lt;br&gt;
+<span>6</span>    &lt;label&gt;电话：&lt;input type="tel" name="tel"&gt;&lt;/label&gt;&lt;br&gt;
+<span>7</span>    &lt;label&gt;网址：&lt;input type="url" name="url"&gt;&lt;/label&gt;&lt;br&gt;
+<span>8</span>    &lt;label&gt;日期：&lt;input type="date" name="date"&gt;&lt;/label&gt;&lt;br&gt;
+<span>9</span>&lt;/form&gt;</div>
+        </div>
+
+        <!-- 第3节：单选和复选 -->
+        <div class="unit" id="unit-3"> <!-- 块级容器 -->
+            <h2>3. 单选和复选</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>radio</code> 单选按钮：同一组必须设置相同的 <code>name</code> 属性。</p> <!-- 段落标签 -->
+                <p><code>checkbox</code> 复选框：可多选，<code>checked</code> 属性设置默认选中。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <form> <!-- 表单 -->
+                    <p>性别：</p> <!-- 段落标签 -->
+                    <label><input type="radio" name="gender" value="male"> <!-- 输入框，单标签 --> 男</label>
+                    <label><input type="radio" name="gender" value="female"> <!-- 输入框，单标签 --> 女</label>
+                    <label><input type="radio" name="gender" value="other"> <!-- 输入框，单标签 --> 其他</label>
+                    
+                    <p>爱好：</p> <!-- 段落标签 -->
+                    <label><input type="checkbox" name="hobby" value="reading" checked> <!-- 输入框，单标签 --> 阅读</label>
+                    <label><input type="checkbox" name="hobby" value="gaming"> <!-- 输入框，单标签 --> 游戏</label>
+                    <label><input type="checkbox" name="hobby" value="music"> <!-- 输入框，单标签 --> 音乐</label>
+                </form>
+            </div>
+
+            <input type="checkbox" id="code-3" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-3" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;form&gt;
+<span>2</span>    &lt;p&gt;性别：&lt;/p&gt;
+<span>3</span>    &lt;label&gt;&lt;input type="radio" name="gender" value="male"&gt; 男&lt;/label&gt;
+<span>4</span>    &lt;label&gt;&lt;input type="radio" name="gender" value="female"&gt; 女&lt;/label&gt;
+<span>5</span>    &lt;label&gt;&lt;input type="radio" name="gender" value="other"&gt; 其他&lt;/label&gt;
+<span>6</span>    
+<span>7</span>    &lt;p&gt;爱好：&lt;/p&gt;
+<span>8</span>    &lt;label&gt;&lt;input type="checkbox" name="hobby" value="reading" checked&gt; 阅读&lt;/label&gt;
+<span>9</span>    &lt;label&gt;&lt;input type="checkbox" name="hobby" value="gaming"&gt; 游戏&lt;/label&gt;
+<span>10</span>    &lt;label&gt;&lt;input type="checkbox" name="hobby" value="music"&gt; 音乐&lt;/label&gt;
+<span>11</span>&lt;/form&gt;</div>
+        </div>
+
+        <!-- 第4节：下拉选择框 -->
+        <div class="unit" id="unit-4"> <!-- 块级容器 -->
+            <h2>4. 下拉选择框</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;select&gt;</code> 定义下拉框，<code>&lt;option&gt;</code> 定义选项。</p> <!-- 段落标签 -->
+                <p><code>selected</code> 默认选中，<code>disabled</code> 禁用选项，<code>&lt;optgroup&gt;</code> 选项分组。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <form> <!-- 表单 -->
+                    <label>城市：</label>
+                    <select name="city"> <!-- 下拉选择框 -->
+                        <option value=""> <!-- 下拉选项 -->请选择</option>
+                        <option value="beijing" selected> <!-- 下拉选项 -->北京</option>
+                        <option value="shanghai"> <!-- 下拉选项 -->上海</option>
+                        <option value="guangzhou"> <!-- 下拉选项 -->广州</option>
+                        <option value="shenzhen"> <!-- 下拉选项 -->深圳</option>
+                    </select>
+                    
+                    <br><br>
+                    
+                    <label>分组下拉：</label>
+                    <select name="grouped"> <!-- 下拉选择框 -->
+                        <optgroup label="华北">
+                            <option value="beijing"> <!-- 下拉选项 -->北京</option>
+                            <option value="tianjin"> <!-- 下拉选项 -->天津</option>
+                        </optgroup>
+                        <optgroup label="华东">
+                            <option value="shanghai"> <!-- 下拉选项 -->上海</option>
+                            <option value="hangzhou"> <!-- 下拉选项 -->杭州</option>
+                        </optgroup>
+                    </select>
+                </form>
+            </div>
+
+            <input type="checkbox" id="code-4" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-4" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;form&gt;
+<span>2</span>    &lt;label&gt;城市：&lt;/label&gt;
+<span>3</span>    &lt;select name="city"&gt;
+<span>4</span>        &lt;option value=""&gt;请选择&lt;/option&gt;
+<span>5</span>        &lt;option value="beijing" selected&gt;北京&lt;/option&gt;
+<span>6</span>        &lt;option value="shanghai"&gt;上海&lt;/option&gt;
+<span>7</span>        &lt;option value="guangzhou"&gt;广州&lt;/option&gt;
+<span>8</span>        &lt;option value="shenzhen"&gt;深圳&lt;/option&gt;
+<span>9</span>    &lt;/select&gt;
+<span>10</span>    
+<span>11</span>    &lt;br&gt;&lt;br&gt;
+<span>12</span>    
+<span>13</span>    &lt;label&gt;分组下拉：&lt;/label&gt;
+<span>14</span>    &lt;select name="grouped"&gt;
+<span>15</span>        &lt;optgroup label="华北"&gt;
+<span>16</span>            &lt;option value="beijing"&gt;北京&lt;/option&gt;
+<span>17</span>            &lt;option value="tianjin"&gt;天津&lt;/option&gt;
+<span>18</span>        &lt;/optgroup&gt;
+<span>19</span>        &lt;optgroup label="华东"&gt;
+<span>20</span>            &lt;option value="shanghai"&gt;上海&lt;/option&gt;
+<span>21</span>            &lt;option value="hangzhou"&gt;杭州&lt;/option&gt;
+<span>22</span>        &lt;/optgroup&gt;
+<span>23</span>    &lt;/select&gt;
+<span>24</span>&lt;/form&gt;</div>
+        </div>
+
+        <!-- 第5节：多行文本 -->
+        <div class="unit" id="unit-5"> <!-- 块级容器 -->
+            <h2>5. 多行文本 textarea</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;textarea&gt;</code> 标签用于多行文本输入。</p> <!-- 段落标签 -->
+                <p><code>rows</code> 设置行数，<code>cols</code> 设置列数，<code>resize</code> 控制是否可调整大小。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <form> <!-- 表单 -->
+                    <label>留言：</label><br>
+                    <textarea name="message" rows="5" cols="30" placeholder="请输入留言内容..."> <!-- 多行文本框 --></textarea>
+                </form>
+            </div>
+
+            <input type="checkbox" id="code-5" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-5" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;form&gt;
+<span>2</span>    &lt;label&gt;留言：&lt;/label&gt;&lt;br&gt;
+<span>3</span>    &lt;textarea name="message" rows="5" cols="30" placeholder="请输入留言内容..."&gt;&lt;/textarea&gt;
+<span>4</span>&lt;/form&gt;</div>
+        </div>
+
+        <!-- 第6节：输入建议 -->
+        <div class="unit" id="unit-6"> <!-- 块级容器 -->
+            <h2>6. 输入建议 datalist</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;datalist&gt;</code> 标签为 <code>&lt;input&gt;</code> 提供输入建议列表。</p> <!-- 段落标签 -->
+                <p>用户输入时会显示匹配的选项，但也可以输入自定义内容。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <form> <!-- 表单 -->
+                    <label>浏览器：</label>
+                    <input type="text" name="browser" list="browsers"> <!-- 输入框，单标签 -->
+                    <datalist id="browsers">
+                        <option value="Chrome"> <!-- 下拉选项 -->
+                        <option value="Firefox"> <!-- 下拉选项 -->
+                        <option value="Safari"> <!-- 下拉选项 -->
+                        <option value="Edge"> <!-- 下拉选项 -->
+                        <option value="Opera"> <!-- 下拉选项 -->
+                    </datalist>
+                </form>
+            </div>
+
+            <input type="checkbox" id="code-6" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-6" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;form&gt;
+<span>2</span>    &lt;label&gt;浏览器：&lt;/label&gt;
+<span>3</span>    &lt;input type="text" name="browser" list="browsers"&gt;
+<span>4</span>    &lt;datalist id="browsers"&gt;
+<span>5</span>        &lt;option value="Chrome"&gt;
+<span>6</span>        &lt;option value="Firefox"&gt;
+<span>7</span>        &lt;option value="Safari"&gt;
+<span>8</span>        &lt;option value="Edge"&gt;
+<span>9</span>        &lt;option value="Opera"&gt;
+<span>10</span>    &lt;/datalist&gt;
+<span>11</span>&lt;/form&gt;</div>
+        </div>
+
+        <!-- 第7节：表单分组 -->
+        <div class="unit" id="unit-7"> <!-- 块级容器 -->
+            <h2>7. 表单分组 fieldset</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;fieldset&gt;</code> 标签用于将表单元素分组，<code>&lt;legend&gt;</code> 标签定义分组标题。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <form> <!-- 表单 -->
+                    <fieldset>
+                        <legend>个人信息</legend>
+                        <label>姓名：<input type="text" name="name"> <!-- 输入框，单标签 --></label><br>
+                        <label>邮箱：<input type="email" name="email"> <!-- 输入框，单标签 --></label>
+                    </fieldset>
+                    
+                    <fieldset>
+                        <legend>账户设置</legend>
+                        <label>用户名：<input type="text" name="username"> <!-- 输入框，单标签 --></label><br>
+                        <label>密码：<input type="password" name="password"> <!-- 输入框，单标签 --></label>
+                    </fieldset>
+                </form>
+            </div>
+
+            <input type="checkbox" id="code-7" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-7" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;form&gt;
+<span>2</span>    &lt;fieldset&gt;
+<span>3</span>        &lt;legend&gt;个人信息&lt;/legend&gt;
+<span>4</span>        &lt;label&gt;姓名：&lt;input type="text" name="name"&gt;&lt;/label&gt;&lt;br&gt;
+<span>5</span>        &lt;label&gt;邮箱：&lt;input type="email" name="email"&gt;&lt;/label&gt;
+<span>6</span>    &lt;/fieldset&gt;
+<span>7</span>    
+<span>8</span>    &lt;fieldset&gt;
+<span>9</span>        &lt;legend&gt;账户设置&lt;/legend&gt;
+<span>10</span>        &lt;label&gt;用户名：&lt;input type="text" name="username"&gt;&lt;/label&gt;&lt;br&gt;
+<span>11</span>        &lt;label&gt;密码：&lt;input type="password" name="password"&gt;&lt;/label&gt;
+<span>12</span>    &lt;/fieldset&gt;
+<span>13</span>&lt;/form&gt;</div>
+        </div>
+
+        <!-- 第8节：表单验证 -->
+        <div class="unit" id="unit-8"> <!-- 块级容器 -->
+            <h2>8. 表单验证</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p>HTML5 提供了内置的表单验证功能：</p> <!-- 段落标签 -->
+                <p><code>required</code> 必填 | <code>disabled</code> 禁用 | <code>readonly</code> 只读 | <code>pattern</code> 正则验证 | <code>min/max</code> 范围</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <form> <!-- 表单 -->
+                    <label>必填：<input type="text" name="required" required> <!-- 输入框，单标签 --></label><br>
+                    <label>禁用：<input type="text" name="disabled" disabled> <!-- 输入框，单标签 --></label><br>
+                    <label>只读：<input type="text" name="readonly" value="不可修改" readonly> <!-- 输入框，单标签 --></label><br>
+                    <label>正则（6位数字）：<input type="text" name="pattern" pattern="\d{6}"> <!-- 输入框，单标签 --></label><br>
+                    <label>范围（1-100）：<input type="number" name="range" min="1" max="100"> <!-- 输入框，单标签 --></label><br>
+                    <input type="submit" value="提交"> <!-- 输入框，单标签 -->
+                </form>
+            </div>
+
+            <input type="checkbox" id="code-8" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code-8" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;form&gt;
+<span>2</span>    &lt;label&gt;必填：&lt;input type="text" name="required" required&gt;&lt;/label&gt;&lt;br&gt;
+<span>3</span>    &lt;label&gt;禁用：&lt;input type="text" name="disabled" disabled&gt;&lt;/label&gt;&lt;br&gt;
+<span>4</span>    &lt;label&gt;只读：&lt;input type="text" name="readonly" value="不可修改" readonly&gt;&lt;/label&gt;&lt;br&gt;
+<span>5</span>    &lt;label&gt;正则（6位数字）：&lt;input type="text" name="pattern" pattern="\d{6}"&gt;&lt;/label&gt;&lt;br&gt;
+<span>6</span>    &lt;label&gt;范围（1-100）：&lt;input type="number" name="range" min="1" max="100"&gt;&lt;/label&gt;&lt;br&gt;
+<span>7</span>    &lt;input type="submit" value="提交"&gt;
+<span>8</span>&lt;/form&gt;</div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->验证属性说明：</div>
+                <table class="attr-table"> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th> <!-- 表格表头 -->属性</th>
+                        <th> <!-- 表格表头 -->说明</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->required</td>
+                        <td> <!-- 表格单元格 -->必填字段</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->disabled</td>
+                        <td> <!-- 表格单元格 -->禁用（不可交互，不提交）</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->readonly</td>
+                        <td> <!-- 表格单元格 -->只读（不可修改，会提交）</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->pattern</td>
+                        <td> <!-- 表格单元格 -->正则表达式验证</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->min/max</td>
+                        <td> <!-- 表格单元格 -->数字范围</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->minlength/maxlength</td>
+                        <td> <!-- 表格单元格 -->文本长度范围</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->placeholder</td>
+                        <td> <!-- 表格单元格 -->输入提示</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</body>
+
+</html>

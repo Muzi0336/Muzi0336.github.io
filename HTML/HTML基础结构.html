@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML基础结构</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        nav h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        nav a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked ~ .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked ~ .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 演示区内的结构图样式 */
+        .structure-box {
+            background: #fff;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .structure-box .level-0 {
+            border-left: 4px solid #e74c3c;
+            padding-left: 12px;
+            margin-bottom: 10px;
+        }
+
+        .structure-box .level-1 {
+            border-left: 4px solid #f39c12;
+            padding-left: 12px;
+            margin: 8px 0 8px 20px;
+        }
+
+        .structure-box .level-2 {
+            border-left: 4px solid #27ae60;
+            padding-left: 12px;
+            margin: 8px 0 8px 40px;
+        }
+
+        .structure-box .tag {
+            font-family: Consolas, monospace;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .structure-box .desc {
+            color: #666;
+            font-size: 13px;
+        }
+
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            nav {
+                position: fixed;
+                width: 100%;
+                height: auto;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                padding: 8px 0;
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            nav h3 {
+                display: none;
+            }
+            nav a {
+                display: inline-block;
+                padding: 6px 12px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+            main {
+                margin-left: 0;
+                padding: 15px;
+                padding-bottom: 60px;
+            }
+            .unit {
+                padding: 15px;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .structure-box {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .structure-box .level-1 {
+                margin-left: 10px;
+            }
+            .structure-box .level-2 {
+                margin-left: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <h3>HTML基础结构</h3>
+        <a href="#unit1">1. 文档声明 DOCTYPE</a>
+        <a href="#unit2">2. html 根元素</a>
+        <a href="#unit3">3. head 头部信息</a>
+        <a href="#unit4">4. body 页面主体</a>
+        <a href="#unit5">5. 注释</a>
+        <a href="#unit6">6. 完整模板</a>
+    </nav>
+
+    <main>
+
+        <!-- 单元1：文档声明 -->
+        <div class="unit" id="unit1"> <!-- 块级容器 -->
+            <h2>1. 文档声明 DOCTYPE</h2> <!-- 标题标签，h1最大，h6最小 -->
+
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;!DOCTYPE html&gt;</code> 是每个HTML文件的<strong>第一行</strong>，它告诉浏览器："这个文件是HTML5文档"。</p> <!-- 段落标签 -->
+                <p>⚠️ 注意：DOCTYPE 不是HTML标签，而是一个<strong>指令</strong>，必须写在最前面，否则浏览器可能进入"怪异模式"。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->📝 代码演示</div>
+                <div class="structure-box"> <!-- 块级容器 -->
+                    <div class="level-0"> <!-- 块级容器 -->
+                        <span class="tag"> <!-- 行内容器 -->&lt;!DOCTYPE html&gt;</span>
+                        <span class="desc"> <!-- 行内容器 -->← 必须在第一行，告诉浏览器用HTML5标准解析</span>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code1" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code1" class="toggle-label">📝 查看完整代码</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;我的页面&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;Hello World&lt;/h1&gt;
+<span>9</span>&lt;/body&gt;
+<span>10</span>&lt;/html&gt;</div>
+        </div>
+
+        <!-- 单元2：html根元素 -->
+        <div class="unit" id="unit2"> <!-- 块级容器 -->
+            <h2>2. html 根元素</h2> <!-- 标题标签，h1最大，h6最小 -->
+
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;html&gt;</code> 是整个页面的<strong>根元素</strong>，所有其他标签都包裹在里面。</p> <!-- 段落标签 -->
+                <p>常用属性：</p> <!-- 段落标签 -->
+                <p>• <code>lang="zh-CN"</code> — 声明页面语言为简体中文，帮助搜索引擎和屏幕阅读器识别</p> <!-- 段落标签 -->
+                <p>• <code>lang="en"</code> — 英文页面</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->📝 代码演示</div>
+                <div class="structure-box"> <!-- 块级容器 -->
+                    <div class="level-0"> <!-- 块级容器 -->
+                        <span class="tag"> <!-- 行内容器 -->&lt;html lang="zh-CN"&gt;</span>
+                        <span class="desc"> <!-- 行内容器 -->← 根元素，包裹所有内容</span>
+                        <div class="level-1"> <!-- 块级容器 -->
+                            <span class="tag"> <!-- 行内容器 -->&lt;head&gt;</span>
+                            <span class="desc"> <!-- 行内容器 -->← 头部信息（浏览器看的）</span>
+                        </div>
+                        <div class="level-1"> <!-- 块级容器 -->
+                            <span class="tag"> <!-- 行内容器 -->&lt;body&gt;</span>
+                            <span class="desc"> <!-- 行内容器 -->← 页面内容（用户看的）</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code2" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code2" class="toggle-label">📝 查看完整代码</label>
+            <div class="code-block"><span>1</span>&lt;!-- lang属性告诉浏览器和搜索引擎页面语言 --&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>    &lt;head&gt;...&lt;/head&gt;
+<span>4</span>    &lt;body&gt;...&lt;/body&gt;
+<span>5</span>&lt;/html&gt;</div>
+        </div>
+
+        <!-- 单元3：head头部信息 -->
+        <div class="unit" id="unit3"> <!-- 块级容器 -->
+            <h2>3. head 头部信息</h2> <!-- 标题标签，h1最大，h6最小 -->
+
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;head&gt;</code> 里的内容<strong>不会显示在页面上</strong>，它是给浏览器、搜索引擎看的"元信息"。</p> <!-- 段落标签 -->
+                <p>常用标签：</p> <!-- 段落标签 -->
+                <p>• <code>&lt;meta charset="UTF-8"&gt;</code> — 字符编码，防止中文乱码</p> <!-- 段落标签 -->
+                <p>• <code>&lt;meta name="viewport"&gt;</code> — 视口设置，让页面适配手机</p> <!-- 段落标签 -->
+                <p>• <code>&lt;title&gt;</code> — 浏览器标签页上显示的标题</p> <!-- 段落标签 -->
+                <p>• <code>&lt;meta name="description"&gt;</code> — 页面描述，搜索引擎会显示</p> <!-- 段落标签 -->
+                <p>• <code>&lt;meta name="keywords"&gt;</code> — 关键词（现在搜索引擎已不太看重）</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->📝 代码演示</div>
+                <div class="structure-box"> <!-- 块级容器 -->
+                    <div class="level-0"> <!-- 块级容器 -->
+                        <span class="tag"> <!-- 行内容器 -->&lt;head&gt;</span>
+                        <div class="level-1"> <!-- 块级容器 -->
+                            <span class="tag"> <!-- 行内容器 -->&lt;meta charset="UTF-8"&gt;</span>
+                            <span class="desc"> <!-- 行内容器 -->← 字符编码，防乱码</span>
+                        </div>
+                        <div class="level-1"> <!-- 块级容器 -->
+                            <span class="tag"> <!-- 行内容器 -->&lt;meta name="viewport" ...&gt;</span>
+                            <span class="desc"> <!-- 行内容器 -->← 手机适配</span>
+                        </div>
+                        <div class="level-1"> <!-- 块级容器 -->
+                            <span class="tag"> <!-- 行内容器 -->&lt;title&gt;页面标题&lt;/title&gt;</span>
+                            <span class="desc"> <!-- 行内容器 -->← 浏览器标签页标题</span>
+                        </div>
+                        <div class="level-1"> <!-- 块级容器 -->
+                            <span class="tag"> <!-- 行内容器 -->&lt;meta name="description" ...&gt;</span>
+                            <span class="desc"> <!-- 行内容器 -->← SEO页面描述</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code3" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code3" class="toggle-label">📝 查看完整代码</label>
+            <div class="code-block"><span>1</span>&lt;head&gt;
+<span>2</span>    &lt;!-- 字符编码：必须放在head最前面，否则中文可能乱码 --&gt;
+<span>3</span>    &lt;meta charset="UTF-8"&gt;
+<span>4</span>
+<span>5</span>    &lt;!-- 视口设置：让页面在手机上正常显示 --&gt;
+<span>6</span>    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+<span>7</span>
+<span>8</span>    &lt;!-- 页面标题：显示在浏览器标签页 --&gt;
+<span>9</span>    &lt;title&gt;我的网页&lt;/title&gt;
+<span>10</span>
+<span>11</span>    &lt;!-- SEO描述：搜索引擎结果中显示的描述文字 --&gt;
+<span>12</span>    &lt;meta name="description" content="这是一个学习HTML的页面"&gt;
+<span>13</span>
+<span>14</span>    &lt;!-- SEO关键词（现在权重很低） --&gt;
+<span>15</span>    &lt;meta name="keywords" content="HTML, 学习, 前端"&gt;
+<span>16</span>&lt;/head&gt;</div>
+        </div>
+
+        <!-- 单元4：body页面主体 -->
+        <div class="unit" id="unit4"> <!-- 块级容器 -->
+            <h2>4. body 页面主体</h2> <!-- 标题标签，h1最大，h6最小 -->
+
+            <div class="explain"> <!-- 块级容器 -->
+                <p><code>&lt;body&gt;</code> 里的内容就是<strong>用户在浏览器中看到的一切</strong>：文字、图片、按钮、视频等。</p> <!-- 段落标签 -->
+                <p>所有可见的HTML元素都必须放在 <code>&lt;body&gt;</code> 里面。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->📝 代码演示</div>
+                <div class="structure-box"> <!-- 块级容器 -->
+                    <div class="level-0"> <!-- 块级容器 -->
+                        <span class="tag"> <!-- 行内容器 -->&lt;body&gt;</span>
+                        <span class="desc"> <!-- 行内容器 -->← 用户看到的所有内容都在这里</span>
+                        <div class="level-1"> <!-- 块级容器 -->
+                            <span class="tag"> <!-- 行内容器 -->&lt;h1&gt;标题&lt;/h1&gt;</span>
+                        </div>
+                        <div class="level-1"> <!-- 块级容器 -->
+                            <span class="tag"> <!-- 行内容器 -->&lt;p&gt;段落&lt;/p&gt;</span>
+                        </div>
+                        <div class="level-1"> <!-- 块级容器 -->
+                            <span class="tag"> <!-- 行内容器 -->&lt;img src="..."&gt;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code4" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code4" class="toggle-label">📝 查看完整代码</label>
+            <div class="code-block"><span>1</span>&lt;body&gt;
+<span>2</span>    &lt;!-- 这里放用户能看到的所有内容 --&gt;
+<span>3</span>    &lt;h1&gt;欢迎来到我的网站&lt;/h1&gt;
+<span>4</span>    &lt;p&gt;这是一个段落&lt;/p&gt;
+<span>5</span>    &lt;img src="photo.jpg" alt="照片"&gt;
+<span>6</span>&lt;/body&gt;</div>
+        </div>
+
+        <!-- 单元5：注释 -->
+        <div class="unit" id="unit5"> <!-- 块级容器 -->
+            <h2>5. 注释</h2> <!-- 标题标签，h1最大，h6最小 -->
+
+            <div class="explain"> <!-- 块级容器 -->
+                <p>注释是写给<strong>开发者看的说明</strong>，浏览器会完全忽略它，不会显示在页面上。</p> <!-- 段落标签 -->
+                <p>用途：解释代码功能、标记待办事项、临时隐藏代码。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->📝 代码演示</div>
+                <div class="structure-box"> <!-- 块级容器 -->
+                    <div class="level-0"> <!-- 块级容器 -->
+                        <span class="tag"> <!-- 行内容器 -->&lt;!-- 这是注释，浏览器不会显示 --&gt;</span>
+                    </div>
+                    <div class="level-0" style="margin-top: 10px;"> <!-- 块级容器 -->
+                        <span class="tag"> <!-- 行内容器 -->&lt;!-- 
+                            多行注释也可以
+                            写很多行
+                        --&gt;</span>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code5" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code5" class="toggle-label">📝 查看完整代码</label>
+            <div class="code-block"><span>1</span>&lt;!-- 这是单行注释 --&gt;
+<span>2</span>
+<span>3</span>&lt;!-- 
+<span>4</span>    这是多行注释
+<span>5</span>    可以写很多行
+<span>6</span>    常用于标记大段代码
+<span>7</span>--&gt;
+<span>8</span>
+<span>9</span>&lt;h1&gt;标题&lt;/h1&gt; &lt;!-- 也可以在代码后面写注释 --&gt;
+<span>10</span>
+<span>11</span>&lt;!-- 临时隐藏一段代码（注释掉）：
+<span>12</span>&lt;p&gt;这段代码被注释了，不会显示&lt;/p&gt;
+<span>13</span>--&gt;</div>
+        </div>
+
+        <!-- 单元6：完整模板 -->
+        <div class="unit" id="unit6"> <!-- 块级容器 -->
+            <h2>6. 完整HTML模板</h2> <!-- 标题标签，h1最大，h6最小 -->
+
+            <div class="explain"> <!-- 块级容器 -->
+                <p>这是每个HTML页面的<strong>标准骨架</strong>，以后新建文件直接复制这个模板即可。</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->📝 完整结构图</div>
+                <div class="structure-box"> <!-- 块级容器 -->
+                    <div class="level-0"> <!-- 块级容器 -->
+                        <span class="tag"> <!-- 行内容器 -->&lt;!DOCTYPE html&gt;</span>
+                        <span class="desc"> <!-- 行内容器 -->← 第1行：声明HTML5</span>
+                    </div>
+                    <div class="level-0"> <!-- 块级容器 -->
+                        <span class="tag"> <!-- 行内容器 -->&lt;html lang="zh-CN"&gt;</span>
+                        <span class="desc"> <!-- 行内容器 -->← 第2行：根元素</span>
+                        <div class="level-1"> <!-- 块级容器 -->
+                            <span class="tag"> <!-- 行内容器 -->&lt;head&gt;</span>
+                            <span class="desc"> <!-- 行内容器 -->← 头部（浏览器看的）</span>
+                            <div class="level-2"> <!-- 块级容器 -->
+                                <span class="tag"> <!-- 行内容器 -->&lt;meta charset="UTF-8"&gt;</span>
+                                <span class="desc"> <!-- 行内容器 -->← 字符编码</span>
+                            </div>
+                            <div class="level-2"> <!-- 块级容器 -->
+                                <span class="tag"> <!-- 行内容器 -->&lt;meta name="viewport" ...&gt;</span>
+                                <span class="desc"> <!-- 行内容器 -->← 手机适配</span>
+                            </div>
+                            <div class="level-2"> <!-- 块级容器 -->
+                                <span class="tag"> <!-- 行内容器 -->&lt;title&gt;页面标题&lt;/title&gt;</span>
+                                <span class="desc"> <!-- 行内容器 -->← 标签页标题</span>
+                            </div>
+                        </div>
+                        <div class="level-1"> <!-- 块级容器 -->
+                            <span class="tag"> <!-- 行内容器 -->&lt;body&gt;</span>
+                            <span class="desc"> <!-- 行内容器 -->← 主体（用户看的）</span>
+                            <div class="level-2"> <!-- 块级容器 -->
+                                <span class="tag"> <!-- 行内容器 -->&lt;h1&gt;你好世界&lt;/h1&gt;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code6" class="code-toggle"> <!-- 输入框，单标签 -->
+            <label for="code6" class="toggle-label">📝 查看完整代码</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+<span>6</span>    &lt;title&gt;我的页面&lt;/title&gt;
+<span>7</span>&lt;/head&gt;
+<span>8</span>&lt;body&gt;
+<span>9</span>
+<span>10</span>    &lt;h1&gt;Hello World&lt;/h1&gt;
+<span>11</span>    &lt;p&gt;这是我的第一个网页&lt;/p&gt;
+<span>12</span>
+<span>13</span>&lt;/body&gt;
+<span>14</span>&lt;/html&gt;</div>
+        </div>
+
+    </main>
+
+</body>
+
+</html>

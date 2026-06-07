@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grid 布局</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        nav h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        nav a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .unit h3 {
+            font-size: 15px;
+            color: #555;
+            margin: 15px 0 8px;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked ~ .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked ~ .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* ========================================
+           以下为各 Grid 知识点的演示样式
+           ======================================== */
+
+        /* Grid 项目基础样式 */
+        .grid-item {
+            background: #3498db;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        /* 一、Grid 基础概念 */
+        #unit-1 .demo {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        /* 二、grid-template-columns */
+        .columns-fixed {
+            display: grid;
+            grid-template-columns: 100px 150px 100px;
+            gap: 10px;
+        }
+
+        .columns-fr {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 10px;
+        }
+
+        .columns-repeat {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        /* 三、grid-template-rows */
+        .rows-fixed {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 60px 100px;
+            gap: 10px;
+        }
+
+        .rows-auto {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 10px;
+            height: 200px;
+        }
+
+        /* 四、gap */
+        .gap-demo {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        /* 五、跨列与跨行 */
+        .span-demo {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .span-2-col {
+            grid-column: span 2;
+        }
+
+        .span-2-row {
+            grid-row: span 2;
+        }
+
+        /* 六、grid-template-areas */
+        .areas-demo {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            grid-template-rows: 60px 1fr 60px;
+            grid-template-areas:
+                "header header header"
+                "sidebar main aside"
+                "footer footer footer";
+            gap: 10px;
+            height: 300px;
+        }
+
+        .area-header {
+            grid-area: header;
+            background: #e74c3c;
+        }
+
+        .area-sidebar {
+            grid-area: sidebar;
+            background: #3498db;
+        }
+
+        .area-main {
+            grid-area: main;
+            background: #2ecc71;
+        }
+
+        .area-aside {
+            grid-area: aside;
+            background: #f39c12;
+        }
+
+        .area-footer {
+            grid-area: footer;
+            background: #9b59b6;
+        }
+
+        /* 七、justify-items */
+        .justify-items-start {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            justify-items: start;
+            gap: 10px;
+        }
+
+        .justify-items-center {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            justify-items: center;
+            gap: 10px;
+        }
+
+        /* 八、align-items */
+        .align-items-start {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            align-items: start;
+            gap: 10px;
+            height: 150px;
+        }
+
+        .align-items-center {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            align-items: center;
+            gap: 10px;
+            height: 150px;
+        }
+
+        /* 九、justify-content */
+        .justify-content-center {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .justify-content-space-between {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            justify-content: space-between;
+        }
+
+        /* 十、align-content */
+        .align-content-center {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            align-content: center;
+            gap: 10px;
+            height: 300px;
+        }
+
+        /* 十一、grid-auto-flow */
+        .flow-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-flow: row;
+            gap: 10px;
+        }
+
+        .flow-column {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-flow: column;
+            gap: 10px;
+            height: 200px;
+        }
+
+        /* 十二、minmax */
+        .minmax-demo {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        /* 十三、auto-fit */
+        .auto-fit-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+    
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            nav {
+                position: fixed;
+                width: 100%;
+                height: auto;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                padding: 8px 0;
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            nav h3 {
+                display: none;
+            }
+            nav a {
+                display: inline-block;
+                padding: 6px 12px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+            main {
+                margin-left: 0;
+                padding: 15px;
+                padding-bottom: 60px;
+            }
+            .unit {
+                padding: 15px;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .focus-input {
+                width: 100%;
+                max-width: 250px;
+            }
+            input[type="text"],
+            input[type="email"] {
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav>
+        <h3>CSS Grid 布局目录</h3>
+        <a href="#unit-1">一、Grid 基础概念</a>
+        <a href="#unit-2">二、grid-template-columns</a>
+        <a href="#unit-3">三、grid-template-rows</a>
+        <a href="#unit-4">四、gap</a>
+        <a href="#unit-5">五、跨列与跨行</a>
+        <a href="#unit-6">六、grid-template-areas</a>
+        <a href="#unit-7">七、justify-items</a>
+        <a href="#unit-8">八、align-items</a>
+        <a href="#unit-9">九、justify-content</a>
+        <a href="#unit-10">十、align-content</a>
+        <a href="#unit-11">十一、grid-auto-flow</a>
+        <a href="#unit-12">十二、minmax</a>
+        <a href="#unit-13">十三、auto-fit</a>
+    </nav>
+
+    <!-- 主内容 -->
+    <main>
+        <!-- 一、Grid 基础概念 -->
+        <div class="unit" id="unit-1">
+            <h2>一、Grid 基础概念</h2>
+            <div class="explain">
+                <strong>概念：</strong>Grid 是二维布局的王牌，可以同时控制行和列。<br>
+                <strong>容器：</strong>设置 <code>display: grid</code> 的元素。<br>
+                <strong>项目：</strong>容器的直接子元素。<br>
+                <strong>行：</strong>水平方向的轨道。<br>
+                <strong>列：</strong>垂直方向的轨道。<br>
+                <strong>单元格：</strong>行和列交叉形成的区域。
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 最简单的 Grid 布局</div>
+                <div class="grid-item">1</div>
+                <div class="grid-item">2</div>
+                <div class="grid-item">3</div>
+                <div class="grid-item">4</div>
+                <div class="grid-item">5</div>
+                <div class="grid-item">6</div>
+            </div>
+            <input type="checkbox" id="code-1" class="code-toggle">
+            <label for="code-1" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 容器设置 */
+<span>2</span>.container {
+<span>3</span>    display: grid;
+<span>4</span>    grid-template-columns: 1fr 1fr 1fr;
+<span>5</span>    gap: 10px;
+<span>6</span>}
+<span>7</span>
+<span>8</span>/* fr 单位表示比例，1fr 1fr 1fr 表示三等分 */</div>
+        </div>
+
+        <!-- 二、grid-template-columns -->
+        <div class="unit" id="unit-2">
+            <h2>二、grid-template-columns（定义列）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>grid-template-columns</code> 定义网格的列数和列宽。<br>
+                <strong>常用值：</strong><br>
+                <code>固定宽度</code> — 如 100px、200px<br>
+                <code>fr 比例</code> — 如 1fr 2fr 1fr<br>
+                <code>repeat</code> — 重复定义，如 repeat(3, 1fr)
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 不同列定义方式</div>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">固定宽度</p>
+                        <div class="columns-fixed" style="background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">100px</div>
+                            <div class="grid-item">150px</div>
+                            <div class="grid-item">100px</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">fr 比例</p>
+                        <div class="columns-fr" style="background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">1fr</div>
+                            <div class="grid-item">2fr</div>
+                            <div class="grid-item">1fr</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">repeat 重复</p>
+                        <div class="columns-repeat" style="background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">1</div>
+                            <div class="grid-item">2</div>
+                            <div class="grid-item">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-2" class="code-toggle">
+            <label for="code-2" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 固定宽度 */
+<span>2</span>.container {
+<span>3</span>    grid-template-columns: 100px 150px 100px;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* fr 比例 */
+<span>7</span>.container {
+<span>8</span>    grid-template-columns: 1fr 2fr 1fr;
+<span>9</span>}
+<span>10</span>
+<span>11</span>/* repeat 重复 */
+<span>12</span>.container {
+<span>13</span>    grid-template-columns: repeat(3, 1fr);
+<span>14</span>}
+<span>15</span>
+<span>16</span>/* auto-fit 自适应 */
+<span>17</span>.container {
+<span>18</span>    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+<span>19</span>}</div>
+        </div>
+
+        <!-- 三、grid-template-rows -->
+        <div class="unit" id="unit-3">
+            <h2>三、grid-template-rows（定义行）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>grid-template-rows</code> 定义网格的行数和行高。<br>
+                <strong>常用值：</strong><br>
+                <code>固定行高</code> — 如 60px、100px<br>
+                <code>auto</code> — 自动根据内容调整<br>
+                <code>fr</code> — 比例分配
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 不同行定义方式</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">固定行高</p>
+                        <div class="rows-fixed" style="background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">60px</div>
+                            <div class="grid-item">60px</div>
+                            <div class="grid-item">100px</div>
+                            <div class="grid-item">100px</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">auto 自动</p>
+                        <div class="rows-auto" style="background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">auto</div>
+                            <div class="grid-item">auto</div>
+                            <div class="grid-item">1fr</div>
+                            <div class="grid-item">1fr</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-3" class="code-toggle">
+            <label for="code-3" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 固定行高 */
+<span>2</span>.container {
+<span>3</span>    grid-template-rows: 60px 100px;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 自动行高 */
+<span>7</span>.container {
+<span>8</span>    grid-template-rows: auto;
+<span>9</span>}
+<span>10</span>
+<span>11</span>/* 混合 */
+<span>12</span>.container {
+<span>13</span>    grid-template-rows: 100px auto 1fr;
+<span>14</span>}</div>
+        </div>
+
+        <!-- 四、gap -->
+        <div class="unit" id="unit-4">
+            <h2>四、gap（间距）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>gap</code> 设置网格项目之间的间距。<br>
+                <strong>语法：</strong><code>gap: 行间距 列间距;</code><br>
+                <strong>常用场景：</strong>替代 margin，避免外边距合并问题。
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 gap 演示</div>
+                <div class="gap-demo" style="background: #ecf0f1; padding: 10px;">
+                    <div class="grid-item">1</div>
+                    <div class="grid-item">2</div>
+                    <div class="grid-item">3</div>
+                    <div class="grid-item">4</div>
+                    <div class="grid-item">5</div>
+                    <div class="grid-item">6</div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-4" class="code-toggle">
+            <label for="code-4" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 统一间距 */
+<span>2</span>.container {
+<span>3</span>    gap: 20px;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 行列分别设置 */
+<span>7</span>.container {
+<span>8</span>    row-gap: 20px;
+<span>9</span>    column-gap: 10px;
+<span>10</span>}</div>
+        </div>
+
+        <!-- 五、跨列与跨行 -->
+        <div class="unit" id="unit-5">
+            <h2>五、跨列与跨行</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>grid-column</code> 和 <code>grid-row</code> 让项目跨越多个单元格。<br>
+                <strong>语法：</strong><code>grid-column: span 2;</code> — 跨 2 列<br>
+                <strong>常用场景：</strong>创建复杂的网格布局。
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 跨列与跨行演示</div>
+                <div class="span-demo" style="background: #ecf0f1; padding: 10px;">
+                    <div class="grid-item span-2-col">跨2列</div>
+                    <div class="grid-item">1</div>
+                    <div class="grid-item">1</div>
+                    <div class="grid-item">1</div>
+                    <div class="grid-item span-2-row">跨2行</div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-5" class="code-toggle">
+            <label for="code-5" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 跨列 */
+<span>2</span>.item {
+<span>3</span>    grid-column: span 2;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 跨行 */
+<span>7</span>.item {
+<span>8</span>    grid-row: span 2;
+<span>9</span>}
+<span>10</span>
+<span>11</span>/* 指定列范围 */
+<span>12</span>.item {
+<span>13</span>    grid-column: 1 / 3;  /* 从第1列到第3列 */
+<span>14</span>}</div>
+        </div>
+
+        <!-- 六、grid-template-areas -->
+        <div class="unit" id="unit-6">
+            <h2>六、grid-template-areas（区域布局）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>grid-template-areas</code> 用命名区域定义布局，非常直观。<br>
+                <strong>语法：</strong>用字符串定义区域，相同名称的区域会合并。<br>
+                <strong>常用场景：</strong>创建复杂的页面布局。
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 区域布局演示</div>
+                <div class="areas-demo" style="background: #ecf0f1; padding: 10px;">
+                    <div class="grid-item area-header">Header</div>
+                    <div class="grid-item area-sidebar">Sidebar</div>
+                    <div class="grid-item area-main">Main</div>
+                    <div class="grid-item area-aside">Aside</div>
+                    <div class="grid-item area-footer">Footer</div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-6" class="code-toggle">
+            <label for="code-6" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 容器设置 */
+<span>2</span>.container {
+<span>3</span>    display: grid;
+<span>4</span>    grid-template-columns: 1fr 2fr 1fr;
+<span>5</span>    grid-template-rows: 60px 1fr 60px;
+<span>6</span>    grid-template-areas:
+<span>7</span>        "header header header"
+<span>8</span>        "sidebar main aside"
+<span>9</span>        "footer footer footer";
+<span>10</span>}
+<span>11</span>
+<span>12</span>/* 项目设置 */
+<span>13</span>.header { grid-area: header; }
+<span>14</span>.sidebar { grid-area: sidebar; }
+<span>15</span>.main { grid-area: main; }
+<span>16</span>.aside { grid-area: aside; }
+<span>17</span>.footer { grid-area: footer; }</div>
+        </div>
+
+        <!-- 七、justify-items -->
+        <div class="unit" id="unit-7">
+            <h2>七、justify-items（水平对齐）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>justify-items</code> 控制项目在单元格内的水平对齐方式。<br>
+                <strong>常用值：</strong><br>
+                <code>stretch</code> — 拉伸（默认）<br>
+                <code>start</code> — 左对齐<br>
+                <code>center</code> — 居中<br>
+                <code>end</code> — 右对齐
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 justify-items 对比</div>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">start</p>
+                        <div class="justify-items-start" style="background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">1</div>
+                            <div class="grid-item">2</div>
+                            <div class="grid-item">3</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">center</p>
+                        <div class="justify-items-center" style="background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">1</div>
+                            <div class="grid-item">2</div>
+                            <div class="grid-item">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-7" class="code-toggle">
+            <label for="code-7" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 左对齐 */
+<span>2</span>.container {
+<span>3</span>    justify-items: start;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 居中 */
+<span>7</span>.container {
+<span>8</span>    justify-items: center;
+<span>9</span>}
+<span>10</span>
+<span>11</span>/* 右对齐 */
+<span>12</span>.container {
+<span>13</span>    justify-items: end;
+<span>14</span>}</div>
+        </div>
+
+        <!-- 八、align-items -->
+        <div class="unit" id="unit-8">
+            <h2>八、align-items（垂直对齐）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>align-items</code> 控制项目在单元格内的垂直对齐方式。<br>
+                <strong>常用值：</strong><br>
+                <code>stretch</code> — 拉伸（默认）<br>
+                <code>start</code> — 顶部对齐<br>
+                <code>center</code> — 居中<br>
+                <code>end</code> — 底部对齐
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 align-items 对比</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">start</p>
+                        <div class="align-items-start" style="background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">1</div>
+                            <div class="grid-item">2</div>
+                            <div class="grid-item">3</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">center</p>
+                        <div class="align-items-center" style="background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">1</div>
+                            <div class="grid-item">2</div>
+                            <div class="grid-item">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-8" class="code-toggle">
+            <label for="code-8" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 顶部对齐 */
+<span>2</span>.container {
+<span>3</span>    align-items: start;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 居中 */
+<span>7</span>.container {
+<span>8</span>    align-items: center;
+<span>9</span>}
+<span>10</span>
+<span>11</span>/* 底部对齐 */
+<span>12</span>.container {
+<span>13</span>    align-items: end;
+<span>14</span>}</div>
+        </div>
+
+        <!-- 九、justify-content -->
+        <div class="unit" id="unit-9">
+            <h2>九、justify-content（整体水平对齐）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>justify-content</code> 控制整个网格在容器内的水平对齐方式。<br>
+                <strong>前提：</strong>网格总宽度小于容器宽度。<br>
+                <strong>常用值：</strong><code>start</code>、<code>center</code>、<code>space-between</code>
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 justify-content 对比</div>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">center</p>
+                        <div class="justify-content-center" style="background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">1</div>
+                            <div class="grid-item">2</div>
+                            <div class="grid-item">3</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">space-between</p>
+                        <div class="justify-content-space-between" style="background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">1</div>
+                            <div class="grid-item">2</div>
+                            <div class="grid-item">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-9" class="code-toggle">
+            <label for="code-9" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 居中 */
+<span>2</span>.container {
+<span>3</span>    justify-content: center;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 两端对齐 */
+<span>7</span>.container {
+<span>8</span>    justify-content: space-between;
+<span>9</span>}</div>
+        </div>
+
+        <!-- 十、align-content -->
+        <div class="unit" id="unit-10">
+            <h2>十、align-content（整体垂直对齐）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>align-content</code> 控制整个网格在容器内的垂直对齐方式。<br>
+                <strong>前提：</strong>网格总高度小于容器高度。<br>
+                <strong>常用值：</strong><code>start</code>、<code>center</code>、<code>end</code>
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 align-content 演示</div>
+                <div class="align-content-center" style="background: #ecf0f1; padding: 10px;">
+                    <div class="grid-item">1</div>
+                    <div class="grid-item">2</div>
+                    <div class="grid-item">3</div>
+                    <div class="grid-item">4</div>
+                    <div class="grid-item">5</div>
+                    <div class="grid-item">6</div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-10" class="code-toggle">
+            <label for="code-10" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 垂直居中 */
+<span>2</span>.container {
+<span>3</span>    display: grid;
+<span>4</span>    grid-template-columns: repeat(3, 1fr);
+<span>5</span>    grid-template-rows: repeat(3, 1fr);
+<span>6</span>    align-content: center;
+<span>7</span>    height: 300px;
+<span>8</span>}</div>
+        </div>
+
+        <!-- 十一、grid-auto-flow -->
+        <div class="unit" id="unit-11">
+            <h2>十一、grid-auto-flow（自动排列）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>grid-auto-flow</code> 控制项目如何自动排列。<br>
+                <strong>常用值：</strong><br>
+                <code>row</code> — 按行排列（默认）<br>
+                <code>column</code> — 按列排列<br>
+                <code>dense</code> — 填充空隙
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 grid-auto-flow 对比</div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">row（默认）</p>
+                        <div class="flow-row" style="background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">1</div>
+                            <div class="grid-item">2</div>
+                            <div class="grid-item">3</div>
+                            <div class="grid-item">4</div>
+                            <div class="grid-item">5</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 5px; font-weight: bold;">column</p>
+                        <div class="flow-column" style="background: #ecf0f1; padding: 10px;">
+                            <div class="grid-item">1</div>
+                            <div class="grid-item">2</div>
+                            <div class="grid-item">3</div>
+                            <div class="grid-item">4</div>
+                            <div class="grid-item">5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-11" class="code-toggle">
+            <label for="code-11" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 按行排列（默认） */
+<span>2</span>.container {
+<span>3</span>    grid-auto-flow: row;
+<span>4</span>}
+<span>5</span>
+<span>6</span>/* 按列排列 */
+<span>7</span>.container {
+<span>8</span>    grid-auto-flow: column;
+<span>9</span>}
+<span>10</span>
+<span>11</span>/* 填充空隙 */
+<span>12</span>.container {
+<span>13</span>    grid-auto-flow: dense;
+<span>14</span>}</div>
+        </div>
+
+        <!-- 十二、minmax -->
+        <div class="unit" id="unit-12">
+            <h2>十二、minmax（最小最大值）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>minmax()</code> 定义项目的最小和最大尺寸。<br>
+                <strong>语法：</strong><code>minmax(最小值, 最大值)</code><br>
+                <strong>常用场景：</strong>创建响应式布局，项目在一定范围内伸缩。
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 minmax 演示</div>
+                <div class="minmax-demo" style="background: #ecf0f1; padding: 10px;">
+                    <div class="grid-item">1</div>
+                    <div class="grid-item">2</div>
+                    <div class="grid-item">3</div>
+                    <div class="grid-item">4</div>
+                    <div class="grid-item">5</div>
+                    <div class="grid-item">6</div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-12" class="code-toggle">
+            <label for="code-12" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 最小100px，最大1fr */
+<span>2</span>.container {
+<span>3</span>    grid-template-columns: repeat(3, minmax(100px, 1fr));
+<span>4</span>}</div>
+        </div>
+
+        <!-- 十三、auto-fit -->
+        <div class="unit" id="unit-13">
+            <h2>十三、auto-fit（自适应列数）</h2>
+            <div class="explain">
+                <strong>概念：</strong><code>auto-fit</code> 配合 <code>minmax()</code> 实现完全响应式布局。<br>
+                <strong>语法：</strong><code>repeat(auto-fit, minmax(最小宽度, 1fr))</code><br>
+                <strong>常用场景：</strong>卡片布局、图片画廊等。
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 auto-fit 演示（调整窗口宽度查看效果）</div>
+                <div class="auto-fit-demo" style="background: #ecf0f1; padding: 10px;">
+                    <div class="grid-item">1</div>
+                    <div class="grid-item">2</div>
+                    <div class="grid-item">3</div>
+                    <div class="grid-item">4</div>
+                    <div class="grid-item">5</div>
+                    <div class="grid-item">6</div>
+                </div>
+            </div>
+            <input type="checkbox" id="code-13" class="code-toggle">
+            <label for="code-13" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* 自适应列数 */
+<span>2</span>.container {
+<span>3</span>    display: grid;
+<span>4</span>    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+<span>5</span>    gap: 10px;
+<span>6</span>}
+<span>7</span>
+<span>8</span>/* auto-fit vs auto-fill：
+<span>9</span>   auto-fit: 项目拉伸填满空隙
+<span>10</span>   auto-fill: 保持项目原始尺寸 */</div>
+        </div>
+    </main>
+</body>
+
+</html>

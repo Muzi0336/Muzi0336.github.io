@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML结构</title>
+
+    <style>
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .unit {
+                padding: 15px;
+                margin: 10px 0;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .structure-box {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .structure-box .level-1 {
+                margin-left: 10px;
+            }
+            .structure-box .level-2 {
+                margin-left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML结构</h1>
+
+
+        <!-- 第1节：什么是语义化 -->
+        <div class="unit" id="unit-1">
+            <h2>1. 什么是语义化</h2>
+            
+            <div class="explain">
+                <p><strong>语义化</strong>是指使用恰当的 HTML 标签来表达内容的含义，而不是仅仅为了样式。</p>
+                <p>语义化的好处：</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>✅ 代码可读性更好</li>
+                    <li>✅ SEO 友好，搜索引擎更容易理解页面结构</li>
+                    <li>✅ 无障碍访问，屏幕阅读器能正确解读</li>
+                    <li>✅ 维护性更好，团队协作更高效</li>
+                </ul>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">对比示例：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>非语义化 ❌</th>
+                        <th>语义化 ✅</th>
+                    </tr>
+                    <tr>
+                        <td>&lt;div class="header"&gt;...&lt;/div&gt;</td>
+                        <td>&lt;header&gt;...&lt;/header&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>&lt;div class="nav"&gt;...&lt;/div&gt;</td>
+                        <td>&lt;nav&gt;...&lt;/nav&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>&lt;div class="content"&gt;...&lt;/div&gt;</td>
+                        <td>&lt;main&gt;...&lt;/main&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>&lt;div class="footer"&gt;...&lt;/div&gt;</td>
+                        <td>&lt;footer&gt;...&lt;/footer&gt;</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 第2节：常用语义化标签 -->
+        <div class="unit" id="unit-2">
+            <h2>2. 常用语义化标签</h2>
+            
+            <div class="explain">
+                <p>HTML5 引入了多个语义化标签：</p>
+                <p><code>&lt;header&gt;</code> 页头 | <code>&lt;nav&gt;</code> 导航 | <code>&lt;main&gt;</code> 主体 | <code>&lt;article&gt;</code> 文章</p>
+                <p><code>&lt;section&gt;</code> 区块 | <code>&lt;aside&gt;</code> 侧边栏 | <code>&lt;footer&gt;</code> 页脚</p>
+                <p><code>&lt;figure&gt;</code> 媒体容器 | <code>&lt;figcaption&gt;</code> 媒体标题</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">标签说明：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>标签</th>
+                        <th>含义</th>
+                        <th>使用场景</th>
+                    </tr>
+                    <tr>
+                        <td>header</td>
+                        <td>页头</td>
+                        <td>Logo、导航、标题</td>
+                    </tr>
+                    <tr>
+                        <td>nav</td>
+                        <td>导航</td>
+                        <td>主导航、面包屑</td>
+                    </tr>
+                    <tr>
+                        <td>main</td>
+                        <td>主体</td>
+                        <td>页面核心内容（唯一）</td>
+                    </tr>
+                    <tr>
+                        <td>article</td>
+                        <td>文章</td>
+                        <td>独立的内容块（博客、新闻）</td>
+                    </tr>
+                    <tr>
+                        <td>section</td>
+                        <td>区块</td>
+                        <td>内容分组（标题+内容）</td>
+                    </tr>
+                    <tr>
+                        <td>aside</td>
+                        <td>侧边栏</td>
+                        <td>相关链接、广告、标签云</td>
+                    </tr>
+                    <tr>
+                        <td>footer</td>
+                        <td>页脚</td>
+                        <td>版权、联系方式、链接</td>
+                    </tr>
+                    <tr>
+                        <td>figure</td>
+                        <td>媒体容器</td>
+                        <td>图片、图表、代码示例</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 第3节：页面结构示例 -->
+        <div class="unit" id="unit-3">
+            <h2>3. 页面结构示例</h2>
+            
+            <div class="explain">
+                <p>一个典型的语义化页面结构：</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <header>
+                    <h3>网站标题</h3>
+                    <nav>导航链接</nav>
+                </header>
+                <main>
+                    <article>
+                        <h4>文章标题</h4>
+                        <section>
+                            <h5>章节1</h5>
+                            <p>章节内容...</p>
+                        </section>
+                        <section>
+                            <h5>章节2</h5>
+                            <p>章节内容...</p>
+                        </section>
+                    </article>
+                    <aside>
+                        <h4>侧边栏</h4>
+                        <p>相关链接...</p>
+                    </aside>
+                
+
+
+        <!-- 第1节：表格结构分组 -->
+        <div class="unit" id="unit-1">
+            <h2>1. 表格结构分组</h2>
+            
+            <div class="explain">
+                <p><code>&lt;thead&gt;</code> 表头 | <code>&lt;tbody&gt;</code> 表体 | <code>&lt;tfoot&gt;</code> 表尾</p>
+                <p><code>&lt;caption&gt;</code> 表格标题，让表格更语义化。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <table>
+                    <caption>学生成绩表</caption>
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>语文</th>
+                            <th>数学</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>张三</td>
+                            <td>85</td>
+                            <td>90</td>
+                        </tr>
+                        <tr>
+                            <td>李四</td>
+                            <td>78</td>
+                            <td>88</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>平均分</td>
+                            <td>81.5</td>
+                            <td>89</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            
+        </div>
+
+        <!-- 第2节：合并列 -->
+        <div class="unit" id="unit-2">
+            <h2>2. 合并列 colspan</h2>
+            
+            <div class="explain">
+                <p><code>colspan</code> 属性让一个单元格横跨多列。</p>
+                <p>例如 <code>colspan="2"</code> 表示这个单元格占 2 列的位置。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <table>
+                    <tr>
+                        <th colspan="2">个人信息</th>
+                        <th>成绩</th>
+                    </tr>
+                    <tr>
+                        <td>张三</td>
+                        <td>男</td>
+                        <td>90</td>
+                    </tr>
+                </table>
+            </div>
+
+            
+        </div>
+
+        <!-- 第3节：合并行 -->
+        <div class="unit" id="unit-3">
+            <h2>3. 合并行 rowspan</h2>
+            
+            <div class="explain">
+                <p><code>rowspan</code> 属性让一个单元格纵跨多行。</p>
+                <p>例如 <code>rowspan="2"</code> 表示这个单元格占 2 行的位置。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <table>
+                    <tr>
+                        <th>姓名</th>
+                        <th>科目</th>
+                        <th>分数</th>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">张三</td>
+                        <td>语文</td>
+                        <td>85</td>
+                    </tr>
+                    <tr>
+                        <td>数学</td>
+                        <td>90</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">李四</td>
+                        <td>语文</td>
+                        <td>78</td>
+                    </tr>
+                    <tr>
+                        <td>数学</td>
+                        <td>88</td>
+                    </tr>
+                </table>
+            </div>
+
+            
+        </div>
+
+        <!-- 第4节：综合示例 -->
+        <div class="unit" id="unit-4">
+            <h2>4. 综合示例</h2>
+            
+            <div class="explain">
+                <p>同时使用 <code>colspan</code> 和 <code>rowspan</code> 的复杂表格。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <table>
+                    <tr>
+                        <th colspan="2">科目</th>
+                        <th rowspan="2">总分</th>
+                    </tr>
+                    <tr>
+                        <th>语文</th>
+                        <th>数学</th>
+                    </tr>
+                    <tr>
+                        <td>85</td>
+                        <td>90</td>
+                        <td>175</td>
+                    </tr>
+                </table>
+            </div>
+
+            
+        </div>
+
+    
+
+</body>
+</html>

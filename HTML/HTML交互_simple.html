@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML交互</title>
+
+    <style>
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .unit {
+                padding: 15px;
+                margin: 10px 0;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .structure-box {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .structure-box .level-1 {
+                margin-left: 10px;
+            }
+            .structure-box .level-2 {
+                margin-left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML交互</h1>
+
+
+        <!-- 第1节：表单基本结构 -->
+        <div class="unit" id="unit-1">
+            <h2>1. 表单基本结构</h2>
+            
+            <div class="explain">
+                <p><code>&lt;form&gt;</code> 标签用于创建表单，<code>action</code> 指定提交地址，<code>method</code> 指定提交方式（GET/POST）。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <form action="/submit" method="post">
+                    <label>用户名：<input type="text" name="username"></label><br>
+                    <label>密码：<input type="password" name="password"></label><br>
+                    <input type="submit" value="提交">
+                </form>
+            </div>
+
+            
+        </div>
+
+        <!-- 第2节：输入框类型 -->
+        <div class="unit" id="unit-2">
+            <h2>2. 输入框类型</h2>
+            
+            <div class="explain">
+                <p><code>&lt;input&gt;</code> 标签的 <code>type</code> 属性定义输入类型：</p>
+                <p><code>text</code> 文本 | <code>password</code> 密码 | <code>email</code> 邮箱 | <code>number</code> 数字 | <code>tel</code> 电话 | <code>url</code> 网址 | <code>date</code> 日期</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <form>
+                    <label>文本：<input type="text" name="text"></label><br>
+                    <label>密码：<input type="password" name="password"></label><br>
+                    <label>邮箱：<input type="email" name="email"></label><br>
+                    <label>数字：<input type="number" name="number"></label><br>
+                    <label>电话：<input type="tel" name="tel"></label><br>
+                    <label>网址：<input type="url" name="url"></label><br>
+                    <label>日期：<input type="date" name="date"></label><br>
+                </form>
+            </div>
+
+            
+        </div>
+
+        <!-- 第3节：单选和复选 -->
+        <div class="unit" id="unit-3">
+            <h2>3. 单选和复选</h2>
+            
+            <div class="explain">
+                <p><code>radio</code> 单选按钮：同一组必须设置相同的 <code>name</code> 属性。</p>
+                <p><code>checkbox</code> 复选框：可多选，<code>checked</code> 属性设置默认选中。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <form>
+                    <p>性别：</p>
+                    <label><input type="radio" name="gender" value="male"> 男</label>
+                    <label><input type="radio" name="gender" value="female"> 女</label>
+                    <label><input type="radio" name="gender" value="other"> 其他</label>
+                    
+                    <p>爱好：</p>
+                    <label>
+
+            
+        </div>
+
+        <!-- 第4节：下拉选择框 -->
+        <div class="unit" id="unit-4">
+            <h2>4. 下拉选择框</h2>
+            
+            <div class="explain">
+                <p><code>&lt;select&gt;</code> 定义下拉框，<code>&lt;option&gt;</code> 定义选项。</p>
+                <p><code>selected</code> 默认选中，<code>disabled</code> 禁用选项，<code>&lt;optgroup&gt;</code> 选项分组。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <form>
+                    <label>城市：</label>
+                    <select name="city">
+                        <option value="">请选择</option>
+                        <option value="beijing" selected>北京</option>
+                        <option value="shanghai">上海</option>
+                        <option value="guangzhou">广州</option>
+                        <option value="shenzhen">深圳</option>
+                    </select>
+                    
+                    <br><br>
+                    
+                    <label>分组下拉：</label>
+                    <select name="grouped">
+                        <optgroup label="华北">
+                            <option value="beijing">北京</option>
+                            <option value="tianjin">天津</option>
+                        </optgroup>
+                        <optgroup label="华东">
+                            <option value="shanghai">上海</option>
+                            <option value="hangzhou">杭州</option>
+                        </optgroup>
+                    </select>
+                </form>
+            </div>
+
+            
+        </div>
+
+        <!-- 第5节：多行文本 -->
+        <div class="unit" id="unit-5">
+            <h2>5. 多行文本 textarea</h2>
+            
+            <div class="explain">
+                <p><code>&lt;textarea&gt;</code> 标签用于多行文本输入。</p>
+                <p><code>rows</code> 设置行数，<code>cols</code> 设置列数，<code>resize</code> 控制是否可调整大小。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <form>
+                    <label>留言：</label><br>
+                    <textarea name="message" rows="5" cols="30" placeholder="请输入留言内容..."></textarea>
+                </form>
+            </div>
+
+            
+        </div>
+
+        <!-- 第6节：输入建议 -->
+        <div class="unit" id="unit-6">
+            <h2>6. 输入建议 datalist</h2>
+            
+            <div class="explain">
+                <p><code>&lt;datalist&gt;</code> 标签为 <code>&lt;input&gt;</code> 提供输入建议列表。</p>
+                <p>用户输入时会显示匹配的选项，但也可以输入自定义内容。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <form>
+                    <label>浏览器：</label>
+                    <input type="text" name="browser" list="browsers">
+                    <datalist id="browsers">
+                        <option value="Chrome">
+                        <option value="Firefox">
+                        <option value="Safari">
+                        <option value="Edge">
+                        <option value="Opera">
+                    </datalist>
+                </form>
+            </div>
+
+            
+        </div>
+
+        <!-- 第7节：表单分组 -->
+        <div class="unit" id="unit-7">
+            <h2>7. 表单分组 fieldset</h2>
+            
+            <div class="explain">
+                <p><code>&lt;fieldset&gt;</code> 标签用于将表单元素分组，<code>&lt;legend&gt;</code> 标签定义分组标题。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <form>
+                    <fieldset>
+                        <legend>个人信息</legend>
+                        <label>姓名：<input type="text" name="name"></label><br>
+                        <label>邮箱：<input type="email" name="email"></label>
+                    </fieldset>
+                    
+                    <fieldset>
+                        <legend>账户设置</legend>
+                        <label>用户名：<input type="text" name="username"></label><br>
+                        <label>密码：<input type="password" name="password"></label>
+                    </fieldset>
+                </form>
+            </div>
+
+            
+        </div>
+
+        <!-- 第8节：表单验证 -->
+        <div class="unit" id="unit-8">
+            <h2>8. 表单验证</h2>
+            
+            <div class="explain">
+                <p>HTML5 提供了内置的表单验证功能：</p>
+                <p><code>required</code> 必填 | <code>disabled</code> 禁用 | <code>readonly</code> 只读 | <code>pattern</code> 正则验证 | <code>min/max</code> 范围</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <form>
+                    <label>必填：<input type="text" name="required" required></label><br>
+                    <label>禁用：<input type="text" name="disabled" disabled></label><br>
+                    <label>只读：<input type="text" name="readonly" value="不可修改" readonly></label><br>
+                    <label>正则（6位数字）：<input type="text" name="pattern" pattern="\d{6}"></label><br>
+                    <label>范围（1-100）：<input type="number" name="range" min="1" max="100"></label><br>
+                    <input type="submit" value="提交">
+                </form>
+            </div>
+
+            
+
+            <div class="demo">
+                <div class="demo-label">验证属性说明：</div>
+                <table class="attr-table">
+                    <tr>
+                        <th>属性</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>required</td>
+                        <td>必填字段</td>
+                    </tr>
+                    <tr>
+                        <td>disabled</td>
+                        <td>禁用（不可交互，不提交）</td>
+                    </tr>
+                    <tr>
+                        <td>readonly</td>
+                        <td>只读（不可修改，会提交）</td>
+                    </tr>
+                    <tr>
+                        <td>pattern</td>
+                        <td>正则表达式验证</td>
+                    </tr>
+                    <tr>
+                        <td>min/max</td>
+                        <td>数字范围</td>
+                    </tr>
+                    <tr>
+                        <td>minlength/maxlength</td>
+                        <td>文本长度范围</td>
+                    </tr>
+                    <tr>
+                        <td>placeholder</td>
+                        <td>输入提示</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    
+
+
+        <!-- 第1节：锚点链接 -->
+        <div class="unit" id="unit-1">
+            <h2>1. 锚点链接 #id</h2>
+            
+            <div class="explain">
+                <p>锚点链接可以跳转到页面内指定位置。</p>
+                <p>第一步：给目标元素设置 <code>id</code>；第二步：<code>href="#id"</code>。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <a href="#section1">跳转到第一章</a> |
+                <a href="#section2">跳转到第二章</a> |
+                <a href="#top">回到顶部</a>
+                
+                <div id="top" style="margin-top: 20px;">
+                    <p>这里是页面顶部</p>
+                </div>
+                
+                <div class="spacer">
+                    <p>（中间留空，方便观察跳转效果）</p>
+                </div>
+                
+                <div id="section1">
+                    <h3>第一章</h3>
+                    <p>这是第一章的内容...</p>
+                </div>
+                
+                <div class="spacer">
+                    <p>（中间留空，方便观察跳转效果）</p>
+                </div>
+                
+                <div id="section2">
+                    <h3>第二章</h3>
+                    <p>这是第二章的内容...</p>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <!-- 第2节：邮件链接 -->
+        <div class="unit" id="unit-2">
+            <h2>2. 邮件链接 mailto:</h2>
+            
+            <div class="explain">
+                <p><code>mailto:</code> 点击后打开邮件客户端。</p>
+                <p>可以预填收件人、主题、正文。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <a href="mailto:test@example.com">发送邮件</a>
+                <a href="mailto:test@example.com?subject=你好&body=这是邮件内容">发送带主题的邮件</a>
+            </div>
+
+            
+        </div>
+
+        <!-- 第3节：下载链接 -->
+        <div class="unit" id="unit-3">
+            <h2>3. 下载链接 download</h2>
+            
+            <div class="explain">
+                <p><code>download</code> 属性让链接下载文件而不是跳转。</p>
+                <p>属性值是下载后的文件名（可选）。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <a href="file/test.pdf" download>下载PDF</a>
+                <a href="file/image.jpg" download="我的图片.jpg">下载图片（自定义文件名）</a>
+            </div>
+
+            
+        </div>
+
+        <!-- 第4节：图片链接 -->
+        <div class="unit" id="unit-4">
+            <h2>4. 图片链接</h2>
+            
+            <div class="explain">
+                <p>用 <code>&lt;a&gt;</code> 标签包裹 <code>&lt;img&gt;</code>，点击图片跳转。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <a href="https://www.example.com">
+                    <img src="https://via.placeholder.com/150" alt="点击跳转">
+                </a>
+            </div>
+
+            
+        </div>
+
+        <!-- 第5节：target 属性 -->
+        <div class="unit" id="unit-5">
+            <h2>5. target 属性</h2>
+            
+            <div class="explain">
+                <p><code>target</code> 属性控制链接打开方式：</p>
+                <p><code>_blank</code> 新窗口 | <code>_self</code> 当前窗口（默认）</p>
+                <p><code>_parent</code> 父窗口 | <code>_top</code> 最顶层窗口</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <a href="https://www.example.com" target="_blank">_blank: 新窗口打开</a><br>
+                <a href="https://www.example.com" target="_self">_self: 当前窗口打开</a><br>
+                <a href="https://www.example.com" target="_parent">_parent: 父窗口打开</a><br>
+                <a href="https://www.example.com" target="_top">_top: 最顶层窗口打开</a>
+            </div>
+
+            
+        </div>
+
+        <!-- 第6节：电话链接 -->
+        <div class="unit" id="unit-6">
+            <h2>6. 电话链接 tel:</h2>
+            
+            <div class="explain">
+                <p><code>tel:</code> 点击后拨打电话（手机端常用）。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <a href="tel:13800138000">拨打电话：13800138000</a>
+            </div>
+
+            
+        </div>
+
+    
+
+</body>
+</html>

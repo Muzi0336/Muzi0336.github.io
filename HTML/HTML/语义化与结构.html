@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语义化与结构</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked ~ .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked ~ .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 演示区内的语义化标签样式 */
+        .demo header, .demo footer, .demo nav, .demo main, .demo article, .demo section, .demo aside {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .demo header {
+            background: #3498db;
+            color: white;
+        }
+
+        .demo nav {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .demo main {
+            background: #ecf0f1;
+            display: flex;
+            gap: 15px;
+        }
+
+        .demo article {
+            flex: 2;
+            background: white;
+            padding: 15px;
+        }
+
+        .demo section {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 3px solid #3498db;
+        }
+
+        .demo aside {
+            flex: 1;
+            background: #f1f1f1;
+        }
+
+        .demo footer {
+            background: #34495e;
+            color: white;
+        }
+
+        /* div/span 演示样式 */
+        .demo .box {
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #3498db;
+            border-radius: 4px;
+        }
+
+        .demo .inline-box {
+            display: inline;
+            background: #f1f1f1;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+        }
+
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav class="sidebar">
+        <h3>语义化与结构</h3>
+        <a href="#unit-1">1. 什么是语义化</a>
+        <a href="#unit-2">2. 常用语义化标签</a>
+        <a href="#unit-3">3. 页面结构示例</a>
+        <a href="#unit-4">4. div 区块元素</a>
+        <a href="#unit-5">5. span 行内元素</a>
+        <a href="#unit-6">6. 块级 vs 行内</a>
+        <a href="#unit-7">7. inline-block 间隙</a>
+        <a href="#unit-8">8. 间隙解决方案</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- 第1节：什么是语义化 -->
+        <div class="unit" id="unit-1"> <!-- 块级容器 -->
+            <h2>1. 什么是语义化</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p><strong>语义化</strong>是指使用恰当的 HTML 标签来表达内容的含义，而不是仅仅为了样式。</p> <!-- 段落标签 -->
+                <p>语义化的好处：</p> <!-- 段落标签 -->
+                <ul style="margin-left: 20px; margin-top: 10px;"> <!-- 无序列表 -->
+                    <li> <!-- 列表项 -->✅ 代码可读性更好</li>
+                    <li> <!-- 列表项 -->✅ SEO 友好，搜索引擎更容易理解页面结构</li>
+                    <li> <!-- 列表项 -->✅ 无障碍访问，屏幕阅读器能正确解读</li>
+                    <li> <!-- 列表项 -->✅ 维护性更好，团队协作更高效</li>
+                </ul>
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->对比示例：</div>
+                <table class="comparison-table"> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th> <!-- 表格表头 -->非语义化 ❌</th>
+                        <th> <!-- 表格表头 -->语义化 ✅</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->&lt;div class="header"&gt;...&lt;/div&gt;</td>
+                        <td> <!-- 表格单元格 -->&lt;header&gt;...&lt;/header&gt;</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->&lt;div class="nav"&gt;...&lt;/div&gt;</td>
+                        <td> <!-- 表格单元格 -->&lt;nav&gt;...&lt;/nav&gt;</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->&lt;div class="content"&gt;...&lt;/div&gt;</td>
+                        <td> <!-- 表格单元格 -->&lt;main&gt;...&lt;/main&gt;</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->&lt;div class="footer"&gt;...&lt;/div&gt;</td>
+                        <td> <!-- 表格单元格 -->&lt;footer&gt;...&lt;/footer&gt;</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 第2节：常用语义化标签 -->
+        <div class="unit" id="unit-2"> <!-- 块级容器 -->
+            <h2>2. 常用语义化标签</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p>HTML5 引入了多个语义化标签：</p> <!-- 段落标签 -->
+                <p><code>&lt;header&gt;</code> 页头 | <code>&lt;nav&gt;</code> 导航 | <code>&lt;main&gt;</code> 主体 | <code>&lt;article&gt;</code> 文章</p> <!-- 段落标签 -->
+                <p><code>&lt;section&gt;</code> 区块 | <code>&lt;aside&gt;</code> 侧边栏 | <code>&lt;footer&gt;</code> 页脚</p> <!-- 段落标签 -->
+                <p><code>&lt;figure&gt;</code> 媒体容器 | <code>&lt;figcaption&gt;</code> 媒体标题</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->标签说明：</div>
+                <table class="comparison-table"> <!-- 表格 -->
+                    <tr> <!-- 表格行 -->
+                        <th> <!-- 表格表头 -->标签</th>
+                        <th> <!-- 表格表头 -->含义</th>
+                        <th> <!-- 表格表头 -->使用场景</th>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->header</td>
+                        <td> <!-- 表格单元格 -->页头</td>
+                        <td> <!-- 表格单元格 -->Logo、导航、标题</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->nav</td>
+                        <td> <!-- 表格单元格 -->导航</td>
+                        <td> <!-- 表格单元格 -->主导航、面包屑</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->main</td>
+                        <td> <!-- 表格单元格 -->主体</td>
+                        <td> <!-- 表格单元格 -->页面核心内容（唯一）</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->article</td>
+                        <td> <!-- 表格单元格 -->文章</td>
+                        <td> <!-- 表格单元格 -->独立的内容块（博客、新闻）</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->section</td>
+                        <td> <!-- 表格单元格 -->区块</td>
+                        <td> <!-- 表格单元格 -->内容分组（标题+内容）</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->aside</td>
+                        <td> <!-- 表格单元格 -->侧边栏</td>
+                        <td> <!-- 表格单元格 -->相关链接、广告、标签云</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->footer</td>
+                        <td> <!-- 表格单元格 -->页脚</td>
+                        <td> <!-- 表格单元格 -->版权、联系方式、链接</td>
+                    </tr>
+                    <tr> <!-- 表格行 -->
+                        <td> <!-- 表格单元格 -->figure</td>
+                        <td> <!-- 表格单元格 -->媒体容器</td>
+                        <td> <!-- 表格单元格 -->图片、图表、代码示例</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 第3节：页面结构示例 -->
+        <div class="unit" id="unit-3"> <!-- 块级容器 -->
+            <h2>3. 页面结构示例</h2> <!-- 标题标签，h1最大，h6最小 -->
+            
+            <div class="explain"> <!-- 块级容器 -->
+                <p>一个典型的语义化页面结构：</p> <!-- 段落标签 -->
+            </div>
+
+            <div class="demo"> <!-- 块级容器 -->
+                <div class="demo-label"> <!-- 块级容器 -->演示效果：</div>
+                <header> <!-- 页头语义标签 -->
+                    <h3>网站标题</h3> <!-- 标题标签，h1最大，h6最小 -->
+                    <nav> <!-- 导航语义标签 -->导航链接</nav>
+                </header>
+                <main> <!-- 主体语义标签 -->
+                    <article> <!-- 文章语义标签 -->
+                        <h4>文章标题</h4> <!-- 标题标签，h1最大，h6最小 -->
+                        <section> <!-- 区块语义标签 -->
+                            <h5>章节1</h5> <!-- 标题标签，h1最大，h6最小 -->
+                            <p>章节内容...</p> <!-- 段落标签 -->
+                        </section>
+                        <section> <!-- 区块语义标签 -->
+                            <h5>章节2</h5> <!-- 标题标签，h1最大，h6最小 -->
+                            <p>章节内容...</p> <!-- 段落标签 -->
+                        </section>
+                    </article>
+                    <aside> <!-- 侧边栏语义标签 -->
+                        <h4>侧边栏</h4> <!-- 标题标签，h1最大，h6最小 -->
+                        <p>相关链接...</p> <!-- 段落标签 -->
+                    </aside>
+                </main>
+                <footer>
+                    <p>版权信息 © 2024</p>
+                </footer>
+            </div>
+
+            <input type="checkbox" id="code-3" class="code-toggle">
+            <label for="code-3" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;header&gt;
+<span>2</span>    &lt;h1&gt;网站标题&lt;/h1&gt;
+<span>3</span>    &lt;nav&gt;
+<span>4</span>        &lt;a href="#"&gt;首页&lt;/a&gt;
+<span>5</span>        &lt;a href="#"&gt;关于&lt;/a&gt;
+<span>6</span>        &lt;a href="#"&gt;联系&lt;/a&gt;
+<span>7</span>    &lt;/nav&gt;
+<span>8</span>&lt;/header&gt;
+<span>9</span>
+<span>10</span>&lt;main&gt;
+<span>11</span>    &lt;article&gt;
+<span>12</span>        &lt;h2&gt;文章标题&lt;/h2&gt;
+<span>13</span>        &lt;section&gt;
+<span>14</span>            &lt;h3&gt;章节1&lt;/h3&gt;
+<span>15</span>            &lt;p&gt;章节内容...&lt;/p&gt;
+<span>16</span>        &lt;/section&gt;
+<span>17</span>        &lt;section&gt;
+<span>18</span>            &lt;h3&gt;章节2&lt;/h3&gt;
+<span>19</span>            &lt;p&gt;章节内容...&lt;/p&gt;
+<span>20</span>        &lt;/section&gt;
+<span>21</span>    &lt;/article&gt;
+<span>22</span>    
+<span>23</span>    &lt;aside&gt;
+<span>24</span>        &lt;h3&gt;侧边栏&lt;/h3&gt;
+<span>25</span>        &lt;p&gt;相关链接...&lt;/p&gt;
+<span>26</span>    &lt;/aside&gt;
+<span>27</span>&lt;/main&gt;
+<span>28</span>
+<span>29</span>&lt;footer&gt;
+<span>30</span>    &lt;p&gt;版权信息 © 2024&lt;/p&gt;
+<span>31</span>&lt;/footer&gt;</div>
+        </div>
+
+        <!-- 第4节：div 区块元素 -->
+        <div class="unit" id="unit-4">
+            <h2>4. div 区块元素</h2>
+            
+            <div class="explain">
+                <p><code>&lt;div&gt;</code> 是最常用的块级元素，用于组合其他元素，形成一个区块。</p>
+                <p><strong>特点</strong>：独占一行，宽度默认100%，可设置宽高。</p>
+                <p><strong>用途</strong>：布局容器、分组元素、CSS 样式载体。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <div class="box">
+                    <p>这是一个 div 区块</p>
+                    <p>它独占一行</p>
+                </div>
+                <div class="box">
+                    <p>这是另一个 div 区块</p>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-4" class="code-toggle">
+            <label for="code-4" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;div class="box"&gt;
+<span>2</span>    &lt;p&gt;这是一个 div 区块&lt;/p&gt;
+<span>3</span>    &lt;p&gt;它独占一行&lt;/p&gt;
+<span>4</span>&lt;/div&gt;
+<span>5</span>
+<span>6</span>&lt;div class="box"&gt;
+<span>7</span>    &lt;p&gt;这是另一个 div 区块&lt;/p&gt;
+<span>8</span>&lt;/div&gt;</div>
+        </div>
+
+        <!-- 第5节：span 行内元素 -->
+        <div class="unit" id="unit-5">
+            <h2>5. span 行内元素</h2>
+            
+            <div class="explain">
+                <p><code>&lt;span&gt;</code> 是最常用的行内元素，用于包裹文本或行内内容。</p>
+                <p><strong>特点</strong>：不独占一行，宽度由内容决定，不能设置宽高（除非转为行内块）。</p>
+                <p><strong>用途</strong>：给文本添加样式、标记、分组行内内容。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <p>这是一段文本，其中 <span class="inline-box">这是 span 包裹的内容</span>，它不会换行。</p>
+                <p>多个 span 会 <span class="inline-box">并排显示</span> <span class="inline-box">在同一行</span>。</p>
+            </div>
+
+            <input type="checkbox" id="code-5" class="code-toggle">
+            <label for="code-5" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;p&gt;这是一段文本，其中 &lt;span&gt;这是 span 包裹的内容&lt;/span&gt;，它不会换行。&lt;/p&gt;
+<span>2</span>
+<span>3</span>&lt;p&gt;多个 span 会 &lt;span&gt;并排显示&lt;/span&gt; &lt;span&gt;在同一行&lt;/span&gt;。&lt;/p&gt;</div>
+        </div>
+
+        <!-- 第6节：块级 vs 行内 -->
+        <div class="unit" id="unit-6">
+            <h2>6. 块级 vs 行内</h2>
+            
+            <div class="explain">
+                <p>HTML 元素分为<strong>块级元素</strong>和<strong>行内元素</strong>两大类：</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">对比表格：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>特性</th>
+                        <th>块级元素</th>
+                        <th>行内元素</th>
+                    </tr>
+                    <tr>
+                        <td>独占一行</td>
+                        <td>✅ 是</td>
+                        <td>❌ 否</td>
+                    </tr>
+                    <tr>
+                        <td>宽度</td>
+                        <td>默认 100%</td>
+                        <td>由内容决定</td>
+                    </tr>
+                    <tr>
+                        <td>可设置宽高</td>
+                        <td>✅ 可以</td>
+                        <td>❌ 不可以（除非转行内块）</td>
+                    </tr>
+                    <tr>
+                        <td>常见标签</td>
+                        <td>div, p, h1-h6, ul, ol, li, table, form</td>
+                        <td>span, a, strong, em, img, input</td>
+                    </tr>
+                    <tr>
+                        <td>用途</td>
+                        <td>布局容器、结构分组</td>
+                        <td>文本修饰、行内内容</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">行内块元素（inline-block）：</div>
+                <p>通过 <code>display: inline-block</code> 可以让元素兼具两者特点：</p>
+                <p>✅ 不独占一行（像行内）</p>
+                <p>✅ 可设置宽高（像块级）</p>
+                <p>常见场景：导航按钮、标签、徽章等。</p>
+            </div>
+
+            <input type="checkbox" id="code-6" class="code-toggle">
+            <label for="code-6" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;!-- 块级元素 --&gt;
+<span>2</span>&lt;div style="width: 200px; height: 100px; background: #3498db;"&gt;
+<span>3</span>    块级元素：独占一行，可设置宽高
+<span>4</span>&lt;/div&gt;
+<span>5</span>
+<span>6</span>&lt;!-- 行内元素 --&gt;
+<span>7</span>&lt;span style="background: #e74c3c;"&gt;
+<span>8</span>    行内元素：不独占一行，不能设置宽高
+<span>9</span>&lt;/span&gt;
+<span>10</span>
+<span>11</span>&lt;!-- 行内块元素 --&gt;
+<span>12</span>&lt;span style="display: inline-block; width: 150px; height: 50px; background: #2ecc71;"&gt;
+<span>13</span>    行内块：不独占一行，可设置宽高
+<span>14</span>&lt;/span&gt;</div>
+        </div>
+
+        <!-- 第7节：inline-block 间隙问题 -->
+        <div class="unit" id="unit-7">
+            <h2>7. inline-block 间隙问题</h2>
+            
+            <div class="explain">
+                <p>行内块元素之间会出现<strong>约 4px 的间隙</strong>，这是 HTML 中换行符被解析为空白字符导致的。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">问题演示：</div>
+                <p>以下两个方块之间有间隙（注意红色和蓝色之间的白色缝隙）：</p>
+                <div style="background: #ecf0f1; padding: 10px;">
+                    <span style="display: inline-block; width: 100px; height: 50px; background: #e74c3c;"></span>
+                    <span style="display: inline-block; width: 100px; height: 50px; background: #3498db;"></span>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-7" class="code-toggle">
+            <label for="code-7" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;div style="background: #ecf0f1; padding: 10px;"&gt;
+<span>2</span>    &lt;span style="display: inline-block; width: 100px; height: 50px; background: #e74c3c;"&gt;&lt;/span&gt;
+<span>3</span>    &lt;span style="display: inline-block; width: 100px; height: 50px; background: #3498db;"&gt;&lt;/span&gt;
+<span>4</span>&lt;/div&gt;
+<span>5</span>
+<span>6</span>&lt;!-- 两个 span 之间的换行符会被解析为空白，产生约 4px 间隙 --&gt;</div>
+        </div>
+
+        <!-- 第8节：解决方案 -->
+        <div class="unit" id="unit-8">
+            <h2>8. 间隙解决方案</h2>
+            
+            <div class="explain">
+                <p>三种常见的解决方案：</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">方案1：父元素 font-size: 0</div>
+                <div style="background: #ecf0f1; padding: 10px; font-size: 0;">
+                    <span style="display: inline-block; width: 100px; height: 50px; background: #e74c3c; font-size: 14px;"></span>
+                    <span style="display: inline-block; width: 100px; height: 50px; background: #3498db; font-size: 14px;"></span>
+                </div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">方案2：标签写在同一行</div>
+                <div style="background: #ecf0f1; padding: 10px;">
+                    <span style="display: inline-block; width: 100px; height: 50px; background: #e74c3c;"></span><span style="display: inline-block; width: 100px; height: 50px; background: #3498db;"></span>
+                </div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">方案3：使用 flex 布局（推荐 ✅）</div>
+                <div style="display: flex; background: #ecf0f1; padding: 10px;">
+                    <span style="width: 100px; height: 50px; background: #e74c3c;"></span>
+                    <span style="width: 100px; height: 50px; background: #3498db;"></span>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-8" class="code-toggle">
+            <label for="code-8" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;!-- 方案1：font-size: 0 --&gt;
+<span>2</span>&lt;div style="font-size: 0;"&gt;
+<span>3</span>    &lt;span style="display: inline-block; ...; font-size: 14px;"&gt;&lt;/span&gt;
+<span>4</span>    &lt;span style="display: inline-block; ...; font-size: 14px;"&gt;&lt;/span&gt;
+<span>5</span>&lt;/div&gt;
+<span>6</span>
+<span>7</span>&lt;!-- 方案2：标签写在同一行 --&gt;
+<span>8</span>&lt;div&gt;
+<span>9</span>    &lt;span style="display: inline-block; ..."&gt;&lt;/span&gt;&lt;span style="display: inline-block; ..."&gt;&lt;/span&gt;
+<span>10</span>&lt;/div&gt;
+<span>11</span>
+<span>12</span>&lt;!-- 方案3：flex 布局（推荐） --&gt;
+<span>13</span>&lt;div style="display: flex;"&gt;
+<span>14</span>    &lt;span style="width: 100px; height: 50px; background: #e74c3c;"&gt;&lt;/span&gt;
+<span>15</span>    &lt;span style="width: 100px; height: 50px; background: #3498db;"&gt;&lt;/span&gt;
+<span>16</span>&lt;/div&gt;</div></div>
+        </div>
+
+    </main>
+</body>
+
+</html>

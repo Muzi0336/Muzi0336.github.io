@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 导入方式</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        nav h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        nav a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .unit h3 {
+            font-size: 15px;
+            color: #555;
+            margin: 15px 0 8px;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked ~ .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked ~ .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* ========================================
+           以下为各导入方式知识点的演示样式
+           ======================================== */
+
+        /* 演示盒子基础样式 */
+        .demo-box {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+
+        .demo-box p {
+            margin: 5px 0;
+        }
+
+        .demo-box h1 {
+            color: green;
+            font-size: 20px;
+        }
+
+        .demo-box h2 {
+            color: red;
+            font-size: 24px;
+        }
+
+        .demo-box h3 {
+            color: blue;
+            font-size: 18px;
+        }
+    
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            nav {
+                position: fixed;
+                width: 100%;
+                height: auto;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                padding: 8px 0;
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            nav h3 {
+                display: none;
+            }
+            nav a {
+                display: inline-block;
+                padding: 6px 12px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+            main {
+                margin-left: 0;
+                padding: 15px;
+                padding-bottom: 60px;
+            }
+            .unit {
+                padding: 15px;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .focus-input {
+                width: 100%;
+                max-width: 250px;
+            }
+            input[type="text"],
+            input[type="email"] {
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav>
+        <h3>CSS 导入方式目录</h3>
+        <a href="#unit-1">一、内联样式</a>
+        <a href="#unit-2">二、内部样式表</a>
+        <a href="#unit-3">三、外部样式表</a>
+        <a href="#unit-4">四、@import 导入</a>
+        <a href="#unit-5">五、优先级对比</a>
+    </nav>
+
+    <!-- 主内容 -->
+    <main>
+        <!-- 一、内联样式 -->
+        <div class="unit" id="unit-1">
+            <h2>一、内联样式</h2>
+            <div class="explain">
+                <strong>概念：</strong>直接在 HTML 元素上使用 <code>style</code> 属性定义样式。<br>
+                <strong>语法：</strong><code>&lt;div style="属性: 值;"&gt;</code><br>
+                <strong>优点：</strong>优先级最高，可以覆盖其他样式。<br>
+                <strong>缺点：</strong>代码重复，难以维护，不推荐使用。
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 内联样式演示</div>
+                <div class="demo-box">
+                    <p style="color: blue; font-size: 16px;">这是一个使用内联样式的段落</p>
+                    <h1 style="color: green; font-size: 20px;">使用内联样式的标题</h1>
+                </div>
+            </div>
+            <input type="checkbox" id="code-1" class="code-toggle">
+            <label for="code-1" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>&lt;!-- 内联样式 --&gt;
+<span>2</span>&lt;p style="color: blue; font-size: 16px;"&gt;这是一个段落&lt;/p&gt;
+<span>3</span>&lt;h1 style="color: green; font-size: 20px;"&gt;这是一个标题&lt;/h1&gt;</div>
+        </div>
+
+        <!-- 二、内部样式表 -->
+        <div class="unit" id="unit-2">
+            <h2>二、内部样式表</h2>
+            <div class="explain">
+                <strong>概念：</strong>在 <code>&lt;head&gt;</code> 中使用 <code>&lt;style&gt;</code> 标签定义样式。<br>
+                <strong>语法：</strong><code>&lt;style&gt; 选择器 { 属性: 值; } &lt;/style&gt;</code><br>
+                <strong>优点：</strong>样式与结构分离，便于维护。<br>
+                <strong>缺点：</strong>只能在当前页面使用，无法复用。
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 内部样式表演示</div>
+                <div class="demo-box">
+                    <p>这是一个段落（使用内部样式表）</p>
+                    <h2>这是一个标题（使用内部样式表）</h2>
+                </div>
+            </div>
+            <input type="checkbox" id="code-2" class="code-toggle">
+            <label for="code-2" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>&lt;head&gt;
+<span>2</span>    &lt;style&gt;
+<span>3</span>        p {
+<span>4</span>            color: blue;
+<span>5</span>            font-size: 16px;
+<span>6</span>        }
+<span>7</span>
+<span>8</span>        h2 {
+<span>9</span>            color: red;
+<span>10</span>            font-size: 24px;
+<span>11</span>        }
+<span>12</span>    &lt;/style&gt;
+<span>13</span>&lt;/head&gt;</div>
+        </div>
+
+        <!-- 三、外部样式表 -->
+        <div class="unit" id="unit-3">
+            <h2>三、外部样式表</h2>
+            <div class="explain">
+                <strong>概念：</strong>将 CSS 代码保存在独立的 <code>.css</code> 文件中，通过 <code>&lt;link&gt;</code> 标签引入。<br>
+                <strong>语法：</strong><code>&lt;link rel="stylesheet" href="style.css"&gt;</code><br>
+                <strong>优点：</strong>样式与结构完全分离，可以复用，便于维护。<br>
+                <strong>推荐：</strong>这是最常用的导入方式。
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 外部样式表演示</div>
+                <div class="demo-box">
+                    <p>这是一个段落（使用外部样式表）</p>
+                    <h3>这是一个标题（使用外部样式表）</h3>
+                </div>
+            </div>
+            <input type="checkbox" id="code-3" class="code-toggle">
+            <label for="code-3" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>&lt;!-- HTML 文件 --&gt;
+<span>2</span>&lt;head&gt;
+<span>3</span>    &lt;link rel="stylesheet" href="style.css"&gt;
+<span>4</span>&lt;/head&gt;
+<span>5</span>
+<span>6</span>/* style.css 文件 */
+<span>7</span>p {
+<span>8</span>    color: blue;
+<span>9</span>    font-size: 16px;
+<span>10</span>}
+<span>11</span>
+<span>12</span>h3 {
+<span>13</span>    color: blue;
+<span>14</span>    font-size: 18px;
+<span>15</span>}</div>
+        </div>
+
+        <!-- 四、@import 导入 -->
+        <div class="unit" id="unit-4">
+            <h2>四、@import 导入</h2>
+            <div class="explain">
+                <strong>概念：</strong>在 <code>&lt;style&gt;</code> 或 CSS 文件中用 <code>@import</code> 导入其他 CSS 文件。<br>
+                <strong>与 link 的区别：</strong><br>
+                <code>@import</code> 先加载 HTML，再加载 CSS（可能闪屏）<br>
+                <code>&lt;link&gt;</code> 并行加载 HTML 和 CSS（性能更好）<br>
+                <strong>结论：</strong>优先用 <code>&lt;link&gt;</code>，<code>@import</code> 仅用于 CSS 文件内部合并。
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 @import 用法</div>
+                <div style="background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 6px; font-family: Consolas, monospace; font-size: 13px; white-space: pre-wrap;">
+/* 方式一：在 style 标签中 */
+&lt;style&gt;
+    @import url("reset.css");
+    @import url("layout.css");
+&lt;/style&gt;
+
+/* 方式二：在 CSS 文件开头 */
+@import url("variables.css");
+@import url("components.css");</div>
+            </div>
+            <input type="checkbox" id="code-4" class="code-toggle">
+            <label for="code-4" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>/* link vs @import 对比 */
+<span>2</span>
+<span>3</span>/* ✅ 推荐：link 方式 */
+<span>4</span>&lt;head&gt;
+<span>5</span>    &lt;link rel="stylesheet" href="style.css"&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>
+<span>8</span>/* ⚠️ 不推荐：@import 方式 */
+<span>9</span>&lt;style&gt;
+<span>10</span>    @import url("style.css");
+<span>11</span>&lt;/style&gt;
+<span>12</span>
+<span>13</span>/* @import 的唯一优势：可以在 CSS 文件内部合并 */
+<span>14</span>/* main.css */
+<span>15</span>@import url("header.css");
+<span>16</span>@import url("footer.css");
+<span>17</span>body { margin: 0; }</div>
+        </div>
+
+        <!-- 五、优先级对比 -->
+        <div class="unit" id="unit-5">
+            <h2>五、优先级对比</h2>
+            <div class="explain">
+                <strong>概念：</strong>当多种导入方式同时存在时，按优先级决定谁生效。<br>
+                <strong>优先级从高到低：</strong><br>
+                1. 内联样式（权重 1000）<br>
+                2. 内部/外部样式（权重 100）<br>
+                3. 浏览器默认样式（权重 1）<br>
+                <strong>注意：</strong>内部和外部样式优先级相同，后定义的会覆盖先定义的。
+            </div>
+            <div class="demo">
+                <div class="demo-label">👇 优先级演示</div>
+                <div class="demo-box">
+                    <p style="color: red;">内联样式（红色）会覆盖内部样式（蓝色）</p>
+                </div>
+            </div>
+            <input type="checkbox" id="code-5" class="code-toggle">
+            <label for="code-5" class="toggle-label">查看代码</label>
+            <div class="code-block"><span>1</span>&lt;!-- 优先级演示 --&gt;
+<span>2</span>&lt;style&gt;
+<span>3</span>    p { color: blue; }  /* 内部样式 */
+<span>4</span>&lt;/style&gt;
+<span>5</span>
+<span>6</span>&lt;p style="color: red;"&gt;内联样式（红色）会覆盖内部样式（蓝色）&lt;/p&gt;
+<span>7</span>
+<span>8</span>/* 最终显示红色，因为内联样式优先级更高 */</div>
+        </div>
+    </main>
+</body>
+
+</html>

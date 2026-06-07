@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML基础</title>
+
+    <style>
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .unit {
+                padding: 15px;
+                margin: 10px 0;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .structure-box {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .structure-box .level-1 {
+                margin-left: 10px;
+            }
+            .structure-box .level-2 {
+                margin-left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML基础</h1>
+
+
+        <!-- 单元1：文档声明 -->
+        <div class="unit" id="unit1">
+            <h2>1. 文档声明 DOCTYPE</h2>
+
+            <div class="explain">
+                <p><code>&lt;!DOCTYPE html&gt;</code> 是每个HTML文件的<strong>第一行</strong>，它告诉浏览器："这个文件是HTML5文档"。</p>
+                <p>⚠️ 注意：DOCTYPE 不是HTML标签，而是一个<strong>指令</strong>，必须写在最前面，否则浏览器可能进入"怪异模式"。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">📝 代码演示</div>
+                <div class="structure-box">
+                    <div class="level-0">
+                        <span class="tag">&lt;!DOCTYPE html&gt;</span>
+                        <span class="desc">← 必须在第一行，告诉浏览器用HTML5标准解析</span>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <!-- 单元2：html根元素 -->
+        <div class="unit" id="unit2">
+            <h2>2. html 根元素</h2>
+
+            <div class="explain">
+                <p><code>&lt;html&gt;</code> 是整个页面的<strong>根元素</strong>，所有其他标签都包裹在里面。</p>
+                <p>常用属性：</p>
+                <p>• <code>lang="zh-CN"</code> — 声明页面语言为简体中文，帮助搜索引擎和屏幕阅读器识别</p>
+                <p>• <code>lang="en"</code> — 英文页面</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">📝 代码演示</div>
+                <div class="structure-box">
+                    <div class="level-0">
+                        <span class="tag">&lt;html lang="zh-CN"&gt;</span>
+                        <span class="desc">← 根元素，包裹所有内容</span>
+                        <div class="level-1">
+                            <span class="tag">&lt;head&gt;</span>
+                            <span class="desc">← 头部信息（浏览器看的）</span>
+                        </div>
+                        <div class="level-1">
+                            <span class="tag">&lt;body&gt;</span>
+                            <span class="desc">← 页面内容（用户看的）</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <!-- 单元3：head头部信息 -->
+        <div class="unit" id="unit3">
+            <h2>3. head 头部信息</h2>
+
+            <div class="explain">
+                <p><code>&lt;head&gt;</code> 里的内容<strong>不会显示在页面上</strong>，它是给浏览器、搜索引擎看的"元信息"。</p>
+                <p>常用标签：</p>
+                <p>• <code>&lt;meta charset="UTF-8"&gt;</code> — 字符编码，防止中文乱码</p>
+                <p>• <code>&lt;meta name="viewport"&gt;</code> — 视口设置，让页面适配手机</p>
+                <p>• <code>&lt;title&gt;</code> — 浏览器标签页上显示的标题</p>
+                <p>• <code>&lt;meta name="description"&gt;</code> — 页面描述，搜索引擎会显示</p>
+                <p>• <code>&lt;meta name="keywords"&gt;</code> — 关键词（现在搜索引擎已不太看重）</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">📝 代码演示</div>
+                <div class="structure-box">
+                    <div class="level-0">
+                        <span class="tag">&lt;head&gt;</span>
+                        <div class="level-1">
+                            <span class="tag">&lt;meta charset="UTF-8"&gt;</span>
+                            <span class="desc">← 字符编码，防乱码</span>
+                        </div>
+                        <div class="level-1">
+                            <span class="tag">&lt;meta name="viewport" ...&gt;</span>
+                            <span class="desc">← 手机适配</span>
+                        </div>
+                        <div class="level-1">
+                            <span class="tag">&lt;title&gt;页面标题&lt;/title&gt;</span>
+                            <span class="desc">← 浏览器标签页标题</span>
+                        </div>
+                        <div class="level-1">
+                            <span class="tag">&lt;meta name="description" ...&gt;</span>
+                            <span class="desc">← SEO页面描述</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <!-- 单元4：body页面主体 -->
+        <div class="unit" id="unit4">
+            <h2>4. body 页面主体</h2>
+
+            <div class="explain">
+                <p><code>&lt;body&gt;</code> 里的内容就是<strong>用户在浏览器中看到的一切</strong>：文字、图片、按钮、视频等。</p>
+                <p>所有可见的HTML元素都必须放在 <code>&lt;body&gt;</code> 里面。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">📝 代码演示</div>
+                <div class="structure-box">
+                    <div class="level-0">
+                        <span class="tag">&lt;body&gt;</span>
+                        <span class="desc">← 用户看到的所有内容都在这里</span>
+                        <div class="level-1">
+                            <span class="tag">&lt;h1&gt;标题&lt;/h1&gt;</span>
+                        </div>
+                        <div class="level-1">
+                            <span class="tag">&lt;p&gt;段落&lt;/p&gt;</span>
+                        </div>
+                        <div class="level-1">
+                            <span class="tag">&lt;img src="..."&gt;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <!-- 单元5：注释 -->
+        <div class="unit" id="unit5">
+            <h2>5. 注释</h2>
+
+            <div class="explain">
+                <p>注释是写给<strong>开发者看的说明</strong>，浏览器会完全忽略它，不会显示在页面上。</p>
+                <p>用途：解释代码功能、标记待办事项、临时隐藏代码。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">📝 代码演示</div>
+                <div class="structure-box">
+                    <div class="level-0">
+                        <span class="tag">&lt;!-- 这是注释，浏览器不会显示 --&gt;</span>
+                    </div>
+                    <div class="level-0" style="margin-top: 10px;">
+                        <span class="tag">&lt;!-- 
+                            多行注释也可以
+                            写很多行
+                        --&gt;</span>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <!-- 单元6：完整模板 -->
+        <div class="unit" id="unit6">
+            <h2>6. 完整HTML模板</h2>
+
+            <div class="explain">
+                <p>这是每个HTML页面的<strong>标准骨架</strong>，以后新建文件直接复制这个模板即可。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">📝 完整结构图</div>
+                <div class="structure-box">
+                    <div class="level-0">
+                        <span class="tag">&lt;!DOCTYPE html&gt;</span>
+                        <span class="desc">← 第1行：声明HTML5</span>
+                    </div>
+                    <div class="level-0">
+                        <span class="tag">&lt;html lang="zh-CN"&gt;</span>
+                        <span class="desc">← 第2行：根元素</span>
+                        <div class="level-1">
+                            <span class="tag">&lt;head&gt;</span>
+                            <span class="desc">← 头部（浏览器看的）</span>
+                            <div class="level-2">
+                                <span class="tag">&lt;meta charset="UTF-8"&gt;</span>
+                                <span class="desc">← 字符编码</span>
+                            </div>
+                            <div class="level-2">
+                                <span class="tag">&lt;meta name="viewport" ...&gt;</span>
+                                <span class="desc">← 手机适配</span>
+                            </div>
+                            <div class="level-2">
+                                <span class="tag">&lt;title&gt;页面标题&lt;/title&gt;</span>
+                                <span class="desc">← 标签页标题</span>
+                            </div>
+                        </div>
+                        <div class="level-1">
+                            <span class="tag">&lt;body&gt;</span>
+                            <span class="desc">← 主体（用户看的）</span>
+                            <div class="level-2">
+                                <span class="tag">&lt;h1&gt;你好世界&lt;/h1&gt;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+
+    
+
+
+        <!-- 第1节：标题标签 -->
+        <div class="unit" id="unit-1">
+            <h2>1. 标题标签 h1-h6</h2>
+            
+            <div class="explain">
+                <p>HTML 提供 <code>h1</code> 到 <code>h6</code> 六级标题标签，用于定义不同级别的标题。</p>
+                <p><strong>h1</strong> 是最高级别，<strong>h6</strong> 是最低级别。一个页面通常只有一个 h1。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <h1>一级标题 h1</h1>
+                <h2>二级标题 h2</h2>
+                <h3>三级标题 h3</h3>
+                <h4>四级标题 h4</h4>
+                <h5>五级标题 h5</h5>
+                <h6>六级标题 h6</h6>
+            </div>
+
+            
+        </div>
+
+        <!-- 第2节：段落标签 -->
+        <div class="unit" id="unit-2">
+            <h2>2. 段落标签 p</h2>
+            
+            <div class="explain">
+                <p><code>&lt;p&gt;</code> 标签用于定义段落，浏览器会自动在段落前后添加空行。</p>
+                <p>段落是块级元素，独占一行。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <p>这是第一个段落。段落标签会自动在前后添加空行，让内容更易读。</p>
+                <p>这是第二个段落。每个段落都是独立的块级元素。</p>
+            </div>
+
+            
+        </div>
+
+        <!-- 第3节：文本格式标签 -->
+        <div class="unit" id="unit-3">
+            <h2>3. 文本格式标签</h2>
+            
+            <div class="explain">
+                <p>HTML 提供多种文本格式标签：</p>
+                <p><code>&lt;b&gt;</code> 加粗 | <code>&lt;i&gt;</code> 斜体 | <code>&lt;u&gt;</code> 下划线 | <code>&lt;s&gt;</code> 删除线</p>
+                <p><code>&lt;mark&gt;</code> 高亮 | <code>&lt;small&gt;</code> 小号 | <code>&lt;del&gt;</code> 删除 | <code>&lt;ins&gt;</code> 插入</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <p><b>加粗文本</b>（视觉加粗，无语义）</p>
+                <p><i>斜体文本</i>（视觉斜体，无语义）</p>
+                <p><u>下划线文本</u></p>
+                <p><s>删除线文本</s></p>
+                <p><mark>高亮文本</mark></p>
+                <p><small>小号文本</small></p>
+                <p><del>删除文本</del> <ins>插入文本</ins></p>
+            </div>
+
+            
+        </div>
+
+        <!-- 第4节：strong 语义强调 -->
+        <div class="unit" id="unit-4">
+            <h2>4. strong 语义强调</h2>
+            
+            <div class="explain">
+                <p><code>&lt;strong&gt;</code> 标签表示<strong>重要内容</strong>或<strong>严重警告</strong>，具有语义含义。</p>
+                <p>浏览器默认显示为加粗，但搜索引擎和屏幕阅读器会特别关注 strong 标签内的内容。</p>
+                <p><strong>核心区别</strong>：<code>&lt;b&gt;</code> 只是视觉加粗，<code>&lt;strong&gt;</code> 表示内容很重要。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">基本用法：</div>
+                <p>这是一段普通文本，<strong>这是重要内容</strong>，请特别注意。</p>
+            </div>
+
+            
+
+            <div class="demo">
+                <div class="demo-label">嵌套使用（强调程度递增）：</div>
+                <p>普通文本 <strong>重要 <strong>非常重要 <strong>极其重要</strong></strong></strong></p>
+            </div>
+
+            
+
+            <div class="demo">
+                <div class="demo-label">表单验证提示：</div>
+                <p><strong>错误：</strong>密码长度不能少于8位</p>
+                <p><strong>警告：</strong>此操作不可撤销</p>
+            </div>
+
+            
+
+            <div class="demo">
+                <div class="demo-label">产品特性强调：</div>
+                <h3>这款手机的三大亮点</h3>
+                <ul>
+                    <li><strong>超长续航</strong>：5000mAh大电池</li>
+                    <li><strong>极速充电</strong>：30分钟充满</li>
+                    <li><strong>专业影像</strong>：1亿像素主摄</li>
+                </ul>
+            </div>
+
+            
+
+            <div class="demo">
+                <div class="demo-label">法律条款：</div>
+                <p>用户协议：您必须年满18周岁才能注册。<strong>违反此规定将导致账户被封禁。</strong></p>
+            </div>
+
+            
+
+            <div class="demo">
+                <div class="demo-label">strong vs b 对比：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>特性</th>
+                        <th>&lt;strong&gt;</th>
+                        <th>&lt;b&gt;</th>
+                    </tr>
+                    <tr>
+                        <td>语义含义</td>
+                        <td>✅ 有（重要、严重）</td>
+                        <td>❌ 无（仅视觉）</td>
+                    </tr>
+                    <tr>
+                        <td>SEO权重</td>
+                        <td>✅ 有</td>
+                        <td>❌ 无</td>
+                    </tr>
+                    <tr>
+                        <td>屏幕阅读器</td>
+                        <td>✅ 会强调朗读</td>
+                        <td>❌ 普通朗读</td>
+                    </tr>
+                    <tr>
+                        <td>默认样式</td>
+                        <td>加粗</td>
+                        <td>加粗</td>
+                    </tr>
+                    <tr>
+                        <td>使用场景</td>
+                        <td>重要内容、警告、关键词</td>
+                        <td>视觉加粗、标题、产品名</td>
+                    </tr>
+                </table>
+            </div>
+
+            
+        </div>
+
+        <!-- 第5节：无序列表 -->
+        <div class="unit" id="unit-5">
+            <h2>5. 无序列表 ul</h2>
+            
+            <div class="explain">
+                <p><code>&lt;ul&gt;</code> 定义无序列表（Unordered List），列表项使用圆点、方块等符号标记。</p>
+                <p>列表项用 <code>&lt;li&gt;</code> 标签定义。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <ul>
+                    <li>HTML - 结构</li>
+                    <li>CSS - 样式</li>
+                    <li>JavaScript - 行为</li>
+                </ul>
+            </div>
+
+            
+        </div>
+
+        <!-- 第6节：有序列表 -->
+        <div class="unit" id="unit-6">
+            <h2>6. 有序列表 ol</h2>
+            
+            <div class="explain">
+                <p><code>&lt;ol&gt;</code> 定义有序列表（Ordered List），列表项使用数字或字母标记。</p>
+                <p><code>type</code> 属性设置编号类型：1（数字）、A（大写）、a（小写）、I（大写罗马）、i（小写罗马）。</p>
+                <p><code>start</code> 属性设置起始编号。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <ol>
+                    <li>学习 HTML</li>
+                    <li>学习 CSS</li>
+                    <li>学习 JavaScript</li>
+                </ol>
+                <ol type="A">
+                    <li>第一步</li>
+                    <li>第二步</li>
+                    <li>第三步</li>
+                </ol>
+                <ol start="5">
+                    <li>从5开始</li>
+                    <li>第6项</li>
+                    <li>第7项</li>
+                </ol>
+            </div>
+
+            
+        </div>
+
+        <!-- 第7节：表格标签 -->
+        <div class="unit" id="unit-7">
+            <h2>7. 表格标签</h2>
+            
+            <div class="explain">
+                <p>HTML 表格由 <code>&lt;table&gt;</code>、<code>&lt;tr&gt;</code>（行）、<code>&lt;th&gt;</code>（表头）、<code>&lt;td&gt;</code>（单元格）组成。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <table>
+                    <tr>
+                        <th>标签</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>table</td>
+                        <td>表格容器</td>
+                    </tr>
+                    <tr>
+                        <td>tr</td>
+                        <td>表格行</td>
+                    </tr>
+                    <tr>
+                        <td>th</td>
+                        <td>表头单元格（加粗居中）</td>
+                    </tr>
+                    <tr>
+                        <td>td</td>
+                        <td>数据单元格</td>
+                    </tr>
+                </table>
+            </div>
+
+            
+        </div>
+
+    
+
+
+        <!-- 单元1：无序列表 -->
+        <div class="unit" id="unit1">
+            <h2>1. 无序列表 ul</h2>
+
+            <div class="explain">
+                <p><code>&lt;ul&gt;</code>（Unordered List）创建<strong>无序列表</strong>，每项前面显示圆点（•）。</p>
+                <p>用途：导航菜单、功能列表、标签列表等不需要排序的内容。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">📝 效果演示</div>
+                <ul>
+                    <li>HTML 结构</li>
+                    <li>CSS 样式</li>
+                    <li>JavaScript 交互</li>
+                </ul>
+            </div>
+
+            
+        </div>
+
+        <!-- 单元2：有序列表 -->
+        <div class="unit" id="unit2">
+            <h2>2. 有序列表 ol</h2>
+
+            <div class="explain">
+                <p><code>&lt;ol&gt;</code>（Ordered List）创建<strong>有序列表</strong>，每项前面显示数字或字母。</p>
+                <p>用途：步骤说明、排行榜、需要排序的内容。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">📝 效果演示</div>
+                <ol>
+                    <li>学习 HTML 基础</li>
+                    <li>学习 CSS 样式</li>
+                    <li>学习 JavaScript</li>
+                </ol>
+            </div>
+
+            
+        </div>
+
+        <!-- 单元3：定义列表 -->
+        <div class="unit" id="unit3">
+            <h2>3. 定义列表 dl</h2>
+
+            <div class="explain">
+                <p><code>&lt;dl&gt;</code>（Definition List）创建<strong>定义列表</strong>，用于展示术语和解释。</p>
+                <p>• <code>&lt;dt&gt;</code> — 术语（标题）</p>
+                <p>• <code>&lt;dd&gt;</code> — 术语的解释（内容）</p>
+                <p>用途：术语表、FAQ问答、键值对展示。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">📝 效果演示</div>
+                <dl>
+                    <dt>HTML</dt>
+                    <dd>超文本标记语言，用于构建网页结构</dd>
+                    <dt>CSS</dt>
+                    <dd>层叠样式表，用于美化页面</dd>
+                    <dt>JavaScript</dt>
+                    <dd>编程语言，用于实现页面交互</dd>
+                </dl>
+            </div>
+
+            
+        </div>
+
+        <!-- 单元4：列表嵌套 -->
+        <div class="unit" id="unit4">
+            <h2>4. 列表嵌套</h2>
+
+            <div class="explain">
+                <p>列表可以<strong>嵌套使用</strong>，在 <code>&lt;li&gt;</code> 里面放另一个列表。</p>
+                <p>用途：多级菜单、树形结构、大纲目录。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">📝 效果演示</div>
+                <ul>
+                    <li>前端开发
+                        <ul>
+                            <li>HTML</li>
+                            <li>CSS</li>
+                            <li>JavaScript</li>
+                        </ul>
+                    </li>
+                    <li>后端开发
+                        <ul>
+                            <li>Python</li>
+                            <li>Java</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            
+        </div>
+
+        <!-- 单元5：列表属性 -->
+        <div class="unit" id="unit5">
+            <h2>5. 列表属性</h2>
+
+            <div class="explain">
+                <p>有序列表 <code>&lt;ol&gt;</code> 有几个常用属性：</p>
+                <p>• <code>type</code> — 编号类型（1/A/a/I/i）</p>
+                <p>• <code>start</code> — 起始编号</p>
+                <p>• <code>reversed</code> — 倒序排列</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">📝 效果演示</div>
+                <p><strong>type="A"（大写字母）：</strong></p>
+                <ol type="A">
+                    <li>选项A</li>
+                    <li>选项B</li>
+                    <li>选项C</li>
+                </ol>
+                <p><strong>start="5"（从5开始）：</strong></p>
+                <ol start="5">
+                    <li>第5个</li>
+                    <li>第6个</li>
+                    <li>第7个</li>
+                </ol>
+                <p><strong>reversed（倒序）：</strong></p>
+                <ol reversed>
+                    <li>第3名</li>
+                    <li>第2名</li>
+                    <li>第1名</li>
+                </ol>
+            </div>
+
+            
+        </div>
+
+    
+
+</body>
+</html>

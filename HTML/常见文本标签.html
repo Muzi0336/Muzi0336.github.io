@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常见文本标签</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        nav h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        nav a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 演示区内的标题恢复浏览器默认样式 */
+        .demo h1 {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 0.67em 0;
+            line-height: 1.2;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .demo h2 {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 0.83em 0;
+            line-height: 1.2;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .demo h3 {
+            font-size: 1.17em;
+            font-weight: bold;
+            margin: 1em 0;
+            line-height: 1.2;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .demo h4 {
+            font-size: 1em;
+            font-weight: bold;
+            margin: 1.33em 0;
+            line-height: 1.2;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .demo h5 {
+            font-size: 0.83em;
+            font-weight: bold;
+            margin: 1.67em 0;
+            line-height: 1.2;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .demo h6 {
+            font-size: 0.67em;
+            font-weight: bold;
+            margin: 2.33em 0;
+            line-height: 1.2;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        /* 代码段包裹容器 */
+        .code-section {
+            margin: 5px 0;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+
+        /* checkbox选中时显示代码块 - 只在同级code-section内生效 */
+        .code-section .code-toggle:checked~.code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-section .code-toggle:checked~.toggle-label {
+            background: #27ae60;
+        }
+
+        /* 行号样式 - 不可选中 */
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #f5f5f5;
+            font-weight: bold;
+        }
+
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+    
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            nav {
+                position: fixed;
+                width: 100%;
+                height: auto;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                padding: 8px 0;
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            nav h3 {
+                display: none;
+            }
+            nav a {
+                display: inline-block;
+                padding: 6px 12px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+            main {
+                margin-left: 0;
+                padding: 15px;
+                padding-bottom: 60px;
+            }
+            .unit {
+                padding: 15px;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .focus-input {
+                width: 100%;
+                max-width: 250px;
+            }
+            input[type="text"],
+            input[type="email"] {
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- 侧边导航 -->
+    <nav>
+        <h3>常见文本标签</h3>
+        <a href="#unit-1">1. 标题标签 h1-h6</a>
+        <a href="#unit-2">2. 段落标签 p</a>
+        <a href="#unit-3">3. 文本格式标签</a>
+        <a href="#unit-4">4. strong 语义强调</a>
+        <a href="#unit-5">5. 无序列表 ul</a>
+        <a href="#unit-6">6. 有序列表 ol</a>
+        <a href="#unit-7">7. 表格标签</a>
+    </nav>
+
+    <main>
+
+        <!-- 第1节：标题标签 -->
+        <div class="unit" id="unit-1">
+            <h2>1. 标题标签 h1-h6</h2>
+
+            <div class="explain">
+                <p>HTML 提供 <code>h1</code> 到 <code>h6</code> 六级标题标签，用于定义不同级别的标题。</p>
+                <p><strong>h1</strong> 是最高级别，<strong>h6</strong> 是最低级别。一个页面通常只有一个 h1。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <h1>一级标题 h1</h1>
+                <h2>二级标题 h2</h2>
+                <h3>三级标题 h3</h3>
+                <h4>四级标题 h4</h4>
+                <h5>五级标题 h5</h5>
+                <h6>六级标题 h6</h6>
+            </div>
+
+            <div class="code-section">
+                <input type="checkbox" id="code-1" class="code-toggle">
+                <label for="code-1" class="toggle-label">查看源代码</label>
+                <div class="code-block"><span>1</span>&lt;h1&gt;一级标题 h1&lt;/h1&gt;
+<span>2</span>&lt;h2&gt;二级标题 h2&lt;/h2&gt;
+<span>3</span>&lt;h3&gt;三级标题 h3&lt;/h3&gt;
+<span>4</span>&lt;h4&gt;四级标题 h4&lt;/h4&gt;
+<span>5</span>&lt;h5&gt;五级标题 h5&lt;/h5&gt;
+<span>6</span>&lt;h6&gt;六级标题 h6&lt;/h6&gt;</div>
+            </div>
+        </div>
+
+        <!-- 第2节：段落标签 -->
+        <div class="unit" id="unit-2">
+            <h2>2. 段落标签 p</h2>
+
+            <div class="explain">
+                <p><code>&lt;p&gt;</code> 标签用于定义段落，浏览器会自动在段落前后添加空行。</p>
+                <p>段落是块级元素，独占一行。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <p>这是第一个段落。段落标签会自动在前后添加空行，让内容更易读。</p>
+                <p>这是第二个段落。每个段落都是独立的块级元素。</p>
+            </div>
+
+            <div class="code-section">
+                <input type="checkbox" id="code-2" class="code-toggle">
+                <label for="code-2" class="toggle-label">查看源代码</label>
+                <div class="code-block"><span>1</span>&lt;p&gt;这是第一个段落。&lt;/p&gt;
+<span>2</span>&lt;p&gt;这是第二个段落。&lt;/p&gt;</div>
+            </div>
+        </div>
+
+        <!-- 第3节：文本格式标签 -->
+        <div class="unit" id="unit-3">
+            <h2>3. 文本格式标签</h2>
+
+            <div class="explain">
+                <p>HTML 提供多种文本格式标签：</p>
+                <p><code>&lt;b&gt;</code> 加粗 | <code>&lt;i&gt;</code> 斜体 | <code>&lt;u&gt;</code> 下划线 |
+                    <code>&lt;s&gt;</code> 删除线</p>
+                <p><code>&lt;mark&gt;</code> 高亮 | <code>&lt;small&gt;</code> 小号 | <code>&lt;del&gt;</code> 删除 |
+                    <code>&lt;ins&gt;</code> 插入</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <p><b>加粗文本</b>（视觉加粗，无语义）</p>
+                <p><i>斜体文本</i>（视觉斜体，无语义）</p>
+                <p><u>下划线文本</u></p>
+                <p><s>删除线文本</s></p>
+                <p><mark>高亮文本</mark></p>
+                <p><small>小号文本</small></p>
+                <p><del>删除文本</del> <ins>插入文本</ins></p>
+            </div>
+
+            <div class="code-section">
+                <input type="checkbox" id="code-3" class="code-toggle">
+                <label for="code-3" class="toggle-label">查看源代码</label>
+                <div class="code-block"><span>1</span>&lt;p&gt;&lt;b&gt;加粗文本&lt;/b&gt;&lt;/p&gt;
+<span>2</span>&lt;p&gt;&lt;i&gt;斜体文本&lt;/i&gt;&lt;/p&gt;
+<span>3</span>&lt;p&gt;&lt;u&gt;下划线文本&lt;/u&gt;&lt;/p&gt;
+<span>4</span>&lt;p&gt;&lt;s&gt;删除线文本&lt;/s&gt;&lt;/p&gt;
+<span>5</span>&lt;p&gt;&lt;mark&gt;高亮文本&lt;/mark&gt;&lt;/p&gt;
+<span>6</span>&lt;p&gt;&lt;small&gt;小号文本&lt;/small&gt;&lt;/p&gt;
+<span>7</span>&lt;p&gt;&lt;del&gt;删除文本&lt;/del&gt; &lt;ins&gt;插入文本&lt;/ins&gt;&lt;/p&gt;</div>
+            </div>
+        </div>
+
+        <!-- 第4节：strong 语义强调 -->
+        <div class="unit" id="unit-4">
+            <h2>4. strong 语义强调</h2>
+
+            <div class="explain">
+                <p><code>&lt;strong&gt;</code> 标签表示<strong>重要内容</strong>或<strong>严重警告</strong>，具有语义含义。</p>
+                <p>浏览器默认显示为加粗，但搜索引擎和屏幕阅读器会特别关注 strong 标签内的内容。</p>
+                <p><strong>核心区别</strong>：<code>&lt;b&gt;</code> 只是视觉加粗，<code>&lt;strong&gt;</code> 表示内容很重要。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">基本用法：</div>
+                <p>这是一段普通文本，<strong>这是重要内容</strong>，请特别注意。</p>
+            </div>
+
+            <div class="code-section">
+                <input type="checkbox" id="code-4a" class="code-toggle">
+                <label for="code-4a" class="toggle-label">查看源代码</label>
+                <div class="code-block"><span>1</span>&lt;p&gt;这是一段普通文本，&lt;strong&gt;这是重要内容&lt;/strong&gt;，请特别注意。&lt;/p&gt;</div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">嵌套使用（强调程度递增）：</div>
+                <p>普通文本 <strong>重要 <strong>非常重要 <strong>极其重要</strong></strong></strong></p>
+            </div>
+
+            <div class="code-section">
+                <input type="checkbox" id="code-4b" class="code-toggle">
+                <label for="code-4b" class="toggle-label">查看源代码</label>
+                <div class="code-block"><span>1</span>&lt;p&gt;普通文本 &lt;strong&gt;重要 &lt;strong&gt;非常重要
+<span>2</span>&lt;strong&gt;极其重要&lt;/strong&gt;&lt;/strong&gt;&lt;/strong&gt;&lt;/p&gt;</div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">表单验证提示：</div>
+                <p><strong>错误：</strong>密码长度不能少于8位</p>
+                <p><strong>警告：</strong>此操作不可撤销</p>
+            </div>
+
+            <div class="code-section">
+                <input type="checkbox" id="code-4c" class="code-toggle">
+                <label for="code-4c" class="toggle-label">查看源代码</label>
+                <div class="code-block"><span>1</span>&lt;p&gt;&lt;strong&gt;错误：&lt;/strong&gt;密码长度不能少于8位&lt;/p&gt;
+<span>2</span>&lt;p&gt;&lt;strong&gt;警告：&lt;/strong&gt;此操作不可撤销&lt;/p&gt;</div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">产品特性强调：</div>
+                <h3>这款手机的三大亮点</h3>
+                <ul>
+                    <li><strong>超长续航</strong>：5000mAh大电池</li>
+                    <li><strong>极速充电</strong>：30分钟充满</li>
+                    <li><strong>专业影像</strong>：1亿像素主摄</li>
+                </ul>
+            </div>
+
+            <div class="code-section">
+                <input type="checkbox" id="code-4d" class="code-toggle">
+                <label for="code-4d" class="toggle-label">查看源代码</label>
+                <div class="code-block"><span>1</span>&lt;h3&gt;这款手机的三大亮点&lt;/h3&gt;
+<span>2</span>&lt;ul&gt;
+<span>3</span>&lt;li&gt;&lt;strong&gt;超长续航&lt;/strong&gt;：5000mAh大电池&lt;/li&gt;
+<span>4</span>&lt;li&gt;&lt;strong&gt;极速充电&lt;/strong&gt;：30分钟充满&lt;/li&gt;
+<span>5</span>&lt;li&gt;&lt;strong&gt;专业影像&lt;/strong&gt;：1亿像素主摄&lt;/li&gt;
+<span>6</span>&lt;/ul&gt;</div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">法律条款：</div>
+                <p>用户协议：您必须年满18周岁才能注册。<strong>违反此规定将导致账户被封禁。</strong></p>
+            </div>
+
+            <div class="code-section">
+                <input type="checkbox" id="code-4e" class="code-toggle">
+                <label for="code-4e" class="toggle-label">查看源代码</label>
+                <div class="code-block"><span>1</span>&lt;p&gt;用户协议：您必须年满18周岁才能注册。&lt;strong&gt;违反此规定将导致账户被封禁。&lt;/strong&gt;&lt;/p&gt;</div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">strong vs b 对比：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>特性</th>
+                        <th>&lt;strong&gt;</th>
+                        <th>&lt;b&gt;</th>
+                    </tr>
+                    <tr>
+                        <td>语义含义</td>
+                        <td>✅ 有（重要、严重）</td>
+                        <td>❌ 无（仅视觉）</td>
+                    </tr>
+                    <tr>
+                        <td>SEO权重</td>
+                        <td>✅ 有</td>
+                        <td>❌ 无</td>
+                    </tr>
+                    <tr>
+                        <td>屏幕阅读器</td>
+                        <td>✅ 会强调朗读</td>
+                        <td>❌ 普通朗读</td>
+                    </tr>
+                    <tr>
+                        <td>默认样式</td>
+                        <td>加粗</td>
+                        <td>加粗</td>
+                    </tr>
+                    <tr>
+                        <td>使用场景</td>
+                        <td>重要内容、警告、关键词</td>
+                        <td>视觉加粗、标题、产品名</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="code-section">
+                <input type="checkbox" id="code-4f" class="code-toggle">
+                <label for="code-4f" class="toggle-label">查看源代码</label>
+                <div class="code-block"><span>1</span>&lt;!-- strong：有语义，表示重要 --&gt;
+<span>2</span>&lt;p&gt;&lt;strong&gt;警告：此操作不可撤销&lt;/strong&gt;&lt;/p&gt;
+<span>3</span>
+<span>4</span>&lt;!-- b：无语义，仅视觉加粗 --&gt;
+<span>5</span>&lt;p&gt;欢迎使用 &lt;b&gt;小米&lt;/b&gt; 手机&lt;/p&gt;</div>
+            </div>
+        </div>
+
+        <!-- 第5节：无序列表 -->
+        <div class="unit" id="unit-5">
+            <h2>5. 无序列表 ul</h2>
+
+            <div class="explain">
+                <p><code>&lt;ul&gt;</code> 定义无序列表（Unordered List），列表项使用圆点、方块等符号标记。</p>
+                <p>列表项用 <code>&lt;li&gt;</code> 标签定义。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <ul>
+                    <li>HTML - 结构</li>
+                    <li>CSS - 样式</li>
+                    <li>JavaScript - 行为</li>
+                </ul>
+            </div>
+
+            <div class="code-section">
+                <input type="checkbox" id="code-5" class="code-toggle">
+                <label for="code-5" class="toggle-label">查看源代码</label>
+                <div class="code-block"><span>1</span>&lt;ul&gt;
+<span>2</span>&lt;li&gt;HTML - 结构&lt;/li&gt;
+<span>3</span>&lt;li&gt;CSS - 样式&lt;/li&gt;
+<span>4</span>&lt;li&gt;JavaScript - 行为&lt;/li&gt;
+<span>5</span>&lt;/ul&gt;</div>
+            </div>
+        </div>
+
+        <!-- 第6节：有序列表 -->
+        <div class="unit" id="unit-6">
+            <h2>6. 有序列表 ol</h2>
+
+            <div class="explain">
+                <p><code>&lt;ol&gt;</code> 定义有序列表（Ordered List），列表项使用数字或字母标记。</p>
+                <p><code>type</code> 属性设置编号类型：1（数字）、A（大写）、a（小写）、I（大写罗马）、i（小写罗马）。</p>
+                <p><code>start</code> 属性设置起始编号。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <ol>
+                    <li>学习 HTML</li>
+                    <li>学习 CSS</li>
+                    <li>学习 JavaScript</li>
+                </ol>
+                <ol type="A">
+                    <li>第一步</li>
+                    <li>第二步</li>
+                    <li>第三步</li>
+                </ol>
+                <ol start="5">
+                    <li>从5开始</li>
+                    <li>第6项</li>
+                    <li>第7项</li>
+                </ol>
+            </div>
+
+            <div class="code-section">
+                <input type="checkbox" id="code-6" class="code-toggle">
+                <label for="code-6" class="toggle-label">查看源代码</label>
+                <div class="code-block"><span>1</span>&lt;!-- 默认数字编号 --&gt;
+<span>2</span>&lt;ol&gt;
+<span>3</span>&lt;li&gt;学习 HTML&lt;/li&gt;
+<span>4</span>&lt;li&gt;学习 CSS&lt;/li&gt;
+<span>5</span>&lt;li&gt;学习 JavaScript&lt;/li&gt;
+<span>6</span>&lt;/ol&gt;
+<span>7</span>
+<span>8</span>&lt;!-- 大写字母编号 --&gt;
+<span>9</span>&lt;ol type="A"&gt;
+<span>10</span>&lt;li&gt;第一步&lt;/li&gt;
+<span>11</span>&lt;li&gt;第二步&lt;/li&gt;
+<span>12</span>&lt;li&gt;第三步&lt;/li&gt;
+<span>13</span>&lt;/ol&gt;
+<span>14</span>
+<span>15</span>&lt;!-- 从5开始编号 --&gt;
+<span>16</span>&lt;ol start="5"&gt;
+<span>17</span>&lt;li&gt;从5开始&lt;/li&gt;
+<span>18</span>&lt;li&gt;第6项&lt;/li&gt;
+<span>19</span>&lt;li&gt;第7项&lt;/li&gt;
+<span>20</span>&lt;/ol&gt;</div>
+            </div>
+        </div>
+
+        <!-- 第7节：表格标签 -->
+        <div class="unit" id="unit-7">
+            <h2>7. 表格标签</h2>
+
+            <div class="explain">
+                <p>HTML 表格由
+                    <code>&lt;table&gt;</code>、<code>&lt;tr&gt;</code>（行）、<code>&lt;th&gt;</code>（表头）、<code>&lt;td&gt;</code>（单元格）组成。
+                </p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示效果：</div>
+                <table>
+                    <tr>
+                        <th>标签</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>table</td>
+                        <td>表格容器</td>
+                    </tr>
+                    <tr>
+                        <td>tr</td>
+                        <td>表格行</td>
+                    </tr>
+                    <tr>
+                        <td>th</td>
+                        <td>表头单元格（加粗居中）</td>
+                    </tr>
+                    <tr>
+                        <td>td</td>
+                        <td>数据单元格</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="code-section">
+                <input type="checkbox" id="code-7" class="code-toggle">
+                <label for="code-7" class="toggle-label">查看源代码</label>
+                <div class="code-block"><span>1</span>&lt;table&gt;
+<span>2</span>&lt;tr&gt;
+<span>3</span>&lt;th&gt;标签&lt;/th&gt;
+<span>4</span>&lt;th&gt;说明&lt;/th&gt;
+<span>5</span>&lt;/tr&gt;
+<span>6</span>&lt;tr&gt;
+<span>7</span>&lt;td&gt;table&lt;/td&gt;
+<span>8</span>&lt;td&gt;表格容器&lt;/td&gt;
+<span>9</span>&lt;/tr&gt;
+<span>10</span>&lt;tr&gt;
+<span>11</span>&lt;td&gt;tr&lt;/td&gt;
+<span>12</span>&lt;td&gt;表格行&lt;/td&gt;
+<span>13</span>&lt;/tr&gt;
+<span>14</span>&lt;tr&gt;
+<span>15</span>&lt;td&gt;th&lt;/td&gt;
+<span>16</span>&lt;td&gt;表头单元格（加粗居中）&lt;/td&gt;
+<span>17</span>&lt;/tr&gt;
+<span>18</span>&lt;tr&gt;
+<span>19</span>&lt;td&gt;td&lt;/td&gt;
+<span>20</span>&lt;td&gt;数据单元格&lt;/td&gt;
+<span>21</span>&lt;/tr&gt;
+<span>22</span>&lt;/table&gt;</div>
+            </div>
+        </div>
+
+    </main>
+</body>
+
+</html>
