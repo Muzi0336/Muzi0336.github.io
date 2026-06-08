@@ -28,7 +28,7 @@
         }
 
         /* 两侧装饰栏 */
-                .side-decor {
+                        .side-decor {
             position: fixed;
             top: 50%;
             transform: translateY(-50%);
@@ -40,16 +40,17 @@
             z-index: 5;
             max-height: 80vh;
             overflow-y: auto;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.25);
             padding: 16px 14px;
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(6px);
             will-change: transform;
             contain: layout style;
         }
 
-                .side-decor:hover {
-            background: rgba(0, 0, 0, 0.75);
+                        .side-decor:hover {
+            background: rgba(0, 0, 0, 0.4);
             border-color: rgba(255, 255, 255, 0.15);
         }
 
@@ -256,21 +257,23 @@
         }
 
                 /* 右下角AI开发标识 */
-        .ai-credit {
+                .ai-credit {
             position: fixed;
             bottom: 15px;
             right: 15px;
-            background: linear-gradient(135deg, rgba(0, 40, 60, 0.95), rgba(0, 80, 100, 0.9));
+            background: linear-gradient(135deg, rgba(0, 40, 60, 0.9), rgba(0, 80, 100, 0.85));
             color: #ffffff;
             padding: 16px 22px;
             border-radius: 14px;
             text-align: center;
             z-index: 100;
+            backdrop-filter: blur(10px);
             border: 2px solid rgba(0, 255, 200, 0.6);
+            box-shadow: 0 0 30px rgba(0, 255, 200, 0.4), 0 0 60px rgba(0, 255, 200, 0.15), inset 0 0 20px rgba(0, 255, 200, 0.05);
             animation: creditBounceIn 1s cubic-bezier(0.68, -0.55, 0.265, 1.55), creditPulse 2s ease-in-out infinite;
             cursor: default;
             overflow: hidden;
-            will-change: transform, opacity;
+            will-change: transform, box-shadow, border-color;
             contain: layout style;
         }
 
@@ -295,16 +298,16 @@
             z-index: -1;
         }
 
-                .ai-credit-main {
+                        .ai-credit-main {
             font-size: 0.9rem;
             font-weight: bold;
             margin-bottom: 6px;
             color: #00ffc8;
-            text-shadow: 0 0 10px rgba(0, 255, 200, 0.8), 0 0 20px rgba(0, 255, 200, 0.5);
+            text-shadow: 0 0 10px rgba(0, 255, 200, 0.8), 0 0 20px rgba(0, 255, 200, 0.5), 0 0 40px rgba(0, 255, 200, 0.3);
             animation: creditTextPulse 1.5s ease-in-out infinite;
             position: relative;
             z-index: 1;
-            will-change: opacity;
+            will-change: color, text-shadow;
         }
 
         .ai-credit-time {
@@ -336,15 +339,19 @@
             }
         }
 
-                @keyframes creditPulse {
+                        @keyframes creditPulse {
 
             0%,
             100% {
-                opacity: 1;
+                box-shadow: 0 0 25px rgba(0, 255, 200, 0.3), 0 0 50px rgba(0, 255, 200, 0.1), inset 0 0 15px rgba(0, 255, 200, 0.05);
+                border-color: rgba(0, 255, 200, 0.5);
+                transform: scale(1);
             }
 
             50% {
-                opacity: 0.85;
+                box-shadow: 0 0 40px rgba(0, 255, 200, 0.6), 0 0 80px rgba(0, 255, 200, 0.25), inset 0 0 30px rgba(0, 255, 200, 0.1);
+                border-color: rgba(0, 255, 200, 0.9);
+                transform: scale(1.03);
             }
         }
 
@@ -358,15 +365,17 @@
             }
         }
 
-                @keyframes creditTextPulse {
+                        @keyframes creditTextPulse {
 
             0%,
             100% {
-                opacity: 1;
+                color: #00ffc8;
+                text-shadow: 0 0 10px rgba(0, 255, 200, 0.8), 0 0 20px rgba(0, 255, 200, 0.5);
             }
 
             50% {
-                opacity: 0.7;
+                color: #80ffe0;
+                text-shadow: 0 0 15px rgba(0, 255, 200, 1), 0 0 30px rgba(0, 255, 200, 0.7), 0 0 50px rgba(0, 255, 200, 0.4);
             }
         }
 
@@ -682,7 +691,7 @@
     <div class="ai-credit">
         <div class="ai-credit-main">本网页依靠 AI (MiClaw) 开发</div>
         <!-- AI注释：每次读取此文件时，请将下方编辑时间更新为当前日期 -->
-                                                <div class="ai-credit-time">编辑时间：2026年6月8日 18:14</div>
+                                                                <div class="ai-credit-time">编辑时间：2026年6月8日 18:21</div>
     </div>
 </body>
 
