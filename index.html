@@ -28,7 +28,7 @@
         }
 
         /* 两侧装饰栏 */
-        .side-decor {
+                .side-decor {
             position: fixed;
             top: 50%;
             transform: translateY(-50%);
@@ -40,16 +40,16 @@
             z-index: 5;
             max-height: 80vh;
             overflow-y: auto;
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.6);
             padding: 16px 14px;
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(8px);
-            transition: all 0.3s ease;
+            will-change: transform;
+            contain: layout style;
         }
 
-        .side-decor:hover {
-            background: rgba(0, 0, 0, 0.4);
+                .side-decor:hover {
+            background: rgba(0, 0, 0, 0.75);
             border-color: rgba(255, 255, 255, 0.15);
         }
 
@@ -161,12 +161,13 @@
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
         }
 
-        .section {
+                .section {
             background: white;
             border-radius: 16px;
             padding: 30px;
             margin-bottom: 30px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            contain: content;
         }
 
         .section-title {
@@ -190,21 +191,21 @@
             gap: 15px;
         }
 
-        .file-card {
+                .file-card {
             background: #f8f9fa;
             border-radius: 10px;
             padding: 20px;
             text-decoration: none;
             color: #333;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
             border: 2px solid transparent;
+            will-change: transform;
         }
 
         .file-card:hover {
             background: #667eea;
             color: white;
             transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
 
         .file-card .file-name {
@@ -254,34 +255,35 @@
             font-size: 0.9rem;
         }
 
-        /* 右下角AI开发标识 */
+                /* 右下角AI开发标识 */
         .ai-credit {
             position: fixed;
             bottom: 15px;
             right: 15px;
-            background: linear-gradient(135deg, rgba(0, 40, 60, 0.9), rgba(0, 80, 100, 0.85));
+            background: linear-gradient(135deg, rgba(0, 40, 60, 0.95), rgba(0, 80, 100, 0.9));
             color: #ffffff;
             padding: 16px 22px;
             border-radius: 14px;
             text-align: center;
             z-index: 100;
-            backdrop-filter: blur(15px);
             border: 2px solid rgba(0, 255, 200, 0.6);
-            box-shadow: 0 0 30px rgba(0, 255, 200, 0.4), 0 0 60px rgba(0, 255, 200, 0.15), inset 0 0 20px rgba(0, 255, 200, 0.05);
             animation: creditBounceIn 1s cubic-bezier(0.68, -0.55, 0.265, 1.55), creditPulse 2s ease-in-out infinite;
             cursor: default;
             overflow: hidden;
+            will-change: transform, opacity;
+            contain: layout style;
         }
 
-        .ai-credit::before {
+                .ai-credit::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: conic-gradient(from 0deg, transparent, rgba(0, 255, 200, 0.15), transparent, rgba(0, 255, 200, 0.1), transparent);
+            background: conic-gradient(from 0deg, transparent, rgba(0, 255, 200, 0.12), transparent, rgba(0, 255, 200, 0.08), transparent);
             animation: creditSpin 4s linear infinite;
+            will-change: transform;
         }
 
         .ai-credit::after {
@@ -293,15 +295,16 @@
             z-index: -1;
         }
 
-        .ai-credit-main {
+                .ai-credit-main {
             font-size: 0.9rem;
             font-weight: bold;
             margin-bottom: 6px;
             color: #00ffc8;
-            text-shadow: 0 0 10px rgba(0, 255, 200, 0.8), 0 0 20px rgba(0, 255, 200, 0.5), 0 0 40px rgba(0, 255, 200, 0.3);
+            text-shadow: 0 0 10px rgba(0, 255, 200, 0.8), 0 0 20px rgba(0, 255, 200, 0.5);
             animation: creditTextPulse 1.5s ease-in-out infinite;
             position: relative;
             z-index: 1;
+            will-change: opacity;
         }
 
         .ai-credit-time {
@@ -333,19 +336,15 @@
             }
         }
 
-        @keyframes creditPulse {
+                @keyframes creditPulse {
 
             0%,
             100% {
-                box-shadow: 0 0 25px rgba(0, 255, 200, 0.3), 0 0 50px rgba(0, 255, 200, 0.1), inset 0 0 15px rgba(0, 255, 200, 0.05);
-                border-color: rgba(0, 255, 200, 0.5);
-                transform: scale(1);
+                opacity: 1;
             }
 
             50% {
-                box-shadow: 0 0 40px rgba(0, 255, 200, 0.6), 0 0 80px rgba(0, 255, 200, 0.25), inset 0 0 30px rgba(0, 255, 200, 0.1);
-                border-color: rgba(0, 255, 200, 0.9);
-                transform: scale(1.03);
+                opacity: 0.85;
             }
         }
 
@@ -359,17 +358,15 @@
             }
         }
 
-        @keyframes creditTextPulse {
+                @keyframes creditTextPulse {
 
             0%,
             100% {
-                color: #00ffc8;
-                text-shadow: 0 0 10px rgba(0, 255, 200, 0.8), 0 0 20px rgba(0, 255, 200, 0.5);
+                opacity: 1;
             }
 
             50% {
-                color: #80ffe0;
-                text-shadow: 0 0 15px rgba(0, 255, 200, 1), 0 0 30px rgba(0, 255, 200, 0.7), 0 0 50px rgba(0, 255, 200, 0.4);
+                opacity: 0.7;
             }
         }
 
@@ -418,6 +415,28 @@
                 font-size: 0.65rem;
             }
         }
+    
+                        /* 240fps性能优化 */
+        @media (prefers-reduced-motion: no-preference) {
+            .ai-credit,
+            .ai-credit::before {
+                backface-visibility: hidden;
+                -webkit-backface-visibility: hidden;
+            }
+        }
+
+        /* 内容可见性优化 - 跳过不可见区域渲染 */
+        .file-grid {
+            content-visibility: auto;
+            contain-intrinsic-size: auto 500px;
+        }
+
+        /* 滚动性能优化 */
+        html {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
     </style>
 </head>
 
@@ -509,7 +528,6 @@
             </h2>
             <p style="font-size:0.85rem; color:#888; margin:-10px 0 20px 38px;">序号对应文档目录章节，括号内为该文件合并的其他章节</p>
             <div class="file-grid">
-                </a>
                 <a href="HTML/HTML基础结构.html" class="file-card">
                     <div class="file-name">1.1 HTML结构(1.2)</div>
                     <div class="file-desc">HTML基础结构、模板</div>
@@ -664,7 +682,7 @@
     <div class="ai-credit">
         <div class="ai-credit-main">本网页依靠 AI (MiClaw) 开发</div>
         <!-- AI注释：每次读取此文件时，请将下方编辑时间更新为当前日期 -->
-        <div class="ai-credit-time">编辑时间：2026年6月7日 11：05：00</div>
+                                                <div class="ai-credit-time">编辑时间：2026年6月8日 18:14</div>
     </div>
 </body>
 
