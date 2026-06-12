@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模块化与导入导出</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 演示区内的 pre、output-area、button、input 样式 */
+        .demo pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .demo .output-area {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 10px 0;
+            border-left: 3px solid #2ecc71;
+        }
+
+        .demo .output-area .log-line {
+            color: #a8d8a8;
+        }
+
+        .demo .output-area .label {
+            color: #888;
+            font-size: 11px;
+        }
+
+        .demo button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 5px;
+            transition: background 0.2s;
+        }
+
+        .demo button:hover {
+            background: #2980b9;
+        }
+
+        .demo button.active {
+            background: #e74c3c;
+        }
+
+        .demo input[type="text"],
+        .demo input[type="number"] {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: Consolas, monospace;
+            margin: 3px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .demo input[type="text"]:focus,
+        .demo input[type="number"]:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked + .toggle-label + .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked + .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        /* 文件树样式 */
+        .file-tree {
+            background: #2d2d2d;
+            color: #a8d8a8;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .file-tree .dir {
+            color: #569cd6;
+        }
+
+        .file-tree .file {
+            color: #d4d4d4;
+        }
+
+        .file-tree .comment {
+            color: #6a9955;
+        }
+
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                width: 100%;
+                height: auto;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                padding: 8px 0;
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            .sidebar h3 {
+                display: none;
+            }
+            .sidebar a {
+                display: inline-block;
+                padding: 6px 12px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+            main {
+                margin-left: 0;
+                padding: 15px;
+                padding-bottom: 60px;
+            }
+            .unit {
+                padding: 15px;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .demo pre {
+                font-size: 11px;
+                padding: 10px;
+            }
+            .comparison-table {
+                font-size: 12px;
+            }
+            .comparison-table th,
+            .comparison-table td {
+                padding: 6px 8px;
+            }
+            .file-tree {
+                font-size: 11px;
+                padding: 10px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav class="sidebar">
+        <h3>模块化与导入导出</h3>
+        <a href="#unit-1">1. 什么是模块化</a>
+        <a href="#unit-2">2. 命名导出与导入</a>
+        <a href="#unit-3">3. 默认导出与导入</a>
+        <a href="#unit-4">4. 混合使用</a>
+        <a href="#unit-5">5. 模块化最佳实践</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- 第1节：什么是模块化 -->
+        <div class="unit" id="unit-1">
+            <h2>1. 什么是模块化</h2>
+
+            <div class="explain">
+                <p><strong>模块化</strong>就是把一个大文件拆成多个小文件，每个文件负责一块功能，文件之间可以互相引用。</p>
+                <p>想象一个超市：把"日用品区"、"食品区"、"文具区"分开放，而不是把所有商品堆在一起。模块化就是给代码"分区"。</p>
+            </div>
+
+            <div class="explain">
+                <p><strong>为什么要模块化？</strong></p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">问题 vs 解决：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>问题（没有模块化）</th>
+                        <th>解决（有了模块化）</th>
+                    </tr>
+                    <tr>
+                        <td>所有代码写在一个文件里，几千行</td>
+                        <td>拆成多个文件，每个几百行</td>
+                    </tr>
+                    <tr>
+                        <td>变量名冲突（都是全局的）</td>
+                        <td>每个模块有自己的作用域</td>
+                    </tr>
+                    <tr>
+                        <td>想用别人写的函数，得手动拷贝</td>
+                        <td><code>import</code> 引入就行</td>
+                    </tr>
+                    <tr>
+                        <td>不知道哪个函数在哪</td>
+                        <td>按功能组织，一目了然</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="explain">
+                <p><strong>ES 模块的使用方式：</strong></p>
+                <p>在 HTML 中，使用 <code>&lt;script type="module"&gt;</code> 来加载模块。加了 <code>type="module"</code> 后，浏览器就知道这个 <code>&lt;script&gt;</code> 里会用 <code>import</code>/<code>export</code>。模块文件默认是<strong>延迟执行</strong>的（相当于加了 <code>defer</code>）。</p>
+            </div>
+
+            <input type="checkbox" id="code-1" class="code-toggle">
+            <label for="code-1" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;模块化示例&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;模块化入门&lt;/h1&gt;
+<span>9</span>    &lt;!-- type="module" 让浏览器识别 import/export 语法 --&gt;
+<span>10</span>    &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
+<span>11</span>&lt;/body&gt;
+<span>12</span>&lt;/html&gt;</div>
+        </div>
+
+        <!-- 第2节：命名导出与导入 -->
+        <div class="unit" id="unit-2">
+            <h2>2. 命名导出与导入</h2>
+
+            <div class="explain">
+                <p><strong>命名导出</strong>：给每个要导出的内容起个名字，导入时必须用<strong>相同的名字</strong>来接收。</p>
+            </div>
+
+            <div class="explain">
+                <p><strong>导出（export）</strong>——两种方式：</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">utils.js — 命名导出：</div>
+<pre>// 方式1：声明时直接导出
+export function add(a, b) {
+    return a + b;
+}
+
+export function multiply(a, b) {
+    return a * b;
+}
+
+export const PI = 3.14159;
+
+// 方式2：先声明，最后统一导出
+function subtract(a, b) {
+    return a - b;
+}
+
+const VERSION = '1.0.0';
+
+export { subtract, VERSION };</pre>
+            </div>
+
+            <div class="explain">
+                <p><strong>导入（import）</strong>——三种方式：</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">main.js — 命名导入：</div>
+<pre>// 导入指定的几个
+import { add, multiply, PI } from './utils.js';
+console.log(add(10, 5));        // 15
+console.log(multiply(3, 4));    // 12
+console.log(PI);                // 3.14159
+
+// 导入时重命名（避免命名冲突）
+import { add as sum } from './utils.js';
+console.log(sum(10, 5));        // 15
+
+// 导入全部
+import * as utils from './utils.js';
+console.log(utils.add(1, 2));   // 3
+console.log(utils.PI);          // 3.14159</pre>
+            </div>
+
+            <div class="explain">
+                <p><strong>完整的可运行示例</strong>（需要本地服务器，浏览器不允许 <code>file://</code> 协议加载模块）：</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">命名导出演示（内联模块）：</div>
+                <div class="output-area">
+                    <span class="label">控制台输出：</span><br>
+                    <span class="log-line">【JavaScript入门】</span><br>
+                    <span class="log-line">这是一段很长很长的文章摘...</span><br>
+                    <span class="log-line">标题最大长度：50</span>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-2" class="code-toggle">
+            <label for="code-2" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;命名导出示例&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;命名导出与导入&lt;/h1&gt;
+<span>9</span>    &lt;p&gt;打开控制台查看结果&lt;/p&gt;
+<span>10</span>
+<span>11</span>    &lt;!-- 内联模块示例 --&gt;
+<span>12</span>    &lt;script type="module"&gt;
+<span>13</span>        // 模拟 utils.js 的内容
+<span>14</span>
+<span>15</span>        // 命名导出
+<span>16</span>        function formatTitle(title) {
+<span>17</span>            return '【' + title + '】';
+<span>18</span>        }
+<span>19</span>
+<span>20</span>        function truncate(text, maxLength) {
+<span>21</span>            if (text.length &gt; maxLength) {
+<span>22</span>                return text.slice(0, maxLength) + '...';
+<span>23</span>            }
+<span>24</span>            return text;
+<span>25</span>        }
+<span>26</span>
+<span>27</span>        const MAX_TITLE_LENGTH = 50;
+<span>28</span>
+<span>29</span>        // 模拟导入使用
+<span>30</span>        let title = formatTitle('JavaScript入门');
+<span>31</span>        console.log(title);   // 【JavaScript入门】
+<span>32</span>
+<span>33</span>        let summary = truncate('这是一段很长很长的文章摘要，需要被截断显示', 10);
+<span>34</span>        console.log(summary);  // 这是一段很长很长的文章摘...
+<span>35</span>
+<span>36</span>        console.log('标题最大长度：' + MAX_TITLE_LENGTH);
+<span>37</span>    &lt;/script&gt;
+<span>38</span>&lt;/body&gt;
+<span>39</span>&lt;/html&gt;</div>
+
+            <div class="explain" style="margin-top: 15px;">
+                <p><strong>命名导出/导入速查表：</strong></p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">速查表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>操作</th>
+                        <th>语法</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>声明时导出</td>
+                        <td><code>export function fn() {}</code></td>
+                        <td>声明的同时导出</td>
+                    </tr>
+                    <tr>
+                        <td>统一导出</td>
+                        <td><code>export { fn, NAME }</code></td>
+                        <td>最后统一列出</td>
+                    </tr>
+                    <tr>
+                        <td>导入指定</td>
+                        <td><code>import { fn } from './a.js'</code></td>
+                        <td>名字要对应</td>
+                    </tr>
+                    <tr>
+                        <td>重命名导入</td>
+                        <td><code>import { fn as myFn } from './a.js'</code></td>
+                        <td>避免冲突</td>
+                    </tr>
+                    <tr>
+                        <td>导入全部</td>
+                        <td><code>import * as obj from './a.js'</code></td>
+                        <td>整体导入</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="explain">
+                <p>⚠️ <strong>新手易错</strong>：<code>import { add } from 'utils.js'</code> 会报错！路径必须写 <code>./utils.js</code>（相对路径），不能省略 <code>./</code>。</p>
+            </div>
+        </div>
+
+        <!-- 第3节：默认导出与导入 -->
+        <div class="unit" id="unit-3">
+            <h2>3. 默认导出与导入</h2>
+
+            <div class="explain">
+                <p><strong>默认导出</strong>：一个模块只能有<strong>一个</strong>默认导出。导入时可以<strong>自己起名字</strong>。</p>
+                <p>默认导出适合一个模块只导出一个主要功能（比如一个类、一个函数、一个组件）。</p>
+            </div>
+
+            <div class="explain">
+                <p><strong>导出（export default）：</strong></p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">logger.js — 默认导出：</div>
+<pre>function logMessage(message) {
+    console.log('[LOG]', new Date().toLocaleTimeString(), message);
+}
+
+export default logMessage;   // 默认导出，一个模块只能有一个</pre>
+            </div>
+
+            <div class="explain">
+                <p><strong>导入（import）：</strong></p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">main.js — 默认导入（名字可以随便起）：</div>
+<pre>import log from './logger.js';   // 不需要花括号，名字随便起
+
+log('服务器启动了');   // [LOG] 10:30:00 服务器启动了</pre>
+            </div>
+
+            <div class="explain">
+                <p><strong>完整的可运行示例：</strong></p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">默认导出演示：</div>
+                <div class="output-area">
+                    <span class="label">控制台输出：</span><br>
+                    <span class="log-line">《ES6模块化》— 2026/6/12</span><br>
+                    <span class="log-line">{ title: 'ES6模块化', content: '模块化让代码更清晰...', date: '2026/6/12' }</span>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-3" class="code-toggle">
+            <label for="code-3" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;默认导出示例&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;默认导出与导入&lt;/h1&gt;
+<span>9</span>    &lt;script type="module"&gt;
+<span>10</span>        // 模拟 defaultExport.js
+<span>11</span>
+<span>12</span>        // 默认导出一个函数
+<span>13</span>        function createArticle(title, content) {
+<span>14</span>            return {
+<span>15</span>                title,
+<span>16</span>                content,
+<span>17</span>                date: new Date().toLocaleDateString(),
+<span>18</span>                toString() {
+<span>19</span>                    return `《${this.title}》— ${this.date}`;
+<span>20</span>                }
+<span>21</span>            };
+<span>22</span>        }
+<span>23</span>
+<span>24</span>        // 模拟导入使用（名字可以随便起）
+<span>25</span>        let article = createArticle('ES6模块化', '模块化让代码更清晰...');
+<span>26</span>        console.log(article.toString());
+<span>27</span>        console.log(article);
+<span>28</span>    &lt;/script&gt;
+<span>29</span>&lt;/body&gt;
+<span>30</span>&lt;/html&gt;</div>
+
+            <div class="explain" style="margin-top: 15px;">
+                <p><strong>命名导出 vs 默认导出对比：</strong></p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">对比表格：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>特性</th>
+                        <th>命名导出</th>
+                        <th>默认导出</th>
+                    </tr>
+                    <tr>
+                        <td>每个模块数量</td>
+                        <td>多个</td>
+                        <td>只能一个</td>
+                    </tr>
+                    <tr>
+                        <td>导入语法</td>
+                        <td><code>import { name } from '...'</code></td>
+                        <td><code>import anyName from '...'</code></td>
+                    </tr>
+                    <tr>
+                        <td>导入时名字</td>
+                        <td>必须和导出名一致</td>
+                        <td>可以随便起</td>
+                    </tr>
+                    <tr>
+                        <td>使用场景</td>
+                        <td>导出多个工具函数/常量</td>
+                        <td>导出一个主要功能</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="explain">
+                <p>⚠️ <strong>新手易错</strong>：默认导入不需要 <code>{}</code>。<code>import log from '...'</code> ✅，<code>import { log } from '...'</code> ❌（这是命名导入，名字必须匹配）。</p>
+            </div>
+        </div>
+
+        <!-- 第4节：混合使用 -->
+        <div class="unit" id="unit-4">
+            <h2>4. 混合使用</h2>
+
+            <div class="explain">
+                <p>在实际项目中，一个模块经常<strong>既有命名导出，又有默认导出</strong>。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">api.js — 混合导出：</div>
+<pre>// 默认导出（主要功能）
+export default function fetchPosts() {
+    return new Promise((resolve) =&gt; {
+        setTimeout(() =&gt; {
+            resolve([{ title: '文章1' }, { title: '文章2' }]);
+        }, 500);
+    });
+}
+
+// 命名导出（辅助功能）
+export const API_BASE_URL = 'https://api.example.com';
+
+export function formatDate(date) {
+    return new Date(date).toLocaleDateString('zh-CN');
+}</pre>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">main.js — 混合导入：</div>
+<pre>// 默认导入（名字随便起）
+import fetchPosts from './api.js';
+
+// 命名导入（名字必须对应）
+import { API_BASE_URL, formatDate } from './api.js';
+
+// 也可以一行搞定
+import fetchArticles, { API_BASE_URL, formatDate } from './api.js';
+
+console.log(API_BASE_URL);     // https://api.example.com
+console.log(formatDate('2026-06-12'));  // 2026/6/12
+
+fetchPosts().then(posts =&gt; console.log(posts));</pre>
+            </div>
+
+            <div class="explain">
+                <p><strong>完整的可运行示例</strong>（两个模块互相引用）：</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">混合导出演示：</div>
+                <div class="output-area">
+                    <span class="label">控制台输出：</span><br>
+                    <span class="log-line">计算结果：30</span><br>
+                    <span class="log-line">{ title: '模块化真好', content: '代码拆分成多个文件...', formatted: '模块化真好\n---\n代码拆分成多个文件...', wordCount: 11 }</span><br>
+                    <span class="log-line">博客名：我的博客</span>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-4" class="code-toggle">
+            <label for="code-4" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;混合导出示例&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;混合使用：两个模块互相引用&lt;/h1&gt;
+<span>9</span>    &lt;script type="module"&gt;
+<span>10</span>        // ========== 模拟 math.js ==========
+<span>11</span>        // 命名导出
+<span>12</span>        function add(a, b) { return a + b; }
+<span>13</span>        function multiply(a, b) { return a * b; }
+<span>14</span>        // 默认导出
+<span>15</span>        function calculate(expr) {
+<span>16</span>            let parts = expr.split('+');
+<span>17</span>            return add(Number(parts[0]), Number(parts[1]));
+<span>18</span>        }
+<span>19</span>
+<span>20</span>        // ========== 模拟 blog.js ==========
+<span>21</span>        // 命名导出
+<span>22</span>        const BLOG_NAME = '我的博客';
+<span>23</span>        function formatPost(title, content) {
+<span>24</span>            return `${title}\n---\n${content}`;
+<span>25</span>        }
+<span>26</span>        // 默认导出
+<span>27</span>        function createPost(title, content) {
+<span>28</span>            return {
+<span>29</span>                title,
+<span>30</span>                content,
+<span>31</span>                formatted: formatPost(title, content),
+<span>32</span>                wordCount: content.length
+<span>33</span>            };
+<span>34</span>        }
+<span>35</span>
+<span>36</span>        // ========== 使用 ==========
+<span>37</span>        let result = calculate('10+20');
+<span>38</span>        console.log('计算结果：' + result);  // 30
+<span>39</span>
+<span>40</span>        let post = createPost('模块化真好', '代码拆分成多个文件...');
+<span>41</span>        console.log(post);
+<span>42</span>        console.log('博客名：' + BLOG_NAME);  // 我的博客
+<span>43</span>    &lt;/script&gt;
+<span>44</span>&lt;/body&gt;
+<span>45</span>&lt;/html&gt;</div>
+        </div>
+
+        <!-- 第5节：模块化最佳实践 -->
+        <div class="unit" id="unit-5">
+            <h2>5. 模块化最佳实践</h2>
+
+            <div class="explain">
+                <p><strong>推荐的文件组织方式：</strong></p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">项目结构：</div>
+                <div class="file-tree"><span class="dir">src/</span>
+├── <span class="dir">utils/</span>              <span class="comment">工具函数（命名导出为主）</span>
+│   ├── <span class="file">format.js</span>       <span class="comment">formatTitle, formatDate, formatPrice</span>
+│   ├── <span class="file">validate.js</span>     <span class="comment">isEmail, isPhone, isRequired</span>
+│   └── <span class="file">index.js</span>        <span class="comment">统一导出所有工具</span>
+├── <span class="dir">api/</span>                <span class="comment">API 请求（默认导出为主）</span>
+│   ├── <span class="file">posts.js</span>        <span class="comment">export default fetchPosts</span>
+│   └── <span class="file">users.js</span>        <span class="comment">export default fetchUsers</span>
+└── <span class="file">main.js</span>             <span class="comment">入口文件，统一导入使用</span></div>
+            </div>
+
+            <div class="explain">
+                <p><strong>统一导出的写法</strong>（<code>utils/index.js</code>）：</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">utils/index.js — 统一把所有工具导出：</div>
+<pre>// utils/index.js
+export { formatTitle, formatDate, formatPrice } from './format.js';
+export { isEmail, isPhone, isRequired } from './validate.js';</pre>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">main.js — 一行导入所有工具：</div>
+<pre>import { formatTitle, isEmail } from './utils/index.js';</pre>
+            </div>
+
+            <div class="explain">
+                <p><strong>模块化原则：</strong></p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">原则速查：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>原则</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>一个文件一个职责</td>
+                        <td><code>format.js</code> 只管格式化，<code>validate.js</code> 只管验证</td>
+                    </tr>
+                    <tr>
+                        <td>默认导出用于主要功能</td>
+                        <td>一个模块的"主角"用默认导出</td>
+                    </tr>
+                    <tr>
+                        <td>命名导出用于辅助功能</td>
+                        <td>工具函数、常量用命名导出</td>
+                    </tr>
+                    <tr>
+                        <td>统一入口 <code>index.js</code></td>
+                        <td>多个文件通过 <code>index.js</code> 统一对外暴露</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="explain">
+                <p><strong>实践作业：</strong>将数组高阶方法的处理函数拆分为独立模块。</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>创建 <code>postUtils.js</code> 模块，命名导出：<code>getPopularPosts</code>、<code>getPostTitles</code>、<code>getTotalViews</code>、<code>findPostById</code></li>
+                    <li>创建 <code>formatUtils.js</code> 模块，命名导出：<code>formatDate</code>、<code>truncateText</code></li>
+                    <li>在 <code>main.js</code> 中导入这两个模块，处理文章数据</li>
+                </ul>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">实践作业演示：</div>
+                <div class="output-area">
+                    <span class="label">控制台输出：</span><br>
+                    <span class="log-line">热门文章： ['JavaScript入门', 'React教程']</span><br>
+                    <span class="log-line">总浏览量：5250</span><br>
+                    <span class="log-line">找到文章：{ id: 2, title: 'CSS布局技巧', ... }</span><br>
+                    <span class="log-line">JavaScript入门（2026/6/1）— 零基础学习Jav...</span><br>
+                    <span class="log-line">CSS布局技巧（2026/6/5）— Flex和Grid布...</span><br>
+                    <span class="log-line">React教程（2026/6/10）— 从零开始学习R...</span>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-5" class="code-toggle">
+            <label for="code-5" class="toggle-label">查看参考答案</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;实践作业&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;实践作业：模块化拆分&lt;/h1&gt;
+<span>9</span>    &lt;script type="module"&gt;
+<span>10</span>        // ========== postUtils.js ==========
+<span>11</span>        function getPopularPosts(posts, minViews) {
+<span>12</span>            return posts.filter(post =&gt; post.views &gt;= minViews);
+<span>13</span>        }
+<span>14</span>
+<span>15</span>        function getPostTitles(posts) {
+<span>16</span>            return posts.map(post =&gt; post.title);
+<span>17</span>        }
+<span>18</span>
+<span>19</span>        function getTotalViews(posts) {
+<span>20</span>            return posts.reduce((sum, post) =&gt; sum + post.views, 0);
+<span>21</span>        }
+<span>22</span>
+<span>23</span>        function findPostById(posts, id) {
+<span>24</span>            return posts.find(post =&gt; post.id === id);
+<span>25</span>        }
+<span>26</span>
+<span>27</span>        // ========== formatUtils.js ==========
+<span>28</span>        function formatDate(date) {
+<span>29</span>            return new Date(date).toLocaleDateString('zh-CN');
+<span>30</span>        }
+<span>31</span>
+<span>32</span>        function truncateText(text, maxLength) {
+<span>33</span>            if (text.length &lt;= maxLength) return text;
+<span>34</span>            return text.slice(0, maxLength) + '...';
+<span>35</span>        }
+<span>36</span>
+<span>37</span>        // ========== main.js ==========
+<span>38</span>        let posts = [
+<span>39</span>            { id: 1, title: 'JavaScript入门', views: 1200, date: '2026-06-01',
+<span>40</span>              summary: '零基础学习JavaScript的基础语法' },
+<span>41</span>            { id: 2, title: 'CSS布局技巧', views: 850, date: '2026-06-05',
+<span>42</span>              summary: 'Flex和Grid布局完全指南' },
+<span>43</span>            { id: 3, title: 'React教程', views: 3200, date: '2026-06-10',
+<span>44</span>              summary: '从零开始学习React框架' }
+<span>45</span>        ];
+<span>46</span>
+<span>47</span>        // 使用 postUtils 的函数
+<span>48</span>        let popular = getPopularPosts(posts, 1000);
+<span>49</span>        console.log('热门文章：', getPostTitles(popular));
+<span>50</span>        console.log('总浏览量：' + getTotalViews(posts));
+<span>51</span>
+<span>52</span>        let found = findPostById(posts, 2);
+<span>53</span>        console.log('找到文章：', found);
+<span>54</span>
+<span>55</span>        // 使用 formatUtils 的函数
+<span>56</span>        posts.forEach(post =&gt; {
+<span>57</span>            let shortSummary = truncateText(post.summary, 8);
+<span>58</span>            console.log(`${post.title}（${formatDate(post.date)}）— ${shortSummary}`);
+<span>59</span>        });
+<span>60</span>    &lt;/script&gt;
+<span>61</span>&lt;/body&gt;
+<span>62</span>&lt;/html&gt;</div>
+
+            <div class="explain" style="margin-top: 20px;">
+                <p><strong>本章复盘——模块化核心要点：</strong></p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">核心要点总结：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>要点</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>为什么模块化</td>
+                        <td>拆分代码、避免全局污染、方便复用和维护</td>
+                    </tr>
+                    <tr>
+                        <td>命名导出</td>
+                        <td><code>export { fn, NAME }</code>，导入名字必须一致</td>
+                    </tr>
+                    <tr>
+                        <td>默认导出</td>
+                        <td><code>export default fn</code>，一个模块一个，导入名字随便起</td>
+                    </tr>
+                    <tr>
+                        <td>混合导出</td>
+                        <td>可以同时有默认导出和命名导出</td>
+                    </tr>
+                    <tr>
+                        <td>HTML 使用</td>
+                        <td><code>&lt;script type="module"&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td>路径规则</td>
+                        <td>必须用相对路径 <code>./</code> 或绝对路径</td>
+                    </tr>
+                    <tr>
+                        <td>组织原则</td>
+                        <td>一个文件一个职责，默认导出主要功能，命名导出辅助</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</body>
+
+</html>

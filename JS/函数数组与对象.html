@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数数组与对象</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked + .toggle-label + .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked + .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        /* ===== 函数演示区 ===== */
+        .func-demo {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .func-box {
+            flex: 1;
+            min-width: 200px;
+            background: #fff;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        .func-box h4 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .func-box .func-name {
+            display: inline-block;
+            background: #3498db;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+        .func-box .func-name:hover {
+            background: #2980b9;
+        }
+        .func-box .func-result {
+            background: #ecf0f1;
+            border-radius: 4px;
+            padding: 8px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            color: #2c3e50;
+            min-height: 30px;
+        }
+
+        /* ===== 数组 push/pop 可视化 ===== */
+        .arr-demo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .arr-item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 44px;
+            height: 44px;
+            background: #3498db;
+            color: #fff;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .arr-item.new {
+            background: #2ecc71;
+            animation: popIn 0.3s ease;
+        }
+        .arr-item.removed {
+            background: #e74c3c;
+            animation: popOut 0.3s ease forwards;
+        }
+        @keyframes popIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes popOut {
+            from { transform: scale(1); opacity: 1; }
+            to { transform: scale(0); opacity: 0; }
+        }
+        .arr-index {
+            font-size: 11px;
+            color: #999;
+            text-align: center;
+            margin-top: 2px;
+        }
+        .arr-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .arr-btn {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .arr-btn.push { background: #2ecc71; }
+        .arr-btn.pop { background: #e74c3c; }
+        .arr-btn.unshift { background: #9b59b6; }
+        .arr-btn.shift { background: #e67e22; }
+        .arr-btn:hover { opacity: 0.85; }
+        .arr-log {
+            margin-top: 10px;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        /* ===== 对象演示区 ===== */
+        .obj-demo {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .obj-card {
+            flex: 1;
+            min-width: 240px;
+            background: #fff;
+            border: 2px solid #2c3e50;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .obj-card h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        .obj-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px dashed #eee;
+            font-size: 13px;
+        }
+        .obj-row .key {
+            color: #e74c3c;
+            font-family: Consolas, monospace;
+        }
+        .obj-row .val {
+            color: #27ae60;
+            font-family: Consolas, monospace;
+        }
+        .obj-method-btn {
+            display: inline-block;
+            background: #3498db;
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-right: 5px;
+        }
+        .obj-method-btn:hover { background: #2980b9; }
+        .obj-output {
+            margin-top: 8px;
+            background: #ecf0f1;
+            padding: 8px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            min-height: 28px;
+            color: #2c3e50;
+        }
+
+        /* ===== 作用域链可视化 ===== */
+        .scope-chain {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .scope-box {
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            padding: 12px 16px;
+            position: relative;
+            min-width: 120px;
+            text-align: center;
+        }
+        .scope-box.global {
+            border-color: #e74c3c;
+        }
+        .scope-box.outer {
+            border-color: #f39c12;
+        }
+        .scope-box.inner {
+            border-color: #2ecc71;
+        }
+        .scope-box h5 {
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+        .scope-box.global h5 { color: #e74c3c; }
+        .scope-box.outer h5 { color: #f39c12; }
+        .scope-box.inner h5 { color: #2ecc71; }
+        .scope-var {
+            background: #ecf0f1;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin: 3px 0;
+            font-family: Consolas, monospace;
+        }
+        .scope-arrow {
+            font-size: 20px;
+            color: #999;
+            margin: 0 5px;
+        }
+
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            nav {
+                position: fixed;
+                width: 100%;
+                height: auto;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                padding: 8px 0;
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            nav h3 {
+                display: none;
+            }
+            nav a {
+                display: inline-block;
+                padding: 6px 12px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+            main {
+                margin-left: 0;
+                padding: 15px;
+                padding-bottom: 60px;
+            }
+            .unit {
+                padding: 15px;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .func-demo {
+                flex-direction: column;
+            }
+            .func-box {
+                min-width: auto;
+            }
+            .obj-demo {
+                flex-direction: column;
+            }
+            .obj-card {
+                min-width: auto;
+            }
+            .scope-chain {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .scope-arrow {
+                transform: rotate(90deg);
+                text-align: center;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav class="sidebar">
+        <h3>函数数组与对象</h3>
+        <a href="#unit-1">1.8 函数</a>
+        <a href="#unit-2">&nbsp;&nbsp;1.8.1 定义和调用</a>
+        <a href="#unit-3">&nbsp;&nbsp;1.8.2 参数</a>
+        <a href="#unit-4">&nbsp;&nbsp;1.8.3 返回值</a>
+        <a href="#unit-5">&nbsp;&nbsp;1.8.4 箭头函数</a>
+        <a href="#unit-6">1.9 数组</a>
+        <a href="#unit-7">&nbsp;&nbsp;1.9.1 定义数组</a>
+        <a href="#unit-8">&nbsp;&nbsp;1.9.2 遍历数组</a>
+        <a href="#unit-9">&nbsp;&nbsp;1.9.3 常用方法</a>
+        <a href="#unit-10">1.10 对象</a>
+        <a href="#unit-11">&nbsp;&nbsp;1.10.1 创建对象</a>
+        <a href="#unit-12">&nbsp;&nbsp;1.10.2 属性与方法</a>
+        <a href="#unit-13">1.11 作用域</a>
+        <a href="#unit-14">&nbsp;&nbsp;1.11.1 全局vs局部</a>
+        <a href="#unit-15">&nbsp;&nbsp;1.11.2 变量提升</a>
+        <a href="#unit-16">&nbsp;&nbsp;1.11.3 作用域链</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- ==================== 1.8 函数 ==================== -->
+        <!-- 第1节：函数概述 -->
+        <div class="unit" id="unit-1">
+            <h2>1.8 函数</h2>
+            <div class="explain">
+                <p><strong>函数</strong>就是把一段代码打包成一个"工具包"，起个名字，想用的时候喊一声就行。不用每次都从头写。</p>
+                <p>函数的核心价值：<strong>代码复用</strong>和<strong>逻辑封装</strong>。</p>
+            </div>
+        </div>
+
+        <!-- 第2节：定义和调用 -->
+        <div class="unit" id="unit-2">
+            <h2>1.8.1 定义和调用</h2>
+            <div class="explain">
+                <p>用 <code>function</code> 关键字定义函数，用<strong>函数名()</strong> 调用函数。</p>
+                <p><strong>定义语法</strong>：<code>function 函数名() { 函数体 }</code></p>
+                <p><strong>调用语法</strong>：<code>函数名();</code> —— 不调用不执行！</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示：点击按钮调用函数</div>
+                <div class="func-demo" id="funcCallDemo">
+                    <div class="func-box">
+                        <h4>sayHello 函数</h4>
+                        <div class="func-name" onclick="demoSayHello()">sayHello()</div>
+                        <div class="func-result" id="result1">等待调用...</div>
+                    </div>
+                    <div class="func-box">
+                        <h4>sayGoodbye 函数</h4>
+                        <div class="func-name" onclick="demoSayGoodbye()">sayGoodbye()</div>
+                        <div class="func-result" id="result2">等待调用...</div>
+                    </div>
+                    <div class="func-box">
+                        <h4>多次调用演示</h4>
+                        <div class="func-name" onclick="demoMultiCall()">click ×3</div>
+                        <div class="func-result" id="result3">点击观察计数</div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-2" class="code-toggle">
+            <label for="code-2" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 定义函数
+<span>2</span>function sayHello() {
+<span>3</span>    console.log('你好！欢迎学习JavaScript！');
+<span>4</span>}
+<span>5</span>
+<span>6</span>// 调用函数
+<span>7</span>sayHello();   // 输出：你好！欢迎学习JavaScript！
+<span>8</span>
+<span>9</span>// 可以多次调用
+<span>10</span>sayHello();
+<span>11</span>sayHello();</div>
+        </div>
+
+        <!-- 第3节：参数 -->
+        <div class="unit" id="unit-3">
+            <h2>1.8.2 参数（形参和实参）</h2>
+            <div class="explain">
+                <p>参数让函数更灵活——调用时传不同的值，函数就做出不同的反应。</p>
+                <p><strong>形参</strong>（parameter）：定义函数时写在括号里的"占位符"。</p>
+                <p><strong>实参</strong>（argument）：调用函数时传进去的"实际值"。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示：输入姓名和年龄，调用函数</div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+                    <input type="text" id="paramName" placeholder="输入姓名" style="padding:6px 10px; border:1px solid #ddd; border-radius:4px; font-size:13px;">
+                    <input type="number" id="paramAge" placeholder="输入年龄" style="padding:6px 10px; border:1px solid #ddd; border-radius:4px; font-size:13px; width:80px;">
+                    <button onclick="demoGreet()" style="padding:6px 14px; background:#3498db; color:#fff; border:none; border-radius:4px; cursor:pointer; font-size:13px;">调用 greet(name, age)</button>
+                </div>
+                <div class="func-result" id="paramResult">输入姓名和年龄后点击按钮</div>
+            </div>
+
+            <input type="checkbox" id="code-3" class="code-toggle">
+            <label for="code-3" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 定义：name 是形参
+<span>2</span>function greet(name) {
+<span>3</span>    console.log('你好，' + name + '！');
+<span>4</span>}
+<span>5</span>
+<span>6</span>// 调用：传不同的实参
+<span>7</span>greet('小明');   // 输出：你好，小明！
+<span>8</span>greet('小红');   // 输出：你好，小红！
+<span>9</span>
+<span>10</span>// 多个参数
+<span>11</span>function introduce(name, age) {
+<span>12</span>    console.log('我叫' + name + '，今年' + age + '岁');
+<span>13</span>}
+<span>14</span>
+<span>15</span>introduce('李四', 25);   // 输出：我叫李四，今年25岁</div>
+        </div>
+
+        <!-- 第4节：返回值 -->
+        <div class="unit" id="unit-4">
+            <h2>1.8.3 返回值</h2>
+            <div class="explain">
+                <p>函数处理完数据后，可以用 <code>return</code> 把结果"还回来"。</p>
+                <p><strong>关键点</strong>：<code>return</code> 会把值返回给调用者，同时<strong>函数立即结束</strong>。</p>
+                <p>如果没有 <code>return</code>，函数默认返回 <code>undefined</code>。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示：add 函数的返回值</div>
+                <div class="func-demo">
+                    <div class="func-box">
+                        <h4>add(10, 20)</h4>
+                        <div class="func-name" onclick="demoAdd(10,20)">add(10, 20)</div>
+                        <div class="func-result" id="addResult1">等待调用...</div>
+                    </div>
+                    <div class="func-box">
+                        <h4>add(5, 7)</h4>
+                        <div class="func-name" onclick="demoAdd(5,7)">add(5, 7)</div>
+                        <div class="func-result" id="addResult2">等待调用...</div>
+                    </div>
+                    <div class="func-box">
+                        <h4>嵌套调用</h4>
+                        <div class="func-name" onclick="demoAddNested()">add(add(1,2), add(3,4))</div>
+                        <div class="func-result" id="addResult3">等待调用...</div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-4" class="code-toggle">
+            <label for="code-4" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 定义一个加法函数
+<span>2</span>function add(a, b) {
+<span>3</span>    let result = a + b;
+<span>4</span>    return result;   // 把结果返回
+<span>5</span>}
+<span>6</span>
+<span>7</span>// 调用函数，把返回值存起来
+<span>8</span>let sum = add(10, 20);
+<span>9</span>console.log('10 + 20 = ' + sum);   // 输出：10 + 20 = 30
+<span>10</span>
+<span>11</span>// 返回值可以直接使用
+<span>12</span>let total = add(add(1, 2), add(3, 4));
+<span>13</span>console.log(total);   // 输出：10（3 + 7）</div>
+        </div>
+
+        <!-- 第5节：箭头函数 -->
+        <div class="unit" id="unit-5">
+            <h2>1.8.4 箭头函数（ES6 简写）</h2>
+            <div class="explain">
+                <p>箭头函数是 ES6 提供的一种<strong>更简洁的函数写法</strong>。</p>
+                <p><code>function</code> 变成 <code>=&gt;</code>，如果只有一行代码可以省略 <code>{}</code> 和 <code>return</code>。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">三种写法对比</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>写法</th>
+                        <th>代码</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>传统 function</td>
+                        <td><code>function double(n) { return n * 2; }</code></td>
+                        <td>标准写法</td>
+                    </tr>
+                    <tr>
+                        <td>箭头函数（完整）</td>
+                        <td><code>let double = (n) => { return n * 2; };</code></td>
+                        <td>function 换成 =&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>箭头函数（简写）</td>
+                        <td><code>let double = (n) => n * 2;</code></td>
+                        <td>单行省略 {} 和 return</td>
+                    </tr>
+                </table>
+                <div class="func-demo" style="margin-top:15px;">
+                    <div class="func-box">
+                        <h4>传统写法 double1(5)</h4>
+                        <div class="func-name" onclick="demoArrow('trad')">double1(5)</div>
+                        <div class="func-result" id="arrowResult1">等待调用...</div>
+                    </div>
+                    <div class="func-box">
+                        <h4>箭头函数 double2(5)</h4>
+                        <div class="func-name" onclick="demoArrow('arrow1')">double2(5)</div>
+                        <div class="func-result" id="arrowResult2">等待调用...</div>
+                    </div>
+                    <div class="func-box">
+                        <h4>简写 double3(5)</h4>
+                        <div class="func-name" onclick="demoArrow('arrow2')">double3(5)</div>
+                        <div class="func-result" id="arrowResult3">等待调用...</div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-5" class="code-toggle">
+            <label for="code-5" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 传统写法
+<span>2</span>function double1(n) {
+<span>3</span>    return n * 2;
+<span>4</span>}
+<span>5</span>
+<span>6</span>// 箭头函数写法
+<span>7</span>let double2 = (n) => {
+<span>8</span>    return n * 2;
+<span>9</span>};
+<span>10</span>
+<span>11</span>// 最简写法（只有一行，省略{}和return）
+<span>12</span>let double3 = (n) => n * 2;
+<span>13</span>
+<span>14</span>console.log(double1(5));   // 10
+<span>15</span>console.log(double2(5));   // 10
+<span>16</span>console.log(double3(5));   // 10</div>
+        </div>
+
+        <!-- 第6节：函数要点表 -->
+        <div class="unit" id="unit-6b" style="border-left: 4px solid #3498db;">
+            <h2>📋 函数核心要点</h2>
+            <table class="comparison-table">
+                <tr>
+                    <th>要点</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td><strong>定义</strong></td>
+                    <td><code>function 函数名() {}</code></td>
+                </tr>
+                <tr>
+                    <td><strong>调用</strong></td>
+                    <td><code>函数名()</code> —— 不调用不执行</td>
+                </tr>
+                <tr>
+                    <td><strong>形参</strong></td>
+                    <td>定义时写括号里，是占位符</td>
+                </tr>
+                <tr>
+                    <td><strong>实参</strong></td>
+                    <td>调用时传进去，是实际值</td>
+                </tr>
+                <tr>
+                    <td><strong>返回值</strong></td>
+                    <td><code>return</code> 返回结果，函数立即结束</td>
+                </tr>
+                <tr>
+                    <td><strong>箭头函数</strong></td>
+                    <td><code>let fn = () => {}</code>，更简洁</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- ==================== 1.9 数组 ==================== -->
+        <!-- 第7节：定义数组 -->
+        <div class="unit" id="unit-7">
+            <h2>1.9 数组 &mdash; 定义数组</h2>
+            <div class="explain">
+                <p><strong>数组</strong>就是一个有序的列表，可以把一堆数据排好队放在一起。好比一个购物清单。</p>
+                <p>用<strong>中括号 <code>[]</code></strong> 定义，元素之间用<strong>逗号</strong>分隔。</p>
+                <p><strong>下标从 0 开始</strong>：第一个元素是 <code>[0]</code>，最后一个是 <code>[长度-1]</code>。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">下标与元素对应关系</div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+                    <div style="text-align:center;">
+                        <div class="arr-index">下标 [0]</div>
+                        <div class="arr-item">苹果</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div class="arr-index">下标 [1]</div>
+                        <div class="arr-item" style="background:#9b59b6;">香蕉</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div class="arr-index">下标 [2]</div>
+                        <div class="arr-item" style="background:#e67e22;">橘子</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div class="arr-index">下标 [3]</div>
+                        <div class="arr-item" style="background:#27ae60;">西瓜</div>
+                    </div>
+                </div>
+                <p style="font-size:13px; color:#666;">数组长度：<code>fruits.length</code> = 4 &nbsp;|&nbsp; 最后一个元素：<code>fruits[fruits.length - 1]</code></p>
+            </div>
+
+            <input type="checkbox" id="code-7" class="code-toggle">
+            <label for="code-7" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 定义一个数组
+<span>2</span>let fruits = ['苹果', '香蕉', '橘子', '西瓜'];
+<span>3</span>
+<span>4</span>console.log(fruits);          // ["苹果", "香蕉", "橘子", "西瓜"]
+<span>5</span>console.log(fruits.length);   // 4（有4个元素）
+<span>6</span>
+<span>7</span>// 通过下标（索引）访问元素，下标从0开始
+<span>8</span>console.log(fruits[0]);  // 第一个元素：苹果
+<span>9</span>console.log(fruits[1]);  // 第二个元素：香蕉
+<span>10</span>console.log(fruits[3]);  // 第四个元素：西瓜
+<span>11</span>console.log(fruits[4]);  // 不存在的下标：undefined</div>
+        </div>
+
+        <!-- 第8节：遍历数组 -->
+        <div class="unit" id="unit-8">
+            <h2>1.9.2 遍历数组</h2>
+            <div class="explain">
+                <p><strong>遍历</strong>就是把数组里的元素一个个取出来。</p>
+                <p>用 <code>for</code> 循环 + <code>.length</code> 配合，可以逐个访问每个元素。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示：for 循环遍历成绩数组</div>
+                <div class="arr-demo" id="traverseDemo">
+                    <div style="text-align:center;">
+                        <div class="arr-item" id="td0">85</div>
+                        <div class="arr-index">[0]</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div class="arr-item" id="td1">92</div>
+                        <div class="arr-index">[1]</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div class="arr-item" id="td2">78</div>
+                        <div class="arr-index">[2]</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div class="arr-item" id="td3">96</div>
+                        <div class="arr-index">[3]</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div class="arr-item" id="td4">88</div>
+                        <div class="arr-index">[4]</div>
+                    </div>
+                </div>
+                <button onclick="demoTraverse()" style="padding:6px 14px; background:#3498db; color:#fff; border:none; border-radius:4px; cursor:pointer; font-size:13px; margin-top:8px;">开始遍历</button>
+                <div class="arr-log" id="traverseLog">点击"开始遍历"查看过程</div>
+            </div>
+
+            <input type="checkbox" id="code-8" class="code-toggle">
+            <label for="code-8" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>let scores = [85, 92, 78, 96, 88];
+<span>2</span>let total = 0;
+<span>3</span>
+<span>4</span>// 遍历数组求和
+<span>5</span>for (let i = 0; i < scores.length; i++) {
+<span>6</span>    total += scores[i];
+<span>7</span>}
+<span>8</span>
+<span>9</span>let average = total / scores.length;
+<span>10</span>console.log('总分：' + total);      // 439
+<span>11</span>console.log('平均分：' + average);  // 87.8</div>
+        </div>
+
+        <!-- 第9节：常用方法 -->
+        <div class="unit" id="unit-9">
+            <h2>1.9.3 常用方法</h2>
+            <div class="explain">
+                <p>JavaScript 给数组准备了一些"工具方法"，可以直接用。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">交互演示：push / pop / unshift / shift</div>
+                <div class="arr-demo" id="arrPushPopDemo">
+                    <div id="arrDisplay" style="display:flex; gap:6px; flex-wrap:wrap;"></div>
+                </div>
+                <div class="arr-controls">
+                    <button class="arr-btn push" onclick="demoArrPush()">push 添加末尾</button>
+                    <button class="arr-btn pop" onclick="demoArrPop()">pop 删除末尾</button>
+                    <button class="arr-btn unshift" onclick="demoArrUnshift()">unshift 添加开头</button>
+                    <button class="arr-btn shift" onclick="demoArrShift()">shift 删除开头</button>
+                </div>
+                <div class="arr-log" id="arrLog">初始数组: [1, 2, 3]</div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">方法速查表</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>方法</th>
+                        <th>作用</th>
+                        <th>示例</th>
+                        <th>结果</th>
+                    </tr>
+                    <tr>
+                        <td><code>push(值)</code></td>
+                        <td>末尾添加</td>
+                        <td><code>[1,2].push(3)</code></td>
+                        <td><code>[1,2,3]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>pop()</code></td>
+                        <td>末尾删除</td>
+                        <td><code>[1,2,3].pop()</code></td>
+                        <td><code>[1,2]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>unshift(值)</code></td>
+                        <td>开头添加</td>
+                        <td><code>[1,2].unshift(0)</code></td>
+                        <td><code>[0,1,2]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>shift()</code></td>
+                        <td>开头删除</td>
+                        <td><code>[1,2,3].shift()</code></td>
+                        <td><code>[2,3]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>indexOf(值)</code></td>
+                        <td>查找位置</td>
+                        <td><code>['a','b'].indexOf('b')</code></td>
+                        <td><code>1</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>concat(数组)</code></td>
+                        <td>拼接数组</td>
+                        <td><code>[1].concat([2])</code></td>
+                        <td><code>[1,2]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>join('分隔符')</code></td>
+                        <td>转字符串</td>
+                        <td><code>[1,2,3].join('-')</code></td>
+                        <td><code>"1-2-3"</code></td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-9" class="code-toggle">
+            <label for="code-9" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>let arr = ['a', 'b', 'c'];
+<span>2</span>
+<span>3</span>// push：往末尾加
+<span>4</span>arr.push('d');
+<span>5</span>console.log(arr);   // ["a", "b", "c", "d"]
+<span>6</span>
+<span>7</span>// pop：从末尾删
+<span>8</span>arr.pop();
+<span>9</span>console.log(arr);   // ["a", "b", "c"]
+<span>10</span>
+<span>11</span>// unshift：往开头加
+<span>12</span>arr.unshift('z');
+<span>13</span>console.log(arr);   // ["z", "a", "b", "c"]
+<span>14</span>
+<span>15</span>// shift：从开头删
+<span>16</span>arr.shift();
+<span>17</span>console.log(arr);   // ["a", "b", "c"]
+<span>18</span>
+<span>19</span>// 查找元素位置
+<span>20</span>let index = arr.indexOf('b');
+<span>21</span>console.log(index);  // 1
+<span>22</span>
+<span>23</span>// 拼接数组
+<span>24</span>let arr2 = [1, 2, 3];
+<span>25</span>let arr3 = [4, 5, 6];
+<span>26</span>let merged = arr2.concat(arr3);
+<span>27</span>console.log(merged);  // [1, 2, 3, 4, 5, 6]</div>
+        </div>
+
+        <!-- ==================== 1.10 对象 ==================== -->
+        <!-- 第10节：创建对象 -->
+        <div class="unit" id="unit-10">
+            <h2>1.10 对象 &mdash; 创建对象</h2>
+            <div class="explain">
+                <p><strong>对象</strong>就是一组相关数据的集合，每个数据都有一个名字（属性名）和一个值（属性值）。好比一张"个人信息表"。</p>
+                <p>用<strong>花括号 <code>{}</code></strong> 创建对象，里面是<strong>键值对</strong>（key: value）。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示：person 对象的结构</div>
+                <div class="obj-demo">
+                    <div class="obj-card">
+                        <h4>👤 person 对象</h4>
+                        <div class="obj-row"><span class="key">name</span><span class="val">'小明'</span></div>
+                        <div class="obj-row"><span class="key">age</span><span class="val">18</span></div>
+                        <div class="obj-row"><span class="key">city</span><span class="val">'北京'</span></div>
+                        <div class="obj-row"><span class="key">sayHello</span><span class="val">function() {...}</span></div>
+                        <button class="obj-method-btn" onclick="demoPersonSayHello()">person.sayHello()</button>
+                        <div class="obj-output" id="personOutput">点击按钮调用方法</div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-10" class="code-toggle">
+            <label for="code-10" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 创建一个"人"对象
+<span>2</span>let person = {
+<span>3</span>    name: '小明',      // 属性：姓名
+<span>4</span>    age: 18,           // 属性：年龄
+<span>5</span>    city: '北京',      // 属性：城市
+<span>6</span>    sayHello: function() {  // 方法（对象里的函数）
+<span>7</span>        console.log('你好，我叫' + this.name);
+<span>8</span>    }
+<span>9</span>};
+<span>10</span>
+<span>11</span>// 访问属性：用 对象名.属性名
+<span>12</span>console.log(person.name);   // 小明
+<span>13</span>console.log(person.age);    // 18
+<span>14</span>
+<span>15</span>// 另一种访问方式：用 对象名['属性名']
+<span>16</span>console.log(person['name']);  // 小明
+<span>17</span>
+<span>18</span>// 调用方法
+<span>19</span>person.sayHello();   // 你好，我叫小明</div>
+        </div>
+
+        <!-- 第11节：属性与方法 -->
+        <div class="unit" id="unit-11">
+            <h2>1.10.2 属性与方法访问</h2>
+            <div class="explain">
+                <p>访问对象属性有两种方式：<strong>点语法</strong>和<strong>方括号</strong>。</p>
+                <p>对象里的函数叫做<strong>方法</strong>，调用时必须加括号 <code>()</code>。</p>
+                <p><code>this</code> 在对象方法里表示"这个对象自己"。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示：product 对象的属性和方法</div>
+                <div class="obj-demo">
+                    <div class="obj-card">
+                        <h4>📦 product 商品对象</h4>
+                        <div class="obj-row"><span class="key">name</span><span class="val">'笔记本'</span></div>
+                        <div class="obj-row"><span class="key">price</span><span class="val">29.9</span></div>
+                        <div class="obj-row"><span class="key">quantity</span><span class="val">100</span></div>
+                        <div class="obj-row"><span class="key">totalValue()</span><span class="val">this.price × this.quantity</span></div>
+                        <div class="obj-row"><span class="key">info()</span><span class="val">打印商品信息</span></div>
+                        <button class="obj-method-btn" onclick="demoProductTotal()">totalValue()</button>
+                        <button class="obj-method-btn" onclick="demoProductInfo()">info()</button>
+                        <div class="obj-output" id="productOutput">点击按钮调用方法</div>
+                    </div>
+                    <div class="obj-card">
+                        <h4>📝 访问方式对比</h4>
+                        <table class="comparison-table" style="margin:0;">
+                            <tr>
+                                <th>方式</th>
+                                <th>语法</th>
+                                <th>结果</th>
+                            </tr>
+                            <tr>
+                                <td>点语法</td>
+                                <td><code>person.name</code></td>
+                                <td>'小明'</td>
+                            </tr>
+                            <tr>
+                                <td>方括号</td>
+                                <td><code>person['name']</code></td>
+                                <td>'小明'</td>
+                            </tr>
+                            <tr>
+                                <td>方法（加括号）</td>
+                                <td><code>person.sayHello()</code></td>
+                                <td>执行方法</td>
+                            </tr>
+                            <tr>
+                                <td>方法（不加括号）</td>
+                                <td><code>person.sayHello</code></td>
+                                <td>函数本身</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-11" class="code-toggle">
+            <label for="code-11" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 创建一个商品对象
+<span>2</span>let product = {
+<span>3</span>    name: '笔记本',
+<span>4</span>    price: 29.9,
+<span>5</span>    quantity: 100,
+<span>6</span>    // 方法：计算总价值
+<span>7</span>    totalValue: function() {
+<span>8</span>        return this.price * this.quantity;
+<span>9</span>    },
+<span>10</span>    // 方法：显示商品信息
+<span>11</span>    info: function() {
+<span>12</span>        console.log('商品：' + this.name + '，单价：' + this.price + '元');
+<span>13</span>    }
+<span>14</span>};
+<span>15</span>
+<span>16</span>// 调用方法
+<span>17</span>let total = product.totalValue();
+<span>18</span>console.log('总价值：' + total + '元');  // 2990元
+<span>19</span>
+<span>20</span>product.info();  // 商品：笔记本，单价：29.9元，库存：100</div>
+        </div>
+
+        <!-- ==================== 1.11 作用域 ==================== -->
+        <!-- 第12节：作用域概述 -->
+        <div class="unit" id="unit-12">
+            <h2>1.11 作用域</h2>
+            <div class="explain">
+                <p><strong>作用域</strong>就是变量的"可视范围"——变量在哪些地方能被访问到，哪些地方不能。</p>
+                <p>简单说：<strong>函数内部声明的变量，外面用不了；函数外面声明的变量，里面都能用。</strong></p>
+            </div>
+        </div>
+
+        <!-- 第13节：全局vs局部 -->
+        <div class="unit" id="unit-13">
+            <h2>1.11.1 全局变量 vs 局部变量</h2>
+            <div class="explain">
+                <p><strong>全局变量</strong>：在函数外面声明的，整个页面都能用。</p>
+                <p><strong>局部变量</strong>：在函数里面声明的，只有函数内部能用。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示：全局与局部作用域</div>
+                <div style="display:flex; flex-wrap:wrap; gap:15px;">
+                    <div style="flex:1; min-width:200px; border:2px solid #e74c3c; border-radius:8px; padding:15px;">
+                        <h4 style="color:#e74c3c; margin-bottom:8px;">🌐 全局作用域</h4>
+                        <div class="scope-var">let globalVar = '我是全局变量'</div>
+                        <div style="margin-top:8px; font-size:12px; color:#666;">整个页面任何地方都能访问</div>
+                    </div>
+                    <div style="flex:1; min-width:200px; border:2px solid #2ecc71; border-radius:8px; padding:15px;">
+                        <h4 style="color:#2ecc71; margin-bottom:8px;">🔒 函数 testScope() 内部</h4>
+                        <div class="scope-var">let localVar = '我是局部变量'</div>
+                        <div style="margin-top:8px; font-size:12px; color:#666;">只有函数内部能访问</div>
+                    </div>
+                </div>
+                <table class="comparison-table" style="margin-top:15px;">
+                    <tr>
+                        <th>变量类型</th>
+                        <th>在哪里声明</th>
+                        <th>在哪能访问</th>
+                    </tr>
+                    <tr>
+                        <td><strong>全局变量</strong></td>
+                        <td>所有函数外面</td>
+                        <td>整个页面的任何地方</td>
+                    </tr>
+                    <tr>
+                        <td><strong>局部变量</strong></td>
+                        <td>函数内部</td>
+                        <td>只有这个函数内部</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-13" class="code-toggle">
+            <label for="code-13" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 全局变量
+<span>2</span>let globalVar = '我是全局变量';
+<span>3</span>
+<span>4</span>function testScope() {
+<span>5</span>    // 局部变量
+<span>6</span>    let localVar = '我是局部变量';
+<span>7</span>
+<span>8</span>    console.log(globalVar);  // ✅ 函数内部能访问全局变量
+<span>9</span>    console.log(localVar);   // ✅ 函数内部能访问自己的局部变量
+<span>10</span>}
+<span>11</span>
+<span>12</span>testScope();
+<span>13</span>
+<span>14</span>console.log(globalVar);  // ✅ 函数外面能访问全局变量
+<span>15</span>// console.log(localVar);  // ❌ 报错！函数外面访问不到局部变量</div>
+        </div>
+
+        <!-- 第14节：变量提升 -->
+        <div class="unit" id="unit-14">
+            <h2>1.11.2 变量提升（var 的特殊行为）</h2>
+            <div class="explain">
+                <p>变量提升是 <code>var</code> 的一个特点：用 <code>var</code> 声明的变量，会被"提升"到当前作用域的最顶部。</p>
+                <p><code>let</code> 和 <code>const</code> <strong>不会</strong>变量提升，使用前必须先声明。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">var 变量提升过程</div>
+                <div style="display:flex; flex-wrap:wrap; gap:15px;">
+                    <div style="flex:1; min-width:220px;">
+                        <h4 style="color:#e67e22; margin-bottom:8px;">⚠️ var 的行为</h4>
+                        <div class="scope-var" style="margin-bottom:4px;">console.log(a);   // undefined</div>
+                        <div class="scope-var" style="margin-bottom:4px;">var a = 10;</div>
+                        <div class="scope-var">console.log(a);   // 10</div>
+                        <div style="margin-top:8px; font-size:12px; color:#666;">声明被提升，赋值留在原地</div>
+                    </div>
+                    <div style="flex:1; min-width:220px;">
+                        <h4 style="color:#2ecc71; margin-bottom:8px;">✅ let 更安全</h4>
+                        <div class="scope-var" style="margin-bottom:4px;">// console.log(b);  // ❌ 报错！</div>
+                        <div class="scope-var" style="margin-bottom:4px;">let b = 20;</div>
+                        <div class="scope-var">console.log(b);    // 20</div>
+                        <div style="margin-top:8px; font-size:12px; color:#666;">不会提升，声明前访问直接报错</div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-14" class="code-toggle">
+            <label for="code-14" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// var 的变量提升
+<span>2</span>console.log(a);   // undefined（不报错，因为变量被提升了）
+<span>3</span>var a = 10;
+<span>4</span>console.log(a);   // 10
+<span>5</span>
+<span>6</span>// 实际过程相当于：
+<span>7</span>var a;            // 声明被提升到最前面
+<span>8</span>console.log(a);   // undefined（还没赋值）
+<span>9</span>a = 10;           // 赋值还在原地
+<span>10</span>console.log(a);   // 10
+<span>11</span>
+<span>12</span>// let 不会有变量提升
+<span>13</span>// console.log(b);  // ❌ 报错！let 不会提升
+<span>14</span>let b = 20;
+<span>15</span>console.log(b);    // 20</div>
+        </div>
+
+        <!-- 第15节：作用域链 -->
+        <div class="unit" id="unit-15">
+            <h2>1.11.3 作用域链</h2>
+            <div class="explain">
+                <p>当你在函数内部访问一个变量时，JavaScript 会先在<strong>当前函数</strong>里找，找不到就去<strong>外层函数</strong>找，再找不到就去<strong>全局</strong>找——这条查找路径就是<strong>作用域链</strong>。</p>
+                <p><strong>查找规则</strong>：从里往外找，找到就停，找不到就报错。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">作用域链可视化：从内向外逐层查找</div>
+                <div class="scope-chain">
+                    <div class="scope-box global">
+                        <h5>🌐 全局作用域</h5>
+                        <div class="scope-var">let global = '全局变量'</div>
+                    </div>
+                    <span class="scope-arrow">→</span>
+                    <div class="scope-box outer">
+                        <h5>📦 outer() 函数</h5>
+                        <div class="scope-var">let outerVar = '外部变量'</div>
+                        <div class="scope-box inner" style="margin-top:8px;">
+                            <h5>🔒 inner() 函数</h5>
+                            <div class="scope-var">let innerVar = '内部变量'</div>
+                            <div style="font-size:11px; color:#666; margin-top:6px;">
+                                inner 找变量：<br>
+                                ① 自己有 → 直接用<br>
+                                ② 没有 → 去 outer 找<br>
+还没有 → 去全局找<br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:15px;">
+                    <button onclick="demoScopeChain()" style="padding:6px 14px; background:#3498db; color:#fff; border:none; border-radius:4px; cursor:pointer; font-size:13px;">运行 inner() 查看查找过程</button>
+                    <div class="arr-log" id="scopeChainLog">点击按钮查看变量查找过程</div>
+                </div>
+            </div>
+
+            <input type="checkbox" id="code-15" class="code-toggle">
+            <label for="code-15" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>let global = '全局变量';
+<span>2</span>
+<span>3</span>function outer() {
+<span>4</span>    let outerVar = '外部变量';
+<span>5</span>
+<span>6</span>    function inner() {
+<span>7</span>        let innerVar = '内部变量';
+<span>8</span>
+<span>9</span>        console.log(innerVar);  // ✅ 当前函数有，直接取
+<span>10</span>        console.log(outerVar);  // ✅ 当前函数没有，去 outer 找
+<span>11</span>        console.log(global);    // ✅ 当前和 outer 都没有，去全局找
+<span>12</span>    }
+<span>13</span>
+<span>14</span>    inner();
+<span>15</span>}
+<span>16</span>
+<span>17</span>outer();</div>
+        </div>
+
+        <!-- 第16节：作用域要点表 -->
+        <div class="unit" id="unit-16" style="border-left: 4px solid #2c3e50;">
+            <h2>📋 作用域核心要点</h2>
+            <table class="comparison-table">
+                <tr>
+                    <th>要点</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td><strong>全局变量</strong></td>
+                    <td>函数外声明，全局可用</td>
+                </tr>
+                <tr>
+                    <td><strong>局部变量</strong></td>
+                    <td>函数内声明，仅函数内可用</td>
+                </tr>
+                <tr>
+                    <td><strong>变量提升</strong></td>
+                    <td><code>var</code> 会把声明提到顶部，<code>let</code>/<code>const</code> 不会</td>
+                </tr>
+                <tr>
+                    <td><strong>作用域链</strong></td>
+                    <td>从内向外逐层查找变量，找到就停</td>
+                </tr>
+            </table>
+        </div>
+
+    </main>
+
+    <script>
+        // ===== 函数演示脚本 =====
+
+        // 1.8.1 sayHello / sayGoodbye
+        function demoSayHello() {
+            document.getElementById('result1').textContent = '你好！欢迎学习JavaScript！';
+        }
+        function demoSayGoodbye() {
+            document.getElementById('result2').textContent = '再见！下次见！';
+        }
+        var callCount = 0;
+        function demoMultiCall() {
+            callCount++;
+            document.getElementById('result3').textContent = '已调用 ' + callCount + ' 次';
+        }
+
+        // 1.8.2 参数演示
+        function demoGreet() {
+            var name = document.getElementById('paramName').value || '未知';
+            var age = document.getElementById('paramAge').value || '?';
+            document.getElementById('paramResult').textContent = '我叫' + name + '，今年' + age + '岁';
+        }
+
+        // 1.8.3 返回值演示
+        function add(a, b) {
+            return a + b;
+        }
+        function demoAdd(a, b) {
+            var result = add(a, b);
+            var elId = a === 10 ? 'addResult1' : 'addResult2';
+            document.getElementById(elId).textContent = a + ' + ' + b + ' = ' + result;
+        }
+        function demoAddNested() {
+            var result = add(add(1, 2), add(3, 4));
+            document.getElementById('addResult3').textContent = 'add(add(1,2), add(3,4)) = ' + result;
+        }
+
+        // 1.8.4 箭头函数演示
+        function double1(n) { return n * 2; }
+        var double2 = function(n) { return n * 2; };
+        var double3 = function(n) { return n * 2; };
+        function demoArrow(type) {
+            var result;
+            if (type === 'trad') result = double1(5);
+            else if (type === 'arrow1') result = double2(5);
+            else result = double3(5);
+            var elId = type === 'trad' ? 'arrowResult1' : type === 'arrow1' ? 'arrowResult2' : 'arrowResult3';
+            document.getElementById(elId).textContent = '返回值: ' + result;
+        }
+
+        // 1.9.2 遍历演示
+        function demoTraverse() {
+            var scores = [85, 92, 78, 96, 88];
+            var log = document.getElementById('traverseLog');
+            log.textContent = '';
+            var total = 0;
+            var i = 0;
+            function step() {
+                // reset all
+                for (var j = 0; j < 5; j++) {
+                    document.getElementById('td' + j).style.transform = '';
+                    document.getElementById('td' + j).style.background = '';
+                }
+                if (i >= scores.length) {
+                    log.textContent += '\n遍历完成！总分=' + total + ' 平均分=' + (total / scores.length);
+                    return;
+                }
+                document.getElementById('td' + i).style.transform = 'scale(1.2)';
+                document.getElementById('td' + i).style.background = '#e74c3c';
+                total += scores[i];
+                log.textContent += 'i=' + i + ': scores[' + i + ']=' + scores[i] + '  累计=' + total + '\n';
+                i++;
+                setTimeout(step, 600);
+            }
+            step();
+        }
+
+        // 1.9.3 数组 push/pop 可视化
+        var demoArr = [1, 2, 3];
+        var arrNextVal = 4;
+        function renderArr() {
+            var container = document.getElementById('arrDisplay');
+            container.innerHTML = '';
+            demoArr.forEach(function(val, idx) {
+                var div = document.createElement('div');
+                div.style.textAlign = 'center';
+                div.innerHTML = '<div class="arr-item">' + val + '</div><div class="arr-index">[' + idx + ']</div>';
+                container.appendChild(div);
+            });
+        }
+        function logArr(msg) {
+            var log = document.getElementById('arrLog');
+            log.textContent += '\n' + msg + '  → [' + demoArr.join(', ') + ']';
+            log.scrollTop = log.scrollHeight;
+        }
+        function demoArrPush() {
+            demoArr.push(arrNextVal);
+            logArr('push(' + arrNextVal + ')');
+            arrNextVal++;
+            renderArr();
+        }
+        function demoArrPop() {
+            if (demoArr.length === 0) { logArr('pop() 失败：数组为空！'); return; }
+            var removed = demoArr.pop();
+            logArr('pop() → 返回 ' + removed);
+            renderArr();
+        }
+        function demoArrUnshift() {
+            demoArr.unshift(arrNextVal);
+            logArr('unshift(' + arrNextVal + ')');
+            arrNextVal++;
+            renderArr();
+        }
+        function demoArrShift() {
+            if (demoArr.length === 0) { logArr('shift() 失败：数组为空！'); return; }
+            var removed = demoArr.shift();
+            logArr('shift() → 返回 ' + removed);
+            renderArr();
+        }
+        renderArr();
+
+        // 1.10.1 person 对象方法
+        function demoPersonSayHello() {
+            document.getElementById('personOutput').textContent = '你好，我叫小明';
+        }
+
+        // 1.10.2 product 对象方法
+        var product = {
+            name: '笔记本',
+            price: 29.9,
+            quantity: 100,
+            totalValue: function() { return this.price * this.quantity; },
+            info: function() { return '商品：' + this.name + '，单价：' + this.price + '元，库存：' + this.quantity; }
+        };
+        function demoProductTotal() {
+            document.getElementById('productOutput').textContent = '总价值：' + product.totalValue() + '元';
+        }
+        function demoProductInfo() {
+            document.getElementById('productOutput').textContent = product.info();
+        }
+
+        // 1.11.3 作用域链演示
+        function demoScopeChain() {
+            var log = document.getElementById('scopeChainLog');
+            var global = '全局变量';
+            var steps = [];
+            steps.push('进入 inner() 函数...');
+            steps.push('① 查找 innerVar → inner 作用域有 ✅ → 取得 "内部变量"');
+            steps.push('② 查找 outerVar → inner 没有，去 outer() 找 ✅ → 取得 "外部变量"');
+            steps.push('③ 查找 global → inner 和 outer 都没有，去全局找 ✅ → 取得 "全局变量"');
+            steps.push('');
+            steps.push('输出：');
+            steps.push('innerVar = "内部变量"');
+            steps.push('outerVar = "外部变量"');
+            steps.push('global = "全局变量"');
+            log.textContent = steps.join('\n');
+        }
+    </script>
+</body>
+
+</html>

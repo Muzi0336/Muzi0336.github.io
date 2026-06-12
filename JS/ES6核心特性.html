@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ES6核心特性</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        .explain p {
+            margin-bottom: 8px;
+        }
+
+        .explain ul, .explain ol {
+            margin-left: 20px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        .explain li {
+            margin-bottom: 4px;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        .demo pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            margin-top: 8px;
+        }
+
+        .demo .output-area {
+            background: #1a1a2e;
+            color: #0f0;
+            padding: 10px 12px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            margin-top: 8px;
+            white-space: pre-wrap;
+            min-height: 30px;
+        }
+
+        .demo button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 5px 5px 5px 0;
+            transition: background 0.2s;
+        }
+
+        .demo button:hover {
+            background: #2980b9;
+        }
+
+        .demo input[type="text"] {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+            margin: 5px 5px 5px 0;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked + .toggle-label + .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked + .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        /* 提示框 */
+        .tip-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px 15px;
+            margin: 12px 0;
+            border-radius: 0 4px 4px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .tip-box strong {
+            color: #856404;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 12px 15px;
+            margin: 12px 0;
+            border-radius: 0 4px 4px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* 子标题 */
+        .unit h3 {
+            font-size: 17px;
+            color: #34495e;
+            margin: 15px 0 10px 0;
+        }
+
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                width: 100%;
+                height: auto;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                padding: 8px 0;
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            .sidebar h3 {
+                display: none;
+            }
+            .sidebar a {
+                display: inline-block;
+                padding: 6px 12px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+            main {
+                margin-left: 0;
+                padding: 15px;
+                padding-bottom: 60px;
+            }
+            .unit {
+                padding: 15px;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav class="sidebar">
+        <h3>ES6核心特性</h3>
+        <a href="#unit-1">1.1 let 和 const</a>
+        <a href="#unit-2">1.2 模板字符串</a>
+        <a href="#unit-3">1.3 解构赋值</a>
+        <a href="#unit-4">1.4 展开运算符</a>
+        <a href="#unit-5">1.5 对象简写</a>
+        <a href="#unit-6">实践作业</a>
+        <a href="#unit-7">本章复盘</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- ========== 1.1 let 和 const ========== -->
+        <div class="unit" id="unit-1">
+            <h2>1.1 let 和 const</h2>
+
+            <div class="explain">
+                <p><code>let</code> 和 <code>const</code> 是 ES6 新增的<strong>变量声明方式</strong>，用来替代老式的 <code>var</code>。</p>
+                <p><code>var</code> 有很多"坑"——变量提升、全局污染、重复声明不报错……<code>let</code> 和 <code>const</code> 修复了这些问题。</p>
+            </div>
+
+            <!-- let vs const vs var 对比表 -->
+            <div class="demo">
+                <div class="demo-label">let vs const vs var 对比：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>特性</th>
+                        <th><code>var</code></th>
+                        <th><code>let</code></th>
+                        <th><code>const</code></th>
+                    </tr>
+                    <tr>
+                        <td>重复声明</td>
+                        <td>✅ 可以</td>
+                        <td>❌ 报错</td>
+                        <td>❌ 报错</td>
+                    </tr>
+                    <tr>
+                        <td>重新赋值</td>
+                        <td>✅ 可以</td>
+                        <td>✅ 可以</td>
+                        <td>❌ 报错</td>
+                    </tr>
+                    <tr>
+                        <td>作用域</td>
+                        <td>函数级</td>
+                        <td>块级</td>
+                        <td>块级</td>
+                    </tr>
+                    <tr>
+                        <td>变量提升</td>
+                        <td>✅ 会提升（值为 undefined）</td>
+                        <td>❌ 暂时性死区</td>
+                        <td>❌ 暂时性死区</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                💡 <strong>块级作用域</strong>：简单说就是大括号 <code>{}</code> 里面就是一个作用域，<code>let</code>/<code>const</code> 声明的变量只在这个 <code>{}</code> 里面有效。
+            </div>
+
+            <!-- 代码示例 -->
+            <input type="checkbox" id="code-1" class="code-toggle">
+            <label for="code-1" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// ========== let ==========
+<span>2</span>let name = '小明';
+<span>3</span>console.log(name);   // 小明
+<span>4</span>
+<span>5</span>// let 可以重新赋值
+<span>6</span>name = '小红';
+<span>7</span>console.log(name);   // 小红
+<span>8</span>
+<span>9</span>// let 不能重复声明
+<span>10</span>// let name = '小刚';  // ❌ 报错：Identifier 'name' has already been declared
+<span>11</span>
+<span>12</span>// let 的块级作用域
+<span>13</span>if (true) {
+<span>14</span>    let age = 18;
+<span>15</span>    console.log(age);   // 18（在 if 大括号里面，能访问）
+<span>16</span>}
+<span>17</span>// console.log(age);  // ❌ 报错：age is not defined
+<span>18</span>
+<span>19</span>// ========== const ==========
+<span>20</span>const PI = 3.14159;
+<span>21</span>console.log(PI);   // 3.14159
+<span>22</span>
+<span>23</span>// const 不能重新赋值
+<span>24</span>// PI = 3.14;  // ❌ 报错：Assignment to constant variable
+<span>25</span>
+<span>26</span>// const 必须在声明时赋值
+<span>27</span>// const GRAVITY;  // ❌ 报错：Missing initializer in const declaration
+<span>28</span>
+<span>29</span>// 特别注意：const 对象/数组可以修改内容
+<span>30</span>const person = { name: '张三' };
+<span>31</span>person.name = '李四';       // ✅ 这不报错！
+<span>32</span>console.log(person.name);   // 李四
+<span>33</span>// person = { name: '王五' };  // ❌ 这才报错</div>
+
+            <!-- 代码逐行讲解 -->
+            <div class="demo">
+                <div class="demo-label">代码逐行讲解：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>代码</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td><code>let name = '小明'</code></td>
+                        <td>用 <code>let</code> 声明变量，可重新赋值</td>
+                    </tr>
+                    <tr>
+                        <td><code>name = '小红'</code></td>
+                        <td>重新赋值，合法</td>
+                    </tr>
+                    <tr>
+                        <td><code>let age = 18</code>（在 if 里）</td>
+                        <td><code>age</code> 只在 <code>{}</code> 块内有效</td>
+                    </tr>
+                    <tr>
+                        <td><code>const PI = 3.14159</code></td>
+                        <td>用 <code>const</code> 声明常量，不能重新赋值</td>
+                    </tr>
+                    <tr>
+                        <td><code>person.name = '李四'</code></td>
+                        <td><code>const</code> 对象可以修改属性，但不能重新赋值整个变量</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 使用建议 -->
+            <div class="demo">
+                <div class="demo-label">使用建议：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>场景</th>
+                        <th>用什么</th>
+                        <th>原因</th>
+                    </tr>
+                    <tr>
+                        <td>值不会变</td>
+                        <td><code>const</code></td>
+                        <td>安全，防止误改</td>
+                    </tr>
+                    <tr>
+                        <td>值会变</td>
+                        <td><code>let</code></td>
+                        <td>比 <code>var</code> 安全，块级作用域</td>
+                    </tr>
+                    <tr>
+                        <td>别用 <code>var</code></td>
+                        <td>—</td>
+                        <td><code>let</code> + <code>const</code> 足够，<code>var</code> 容易出 bug</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：<code>const</code> 声明的对象可以修改属性。<code>const</code> 保证的是<strong>变量指向的地址不变</strong>，不是内容不变。<code>person.name = '李四'</code> 变的是对象里面的属性，对象本身的地址没变，所以不报错。
+            </div>
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：在 <code>for</code> 循环里用 <code>var</code> 声明的 <code>i</code>，循环结束后还能访问；换成 <code>let</code> 就不行了，因为 <code>let</code> 的作用域被限制在 <code>for</code> 的 <code>{}</code> 里面。
+            </div>
+        </div>
+
+        <!-- ========== 1.2 模板字符串 ========== -->
+        <div class="unit" id="unit-2">
+            <h2>1.2 模板字符串</h2>
+
+            <div class="explain">
+                <p>模板字符串用<strong>反引号</strong> <code>`</code> 包裹字符串，可以用 <code>${变量}</code> 直接插入变量，不用手动拼接。</p>
+                <p>以前拼字符串要用 <code>'你好，' + name + '！'</code>，有了模板字符串直接写 <code>`你好，${name}！`</code> 就行。</p>
+            </div>
+
+            <div class="info-box">
+                <strong>基本语法</strong>：<code>`字符串内容 ${变量或表达式}`</code>
+            </div>
+
+            <input type="checkbox" id="code-2" class="code-toggle">
+            <label for="code-2" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>let name = '小明';
+<span>2</span>let age = 18;
+<span>3</span>
+<span>4</span>// 传统方式拼接字符串
+<span>5</span>let old = '我叫' + name + '，今年' + age + '岁';
+<span>6</span>console.log(old);   // 我叫小明，今年18岁
+<span>7</span>
+<span>8</span>// 模板字符串（更清晰）
+<span>9</span>let str = `我叫${name}，今年${age}岁`;
+<span>10</span>console.log(str);   // 我叫小明，今年18岁
+<span>11</span>
+<span>12</span>// 可以在 ${} 里写表达式
+<span>13</span>let price = 9.9;
+<span>14</span>let quantity = 3;
+<span>15</span>console.log(`总价：${price * quantity}元`);   // 总价：29.7元
+<span>16</span>
+<span>17</span>// 模板字符串支持换行
+<span>18</span>let html = `
+<span>19</span>    &lt;div&gt;
+<span>20</span>        &lt;h2&gt;${name}&lt;/h2&gt;
+<span>21</span>        &lt;p&gt;年龄：${age}&lt;/p&gt;
+<span>22</span>    &lt;/div&gt;
+<span>23</span>`;
+<span>24</span>console.log(html);</div>
+
+            <!-- 代码逐行讲解 -->
+            <div class="demo">
+                <div class="demo-label">代码逐行讲解：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>代码</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td><code>`我叫${name}，今年${age}岁`</code></td>
+                        <td>反引号 + <code>${变量名}</code>，直接插入变量</td>
+                    </tr>
+                    <tr>
+                        <td><code>`总价：${price * quantity}元`</code></td>
+                        <td><code>${}</code> 里可以写任意表达式</td>
+                    </tr>
+                    <tr>
+                        <td>反引号内的换行</td>
+                        <td>反引号天然支持多行，不会报错</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 普通字符串 vs 模板字符串 -->
+            <div class="demo">
+                <div class="demo-label">普通字符串 vs 模板字符串：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>特性</th>
+                        <th>普通字符串 <code>' '</code> / <code>" "</code></th>
+                        <th>模板字符串 <code>` `</code></th>
+                    </tr>
+                    <tr>
+                        <td>插变量</td>
+                        <td>要用 <code>+</code> 拼接</td>
+                        <td>直接 <code>${变量}</code></td>
+                    </tr>
+                    <tr>
+                        <td>多行</td>
+                        <td>不支持（要加 <code>\n</code>）</td>
+                        <td>支持（直接回车换行）</td>
+                    </tr>
+                    <tr>
+                        <td>引号嵌套</td>
+                        <td>容易混淆</td>
+                        <td>内部可以用 <code>'</code> 和 <code>"</code></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：模板字符串用的是<strong>反引号</strong> <code>`</code>（键盘左上角，数字1左边），不是单引号 <code>'</code>。写错引号会报错或得到错误的结果。
+            </div>
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：变量要用 <code>${}</code> 包裹，不能直接写变量名。<code>`你好，name`</code> 输出的是字面量 <code>你好，name</code>，不是变量的值。
+            </div>
+        </div>
+
+        <!-- ========== 1.3 解构赋值 ========== -->
+        <div class="unit" id="unit-3">
+            <h2>1.3 解构赋值</h2>
+
+            <div class="explain">
+                <p>解构赋值就是<strong>从数组或对象里快速取出值，赋给变量</strong>。不用一个一个手动取。</p>
+            </div>
+
+            <!-- 1.3.1 数组解构 -->
+            <h3>1.3.1 数组解构</h3>
+            <div class="explain">
+                <p>按<strong>位置</strong>（下标顺序）提取值。</p>
+                <p><code>let [变量1, 变量2, ...] = 数组;</code></p>
+            </div>
+
+            <input type="checkbox" id="code-3a" class="code-toggle">
+            <label for="code-3a" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 传统方式取数组值
+<span>2</span>let colors = ['红色', '绿色', '蓝色'];
+<span>3</span>let c1 = colors[0];
+<span>4</span>let c2 = colors[1];
+<span>5</span>let c3 = colors[2];
+<span>6</span>
+<span>7</span>// 解构赋值（一步搞定）
+<span>8</span>let [red, green, blue] = colors;
+<span>9</span>console.log(red);     // 红色
+<span>10</span>console.log(green);   // 绿色
+<span>11</span>console.log(blue);    // 蓝色
+<span>12</span>
+<span>13</span>// 跳过某些值
+<span>14</span>let [first, , third] = ['A', 'B', 'C'];
+<span>15</span>console.log(first);   // A
+<span>16</span>console.log(third);   // C（中间的 B 被跳过了）
+<span>17</span>
+<span>18</span>// 默认值
+<span>19</span>let [a, b = '默认值'] = ['hello'];
+<span>20</span>console.log(a);   // hello
+<span>21</span>console.log(b);   // 默认值（数组里没有第2个值，所以用默认值）</div>
+
+            <!-- 1.3.2 对象解构 -->
+            <h3>1.3.2 对象解构</h3>
+            <div class="explain">
+                <p>按<strong>属性名</strong>提取值（最常用）。</p>
+                <p><code>let { 属性名1, 属性名2, ... } = 对象;</code></p>
+            </div>
+
+            <input type="checkbox" id="code-3b" class="code-toggle">
+            <label for="code-3b" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 传统方式取对象属性
+<span>2</span>let person = { name: '张三', age: 25, city: '北京' };
+<span>3</span>let name1 = person.name;
+<span>4</span>let age1 = person.age;
+<span>5</span>
+<span>6</span>// 解构赋值（一步搞定）
+<span>7</span>let { name, age, city } = person;
+<span>8</span>console.log(name);   // 张三
+<span>9</span>console.log(age);    // 25
+<span>10</span>console.log(city);   // 北京
+<span>11</span>
+<span>12</span>// 变量重命名
+<span>13</span>let { name: personName, age: personAge } = person;
+<span>14</span>console.log(personName);  // 张三
+<span>15</span>console.log(personAge);   // 25
+<span>16</span>
+<span>17</span>// 默认值
+<span>18</span>let { hobby = '未设置' } = person;
+<span>19</span>console.log(hobby);  // 未设置
+<span>20</span>
+<span>21</span>// 函数参数解构
+<span>22</span>function greet({ name, age }) {
+<span>23</span>    console.log(`你好，我叫${name}，${age}岁`);
+<span>24</span>}
+<span>25</span>greet(person);  // 你好，我叫张三，25岁</div>
+
+            <!-- 代码逐行讲解 -->
+            <div class="demo">
+                <div class="demo-label">代码逐行讲解：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>代码</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td><code>let { name, age } = person</code></td>
+                        <td>从对象 <code>person</code> 中取出 <code>name</code> 和 <code>age</code> 属性</td>
+                    </tr>
+                    <tr>
+                        <td><code>let { name: personName } = person</code></td>
+                        <td>取出 <code>name</code> 属性，但变量名叫 <code>personName</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>let { hobby = '未设置' } = person</code></td>
+                        <td><code>person</code> 没有 <code>hobby</code>，所以用默认值</td>
+                    </tr>
+                    <tr>
+                        <td><code>function greet({ name, age })</code></td>
+                        <td>函数参数直接解构，调用时传对象即可</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：对象解构的变量名<strong>必须和属性名一致</strong>。<code>let { username } = person</code> 拿到的是 <code>undefined</code>，因为对象里没有 <code>username</code> 这个属性。要用别名的话写 <code>let { name: username } = person</code>。
+            </div>
+        </div>
+
+        <!-- ========== 1.4 展开运算符与剩余参数 ========== -->
+        <div class="unit" id="unit-4">
+            <h2>1.4 展开运算符与剩余参数</h2>
+
+            <div class="explain">
+                <p>展开运算符 <code>...</code> 用三个点表示，功能是<strong>把数组或对象"展开"</strong>，剩余参数则用来<strong>收集多个值</strong>。</p>
+            </div>
+
+            <!-- 1.4.1 展开运算符 -->
+            <h3>1.4.1 展开运算符（Spread）</h3>
+            <div class="explain">
+                <p>把数组/对象的元素"拆开"。</p>
+            </div>
+
+            <input type="checkbox" id="code-4a" class="code-toggle">
+            <label for="code-4a" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// ========== 数组展开 ==========
+<span>2</span>let arr1 = [1, 2, 3];
+<span>3</span>let arr2 = [4, 5, 6];
+<span>4</span>
+<span>5</span>// 合并数组
+<span>6</span>let merged = [...arr1, ...arr2];
+<span>7</span>console.log(merged);   // [1, 2, 3, 4, 5, 6]
+<span>8</span>
+<span>9</span>// 数组复制（浅拷贝）
+<span>10</span>let arrCopy = [...arr1];
+<span>11</span>console.log(arrCopy);   // [1, 2, 3]
+<span>12</span>
+<span>13</span>// 在数组中间插入元素
+<span>14</span>let arr = [1, 2, 5];
+<span>15</span>let newArr2 = [...arr.slice(0, 2), 3, 4, ...arr.slice(2)];
+<span>16</span>console.log(newArr2);   // [1, 2, 3, 4, 5]
+<span>17</span>
+<span>18</span>// ========== 对象展开 ==========
+<span>19</span>let baseInfo = { name: '张三', age: 25 };
+<span>20</span>let extraInfo = { city: '北京', job: '程序员' };
+<span>21</span>
+<span>22</span>// 合并对象
+<span>23</span>let fullInfo = { ...baseInfo, ...extraInfo };
+<span>24</span>console.log(fullInfo);
+<span>25</span>// { name: '张三', age: 25, city: '北京', job: '程序员' }
+<span>26</span>
+<span>27</span>// 对象复制（浅拷贝）+ 修改
+<span>28</span>let updated = { ...baseInfo, age: 26, city: '上海' };
+<span>29</span>console.log(updated);
+<span>30</span>// { name: '张三', age: 26, city: '上海' }</div>
+
+            <!-- 1.4.2 剩余参数 -->
+            <h3>1.4.2 剩余参数（Rest）</h3>
+            <div class="explain">
+                <p>和展开相反——把多个参数<strong>收集到一个数组里</strong>。</p>
+            </div>
+
+            <input type="checkbox" id="code-4b" class="code-toggle">
+            <label for="code-4b" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 剩余参数收集多个值
+<span>2</span>function sum(...numbers) {
+<span>3</span>    let total = 0;
+<span>4</span>    for (let i = 0; i &lt; numbers.length; i++) {
+<span>5</span>        total += numbers[i];
+<span>6</span>    }
+<span>7</span>    return total;
+<span>8</span>}
+<span>9</span>
+<span>10</span>console.log(sum(1, 2, 3));       // 6
+<span>11</span>console.log(sum(10, 20, 30, 40)); // 100
+<span>12</span>
+<span>13</span>// 第一个参数单独取，剩下的收集起来
+<span>14</span>function introduce(first, ...others) {
+<span>15</span>    console.log('第一个：' + first);
+<span>16</span>    console.log('其余的：' + others.join('、'));
+<span>17</span>}
+<span>18</span>
+<span>19</span>introduce('苹果', '香蕉', '橘子', '西瓜');
+<span>20</span>// 第一个：苹果
+<span>21</span>// 其余的：香蕉、橘子、西瓜
+<span>22</span>
+<span>23</span>// 对象解构 + 剩余参数
+<span>24</span>let { name, ...rest } = { name: '张三', age: 25, city: '北京' };
+<span>25</span>console.log(name);  // 张三
+<span>26</span>console.log(rest);  // { age: 25, city: '北京' }</div>
+
+            <!-- 展开 vs 剩余对比 -->
+            <div class="demo">
+                <div class="demo-label">展开 vs 剩余对比：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>特性</th>
+                        <th>展开（Spread）</th>
+                        <th>剩余（Rest）</th>
+                    </tr>
+                    <tr>
+                        <td>符号</td>
+                        <td><code>...</code></td>
+                        <td><code>...</code></td>
+                    </tr>
+                    <tr>
+                        <td>位置</td>
+                        <td>右边（把东西拆开）</td>
+                        <td>左边（把东西收集起来）</td>
+                    </tr>
+                    <tr>
+                        <td>场景</td>
+                        <td>合并/复制数组和对象</td>
+                        <td>函数参数收集</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：展开运算符是<strong>浅拷贝</strong>。如果数组或对象里有嵌套的引用类型（比如数组里的数组），复制的只是引用地址，不是真正的副本。修改嵌套内容会影响到原数组/对象。
+            </div>
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：对象展开时，后面的同名属性会<strong>覆盖</strong>前面的。<code>{ name: 'A', ...{ name: 'B' } }</code> 结果是 <code>{ name: 'B' }</code>。
+            </div>
+        </div>
+
+        <!-- ========== 1.5 对象简写 ========== -->
+        <div class="unit" id="unit-5">
+            <h2>1.5 对象简写</h2>
+
+            <div class="explain">
+                <p>对象简写是 ES6 提供的<strong>语法糖</strong>，让你写对象时少敲几个字。</p>
+                <p><strong>属性简写</strong>：当变量名和属性名相同时，可以省略冒号和值。</p>
+                <p><strong>方法简写</strong>：定义方法时可以省略 <code>function</code> 关键字。</p>
+            </div>
+
+            <input type="checkbox" id="code-5" class="code-toggle">
+            <label for="code-5" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>let name = '张三';
+<span>2</span>let age = 25;
+<span>3</span>
+<span>4</span>// ========== 属性简写 ==========
+<span>5</span>// ES5 写法
+<span>6</span>let personOld = {
+<span>7</span>    name: name,
+<span>8</span>    age: age,
+<span>9</span>    city: '北京'
+<span>10</span>};
+<span>11</span>
+<span>12</span>// ES6 简写（属性名和变量名相同时省略）
+<span>13</span>let personNew = {
+<span>14</span>    name,     // 等价于 name: name
+<span>15</span>    age,      // 等价于 age: age
+<span>16</span>    city: '北京'   // 变量名不同，不能简写
+<span>17</span>};
+<span>18</span>
+<span>19</span>console.log(personNew);  // { name: '张三', age: 25, city: '北京' }
+<span>20</span>
+<span>21</span>// ========== 方法简写 ==========
+<span>22</span>// ES5 写法
+<span>23</span>let calculatorOld = {
+<span>24</span>    add: function(a, b) {
+<span>25</span>        return a + b;
+<span>26</span>    },
+<span>27</span>    subtract: function(a, b) {
+<span>28</span>        return a - b;
+<span>29</span>    }
+<span>30</span>};
+<span>31</span>
+<span>32</span>// ES6 简写
+<span>33</span>let calculatorNew = {
+<span>34</span>    add(a, b) {       // 等价于 add: function(a, b) {...}
+<span>35</span>        return a + b;
+<span>36</span>    },
+<span>37</span>    subtract(a, b) {
+<span>38</span>        return a - b;
+<span>39</span>    }
+<span>40</span>};
+<span>41</span>
+<span>42</span>console.log(calculatorNew.add(10, 5));       // 15
+<span>43</span>console.log(calculatorNew.subtract(10, 5));  // 5
+<span>44</span>
+<span>45</span>// ========== 配合解构和展开一起用 ==========
+<span>46</span>let title = 'ES6 真好用';
+<span>47</span>let content = '学习ES6让代码更简洁';
+<span>48</span>
+<span>49</span>// 展开 + 简写
+<span>50</span>let article = { title, content, ...{ date: '2026-06-12', views: 100 } };
+<span>51</span>console.log(article);
+<span>52</span>// { title: 'ES6 真好用', content: '学习ES6让代码更简洁', date: '2026-06-12', views: 100 }</div>
+
+            <!-- 代码逐行讲解 -->
+            <div class="demo">
+                <div class="demo-label">代码逐行讲解：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>代码</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td><code>{ name, age }</code></td>
+                        <td>属性名和变量名相同，省略 <code>name: name</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>{ add(a, b) {} }</code></td>
+                        <td>方法定义省略 <code>function</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>{ ...{ date, views } }</code></td>
+                        <td>配合展开运算符合并对象</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 简写前后对比 -->
+            <div class="demo">
+                <div class="demo-label">简写前后对比：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>特性</th>
+                        <th>ES5 写法</th>
+                        <th>ES6 简写</th>
+                    </tr>
+                    <tr>
+                        <td>属性</td>
+                        <td><code>{ name: name }</code></td>
+                        <td><code>{ name }</code></td>
+                    </tr>
+                    <tr>
+                        <td>方法</td>
+                        <td><code>{ add: function() {} }</code></td>
+                        <td><code>{ add() {} }</code></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：属性简写只在变量名和属性名<strong>完全相同</strong>时才能用。如果变量叫 <code>userName</code> 但属性想叫 <code>name</code>，必须写 <code>{ name: userName }</code>，不能简写。
+            </div>
+        </div>
+
+        <!-- ========== 实践作业 ========== -->
+        <div class="unit" id="unit-6">
+            <h2>实践作业</h2>
+
+            <div class="explain">
+                <p><strong>题目</strong>：用解构和展开运算符重构用户信息对象。</p>
+                <p><strong>要求</strong>：</p>
+                <ol>
+                    <li>定义一个基础用户对象 <code>baseUser</code>，包含 <code>name</code>、<code>age</code>、<code>city</code></li>
+                    <li>定义一个扩展信息对象 <code>extraInfo</code>，包含 <code>job</code>、<code>hobby</code></li>
+                    <li>用展开运算符合并两个对象为 <code>fullUser</code></li>
+                    <li>用解构赋值从 <code>fullUser</code> 中提取 <code>name</code> 和 <code>job</code></li>
+                    <li>用模板字符串打印：<code>"我是[名字]，职业是[职业]"</code></li>
+                    <li>创建一个新对象 <code>student</code>，使用属性简写和展开运算符，添加 <code>school</code> 属性</li>
+                </ol>
+            </div>
+
+            <div class="info-box">
+                💡 <strong>参考答案</strong>（先自己写，再对照）：
+            </div>
+
+            <input type="checkbox" id="code-6" class="code-toggle">
+            <label for="code-6" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 1. 基础用户对象
+<span>2</span>let baseUser = { name: '张三', age: 25, city: '北京' };
+<span>3</span>
+<span>4</span>// 2. 扩展信息对象
+<span>5</span>let extraInfo = { job: '前端开发', hobby: '写代码' };
+<span>6</span>
+<span>7</span>// 3. 合并对象
+<span>8</span>let fullUser = { ...baseUser, ...extraInfo };
+<span>9</span>console.log(fullUser);
+<span>10</span>// { name: '张三', age: 25, city: '北京', job: '前端开发', hobby: '写代码' }
+<span>11</span>
+<span>12</span>// 4. 解构提取
+<span>13</span>let { name, job } = fullUser;
+<span>14</span>
+<span>15</span>// 5. 模板字符串打印
+<span>16</span>console.log(`我是${name}，职业是${job}`);
+<span>17</span>// 我是张三，职业是前端开发
+<span>18</span>
+<span>19</span>// 6. 创建 student 对象
+<span>20</span>let school = '清华大学';
+<span>21</span>let student = { ...fullUser, school, grade: '大三' };
+<span>22</span>console.log(student);
+<span>23</span>// { name: '张三', age: 25, city: '北京', job: '前端开发', hobby: '写代码', school: '清华大学', grade: '大三' }</div>
+        </div>
+
+        <!-- ========== 本章复盘 ========== -->
+        <div class="unit" id="unit-7">
+            <h2>本章复盘——ES6 核心特性要点</h2>
+
+            <div class="demo">
+                <table class="comparison-table">
+                    <tr>
+                        <th>特性</th>
+                        <th>一句话说明</th>
+                    </tr>
+                    <tr>
+                        <td><strong>let / const</strong></td>
+                        <td><code>const</code> 用来声明不会重新赋值的变量，<code>let</code> 用来声明会变的变量，<code>var</code> 不再使用</td>
+                    </tr>
+                    <tr>
+                        <td><strong>模板字符串</strong></td>
+                        <td>反引号 <code>`</code> + <code>${变量}</code>，支持多行和嵌入表达式</td>
+                    </tr>
+                    <tr>
+                        <td><strong>数组解构</strong></td>
+                        <td><code>let [a, b] = [1, 2]</code>，按位置取值</td>
+                    </tr>
+                    <tr>
+                        <td><strong>对象解构</strong></td>
+                        <td><code>let { name, age } = obj</code>，按属性名取值</td>
+                    </tr>
+                    <tr>
+                        <td><strong>展开运算符</strong></td>
+                        <td><code>...</code> 把数组/对象拆开，用于合并和复制</td>
+                    </tr>
+                    <tr>
+                        <td><strong>剩余参数</strong></td>
+                        <td><code>function fn(...args)</code> 把多个参数收集为数组</td>
+                    </tr>
+                    <tr>
+                        <td><strong>对象简写</strong></td>
+                        <td>属性名 = 变量名时省略冒号值；方法省略 <code>function</code></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</body>
+
+</html>

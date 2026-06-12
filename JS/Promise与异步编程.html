@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise与异步编程</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 演示区内的 pre / output / button / input 样式 */
+        .demo pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            margin: 8px 0;
+        }
+
+        .demo .output-area {
+            background: #1e1e1e;
+            color: #4ec9b0;
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            margin-top: 8px;
+            min-height: 30px;
+            border-left: 3px solid #3498db;
+        }
+
+        .demo .output-area .log-line {
+            padding: 2px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .demo .output-area .log-line:last-child {
+            border-bottom: none;
+        }
+
+        .demo button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 6px 4px 6px 0;
+            transition: background 0.2s;
+        }
+
+        .demo button:hover {
+            background: #2980b9;
+        }
+
+        .demo button:active {
+            background: #1f6fa5;
+        }
+
+        .demo input[type="text"],
+        .demo input[type="number"] {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            margin: 4px 6px 4px 0;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .demo input[type="text"]:focus,
+        .demo input[type="number"]:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.15);
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked + .toggle-label + .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked + .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        /* 提示/警告样式 */
+        .tip-box {
+            background: #eaf6ff;
+            border-left: 4px solid #3498db;
+            padding: 12px 16px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .warn-box {
+            background: #fff5f5;
+            border-left: 4px solid #e74c3c;
+            padding: 12px 16px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .warn-box strong {
+            color: #e74c3c;
+        }
+
+        .tip-box strong {
+            color: #3498db;
+        }
+
+        /* 步骤导航 */
+        .step-nav {
+            background: #2c3e50;
+            color: white;
+            padding: 14px 18px;
+            border-radius: 6px;
+            margin: 12px 0;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .step-nav strong {
+            color: #f1c40f;
+        }
+
+        /* 状态标签 */
+        .status-label {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 2px 4px;
+        }
+
+        .status-label.pending {
+            background: #f39c12;
+            color: white;
+        }
+
+        .status-label.fulfilled {
+            background: #27ae60;
+            color: white;
+        }
+
+        .status-label.rejected {
+            background: #e74c3c;
+            color: white;
+        }
+
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                width: 100%;
+                height: auto;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                padding: 8px 0;
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            .sidebar h3 {
+                display: none;
+            }
+            .sidebar a {
+                display: inline-block;
+                padding: 6px 12px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+            main {
+                margin-left: 0;
+                padding: 15px;
+                padding-bottom: 60px;
+            }
+            .unit {
+                padding: 15px;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .demo input[type="text"],
+            .demo input[type="number"] {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav class="sidebar">
+        <h3>Promise与异步编程</h3>
+        <a href="#unit-1">1.1 什么是异步</a>
+        <a href="#unit-2">1.2 回调与回调地狱</a>
+        <a href="#unit-3">1.3 Promise基础</a>
+        <a href="#unit-4">1.4 Promise链式调用</a>
+        <a href="#unit-5">1.5 async/await</a>
+        <a href="#unit-6">1.6 错误处理</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- 第1节：什么是异步 -->
+        <div class="unit" id="unit-1">
+            <h2>1.1 什么是异步</h2>
+
+            <div class="step-nav">
+                <strong>📖 学习路径建议：</strong><br>
+                先学 1.1（什么是异步），理解"同步"和"异步"的区别
+            </div>
+
+            <div class="explain">
+                <p><strong>同步</strong>（Synchronous）：一件事做完再做下一件，排队执行。</p>
+                <p><strong>异步</strong>（Asynchronous）：发起一件事后不等它做完，先去做别的，做完了通知我。</p>
+                <p style="margin-top: 10px;">生活中的例子：你在餐厅点了菜（发起请求），同步就是站在厨房门口等菜做好；异步就是回到座位玩手机，菜好了服务员端过来（回调通知）。</p>
+                <p style="margin-top: 10px;">JavaScript 是<strong>单线程</strong>语言——同一时间只能做一件事。如果所有操作都是同步的，一个网络请求要等5秒，页面就会"卡住"5秒。异步解决了这个问题。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">🧪 在线演示：点击运行查看同步与异步的区别</div>
+                <button onclick="runAsyncDemo()">▶ 运行演示</button>
+                <div id="async-output" class="output-area" style="display:none;"></div>
+            </div>
+
+            <div class="tip-box">
+                💡 <code>setTimeout</code> 不会卡住后面代码，等1秒后才执行回调。这就是异步。
+            </div>
+
+            <input type="checkbox" id="code-1" class="code-toggle">
+            <label for="code-1" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 同步：代码从上到下依次执行
+<span>2</span>console.log('1. 开始');
+<span>3</span>console.log('2. 处理数据');
+<span>4</span>console.log('3. 结束');
+<span>5</span>// 输出：1 → 2 → 3（严格按顺序）
+<span>6</span>
+<span>7</span>// 异步：setTimeout 是异步的，不会卡住后面的代码
+<span>8</span>console.log('1. 开始');
+<span>9</span>setTimeout(function() {
+<span>10</span>    console.log('2. 延迟执行');
+<span>11</span>}, 1000);
+<span>12</span>console.log('3. 结束');
+<span>13</span>// 输出：1 → 3 → 2（3先执行，不等 setTimeout）</div>
+        </div>
+
+        <!-- 第2节：回调与回调地狱 -->
+        <div class="unit" id="unit-2">
+            <h2>1.2 回调与回调地狱</h2>
+
+            <div class="step-nav">
+                <strong>📖 学习路径建议：</strong><br>
+                再学 1.2（回调与回调地狱），知道为什么要用 Promise
+            </div>
+
+            <div class="explain">
+                <p><strong>回调函数</strong>（Callback）：把一个函数作为参数传给另一个函数，等任务完成后"回调"它。</p>
+                <p>这是异步编程最早的方式，简单场景没问题，但嵌套多了就变成<strong>"回调地狱"</strong>。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">🧪 在线演示：回调地狱模拟</div>
+                <button onclick="runCallbackHell()">▶ 运行回调地狱演示</button>
+                <div id="callback-output" class="output-area" style="display:none;"></div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">回调地狱的问题：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>问题</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>代码难读</td>
+                        <td>嵌套5、6层，缩进成"金字塔"</td>
+                    </tr>
+                    <tr>
+                        <td>错误处理麻烦</td>
+                        <td>每一层都要单独处理错误</td>
+                    </tr>
+                    <tr>
+                        <td>难以维护</td>
+                        <td>改一个地方可能影响所有嵌套层</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-2" class="code-toggle">
+            <label for="code-2" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 模拟异步获取博客数据（用 setTimeout 模拟网络请求）
+<span>2</span>function getPosts(callback) {
+<span>3</span>    setTimeout(() => {
+<span>4</span>        let posts = [
+<span>5</span>            { id: 1, title: 'JavaScript入门' },
+<span>6</span>            { id: 2, title: 'CSS布局技巧' },
+<span>7</span>            { id: 3, title: 'React教程' }
+<span>8</span>        ];
+<span>9</span>        callback(posts);
+<span>10</span>    }, 500);
+<span>11</span>}
+<span>12</span>
+<span>13</span>function getPostDetail(id, callback) {
+<span>14</span>    setTimeout(() => {
+<span>15</span>        let detail = { id: id, title: '文章' + id, content: '文章内容...' };
+<span>16</span>        callback(detail);
+<span>17</span>    }, 300);
+<span>18</span>}
+<span>19</span>
+<span>20</span>function getComments(postId, callback) {
+<span>21</span>    setTimeout(() => {
+<span>22</span>        let comments = [
+<span>23</span>            { user: '小明', text: '写得好！' },
+<span>24</span>            { user: '小红', text: '收藏了' }
+<span>25</span>        ];
+<span>26</span>        callback(comments);
+<span>27</span>    }, 200);
+<span>28</span>}
+<span>29</span>
+<span>30</span>// 回调地狱：嵌套越多越难读
+<span>31</span>getPosts(function(posts) {
+<span>32</span>    console.log('获取文章列表：', posts);
+<span>33</span>
+<span>34</span>    getPostDetail(posts[0].id, function(detail) {
+<span>35</span>        console.log('获取文章详情：', detail);
+<span>36</span>
+<span>37</span>        getComments(detail.id, function(comments) {
+<span>38</span>            console.log('获取评论：', comments);
+<span>39</span>        });
+<span>40</span>    });
+<span>41</span>});</div>
+        </div>
+
+        <!-- 第3节：Promise 基础 -->
+        <div class="unit" id="unit-3">
+            <h2>1.3 Promise 基础</h2>
+
+            <div class="step-nav">
+                <strong>📖 学习路径建议：</strong><br>
+                然后学 1.3-1.4（Promise 基础和链式调用），掌握核心用法
+            </div>
+
+            <div class="explain">
+                <p><strong>Promise</strong> 就是一个"承诺"——它承诺"将来会给你一个结果"，要么成功，要么失败。</p>
+                <p><strong>Promise 的三种状态：</strong></p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">Promise 三种状态：</div>
+                <div style="text-align:center; padding: 10px;">
+                    <span class="status-label pending">⏳ pending（进行中）— 菜正在做</span>
+                    <span class="status-label fulfilled">✅ fulfilled（已成功）— 菜做好了</span>
+                    <span class="status-label rejected">❌ rejected（已失败）— 菜做砸了</span>
+                </div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>状态</th>
+                        <th>含义</th>
+                        <th>类比</th>
+                    </tr>
+                    <tr>
+                        <td><code>pending</code>（进行中）</td>
+                        <td>任务还没完成</td>
+                        <td>菜正在做</td>
+                    </tr>
+                    <tr>
+                        <td><code>fulfilled</code>（已成功）</td>
+                        <td>任务成功完成</td>
+                        <td>菜做好了</td>
+                    </tr>
+                    <tr>
+                        <td><code>rejected</code>（已失败）</td>
+                        <td>任务失败了</td>
+                        <td>菜做砸了</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="explain">
+                <p><strong>基本语法：</strong></p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">基本语法示例：</div>
+                <pre>let promise = new Promise(function(resolve, reject) {
+    // 做异步操作...
+
+    if (成功) {
+        resolve(结果);    // 状态变为 fulfilled
+    } else {
+        reject(错误);     // 状态变为 rejected
+    }
+});</pre>
+            </div>
+
+            <div class="explain">
+                <p><strong>代码逐行讲解：</strong></p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">代码讲解表格：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>代码</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td><code>new Promise(function(resolve, reject) {})</code></td>
+                        <td>创建一个 Promise，参数是执行器函数</td>
+                    </tr>
+                    <tr>
+                        <td><code>resolve(data)</code></td>
+                        <td>任务成功，把结果传出去</td>
+                    </tr>
+                    <tr>
+                        <td><code>reject(error)</code></td>
+                        <td>任务失败，把错误传出去</td>
+                    </tr>
+                    <tr>
+                        <td><code>.then(data => {})</code></td>
+                        <td>成功时执行的回调，<code>data</code> 就是 <code>resolve</code> 传的值</td>
+                    </tr>
+                    <tr>
+                        <td><code>.catch(error => {})</code></td>
+                        <td>失败时执行的回调，<code>error</code> 就是 <code>reject</code> 传的值</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">🧪 在线演示：Promise 基础</div>
+                <button onclick="runPromiseBasic()">▶ 运行演示</button>
+                <div id="promise-basic-output" class="output-area" style="display:none;"></div>
+            </div>
+
+            <input type="checkbox" id="code-3" class="code-toggle">
+            <label for="code-3" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 创建一个 Promise（模拟获取文章列表）
+<span>2</span>function getPosts() {
+<span>3</span>    return new Promise(function(resolve, reject) {
+<span>4</span>        setTimeout(() => {
+<span>5</span>            let success = true;  // 模拟成功
+<span>6</span>
+<span>7</span>            if (success) {
+<span>8</span>                // 成功：调用 resolve，传递数据
+<span>9</span>                resolve([
+<span>10</span>                    { id: 1, title: 'JavaScript入门' },
+<span>11</span>                    { id: 2, title: 'CSS布局技巧' }
+<span>12</span>                ]);
+<span>13</span>            } else {
+<span>14</span>                // 失败：调用 reject，传递错误信息
+<span>15</span>                reject('网络请求失败');
+<span>16</span>            }
+<span>17</span>        }, 500);
+<span>18</span>    });
+<span>19</span>}
+<span>20</span>
+<span>21</span>// 使用 Promise：用 .then() 接收成功结果，用 .catch() 接收错误
+<span>22</span>getPosts()
+<span>23</span>    .then(function(data) {
+<span>24</span>        console.log('获取成功：', data);
+<span>25</span>    })
+<span>26</span>    .catch(function(error) {
+<span>27</span>        console.log('获取失败：', error);
+<span>28</span>    });</div>
+        </div>
+
+        <!-- 第4节：Promise 链式调用 -->
+        <div class="unit" id="unit-4">
+            <h2>1.4 Promise 链式调用</h2>
+
+            <div class="step-nav">
+                <strong>📖 学习路径建议：</strong><br>
+                然后学 1.3-1.4（Promise 基础和链式调用），掌握核心用法
+            </div>
+
+            <div class="explain">
+                <p>Promise 的 <code>.then()</code> <strong>返回一个新的 Promise</strong>，所以可以一直链式调用，彻底解决回调地狱。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">🧪 在线演示：Promise 链式调用</div>
+                <button onclick="runPromiseChain()">▶ 运行演示</button>
+                <div id="chain-output" class="output-area" style="display:none;"></div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">回调地狱 vs Promise 链对比：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>对比</th>
+                        <th>回调地狱</th>
+                        <th>Promise 链</th>
+                    </tr>
+                    <tr>
+                        <td>代码结构</td>
+                        <td>嵌套的金字塔</td>
+                        <td>扁平的链式调用</td>
+                    </tr>
+                    <tr>
+                        <td>错误处理</td>
+                        <td>每层单独写</td>
+                        <td>一个 <code>.catch()</code> 捕获所有错误</td>
+                    </tr>
+                    <tr>
+                        <td>可读性</td>
+                        <td>差（越深越难读）</td>
+                        <td>好（从上往下读）</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-4" class="code-toggle">
+            <label for="code-4" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 模拟获取博客数据的三个步骤
+<span>2</span>function getPosts() {
+<span>3</span>    return new Promise((resolve) => {
+<span>4</span>        setTimeout(() => {
+<span>5</span>            resolve([
+<span>6</span>                { id: 1, title: 'JavaScript入门' },
+<span>7</span>                { id: 2, title: 'CSS布局技巧' }
+<span>8</span>            ]);
+<span>9</span>        }, 500);
+<span>10</span>    });
+<span>11</span>}
+<span>12</span>
+<span>13</span>function getPostDetail(id) {
+<span>14</span>    return new Promise((resolve) => {
+<span>15</span>        setTimeout(() => {
+<span>16</span>            resolve({ id, title: '文章' + id, content: '这是文章内容...' });
+<span>17</span>        }, 300);
+<span>18</span>    });
+<span>19</span>}
+<span>20</span>
+<span>21</span>function getComments(postId) {
+<span>22</span>    return new Promise((resolve) => {
+<span>23</span>        setTimeout(() => {
+<span>24</span>            resolve([
+<span>25</span>                { user: '小明', text: '写得好！' },
+<span>26</span>                { user: '小红', text: '收藏了' }
+<span>27</span>            ]);
+<span>28</span>        }, 200);
+<span>29</span>    });
+<span>30</span>}
+<span>31</span>
+<span>32</span>// 链式调用：比回调地狱清晰很多
+<span>33</span>getPosts()
+<span>34</span>    .then(posts => {
+<span>35</span>        console.log('文章列表：', posts);
+<span>36</span>        return getPostDetail(posts[0].id);  // 返回下一个 Promise
+<span>37</span>    })
+<span>38</span>    .then(detail => {
+<span>39</span>        console.log('文章详情：', detail);
+<span>40</span>        return getComments(detail.id);       // 返回下一个 Promise
+<span>41</span>    })
+<span>42</span>    .then(comments => {
+<span>43</span>        console.log('评论列表：', comments);
+<span>44</span>    })
+<span>45</span>    .catch(error => {
+<span>46</span>        // 任何一步出错都会到这里
+<span>47</span>        console.log('出错了：', error);
+<span>48</span>    });</div>
+        </div>
+
+        <!-- 第5节：async/await -->
+        <div class="unit" id="unit-5">
+            <h2>1.5 async/await</h2>
+
+            <div class="step-nav">
+                <strong>📖 学习路径建议：</strong><br>
+                最后学 1.5-1.6（async/await 和错误处理），写出现代异步代码
+            </div>
+
+            <div class="explain">
+                <p><code>async/await</code> 是 ES2017 引入的语法糖，让异步代码<strong>看起来像同步代码</strong>，是目前最推荐的异步写法。</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><code>async</code>：放在函数前面，声明这是一个异步函数</li>
+                    <li><code>await</code>：放在 Promise 前面，等待 Promise 完成并拿到结果</li>
+                </ul>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">基本语法：</div>
+                <pre>async function 函数名() {
+    let 结果 = await 某个Promise;
+    // 使用结果...
+}</pre>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">🧪 在线演示：async/await</div>
+                <button onclick="runAsyncAwait()">▶ 运行演示</button>
+                <div id="async-await-output" class="output-area" style="display:none;"></div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">Promise 链 vs async/await 对比：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>写法</th>
+                        <th>代码风格</th>
+                        <th>可读性</th>
+                    </tr>
+                    <tr>
+                        <td><code>.then()</code> 链</td>
+                        <td>链式回调</td>
+                        <td>较好</td>
+                    </tr>
+                    <tr>
+                        <td><code>async/await</code></td>
+                        <td>像同步代码</td>
+                        <td><strong>最好</strong></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                💡 <code>await</code> 的意思是"暂停这里，等这个 Promise 完成后再继续"。虽然代码看起来是"同步执行"的，但实际上<strong>不会卡住浏览器</strong>，因为 <code>await</code> 后面的代码会被放到微任务队列里。
+            </div>
+
+            <input type="checkbox" id="code-5" class="code-toggle">
+            <label for="code-5" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 复用之前的模拟函数
+<span>2</span>function getPosts() {
+<span>3</span>    return new Promise((resolve) => {
+<span>4</span>        setTimeout(() => {
+<span>5</span>            resolve([
+<span>6</span>                { id: 1, title: 'JavaScript入门' },
+<span>7</span>                { id: 2, title: 'CSS布局技巧' }
+<span>8</span>            ]);
+<span>9</span>        }, 500);
+<span>10</span>    });
+<span>11</span>}
+<span>12</span>
+<span>13</span>function getPostDetail(id) {
+<span>14</span>    return new Promise((resolve) => {
+<span>15</span>        setTimeout(() => {
+<span>16</span>            resolve({ id, title: '文章' + id, content: '这是文章内容...' });
+<span>17</span>        }, 300);
+<span>18</span>    });
+<span>19</span>}
+<span>20</span>
+<span>21</span>function getComments(postId) {
+<span>22</span>    return new Promise((resolve) => {
+<span>23</span>        setTimeout(() => {
+<span>24</span>            resolve([
+<span>25</span>                { user: '小明', text: '写得好！' },
+<span>26</span>                { user: '小红', text: '收藏了' }
+<span>27</span>            ]);
+<span>28</span>        }, 200);
+<span>29</span>    });
+<span>30</span>}
+<span>31</span>
+<span>32</span>// async/await 写法：代码从上往下读，像同步一样
+<span>33</span>async function loadBlogData() {
+<span>34</span>    let posts = await getPosts();
+<span>35</span>    console.log('文章列表：', posts);
+<span>36</span>
+<span>37</span>    let detail = await getPostDetail(posts[0].id);
+<span>38</span>    console.log('文章详情：', detail);
+<span>39</span>
+<span>40</span>    let comments = await getComments(detail.id);
+<span>41</span>    console.log('评论列表：', comments);
+<span>42</span>
+<span>43</span>    return { posts, detail, comments };
+<span>44</span>}
+<span>45</span>
+<span>46</span>// 调用 async 函数
+<span>47</span>loadBlogData().then(result => {
+<span>48</span>    console.log('所有数据加载完成：', result);
+<span>49</span>});</div>
+        </div>
+
+        <!-- 第6节：错误处理 -->
+        <div class="unit" id="unit-6">
+            <h2>1.6 错误处理</h2>
+
+            <div class="step-nav">
+                <strong>📖 学习路径建议：</strong><br>
+                最后学 1.5-1.6（async/await 和错误处理），写出现代异步代码
+            </div>
+
+            <div class="warn-box">
+                ⚠️ <strong>常见错误提示：</strong><br>
+                • <code>async</code> 函数<strong>一定返回 Promise</strong>，即使你 <code>return</code> 一个普通值<br>
+                • <code>await</code> 只能在 <code>async</code> 函数里用，不能在普通函数里写 <code>await</code><br>
+                • <code>Promise</code> 一旦状态确定就不能再改变——<code>resolve</code> 后再 <code>resolve</code> 无效<br>
+                • 别忘了处理错误——不加 <code>try/catch</code> 或 <code>.catch()</code>，Promise 的错误会被"吞掉"
+            </div>
+
+            <div class="explain">
+                <p>异步代码一定要处理错误，否则出错了你也不知道。</p>
+                <p><strong>方式一：try/catch</strong>（推荐，配合 async/await）</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">🧪 在线演示：错误处理（点击按钮查看效果）</div>
+                <button onclick="runErrorHandling()">▶ 运行 try/catch 演示</button>
+                <button onclick="runErrorPromise()">▶ 运行 .catch() 演示</button>
+                <div id="error-output" class="output-area" style="display:none;"></div>
+            </div>
+
+            <div class="explain">
+                <p><strong>三种错误处理方式：</strong></p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">错误处理方式对比：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>方式</th>
+                        <th>写法</th>
+                        <th>适用场景</th>
+                    </tr>
+                    <tr>
+                        <td><code>try/catch</code></td>
+                        <td><code>try { await... } catch(e) {}</code></td>
+                        <td>async/await（推荐）</td>
+                    </tr>
+                    <tr>
+                        <td><code>.catch()</code></td>
+                        <td><code>promise.then().catch()</code></td>
+                        <td>Promise 链</td>
+                    </tr>
+                    <tr>
+                        <td><code>.then(成功, 失败)</code></td>
+                        <td><code>promise.then(ok, err)</code></td>
+                        <td>一次性的（不推荐）</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="warn-box">
+                ⚠️ <strong>新手易错：</strong><code>await</code> 后面的 Promise 如果 reject 了，<code>await</code> 会<strong>抛出异常</strong>，就像同步代码的 <code>throw</code> 一样。所以必须用 <code>try/catch</code> 包裹。
+            </div>
+
+            <div class="warn-box">
+                ⚠️ <strong>新手易错：</strong>在 <code>forEach</code> 里用 <code>await</code> 没效果！<code>forEach</code> 不会等 <code>await</code> 完成。要等就用 <code>for...of</code> 循环。
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">forEach vs for...of 对比：</div>
+<pre>/* ❌ 错误：forEach 里的 await 无效 */
+posts.forEach(async (post) => {
+    let detail = await getDetail(post.id);  // 不会等
+});
+
+/* ✅ 正确：用 for...of */
+for (let post of posts) {
+    let detail = await getDetail(post.id);  // 会等
+}</pre>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">🧪 在线演示：实践作业——回调改 async/await</div>
+                <button onclick="runPractice()">▶ 运行实践作业</button>
+                <div id="practice-output" class="output-area" style="display:none;"></div>
+            </div>
+
+            <input type="checkbox" id="code-6" class="code-toggle">
+            <label for="code-6" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// 模拟一个可能失败的请求
+<span>2</span>function getUser(id) {
+<span>3</span>    return new Promise((resolve, reject) => {
+<span>4</span>        setTimeout(() => {
+<span>5</span>            if (id > 0) {
+<span>6</span>                resolve({ id, name: '用户' + id });
+<span>7</span>            } else {
+<span>8</span>                reject('无效的用户ID');
+<span>9</span>            }
+<span>10</span>        }, 300);
+<span>11</span>    });
+<span>12</span>}
+<span>13</span>
+<span>14</span>// 方式1：async/await + try/catch（推荐）
+<span>15</span>async function fetchUser() {
+<span>16</span>    try {
+<span>17</span>        let user = await getUser(1);
+<span>18</span>        console.log('获取成功：', user);
+<span>19</span>    } catch (error) {
+<span>20</span>        console.log('获取失败：', error);
+<span>21</span>    }
+<span>22</span>}
+<span>23</span>
+<span>24</span>// 传入无效ID，触发错误
+<span>25</span>async function fetchInvalidUser() {
+<span>26</span>    try {
+<span>27</span>        let user = await getUser(-1);
+<span>28</span>        console.log('这行不会执行');
+<span>29</span>    } catch (error) {
+<span>30</span>        console.log('捕获到错误：' + error);
+<span>31</span>    }
+<span>32</span>}
+<span>33</span>
+<span>34</span>// 方式2：.then() + .catch()
+<span>35</span>getUser(2)
+<span>36</span>    .then(user => console.log('成功：', user))
+<span>37</span>    .catch(error => console.log('失败：', error));</div>
+        </div>
+
+        <!-- 本章复盘 -->
+        <div class="unit">
+            <h2>本章复盘——Promise 与异步编程核心要点</h2>
+
+            <div class="demo">
+                <div class="demo-label">核心要点总结：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>要点</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td><strong>异步 vs 同步</strong></td>
+                        <td>同步排队等，异步先做别的，完成后通知</td>
+                    </tr>
+                    <tr>
+                        <td><strong>回调地狱</strong></td>
+                        <td>嵌套太深代码难读，用 Promise 解决</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Promise</strong></td>
+                        <td><code>new Promise((resolve, reject) => {})</code>，三种状态</td>
+                    </tr>
+                    <tr>
+                        <td><strong>.then() / .catch()</strong></td>
+                        <td>链式处理成功和失败</td>
+                    </tr>
+                    <tr>
+                        <td><strong>async/await</strong></td>
+                        <td><code>async</code> 声明异步函数，<code>await</code> 等待 Promise 完成</td>
+                    </tr>
+                    <tr>
+                        <td><strong>错误处理</strong></td>
+                        <td><code>try/catch</code> 包裹 await（推荐），或 <code>.catch()</code> 链式捕获</td>
+                    </tr>
+                    <tr>
+                        <td><strong>await 限制</strong></td>
+                        <td>只能在 async 函数里用，forEach 里无效</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // ========== 1.1 什么是异步 - 演示 ==========
+        function runAsyncDemo() {
+            const out = document.getElementById('async-output');
+            out.style.display = 'block';
+            out.innerHTML = '';
+
+            function log(text) {
+                const line = document.createElement('div');
+                line.className = 'log-line';
+                line.textContent = text;
+                out.appendChild(line);
+            }
+
+            const t0 = Date.now();
+            log('[同步] 1. 开始');
+            log('[同步] 2. 处理数据');
+            log('[同步] 3. 结束');
+
+            setTimeout(() => {
+                log('[异步] 2. 延迟执行（1秒后）');
+                log('');
+                log('=== 分析 ===');
+                log('同步输出顺序：1 → 2 → 3（严格按顺序）');
+                log('异步输出顺序：1 → 3 → 2（3先执行，不等 setTimeout）');
+                log('结论：setTimeout 不会阻塞后面的代码');
+            }, 1000);
+        }
+
+        // ========== 1.2 回调地狱 - 演示 ==========
+        function runCallbackHell() {
+            const out = document.getElementById('callback-output');
+            out.style.display = 'block';
+            out.innerHTML = '';
+
+            function log(text) {
+                const line = document.createElement('div');
+                line.className = 'log-line';
+                line.textContent = text;
+                out.appendChild(line);
+            }
+
+            function getPosts(cb) {
+                setTimeout(() => {
+                    cb([
+                        { id: 1, title: 'JavaScript入门' },
+                        { id: 2, title: 'CSS布局技巧' },
+                        { id: 3, title: 'React教程' }
+                    ]);
+                }, 400);
+            }
+
+            function getPostDetail(id, cb) {
+                setTimeout(() => {
+                    cb({ id: id, title: '文章' + id, content: '文章内容...' });
+                }, 300);
+            }
+
+            function getComments(postId, cb) {
+                setTimeout(() => {
+                    cb([
+                        { user: '小明', text: '写得好！' },
+                        { user: '小红', text: '收藏了' }
+                    ]);
+                }, 200);
+            }
+
+            log('开始加载数据...');
+            getPosts(function (posts) {
+                log('获取文章列表：' + JSON.stringify(posts));
+                getPostDetail(posts[0].id, function (detail) {
+                    log('获取文章详情：' + JSON.stringify(detail));
+                    getComments(detail.id, function (comments) {
+                        log('获取评论：' + JSON.stringify(comments));
+                        log('');
+                        log('⚠️ 回调地狱问题：嵌套3层已经不好读了，再深就变成"金字塔"！');
+                    });
+                });
+            });
+        }
+
+        // ========== 1.3 Promise 基础 - 演示 ==========
+        function runPromiseBasic() {
+            const out = document.getElementById('promise-basic-output');
+            out.style.display = 'block';
+            out.innerHTML = '';
+
+            function log(text) {
+                const line = document.createElement('div');
+                line.className = 'log-line';
+                line.textContent = text;
+                out.appendChild(line);
+            }
+
+            function getPosts() {
+                return new Promise(function (resolve, reject) {
+                    setTimeout(() => {
+                        let success = true;
+                        if (success) {
+                            resolve([
+                                { id: 1, title: 'JavaScript入门' },
+                                { id: 2, title: 'CSS布局技巧' }
+                            ]);
+                        } else {
+                            reject('网络请求失败');
+                        }
+                    }, 500);
+                });
+            }
+
+            log('创建 Promise...');
+            log('状态：pending（进行中）');
+            log('');
+
+            getPosts()
+                .then(function (data) {
+                    log('✅ 状态变为 fulfilled（已成功）');
+                    log('获取成功：' + JSON.stringify(data, null, 2));
+                })
+                .catch(function (error) {
+                    log('❌ 状态变为 rejected（已失败）');
+                    log('获取失败：' + error);
+                });
+        }
+
+        // ========== 1.4 Promise 链式调用 - 演示 ==========
+        function runPromiseChain() {
+            const out = document.getElementById('chain-output');
+            out.style.display = 'block';
+            out.innerHTML = '';
+
+            function log(text) {
+                const line = document.createElement('div');
+                line.className = 'log-line';
+                line.textContent = text;
+                out.appendChild(line);
+            }
+
+            function getPosts() {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve([
+                            { id: 1, title: 'JavaScript入门' },
+                            { id: 2, title: 'CSS布局技巧' }
+                        ]);
+                    }, 400);
+                });
+            }
+
+            function getPostDetail(id) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve({ id, title: '文章' + id, content: '这是文章内容...' });
+                    }, 300);
+                });
+            }
+
+            function getComments(postId) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve([
+                            { user: '小明', text: '写得好！' },
+                            { user: '小红', text: '收藏了' }
+                        ]);
+                    }, 200);
+                });
+            }
+
+            log('🔗 链式调用开始...');
+            getPosts()
+                .then(posts => {
+                    log('📝 步骤1 - 文章列表：' + JSON.stringify(posts));
+                    return getPostDetail(posts[0].id);
+                })
+                .then(detail => {
+                    log('📖 步骤2 - 文章详情：' + JSON.stringify(detail));
+                    return getComments(detail.id);
+                })
+                .then(comments => {
+                    log('💬 步骤3 - 评论列表：' + JSON.stringify(comments));
+                    log('');
+                    log('✅ 所有数据加载完成！比回调地狱清晰很多~');
+                })
+                .catch(error => {
+                    log('❌ 出错了：' + error);
+                });
+        }
+
+        // ========== 1.5 async/await - 演示 ==========
+        function runAsyncAwait() {
+            const out = document.getElementById('async-await-output');
+            out.style.display = 'block';
+            out.innerHTML = '';
+
+            function log(text) {
+                const line = document.createElement('div');
+                line.className = 'log-line';
+                line.textContent = text;
+                out.appendChild(line);
+            }
+
+            function getPosts() {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve([
+                            { id: 1, title: 'JavaScript入门' },
+                            { id: 2, title: 'CSS布局技巧' }
+                        ]);
+                    }, 400);
+                });
+            }
+
+            function getPostDetail(id) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve({ id, title: '文章' + id, content: '这是文章内容...' });
+                    }, 300);
+                });
+            }
+
+            function getComments(postId) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve([
+                            { user: '小明', text: '写得好！' },
+                            { user: '小红', text: '收藏了' }
+                        ]);
+                    }, 200);
+                });
+            }
+
+            log('🚀 async/await 写法演示...');
+
+            async function loadBlogData() {
+                let posts = await getPosts();
+                log('📝 文章列表：' + JSON.stringify(posts));
+
+                let detail = await getPostDetail(posts[0].id);
+                log('📖 文章详情：' + JSON.stringify(detail));
+
+                let comments = await getComments(detail.id);
+                log('💬 评论列表：' + JSON.stringify(comments));
+
+                return { posts, detail, comments };
+            }
+
+            loadBlogData().then(result => {
+                log('');
+                log('✅ 所有数据加载完成！');
+                log('💡 注意：代码从上往下读，像同步一样清晰！');
+            });
+        }
+
+        // ========== 1.6 错误处理 - 演示 ==========
+        function getUser(id) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    if (id > 0) {
+                        resolve({ id, name: '用户' + id });
+                    } else {
+                        reject('无效的用户ID');
+                    }
+                }, 300);
+            });
+        }
+
+        function runErrorHandling() {
+            const out = document.getElementById('error-output');
+            out.style.display = 'block';
+            out.innerHTML = '';
+
+            function log(text) {
+                const line = document.createElement('div');
+                line.className = 'log-line';
+                line.textContent = text;
+                out.appendChild(line);
+            }
+
+            log('--- 方式1：try/catch（推荐）---');
+
+            async function fetchUser() {
+                try {
+                    let user = await getUser(1);
+                    log('✅ 获取成功：' + JSON.stringify(user));
+                } catch (error) {
+                    log('❌ 获取失败：' + error);
+                }
+            }
+
+            async function fetchInvalidUser() {
+                try {
+                    let user = await getUser(-1);
+                    log('这行不会执行');
+                } catch (error) {
+                    log('✅ 捕获到错误：' + error);
+                }
+            }
+
+            fetchUser();
+            setTimeout(() => fetchInvalidUser(), 400);
+        }
+
+        function runErrorPromise() {
+            const out = document.getElementById('error-output');
+            out.style.display = 'block';
+            out.innerHTML = '';
+
+            function log(text) {
+                const line = document.createElement('div');
+                line.className = 'log-line';
+                line.textContent = text;
+                out.appendChild(line);
+            }
+
+            log('--- 方式2：.then() + .catch() ---');
+
+            getUser(2)
+                .then(user => log('✅ 成功：' + JSON.stringify(user)))
+                .catch(error => log('❌ 失败：' + error));
+
+            setTimeout(() => {
+                getUser(-1)
+                    .then(user => log('成功：' + JSON.stringify(user)))
+                    .catch(error => log('✅ 失败捕获：' + error));
+            }, 400);
+        }
+
+        // ========== 实践作业 - 演示 ==========
+        function runPractice() {
+            const out = document.getElementById('practice-output');
+            out.style.display = 'block';
+            out.innerHTML = '';
+
+            function log(text) {
+                const line = document.createElement('div');
+                line.className = 'log-line';
+                line.textContent = text;
+                out.appendChild(line);
+            }
+
+            // 把原来的回调函数包装成返回 Promise 的函数
+            function fetchCategories() {
+                return new Promise((resolve) => {
+                    setTimeout(() => resolve(['前端', '后端', '数据库']), 300);
+                });
+            }
+
+            function fetchPostsByCategory(category) {
+                return new Promise((resolve) => {
+                    setTimeout(() => resolve([category + '文章1', category + '文章2']), 200);
+                });
+            }
+
+            function fetchPostContent(title) {
+                return new Promise((resolve) => {
+                    setTimeout(() => resolve('这是《' + title + '》的正文内容'), 100);
+                });
+            }
+
+            log('🔄 开始加载...');
+
+            async function loadContent() {
+                try {
+                    let categories = await fetchCategories();
+                    log('📁 分类：' + JSON.stringify(categories));
+
+                    let posts = await fetchPostsByCategory(categories[0]);
+                    log('📝 文章：' + JSON.stringify(posts));
+
+                    let content = await fetchPostContent(posts[0]);
+                    log('📄 内容：' + content);
+
+                    log('');
+                    log('✅ 回调地狱成功改写为 async/await！');
+                } catch (error) {
+                    log('❌ 出错了：' + error);
+                }
+            }
+
+            loadContent();
+        }
+    </script>
+</body>
+
+</html>

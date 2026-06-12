@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运算符与流程控制</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked + .toggle-label + .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked + .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        /* ===== 额外演示区样式 ===== */
+        .demo input[type="text"],
+        .demo input[type="number"] {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 6px;
+        }
+
+        .demo button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 4px 2px;
+        }
+
+        .demo button:hover {
+            background: #2980b9;
+        }
+
+        .demo .result {
+            background: #ecf0f1;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-family: Consolas, monospace;
+            white-space: pre-line;
+            min-height: 30px;
+        }
+
+        .demo .output-box {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-top: 10px;
+            white-space: pre-line;
+            min-height: 30px;
+        }
+
+        .demo .input-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .demo .input-group label {
+            font-size: 14px;
+            min-width: 50px;
+        }
+
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                width: 100%;
+                height: auto;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                padding: 8px 0;
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            .sidebar h3 {
+                display: none;
+            }
+            .sidebar a {
+                display: inline-block;
+                padding: 6px 12px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+            main {
+                margin-left: 0;
+                padding: 15px;
+                padding-bottom: 60px;
+            }
+            .unit {
+                padding: 15px;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .demo .input-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav class="sidebar">
+        <h3>运算符与流程控制</h3>
+        <a href="#unit-1">1.5 运算符</a>
+        <a href="#unit-2">1.5.1 算术运算符</a>
+        <a href="#unit-3">1.5.2 赋值运算符</a>
+        <a href="#unit-4">1.5.3 比较运算符</a>
+        <a href="#unit-5">1.5.4 逻辑运算符</a>
+        <a href="#unit-6">1.6 分支语句</a>
+        <a href="#unit-7">1.7 循环语句</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- 第1节：运算符概述 -->
+        <div class="unit" id="unit-1">
+            <h2>1.5 运算符</h2>
+            <div class="explain">
+                <p>运算符就是用来<strong>做运算的符号</strong>，就像数学课上的 <code>+</code>、<code>-</code>、<code>*</code>、<code>/</code>。</p>
+                <p>JavaScript 中常见的运算符分为：<strong>算术运算符</strong>、<strong>赋值运算符</strong>、<strong>比较运算符</strong>、<strong>逻辑运算符</strong>。</p>
+            </div>
+        </div>
+
+        <!-- 第2节：算术运算符 -->
+        <div class="unit" id="unit-2">
+            <h2>1.5.1 算术运算符</h2>
+            <div class="explain">
+                <p>算术运算符用于执行数学运算：</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">算术运算符表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>运算符</th>
+                        <th>含义</th>
+                        <th>示例</th>
+                        <th>结果</th>
+                    </tr>
+                    <tr>
+                        <td><code>+</code></td>
+                        <td>加法</td>
+                        <td><code>10 + 3</code></td>
+                        <td><code>13</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>-</code></td>
+                        <td>减法</td>
+                        <td><code>10 - 3</code></td>
+                        <td><code>7</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>*</code></td>
+                        <td>乘法</td>
+                        <td><code>10 * 3</code></td>
+                        <td><code>30</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>/</code></td>
+                        <td>除法</td>
+                        <td><code>10 / 3</code></td>
+                        <td><code>3.333...</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>%</code></td>
+                        <td>取余（求模）</td>
+                        <td><code>10 % 3</code></td>
+                        <td><code>1</code>（10÷3余1）</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">交互演示 —— 算术计算器：</div>
+                <div class="input-group">
+                    <label>数字A：</label>
+                    <input type="number" id="numA" value="10">
+                    <select id="opSelect" style="padding:6px 10px; border:1px solid #ccc; border-radius:4px; font-size:14px;">
+                        <option value="+">+ 加</option>
+                        <option value="-">- 减</option>
+                        <option value="*">* 乘</option>
+                        <option value="/">/ 除</option>
+                        <option value="%">% 取余</option>
+                    </select>
+                    <label>数字B：</label>
+                    <input type="number" id="numB" value="3">
+                    <button onclick="calcArithmetic()">计算</button>
+                </div>
+                <div class="result" id="arithResult">等待计算...</div>
+            </div>
+
+            <input type="checkbox" id="code-1" class="code-toggle">
+            <label for="code-1" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>let a = 10;
+<span>2</span>let b = 3;
+<span>3</span>
+<span>4</span>console.log(a + b);   // 13
+<span>5</span>console.log(a - b);   // 7
+<span>6</span>console.log(a * b);   // 30
+<span>7</span>console.log(a / b);   // 3.3333333333333335
+<span>8</span>console.log(a % b);   // 1（10 ÷ 3 = 3 余 1）
+<span>9</span>
+<span>10</span>// 取余的实际用途：判断奇偶数
+<span>11</span>let num = 7;
+<span>12</span>console.log(num % 2);  // 1（奇数），如果结果是0就是偶数</div>
+        </div>
+
+        <!-- 第3节：赋值运算符 -->
+        <div class="unit" id="unit-3">
+            <h2>1.5.2 赋值运算符</h2>
+            <div class="explain">
+                <p>赋值运算符用于给变量赋值：</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">赋值运算符表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>运算符</th>
+                        <th>示例</th>
+                        <th>等价于</th>
+                        <th>结果</th>
+                    </tr>
+                    <tr>
+                        <td><code>=</code></td>
+                        <td><code>x = 5</code></td>
+                        <td>把5赋给x</td>
+                        <td><code>x = 5</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>+=</code></td>
+                        <td><code>x += 3</code></td>
+                        <td><code>x = x + 3</code></td>
+                        <td><code>x = 8</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>-=</code></td>
+                        <td><code>x -= 3</code></td>
+                        <td><code>x = x - 3</code></td>
+                        <td><code>x = 2</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>*=</code></td>
+                        <td><code>x *= 3</code></td>
+                        <td><code>x = x * 3</code></td>
+                        <td><code>x = 15</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>/=</code></td>
+                        <td><code>x /= 3</code></td>
+                        <td><code>x = x / 3</code></td>
+                        <td><code>x = 1.666...</code></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">提示：</div>
+                <p><strong>自增自减</strong>：<code>++</code> 和 <code>--</code> 是加1和减1的简写。</p>
+                <div class="output-box">let n = 5;
+n++;     // n = n + 1 → 6
+n--;     // n = n - 1 → 5</div>
+            </div>
+
+            <input type="checkbox" id="code-2" class="code-toggle">
+            <label for="code-2" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>let score = 10;
+<span>2</span>score += 5;    // score = score + 5 → 15
+<span>3</span>score -= 3;    // score = score - 3 → 12
+<span>4</span>score *= 2;    // score = score * 2 → 24
+<span>5</span>score /= 4;    // score = score / 4 → 6
+<span>6</span>console.log(score);  // 6</div>
+        </div>
+
+        <!-- 第4节：比较运算符 -->
+        <div class="unit" id="unit-4">
+            <h2>1.5.3 比较运算符</h2>
+            <div class="explain">
+                <p>比较运算符的结果是<strong>布尔值</strong>（<code>true</code> 或 <code>false</code>）。</p>
+                <p>⚠️ <strong>永远用 <code>===</code> 代替 <code>==</code></strong>。<code>==</code> 会做类型转换，<code>'5' == 5</code> 是 <code>true</code>，容易埋坑。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">比较运算符表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>运算符</th>
+                        <th>含义</th>
+                        <th>示例</th>
+                        <th>结果</th>
+                    </tr>
+                    <tr>
+                        <td><code>&gt;</code></td>
+                        <td>大于</td>
+                        <td><code>5 &gt; 3</code></td>
+                        <td><code>true</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;</code></td>
+                        <td>小于</td>
+                        <td><code>5 &lt; 3</code></td>
+                        <td><code>false</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>&gt;=</code></td>
+                        <td>大于等于</td>
+                        <td><code>5 &gt;= 5</code></td>
+                        <td><code>true</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;=</code></td>
+                        <td>小于等于</td>
+                        <td><code>5 &lt;= 4</code></td>
+                        <td><code>false</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>==</code></td>
+                        <td>相等（只比较值）</td>
+                        <td><code>'5' == 5</code></td>
+                        <td><code>true</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>===</code></td>
+                        <td>全等（比较值和类型）</td>
+                        <td><code>'5' === 5</code></td>
+                        <td><code>false</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>!=</code></td>
+                        <td>不相等</td>
+                        <td><code>'5' != 5</code></td>
+                        <td><code>false</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>!==</code></td>
+                        <td>不全等</td>
+                        <td><code>'5' !== 5</code></td>
+                        <td><code>true</code></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">交互演示 —— 比较运算：</div>
+                <div class="input-group">
+                    <label>值A：</label>
+                    <input type="text" id="cmpA" value="5">
+                    <select id="cmpOp" style="padding:6px 10px; border:1px solid #ccc; border-radius:4px; font-size:14px;">
+                        <option value="==">==</option>
+                        <option value="===">===</option>
+                        <option value="!=">!=</option>
+                        <option value="!==">!==</option>
+                        <option value=">">&gt;</option>
+                        <option value="<">&lt;</option>
+                        <option value=">=">&gt;=</option>
+                        <option value="<=">&lt;=</option>
+                    </select>
+                    <label>值B：</label>
+                    <input type="text" id="cmpB" value="5">
+                    <button onclick="calcCompare()">比较</button>
+                </div>
+                <div class="result" id="cmpResult">等待比较...</div>
+            </div>
+
+            <input type="checkbox" id="code-3" class="code-toggle">
+            <label for="code-3" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>let age = 18;
+<span>2</span>
+<span>3</span>console.log(age &gt; 18);       // false（不大于）
+<span>4</span>console.log(age &gt;= 18);      // true（等于）
+<span>5</span>console.log(age &lt; 20);       // true
+<span>6</span>console.log(age == '18');    // true（==只比较值，'18'转成18）
+<span>7</span>console.log(age === '18');   // false（===比较值和类型，数字18≠字符串'18'）
+<span>8</span>console.log(age !== '18');   // true（确实不全等）</div>
+        </div>
+
+        <!-- 第5节：逻辑运算符 -->
+        <div class="unit" id="unit-5">
+            <h2>1.5.4 逻辑运算符</h2>
+            <div class="explain">
+                <p>逻辑运算符用来<strong>组合多个条件</strong>。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">逻辑运算符表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>运算符</th>
+                        <th>名称</th>
+                        <th>大白话</th>
+                        <th>示例</th>
+                        <th>结果</th>
+                    </tr>
+                    <tr>
+                        <td><code>&&</code></td>
+                        <td>与（且）</td>
+                        <td>两个条件都成立才真</td>
+                        <td><code>true &amp;&amp; false</code></td>
+                        <td><code>false</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>||</code></td>
+                        <td>或</td>
+                        <td>有一个成立就真</td>
+                        <td><code>true || false</code></td>
+                        <td><code>true</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>!</code></td>
+                        <td>非（取反）</td>
+                        <td>真变假，假变真</td>
+                        <td><code>!true</code></td>
+                        <td><code>false</code></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">短路特性：</div>
+                <p><code>&&</code> 短路：左边是 false，右边就不执行了</p>
+                <p><code>||</code> 短路：左边是 true，右边就不执行了</p>
+                <div class="output-box">// && 短路：左边是 false，右边就不执行了
+let a = 0 &amp;&amp; console.log('不会执行');
+
+// || 短路：左边是 true，右边就不执行了
+let b = 1 || console.log('不会执行');</div>
+                <p style="margin-top:10px;">💡 <strong>记忆口诀</strong>：<code>&&</code> 找假——找到假就停；<code>||</code> 找真——找到真就停。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">运算符优先级（从高到低）：</div>
+                <div class="output-box">let result = 5 + 3 * 2 > 10 &amp;&amp; true;
+// 1. 3 * 2 = 6
+// 2. 5 + 6 = 11
+// 3. 11 > 10 = true
+// 4. true &amp;&amp; true = true
+console.log(result);  // true</div>
+                <p style="margin-top:10px;">💡 记不住优先级没关系，<strong>多用小括号 <code>()</code></strong>，括号里的先算，清晰又安全。</p>
+            </div>
+
+            <input type="checkbox" id="code-4" class="code-toggle">
+            <label for="code-4" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>let age = 20;
+<span>2</span>let hasID = true;
+<span>3</span>
+<span>4</span>// &amp;&amp;：两个都满足才能进
+<span>5</span>console.log(age &gt;= 18 &amp;&amp; hasID);   // true
+<span>6</span>
+<span>7</span>// ||：满足一个就行
+<span>8</span>console.log(age &gt;= 18 || hasID);   // true
+<span>9</span>
+<span>10</span>// !：取反
+<span>11</span>console.log(!hasID);               // false
+<span>12</span>
+<span>13</span>// 实际应用：判断是否可购买酒类
+<span>14</span>let isAdult = age &gt;= 18;    // true
+<span>15</span>let notDrunk = true;        // 没喝醉
+<span>16</span>console.log(isAdult &amp;&amp; notDrunk);  // true</div>
+        </div>
+
+        <!-- 第6节：分支语句 -->
+        <div class="unit" id="unit-6">
+            <h2>1.6 分支语句</h2>
+            <div class="explain">
+                <p>程序不是总从上到下跑，有时候要根据条件<strong>选择走哪条路</strong>。分支语句就是"十字路口"。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">1.6.1 if 语句 —— 基本语法：</div>
+                <div class="output-box">if (条件) {
+    // 条件为 true 时执行的代码
+}
+
+if (条件) {
+    // 条件为 true 时执行
+} else {
+    // 条件为 false 时执行
+}
+
+if (条件1) {
+    // 条件1为 true 时执行
+} else if (条件2) {
+    // 条件1不成立且条件2成立时执行
+} else {
+    // 以上都不成立时执行
+}</div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">1.6.2 switch 语句 —— 基本语法：</div>
+                <div class="output-box">switch (变量) {
+    case 值1:
+        // 代码
+        break;
+    case 值2:
+        // 代码
+        break;
+    default:
+        // 都不匹配时执行的代码
+}</div>
+                <p style="margin-top:10px;">⚠️ <strong>新手易错</strong>：<code>case</code> 后面<strong>必须加 <code>break</code></strong>，否则会继续往下执行后面的 case（"穿透"）。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">交互演示 —— if/switch 成绩等级计算器：</div>
+                <div class="input-group">
+                    <label>输入分数：</label>
+                    <input type="number" id="gradeScore" min="0" max="100" value="85">
+                    <button onclick="calcGrade('if')">if/else 判断</button>
+                    <button onclick="calcGrade('switch')">switch 判断</button>
+                </div>
+                <div class="result" id="gradeResult">等待输入分数...</div>
+            </div>
+
+            <input type="checkbox" id="code-5" class="code-toggle">
+            <label for="code-5" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// if-else-if 成绩判断
+<span>2</span>let score = 85;
+<span>3</span>
+<span>4</span>if (score &gt;= 90) {
+<span>5</span>    console.log('优秀');
+<span>6</span>} else if (score &gt;= 80) {
+<span>7</span>    console.log('良好');
+<span>8</span>} else if (score &gt;= 60) {
+<span>9</span>    console.log('及格');
+<span>10</span>} else {
+<span>11</span>    console.log('不及格');
+<span>12</span>}
+<span>13</span>// 输出：良好
+<span>14</span>
+<span>15</span>// switch 星期判断
+<span>16</span>let weekday = 3;
+<span>17</span>let dayName;
+<span>18</span>
+<span>19</span>switch (weekday) {
+<span>20</span>    case 1: dayName = '星期一'; break;
+<span>21</span>    case 2: dayName = '星期二'; break;
+<span>22</span>    case 3: dayName = '星期三'; break;
+<span>23</span>    case 4: dayName = '星期四'; break;
+<span>24</span>    case 5: dayName = '星期五'; break;
+<span>25</span>    default: dayName = '周末';
+<span>26</span>}
+<span>27</span>console.log('今天是' + dayName);  // 今天是星期三</div>
+        </div>
+
+        <!-- 第7节：循环语句 -->
+        <div class="unit" id="unit-7">
+            <h2>1.7 循环语句</h2>
+            <div class="explain">
+                <p>循环就是<strong>让一段代码反复执行</strong>，直到某个条件不满足为止。好比"没吃完就继续吃，吃饱了就停"。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">三种循环语法对比：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>循环</th>
+                        <th>语法</th>
+                        <th>特点</th>
+                        <th>使用场景</th>
+                    </tr>
+                    <tr>
+                        <td><code>for</code></td>
+                        <td><code>for (初始化; 条件; 步进) { ... }</code></td>
+                        <td>初始化、条件、步进写在一起</td>
+                        <td>知道循环次数时首选</td>
+                    </tr>
+                    <tr>
+                        <td><code>while</code></td>
+                        <td><code>while (条件) { ... }</code></td>
+                        <td>只有条件</td>
+                        <td>不知道具体次数，只知道什么时候停</td>
+                    </tr>
+                    <tr>
+                        <td><code>do-while</code></td>
+                        <td><code>do { ... } while (条件);</code></td>
+                        <td>至少执行一次</td>
+                        <td>至少需要执行一次的场景</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">for 循环 —— 代码逐行讲解：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>部分</th>
+                        <th>代码</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>初始化</td>
+                        <td><code>let i = 1</code></td>
+                        <td>先执行一次，声明循环变量 i 从 1 开始</td>
+                    </tr>
+                    <tr>
+                        <td>条件</td>
+                        <td><code>i &lt;= 5</code></td>
+                        <td>每次循环前检查，true 就继续，false 就停</td>
+                    </tr>
+                    <tr>
+                        <td>步进</td>
+                        <td><code>i++</code></td>
+                        <td>每次循环后执行，i 加 1</td>
+                    </tr>
+                    <tr>
+                        <td>循环体</td>
+                        <td><code>console.log(...)</code></td>
+                        <td>条件成立时执行的内容</td>
+                    </tr>
+                </table>
+                <p style="margin-top:10px;">执行过程：<code>i=1</code> → 检查 <code>1&lt;=5</code> ✅ → 输出 → <code>i=2</code> → …… → <code>i=6</code> → 检查 <code>6&lt;=5</code> ❌ → 结束。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">while 循环提示：</div>
+                <p>⚠️ <strong>新手易错</strong>：<code>while</code> 循环里<strong>一定要有改变条件的语句</strong>（比如 <code>i++</code>），否则条件永远成立，变成<strong>死循环</strong>，浏览器会卡死！</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">do-while 循环特点：</div>
+                <p><code>do-while</code> 和 <code>while</code> 的区别是：<strong>不管条件成不成立，先执行一次再说</strong>。</p>
+                <div class="output-box">let i = 10;
+do {
+    console.log('当前数字：' + i);
+    i++;
+} while (i &lt;= 5);
+// 输出：当前数字：10
+// 虽然 10 > 5 条件不成立，但还是执行了一次</div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">break 和 continue：</div>
+                <div class="output-box">// break：跳出整个循环
+for (let i = 1; i &lt;= 10; i++) {
+    if (i === 5) {
+        break;    // i 等于 5 时跳出，循环结束
+    }
+    console.log(i);  // 输出：1 2 3 4
+}
+
+// continue：跳过本次循环，继续下一次
+for (let i = 1; i &lt;= 5; i++) {
+    if (i === 3) {
+        continue;   // i 等于 3 时跳过，不输出
+    }
+    console.log(i); // 输出：1 2 4 5
+}</div>
+                <p style="margin-top:10px;">💡 <code>break</code> = 直接跑路（整个循环结束）；<code>continue</code> = 跳过这次（继续下一次）。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">交互演示 —— 循环输出展示：</div>
+                <div class="input-group">
+                    <label>循环次数：</label>
+                    <input type="number" id="loopCount" min="1" max="20" value="5">
+                    <button onclick="runForLoop()">for 循环</button>
+                    <button onclick="runWhileLoop()">while 循环</button>
+                    <button onclick="runDoWhileLoop()">do-while 循环</button>
+                    <button onclick="runBreakDemo()">break 演示</button>
+                    <button onclick="runContinueDemo()">continue 演示</button>
+                </div>
+                <div class="output-box" id="loopOutput">点击按钮查看循环输出...</div>
+            </div>
+
+            <input type="checkbox" id="code-6" class="code-toggle">
+            <label for="code-6" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// for 循环：从1数到5
+<span>2</span>for (let i = 1; i &lt;= 5; i++) {
+<span>3</span>    console.log('第' + i + '次循环');
+<span>4</span>}
+<span>5</span>
+<span>6</span>// while 循环
+<span>7</span>let i = 1;
+<span>8</span>while (i &lt;= 5) {
+<span>9</span>    console.log('当前数字：' + i);
+<span>10</span>    i++;
+<span>11</span>}
+<span>12</span>
+<span>13</span>// do-while 循环
+<span>14</span>let j = 10;
+<span>15</span>do {
+<span>16</span>    console.log('当前数字：' + j);
+<span>17</span>    j++;
+<span>18</span>} while (j &lt;= 5);
+<span>19</span>
+<span>20</span>// break：跳出整个循环
+<span>21</span>for (let i = 1; i &lt;= 10; i++) {
+<span>22</span>    if (i === 5) break;
+<span>23</span>    console.log(i);  // 1 2 3 4
+<span>24</span>}
+<span>25</span>
+<span>26</span>// continue：跳过本次循环
+<span>27</span>for (let i = 1; i &lt;= 5; i++) {
+<span>28</span>    if (i === 3) continue;
+<span>29</span>    console.log(i);  // 1 2 4 5
+<span>30</span>}</div>
+        </div>
+
+    </main>
+
+    <script>
+        // ===== 算术计算器 =====
+        function calcArithmetic() {
+            var a = parseFloat(document.getElementById('numA').value);
+            var b = parseFloat(document.getElementById('numB').value);
+            var op = document.getElementById('opSelect').value;
+            var result;
+            var desc;
+            if (isNaN(a) || isNaN(b)) {
+                document.getElementById('arithResult').textContent = '请输入有效的数字！';
+                return;
+            }
+            switch (op) {
+                case '+': result = a + b; desc = '加法'; break;
+                case '-': result = a - b; desc = '减法'; break;
+                case '*': result = a * b; desc = '乘法'; break;
+                case '/':
+                    if (b === 0) { document.getElementById('arithResult').textContent = '错误：除数不能为 0！'; return; }
+                    result = a / b; desc = '除法'; break;
+                case '%':
+                    if (b === 0) { document.getElementById('arithResult').textContent = '错误：除数不能为 0！'; return; }
+                    result = a % b; desc = '取余'; break;
+            }
+            document.getElementById('arithResult').textContent =
+                a + ' ' + op + ' ' + b + ' = ' + result + '\n说明：' + desc + '运算，' + a + ' ' + desc + ' ' + b + ' 等于 ' + result;
+        }
+
+        // ===== 比较运算 =====
+        function calcCompare() {
+            var a = document.getElementById('cmpA').value;
+            var b = document.getElementById('cmpB').value;
+            var op = document.getElementById('cmpOp').value;
+            var result;
+
+            // 尝试转数字（如果两边都是纯数字）
+            var aNum = Number(a);
+            var bNum = Number(b);
+            var aIsNum = !isNaN(aNum) && a.trim() !== '';
+            var bIsNum = !isNaN(bNum) && b.trim() !== '';
+
+            switch (op) {
+                case '==':  result = a == b; break;
+                case '===': result = a === b; break;
+                case '!=':  result = a != b; break;
+                case '!==': result = a !== b; break;
+                case '>':   result = aIsNum && bIsNum ? aNum > bNum : a > b; break;
+                case '<':   result = aIsNum && bIsNum ? aNum < bNum : a < b; break;
+                case '>=':  result = aIsNum && bIsNum ? aNum >= bNum : a >= b; break;
+                case '<=':  result = aIsNum && bIsNum ? aNum <= bNum : a <= b; break;
+            }
+
+            var typeA = typeof (aIsNum ? aNum : a);
+            var typeB = typeof (bIsNum ? bNum : b);
+
+            document.getElementById('cmpResult').textContent =
+                '表达式：' + JSON.stringify(a) + ' (' + typeA + ') ' + op + ' ' + JSON.stringify(b) + ' (' + typeB + ')\n结果：' + result +
+                (op === '==' || op === '!=' ? '\n提示：== 会进行类型转换，建议使用 === 或 !== 进行严格比较' : '');
+        }
+
+        // ===== if/switch 成绩等级 =====
+        function calcGrade(method) {
+            var score = parseInt(document.getElementById('gradeScore').value);
+            if (isNaN(score) || score < 0 || score > 100) {
+                document.getElementById('gradeResult').textContent = '请输入 0-100 之间的有效分数！';
+                return;
+            }
+
+            var grade;
+            var explanation = '';
+
+            if (method === 'if') {
+                if (score >= 90) {
+                    grade = '优秀';
+                } else if (score >= 80) {
+                    grade = '良好';
+                } else if (score >= 70) {
+                    grade = '中等';
+                } else if (score >= 60) {
+                    grade = '及格';
+                } else {
+                    grade = '不及格';
+                }
+                explanation = '使用 if/else if/else 判断：\n' +
+                    'score = ' + score + '\n' +
+                    (score >= 90 ? 'score >= 90 → 优秀 ✅' :
+                     score >= 80 ? 'score >= 80 → 良好 ✅' :
+                     score >= 70 ? 'score >= 70 → 中等 ✅' :
+                     score >= 60 ? 'score >= 60 → 及格 ✅' :
+                     '都不满足 → 不及格 ✅');
+            } else {
+                var level = Math.floor(score / 10);
+                switch (level) {
+                    case 10:
+                    case 9: grade = '优秀'; break;
+                    case 8: grade = '良好'; break;
+                    case 7: grade = '中等'; break;
+                    case 6: grade = '及格'; break;
+                    default: grade = '不及格';
+                }
+                explanation = '使用 switch 判断：\n' +
+                    'score = ' + score + '\n' +
+                    'Math.floor(score/10) = ' + level + '\n' +
+                    '匹配 case ' + level + ' → ' + grade;
+            }
+
+            document.getElementById('gradeResult').textContent =
+                '分数：' + score + '  →  等级：' + grade + '\n\n' + explanation;
+        }
+
+        // ===== 循环输出展示 =====
+        function runForLoop() {
+            var n = parseInt(document.getElementById('loopCount').value);
+            if (isNaN(n) || n < 1 || n > 20) { n = 5; }
+            var output = '// for 循环：从 1 数到 ' + n + '\n';
+            output += 'for (let i = 1; i <= ' + n + '; i++) {\n    console.log(i);\n}\n\n';
+            output += '输出：\n';
+            for (var i = 1; i <= n; i++) {
+                output += i + '\n';
+            }
+            document.getElementById('loopOutput').textContent = output;
+        }
+
+        function runWhileLoop() {
+            var n = parseInt(document.getElementById('loopCount').value);
+            if (isNaN(n) || n < 1 || n > 20) { n = 5; }
+            var output = '// while 循环：从 1 数到 ' + n + '\n';
+            output += 'let i = 1;\nwhile (i <= ' + n + ') {\n    console.log(i);\n    i++;\n}\n\n';
+            output += '输出：\n';
+            var i = 1;
+            while (i <= n) {
+                output += i + '\n';
+                i++;
+            }
+            document.getElementById('loopOutput').textContent = output;
+        }
+
+        function runDoWhileLoop() {
+            var n = parseInt(document.getElementById('loopCount').value);
+            if (isNaN(n) || n < 1 || n > 20) { n = 5; }
+            var output = '// do-while 循环：从 1 数到 ' + n + '\n';
+            output += 'let i = 1;\ndo {\n    console.log(i);\n    i++;\n} while (i <= ' + n + ');\n\n';
+            output += '输出：\n';
+            var i = 1;
+            do {
+                output += i + '\n';
+                i++;
+            } while (i <= n);
+            document.getElementById('loopOutput').textContent = output;
+        }
+
+        function runBreakDemo() {
+            var n = parseInt(document.getElementById('loopCount').value);
+            if (isNaN(n) || n < 1 || n > 20) { n = 5; }
+            var breakAt = Math.min(Math.ceil(n / 2), n);
+            var output = '// break 演示：循环到 ' + breakAt + ' 时跳出\n';
+            output += 'for (let i = 1; i <= ' + n + '; i++) {\n    if (i === ' + breakAt + ') {\n        break;  // 跳出循环\n    }\n    console.log(i);\n}\n\n';
+            output += '输出：\n';
+            for (var i = 1; i <= n; i++) {
+                if (i === breakAt) {
+                    output += '... i=' + breakAt + ' 时执行 break，循环结束！\n';
+                    break;
+                }
+                output += i + '\n';
+            }
+            document.getElementById('loopOutput').textContent = output;
+        }
+
+        function runContinueDemo() {
+            var n = parseInt(document.getElementById('loopCount').value);
+            if (isNaN(n) || n < 1 || n > 20) { n = 5; }
+            var skipAt = Math.min(Math.ceil(n / 2), n);
+            var output = '// continue 演示：跳过第 ' + skipAt + ' 次\n';
+            output += 'for (let i = 1; i <= ' + n + '; i++) {\n    if (i === ' + skipAt + ') {\n        continue;  // 跳过本次\n    }\n    console.log(i);\n}\n\n';
+            output += '输出：\n';
+            for (var i = 1; i <= n; i++) {
+                if (i === skipAt) {
+                    output += '... i=' + skipAt + ' 时执行 continue，跳过本次\n';
+                    continue;
+                }
+                output += i + '\n';
+            }
+            document.getElementById('loopOutput').textContent = output;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS基础与变量</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked + .toggle-label + .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked + .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                width: 100%;
+                height: auto;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                padding: 8px 0;
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            .sidebar h3 {
+                display: none;
+            }
+            .sidebar a {
+                display: inline-block;
+                padding: 6px 12px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+            main {
+                margin-left: 0;
+                padding: 15px;
+                padding-bottom: 60px;
+            }
+            .unit {
+                padding: 15px;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+        }
+
+        /* 额外样式 */
+        .demo pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .demo .output-area {
+            background: #1e1e1e;
+            color: #4ec9b0;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        .demo button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+
+        .demo button:hover {
+            background: #2980b9;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 12px 16px;
+            border-radius: 0 6px 6px 0;
+            margin: 15px 0;
+            line-height: 1.8;
+        }
+
+        .warn-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 16px;
+            border-radius: 0 6px 6px 0;
+            margin: 15px 0;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav class="sidebar">
+        <h3>JS基础与变量</h3>
+        <a href="#unit-1">1.1 什么是JavaScript</a>
+        <a href="#unit-2">1.2 JS的引入方式</a>
+        <a href="#unit-3">1.3 变量</a>
+        <a href="#unit-4">1.4 数据类型</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- 第1节：什么是JavaScript -->
+        <div class="unit" id="unit-1">
+            <h2>1.1 什么是JavaScript</h2>
+
+            <div class="explain">
+                <p><strong>JavaScript</strong> = 给网页添加"行为"的<strong>编程语言</strong></p>
+                <p>HTML 负责页面<strong>有什么</strong>（结构），CSS 负责<strong>长什么样</strong>（样式），JavaScript 负责<strong>能做什么</strong>（行为）。</p>
+                <p>举个例子：一个按钮，HTML 把它画出来，CSS 把它变漂亮，JavaScript 让<strong>点击它的时候弹出一句话</strong>。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">💡 HTML/CSS/JS 三件套能力表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>技术</th>
+                        <th>职责</th>
+                        <th>大白话</th>
+                    </tr>
+                    <tr>
+                        <td>HTML</td>
+                        <td>结构</td>
+                        <td>决定页面<strong>有什么</strong>（标题、段落、按钮）</td>
+                    </tr>
+                    <tr>
+                        <td>CSS</td>
+                        <td>样式</td>
+                        <td>决定页面<strong>长什么样</strong>（颜色、大小、位置）</td>
+                    </tr>
+                    <tr>
+                        <td>JavaScript</td>
+                        <td>行为</td>
+                        <td>决定页面<strong>能做什么</strong>（点击、弹窗、计算）</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">🎯 JavaScript 能干什么？</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>能力</th>
+                        <th>大白话解释</th>
+                    </tr>
+                    <tr>
+                        <td>修改页面内容</td>
+                        <td>不用刷新页面就能换文字、换图片</td>
+                    </tr>
+                    <tr>
+                        <td>跟用户交互</td>
+                        <td>点击按钮弹窗、鼠标滑过变颜色</td>
+                    </tr>
+                    <tr>
+                        <td>控制浏览器</td>
+                        <td>弹出提示框、跳转页面</td>
+                    </tr>
+                    <tr>
+                        <td>处理数据</td>
+                        <td>计算、判断、循环、整理信息</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                💡 JavaScript 和 Java 是两种完全不同的语言，名字像但关系不大，就像"老婆"和"老婆饼"。
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">🎮 试一试：点击按钮体验 JS 交互！</div>
+                <button onclick="alert('你点击了按钮！')">点击我</button>
+                <button onclick="alert('你好，JavaScript！')">另一个按钮</button>
+            </div>
+
+            <input type="checkbox" id="code-1" class="code-toggle">
+            <label for="code-1" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>&lt;button onclick="alert('你点击了按钮！')"&gt;点击我&lt;/button&gt;
+<span>2</span>&lt;button onclick="alert('你好，JavaScript！')"&gt;另一个按钮&lt;/button&gt;</div>
+        </div>
+
+        <!-- 第2节：JS的引入方式 -->
+        <div class="unit" id="unit-2">
+            <h2>1.2 JS的引入方式</h2>
+
+            <div class="explain">
+                <p>想写 JavaScript，有<strong>三种办法</strong>把它放进 HTML 页面里。</p>
+            </div>
+
+            <!-- 方式一：行内引入 -->
+            <div class="demo">
+                <div class="demo-label">方式一：行内引入（写在 HTML 标签的事件属性里）</div>
+                <p>直接写在标签的 <code>onclick</code> 这类属性中，最简单但<strong>不推荐</strong>（代码混在一起难维护）。</p>
+                <button onclick="alert('你点了我一下！')">点我弹窗</button>
+            </div>
+
+            <input type="checkbox" id="code-2a" class="code-toggle">
+            <label for="code-2a" class="toggle-label">行内引入源代码</label>
+            <div class="code-block"><span>1</span>&lt;button onclick="alert('你点了我一下！')"&gt;点我&lt;/button&gt;</div>
+
+            <!-- 方式二：内嵌引入 -->
+            <div class="demo">
+                <div class="demo-label">方式二：内嵌引入（写在 &lt;script&gt; 标签里）</div>
+                <p>在 HTML 的 <code>&lt;body&gt;</code> 底部或 <code>&lt;head&gt;</code> 中放一对 <code>&lt;script&gt;</code> 标签，中间写 JS 代码。</p>
+                <button onclick="alert('你好，世界！')">弹出提示</button>
+            </div>
+
+            <input type="checkbox" id="code-2b" class="code-toggle">
+            <label for="code-2b" class="toggle-label">内嵌引入源代码</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;内嵌JS示例&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;我的第一个JS页面&lt;/h1&gt;
+<span>9</span>    &lt;script&gt;
+<span>10</span>        alert('你好，世界！');
+<span>11</span>    &lt;/script&gt;
+<span>12</span>&lt;/body&gt;
+<span>13</span>&lt;/html&gt;</div>
+
+            <!-- 方式三：外部引入 -->
+            <div class="demo">
+                <div class="demo-label">方式三：外部引入（推荐 ✅，写在单独的 .js 文件里）</div>
+                <p>创建一个 <code>script.js</code> 文件，用 <code>&lt;script src="..."&gt;</code> 引入。</p>
+                <p>这是<strong>最推荐</strong>的方式，便于维护和缓存。</p>
+            </div>
+
+            <input type="checkbox" id="code-2c" class="code-toggle">
+            <label for="code-2c" class="toggle-label">外部引入源代码</label>
+            <div class="code-block"><span>1</span>&lt;!-- HTML 文件 --&gt;
+<span>2</span>&lt;!DOCTYPE html&gt;
+<span>3</span>&lt;html lang="zh-CN"&gt;
+<span>4</span>&lt;head&gt;
+<span>5</span>    &lt;meta charset="UTF-8"&gt;
+<span>6</span>    &lt;title&gt;外部JS示例&lt;/title&gt;
+<span>7</span>&lt;/head&gt;
+<span>8</span>&lt;body&gt;
+<span>9</span>    &lt;h1&gt;外部JS文件&lt;/h1&gt;
+<span>10</span>    &lt;!-- src 指向 js 文件的路径 --&gt;
+<span>11</span>    &lt;script src="script.js"&gt;&lt;/script&gt;
+<span>12</span>&lt;/body&gt;
+<span>13</span>&lt;/html&gt;
+<span>14</span>
+<span>15</span>&lt;!-- script.js 文件内容 --&gt;
+<span>16</span>alert('这段代码来自外部JS文件！');</div>
+
+            <!-- 三种方式对比表 -->
+            <div class="demo">
+                <div class="demo-label">📊 三种方式对比</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>方式</th>
+                        <th>代码</th>
+                        <th>适用场景</th>
+                    </tr>
+                    <tr>
+                        <td>行内</td>
+                        <td><code>onclick="alert(1)"</code></td>
+                        <td>极简单的交互，不推荐</td>
+                    </tr>
+                    <tr>
+                        <td>内嵌</td>
+                        <td><code>&lt;script&gt;代码&lt;/script&gt;</code></td>
+                        <td>小页面、学习阶段</td>
+                    </tr>
+                    <tr>
+                        <td>外部</td>
+                        <td><code>&lt;script src="a.js"&gt;</code></td>
+                        <td>推荐 ✅，便于维护和缓存</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="warn-box">
+                ⚠️ <strong>重要提醒</strong>：<code>&lt;script&gt;</code> 标签建议放在 <code>&lt;/body&gt;</code> 闭合标签之前，而不是 <code>&lt;head&gt;</code> 里。因为浏览器是从上往下解析 HTML 的，如果把 JS 放在 <code>&lt;head&gt;</code> 里，它会在页面内容还没加载完时就执行，可能导致找不到页面元素。
+            </div>
+
+            <div class="warn-box">
+                ⚠️ <strong>新手易错</strong>：外部 JS 文件里<strong>不要写 <code>&lt;script&gt;</code> 标签</strong>，那个标签只在 HTML 里用。<code>.js</code> 文件里直接写 JavaScript 代码就行。<br>
+                ⚠️ <code>&lt;script src="xxx.js"&gt;&lt;/script&gt;</code> 是<strong>双标签</strong>，不能写成 <code>&lt;script src="xxx.js" /&gt;</code>，闭合标签 <code>&lt;/script&gt;</code> 不能省略。
+            </div>
+        </div>
+
+        <!-- 第3节：变量 -->
+        <div class="unit" id="unit-3">
+            <h2>1.3 变量</h2>
+
+            <div class="explain">
+                <p><strong>变量</strong>就是<strong>装数据的盒子</strong>，给盒子贴个标签（变量名），以后通过这个名字来拿里面的东西。</p>
+            </div>
+
+            <!-- 1.3.1 声明变量 -->
+            <div class="demo">
+                <div class="demo-label">📦 JavaScript 有三种声明变量的方式：</div>
+            </div>
+
+            <div class="explain">
+                <p><strong><code>var</code></strong>（ES5 传统方式）</p>
+            </div>
+
+            <input type="checkbox" id="code-3a" class="code-toggle">
+            <label for="code-3a" class="toggle-label">var 示例</label>
+            <div class="code-block"><span>1</span>var name = '小明';   // 声明一个变量 name，里面放 '小明'
+<span>2</span>var age = 18;        // 声明一个变量 age，里面放 18</div>
+
+            <div class="explain">
+                <p><strong><code>let</code></strong>（ES6 新方式，推荐）</p>
+            </div>
+
+            <input type="checkbox" id="code-3b" class="code-toggle">
+            <label for="code-3b" class="toggle-label">let 示例</label>
+            <div class="code-block"><span>1</span>let city = '北京';   // 声明一个变量 city，里面放 '北京'
+<span>2</span>let year = 2026;     // 声明一个变量 year，里面放 2026</div>
+
+            <div class="explain">
+                <p><strong><code>const</code></strong>（ES6 常量，值不能改变）</p>
+            </div>
+
+            <input type="checkbox" id="code-3c" class="code-toggle">
+            <label for="code-3c" class="toggle-label">const 示例</label>
+            <div class="code-block"><span>1</span>const PI = 3.14;     // 声明一个常量 PI，值永远不变
+<span>2</span>const BIRTHDAY = '2026-06-12';</div>
+
+            <div class="tip-box">
+                💡 <strong>记忆口诀</strong>：<code>var</code> 老古董，<code>let</code> 新时代，<code>const</code> 不变心。
+            </div>
+
+            <!-- 完整运行示例 -->
+            <div class="demo">
+                <div class="demo-label">🎮 完整运行示例：试试打开浏览器控制台(F12)查看输出！</div>
+                <button onclick="runVariableDemo()">运行示例（弹窗显示）</button>
+                <div class="output-area" id="var-output">点击按钮运行代码，查看弹窗输出...</div>
+            </div>
+
+            <input type="checkbox" id="code-3d" class="code-toggle">
+            <label for="code-3d" class="toggle-label">完整运行示例源代码</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;变量示例&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;变量示例&lt;/h1&gt;
+<span>9</span>    &lt;script&gt;
+<span>10</span>        // 声明变量并赋值
+<span>11</span>        var name = '小明';
+<span>12</span>        let age = 18;
+<span>13</span>        const PI = 3.14;
+<span>14</span>
+<span>15</span>        // 在控制台（浏览器按F12可看到）输出变量的值
+<span>16</span>        console.log(name);   // 控制台显示：小明
+<span>17</span>        console.log(age);    // 控制台显示：18
+<span>18</span>        console.log(PI);     // 控制台显示：3.14
+<span>19</span>
+<span>20</span>        // 弹窗显示
+<span>21</span>        alert('我叫' + name + '，今年' + age + '岁');
+<span>22</span>    &lt;/script&gt;
+<span>23</span>&lt;/body&gt;
+<span>24</span>&lt;/html&gt;</div>
+
+            <!-- 代码逐行讲解表 -->
+            <div class="demo">
+                <div class="demo-label">📖 代码逐行讲解</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>代码</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td><code>var name = '小明';</code></td>
+                        <td>用 <code>var</code> 声明一个叫 <code>name</code> 的变量，把 <code>'小明'</code> 放进去</td>
+                    </tr>
+                    <tr>
+                        <td><code>let age = 18;</code></td>
+                        <td>用 <code>let</code> 声明 <code>age</code>，放数字 <code>18</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>const PI = 3.14;</code></td>
+                        <td>用 <code>const</code> 声明常量 <code>PI</code>，值固定不能改</td>
+                    </tr>
+                    <tr>
+                        <td><code>console.log(name);</code></td>
+                        <td>在浏览器控制台打印 <code>name</code> 的值</td>
+                    </tr>
+                    <tr>
+                        <td><code>alert(...)</code></td>
+                        <td>弹出一个提示框</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                💡 <strong>运行结果</strong>：页面打开后弹出提示框"我叫小明，今年18岁"；按 F12 打开开发者工具 → Console（控制台）选项卡，能看到三行输出。
+            </div>
+
+            <!-- var/let/const 对比表 -->
+            <div class="demo">
+                <div class="demo-label">📊 var、let、const 的区别</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>关键字</th>
+                        <th>是否可以重新赋值</th>
+                        <th>是否可以重复声明</th>
+                        <th>作用域</th>
+                    </tr>
+                    <tr>
+                        <td><code>var</code></td>
+                        <td>✅ 可以</td>
+                        <td>✅ 可以（会出问题）</td>
+                        <td>函数级</td>
+                    </tr>
+                    <tr>
+                        <td><code>let</code></td>
+                        <td>✅ 可以</td>
+                        <td>❌ 不可以</td>
+                        <td>块级</td>
+                    </tr>
+                    <tr>
+                        <td><code>const</code></td>
+                        <td>❌ 不可以</td>
+                        <td>❌ 不可以</td>
+                        <td>块级</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 1.3.2 命名规范 -->
+            <div class="explain">
+                <p><strong>1.3.2 命名规范</strong>：变量名要遵循以下规则：</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>只能包含<strong>字母、数字、下划线 <code>_</code>、美元符 <code>$</code></strong></li>
+                    <li><strong>不能以数字开头</strong></li>
+                    <li><strong>不能是保留字</strong>（如 <code>if</code>、<code>for</code>、<code>var</code> 这些已经被语言用了的词）</li>
+                    <li><strong>区分大小写</strong>（<code>name</code> 和 <code>Name</code> 是两个不同的变量）</li>
+                </ul>
+            </div>
+
+            <input type="checkbox" id="code-3e" class="code-toggle">
+            <label for="code-3e" class="toggle-label">命名规范示例</label>
+            <div class="code-block"><span>1</span>// ✅ 正确的命名
+<span>2</span>let userName = '张三';
+<span>3</span>let _temp = 100;
+<span>4</span>let $id = 5;
+<span>5</span>let myName123 = '李四';
+<span>6</span>
+<span>7</span>// ❌ 错误的命名
+<span>8</span>// let 1name = 'test';     // 不能以数字开头
+<span>9</span>// let my-name = 'test';   // 不能有连字符
+<span>10</span>// let var = 'test';       // var 是保留字</div>
+
+            <div class="tip-box">
+                💡 <strong>推荐命名风格</strong>：多个单词用<strong>驼峰命名法</strong>（camelCase），第一个单词首字母小写，后面每个单词首字母大写：<code>userName</code>、<code>myAge</code>、<code>isStudent</code>。
+            </div>
+
+            <div class="warn-box">
+                ⚠️ <strong>新手易错</strong>：变量必须先声明再使用。直接写 <code>age = 20</code>（没写 <code>var</code>/<code>let</code>/<code>const</code>）虽然有时不报错，但会创建一个<strong>全局变量</strong>（整个页面都能访问），容易造成混乱。<strong>永远记得写 <code>let</code> 或 <code>const</code></strong>。
+            </div>
+        </div>
+
+        <!-- 第4节：数据类型 -->
+        <div class="unit" id="unit-4">
+            <h2>1.4 数据类型</h2>
+
+            <div class="explain">
+                <p><strong>数据类型</strong>就是<strong>数据的不同种类</strong>。好比水果店里苹果、香蕉、榴莲都是水果，但长得不一样。</p>
+            </div>
+
+            <!-- 1.4.1 基础数据类型 -->
+            <div class="demo">
+                <div class="demo-label">🍎 JavaScript 中有 5 种基础数据类型：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>类型</th>
+                        <th>中文含义</th>
+                        <th>举例</th>
+                        <th>大白话</th>
+                    </tr>
+                    <tr>
+                        <td><code>Number</code></td>
+                        <td>数字</td>
+                        <td><code>18</code>、<code>3.14</code>、<code>-5</code></td>
+                        <td>任何数字，整数小数都算</td>
+                    </tr>
+                    <tr>
+                        <td><code>String</code></td>
+                        <td>字符串</td>
+                        <td><code>'你好'</code>、<code>"hello"</code></td>
+                        <td>用引号包起来的文字</td>
+                    </tr>
+                    <tr>
+                        <td><code>Boolean</code></td>
+                        <td>布尔值</td>
+                        <td><code>true</code>、<code>false</code></td>
+                        <td>只有"是"和"否"</td>
+                    </tr>
+                    <tr>
+                        <td><code>Undefined</code></td>
+                        <td>未定义</td>
+                        <td><code>undefined</code></td>
+                        <td>声明了没赋值</td>
+                    </tr>
+                    <tr>
+                        <td><code>Null</code></td>
+                        <td>空值</td>
+                        <td><code>null</code></td>
+                        <td>故意设为"什么都没有"</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-4a" class="code-toggle">
+            <label for="code-4a" class="toggle-label">数据类型示例</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;数据类型示例&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;基础数据类型&lt;/h1&gt;
+<span>9</span>    &lt;script&gt;
+<span>10</span>        // 数字
+<span>11</span>        let num = 100;
+<span>12</span>        let price = 9.99;
+<span>13</span>
+<span>14</span>        // 字符串（用单引号或双引号包起来）
+<span>15</span>        let name = '张三';
+<span>16</span>        let greeting = "你好";
+<span>17</span>
+<span>18</span>        // 布尔值
+<span>19</span>        let isStudent = true;   // 是学生
+<span>20</span>        let isMarried = false;  // 没结婚
+<span>21</span>
+<span>22</span>        // undefined：声明了没赋值
+<span>23</span>        let x;
+<span>24</span>        console.log(x);  // 输出：undefined
+<span>25</span>
+<span>26</span>        // null：主动设为空
+<span>27</span>        let y = null;
+<span>28</span>        console.log(y);  // 输出：null
+<span>29</span>
+<span>30</span>        // 用 typeof 查看数据类型
+<span>31</span>        console.log(typeof num);        // 输出："number"
+<span>32</span>        console.log(typeof name);       // 输出："string"
+<span>33</span>        console.log(typeof isStudent);  // 输出："boolean"
+<span>34</span>        console.log(typeof x);          // 输出："undefined"
+<span>35</span>        console.log(typeof y);          // 输出："object"（JS的历史bug）
+<span>36</span>    &lt;/script&gt;
+<span>37</span>&lt;/body&gt;
+<span>38</span>&lt;/html&gt;</div>
+
+            <!-- typeof 结果表 -->
+            <div class="demo">
+                <div class="demo-label">🔍 typeof 查看数据类型结果</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>代码</th>
+                        <th>类型</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td><code>let num = 100;</code></td>
+                        <td>number</td>
+                        <td>数字，不加引号</td>
+                    </tr>
+                    <tr>
+                        <td><code>let s = '你好';</code></td>
+                        <td>string</td>
+                        <td>字符串，必须加引号</td>
+                    </tr>
+                    <tr>
+                        <td><code>let b = true;</code></td>
+                        <td>boolean</td>
+                        <td>布尔值，只有 <code>true</code> 或 <code>false</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>let u;</code></td>
+                        <td>undefined</td>
+                        <td>声明但没赋值</td>
+                    </tr>
+                    <tr>
+                        <td><code>let n = null;</code></td>
+                        <td>null（object）</td>
+                        <td>主动设为空（JS的历史bug，typeof 返回 "object"）</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 1.4.2 复杂数据类型 -->
+            <div class="demo">
+                <div class="demo-label">📚 复杂数据类型（引用类型）</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>类型</th>
+                        <th>说明</th>
+                        <th>后续章节</th>
+                    </tr>
+                    <tr>
+                        <td><code>Object</code></td>
+                        <td>对象，装多个数据的集合</td>
+                        <td>1.10 节</td>
+                    </tr>
+                    <tr>
+                        <td><code>Array</code></td>
+                        <td>数组，有序的数据列表</td>
+                        <td>1.9 节</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 1.4.3 数据类型转换 -->
+            <div class="explain">
+                <p><strong>1.4.3 数据类型转换</strong>：有时候需要把一种类型转成另一种——比如从输入框拿到的都是字符串，但你要做加法计算，就得转成数字。</p>
+            </div>
+
+            <div class="explain">
+                <p><strong>转数字</strong>：<code>Number()</code> 或 <code>parseInt()</code> / <code>parseFloat()</code></p>
+            </div>
+
+            <input type="checkbox" id="code-4b" class="code-toggle">
+            <label for="code-4b" class="toggle-label">转数字示例</label>
+            <div class="code-block"><span>1</span>let str = '123';
+<span>2</span>let num = Number(str);   // 把字符串 '123' 转成数字 123
+<span>3</span>console.log(num + 1);    // 输出：124（数字相加）
+<span>4</span>
+<span>5</span>let str2 = '3.14';
+<span>6</span>let floatNum = parseFloat(str2);  // 转成小数 3.14
+<span>7</span>let intNum = parseInt(str2);      // 转成整数 3（去掉小数部分）</div>
+
+            <div class="explain">
+                <p><strong>转字符串</strong>：<code>String()</code> 或 <code>.toString()</code></p>
+            </div>
+
+            <input type="checkbox" id="code-4c" class="code-toggle">
+            <label for="code-4c" class="toggle-label">转字符串示例</label>
+            <div class="code-block"><span>1</span>let num = 999;
+<span>2</span>let str = String(num);       // 数字 999 转成字符串 '999'
+<span>3</span>let str2 = num.toString();   // 另一种写法
+<span>4</span>console.log(str + 1);        // 输出："9991"（字符串拼接，不是加法）</div>
+
+            <div class="explain">
+                <p><strong>转布尔值</strong>：<code>Boolean()</code></p>
+            </div>
+
+            <input type="checkbox" id="code-4d" class="code-toggle">
+            <label for="code-4d" class="toggle-label">转布尔值示例</label>
+            <div class="code-block"><span>1</span>console.log(Boolean(0));         // false（0 是假）
+<span>2</span>console.log(Boolean(''));        // false（空字符串是假）
+<span>3</span>console.log(Boolean(null));      // false
+<span>4</span>console.log(Boolean(undefined)); // false
+<span>5</span>console.log(Boolean(1));         // true（非0数字是真）
+<span>6</span>console.log(Boolean('hello'));   // true（非空字符串是真）</div>
+
+            <!-- 完整运行示例 -->
+            <div class="demo">
+                <div class="demo-label">🎮 完整类型转换运行示例</div>
+                <button onclick="runTypeConversionDemo()">运行示例（弹窗显示）</button>
+                <div class="output-area" id="type-output">点击按钮运行代码，查看弹窗输出...</div>
+            </div>
+
+            <input type="checkbox" id="code-4e" class="code-toggle">
+            <label for="code-4e" class="toggle-label">完整类型转换源代码</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;类型转换示例&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;类型转换&lt;/h1&gt;
+<span>9</span>    &lt;script&gt;
+<span>10</span>        // 字符串转数字
+<span>11</span>        let price = '99.9';
+<span>12</span>        let numPrice = Number(price);
+<span>13</span>        console.log('原类型：' + typeof price);      // string
+<span>14</span>        console.log('转换后：' + typeof numPrice);    // number
+<span>15</span>        console.log('打八折：' + numPrice * 0.8);     // 79.92
+<span>16</span>
+<span>17</span>        // 数字转字符串
+<span>18</span>        let count = 42;
+<span>19</span>        let strCount = String(count);
+<span>20</span>        console.log('原类型：' + typeof count);       // number
+<span>21</span>        console.log('转换后：' + typeof strCount);     // string
+<span>22</span>        console.log('拼接结果：' + strCount + '个商品');  // "42个商品"
+<span>23</span>
+<span>24</span>        // 隐式转换（JS自动帮你转）
+<span>25</span>        console.log('5' - 2);   // 3（减号会触发转数字）
+<span>26</span>        console.log('5' + 2);   // "52"（加号碰到字符串就变拼接）
+<span>27</span>    &lt;/script&gt;
+<span>28</span>&lt;/body&gt;
+<span>29</span>&lt;/html&gt;</div>
+
+            <!-- 代码逐行讲解表 -->
+            <div class="demo">
+                <div class="demo-label">📖 代码逐行讲解</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>代码</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td><code>let price = '99.9';</code></td>
+                        <td>变量 <code>price</code> 是字符串 <code>'99.9'</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>Number(price)</code></td>
+                        <td>把字符串 <code>'99.9'</code> 转成数字 <code>99.9</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>'5' - 2</code></td>
+                        <td>减号触发隐式转换，<code>'5'</code> 转成 <code>5</code>，<code>5-2=3</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>'5' + 2</code></td>
+                        <td>加号遇到字符串就拼接，结果是 <code>'52'</code></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 隐式转换互动演示 -->
+            <div class="demo">
+                <div class="demo-label">⚡ 隐式转换互动演示</div>
+                <p>输入一个值，查看 JS 隐式转换的结果：</p>
+                <input type="text" id="implicit-input" placeholder="输入一个值，如 5 或 abc" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin: 5px; width: 200px;">
+                <button onclick="showImplicitConversion()">查看转换结果</button>
+                <div class="output-area" id="implicit-output">输入值后点击按钮查看结果...</div>
+            </div>
+
+            <input type="checkbox" id="code-4f" class="code-toggle">
+            <label for="code-4f" class="toggle-label">隐式转换演示源代码</label>
+            <div class="code-block"><span>1</span>// 隐式转换规则：
+<span>2</span>// '+' 遇到字符串 → 变成字符串拼接
+<span>3</span>// '-' '*' '/' → 把字符串转成数字再计算
+<span>4</span>
+<span>5</span>console.log('5' + 2);   // "52"  ← 加号遇到字符串，变拼接
+<span>6</span>console.log('5' - 2);   // 3     ← 减号触发转数字
+<span>7</span>console.log('5' * 2);   // 10    ← 乘号触发转数字
+<span>8</span>console.log('5' / 2);   // 2.5   ← 除号触发转数字
+<span>9</span>console.log('abc' + 1); // "abc1" ← 加号变拼接
+<span>10</span>console.log('abc' - 1); // NaN   ← 减号转数字失败</div>
+
+            <div class="warn-box">
+                ⚠️ <strong>新手易错</strong>：<code>'5' + 2</code> 结果是 <code>'52'</code> 不是 <code>7</code>！加号 <code>+</code> 既做加法又做拼接，一旦有一边是字符串，它就变成拼接。减号 <code>-</code>、乘号 <code>*</code>、除号 <code>/</code> 则会把字符串转成数字再计算。
+            </div>
+
+            <div class="warn-box">
+                ⚠️ <strong>新手易错</strong>：<code>Number('abc')</code> 会得到 <code>NaN</code>（Not a Number——不是一个数字），表示转换失败。
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // 变量示例演示函数
+        function runVariableDemo() {
+            var name = '小明';
+            let age = 18;
+            const PI = 3.14;
+
+            // 控制台输出
+            console.log(name);
+            console.log(age);
+            console.log(PI);
+
+            // 弹窗显示
+            alert('我叫' + name + '，今年' + age + '岁');
+
+            // 更新输出区域
+            var output = document.getElementById('var-output');
+            output.innerHTML = '✅ 运行结果：\n' +
+                '→ 弹窗显示：我叫小明，今年18岁\n' +
+                '→ 控制台输出：小明, 18, 3.14\n' +
+                '→ 按 F12 打开控制台查看 console.log 输出';
+        }
+
+        // 类型转换演示函数
+        function runTypeConversionDemo() {
+            // 字符串转数字
+            let price = '99.9';
+            let numPrice = Number(price);
+            let result1 = '原类型：' + typeof price + '\n' +
+                '转换后：' + typeof numPrice + '\n' +
+                '打八折：' + (numPrice * 0.8);
+
+            // 数字转字符串
+            let count = 42;
+            let strCount = String(count);
+            let result2 = '原类型：' + typeof count + '\n' +
+                '转换后：' + typeof strCount + '\n' +
+                '拼接结果：' + strCount + '个商品';
+
+            // 隐式转换
+            let result3 = "'5' - 2 = " + ('5' - 2) + '\n' +
+                "'5' + 2 = " + ('5' + 2);
+
+            alert('【字符串转数字】\n' + result1 +
+                '\n\n【数字转字符串】\n' + result2 +
+                '\n\n【隐式转换】\n' + result3);
+
+            // 更新输出区域
+            var output = document.getElementById('type-output');
+            output.innerHTML = '✅ 运行结果：\n' +
+                '→ 字符串转数字：Number("99.9") = 99.9，打八折 = ' + (numPrice * 0.8) + '\n' +
+                '→ 数字转字符串：String(42) = "42"，拼接 = "' + strCount + '个商品"\n' +
+                '→ 隐式转换："5" - 2 = ' + ('5' - 2) + '，"5" + 2 = ' + ('5' + 2);
+        }
+
+        // 隐式转换互动演示
+        function showImplicitConversion() {
+            var input = document.getElementById('implicit-input').value;
+            var output = document.getElementById('implicit-output');
+
+            if (input === '') {
+                output.innerHTML = '⚠️ 请输入一个值';
+                return;
+            }
+
+            var num = Number(input);
+            var result = '输入值："' + input + '"\n\n' +
+                'typeof 结果：' + typeof input + '\n\n' +
+                '转换为数字：Number("' + input + '") = ' + num + '\n\n' +
+                '"' + input + '" + 2 = ' + (input + 2) + '  ← 加号变拼接\n' +
+                '"' + input + '" - 2 = ' + (input - 2) + '  ← 减号触发转数字\n' +
+                '"' + input + '" * 2 = ' + (input * 2) + '  ← 乘号触发转数字\n' +
+                '"' + input + '" / 2 = ' + (input / 2) + '  ← 除号触发转数字';
+
+            output.innerHTML = result;
+        }
+
+        // 回车键触发隐式转换演示
+        document.getElementById('implicit-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                showImplicitConversion();
+            }
+        });
+    </script>
+</body>
+
+</html>

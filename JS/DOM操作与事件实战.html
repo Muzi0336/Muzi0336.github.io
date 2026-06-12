@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM操作与事件实战</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked + .toggle-label + .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked + .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        /* ===== 交互演示区额外样式 ===== */
+        .demo-btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            transition: background 0.2s;
+        }
+        .demo-btn:hover {
+            background: #2980b9;
+        }
+        .demo-btn.green { background: #27ae60; }
+        .demo-btn.green:hover { background: #219a52; }
+        .demo-btn.red { background: #e74c3c; }
+        .demo-btn.red:hover { background: #c0392b; }
+        .demo-btn.orange { background: #f39c12; }
+        .demo-btn.orange:hover { background: #d68910; }
+        .demo-btn.purple { background: #9b59b6; }
+        .demo-btn.purple:hover { background: #8244a0; }
+
+        .demo-box {
+            width: 200px;
+            height: 200px;
+            background: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .demo-output {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            margin-top: 10px;
+            min-height: 30px;
+            line-height: 1.6;
+        }
+
+        .demo-area {
+            border: 2px solid #3498db;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+            min-height: 40px;
+        }
+
+        .demo-result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #eaf6ff;
+            border-left: 3px solid #3498db;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .style-preview {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            margin: 10px 0;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .node-list {
+            list-style: none;
+            padding: 0;
+        }
+        .node-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            margin: 4px 0;
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+        .node-list li button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 3px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* 实战项目样式 */
+        .project-demo {
+            border: 2px solid #e74c3c;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            background: #fff;
+        }
+        .project-demo h4 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+        }
+
+        /* Todo */
+        .todo-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .todo-input input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+        .todo-item button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        /* 计数器 */
+        .counter-display {
+            font-size: 80px;
+            font-weight: bold;
+            color: #3498db;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .counter-btns {
+            text-align: center;
+        }
+        .counter-btns button {
+            font-size: 20px;
+            padding: 10px 30px;
+            margin: 0 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            color: white;
+        }
+
+        /* 轮播 */
+        .slider-container {
+            text-align: center;
+            margin: 10px 0;
+        }
+        .slider-container img {
+            width: 400px;
+            max-width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+        .slider-controls {
+            margin-top: 15px;
+        }
+        .slider-controls button {
+            font-size: 16px;
+            padding: 8px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #3498db;
+            color: white;
+        }
+        .slider-controls button:hover { background: #2980b9; }
+        .slider-label {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .h3-sub {
+            font-size: 17px;
+            color: #2980b9;
+            margin: 18px 0 10px;
+            padding-left: 8px;
+            border-left: 3px solid #3498db;
+        }
+
+        .tip-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin: 10px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .tip-box strong { color: #856404; }
+
+        .note-box {
+            background: #d4edda;
+            border: 1px solid #28a745;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin: 10px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .tree-box {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 10px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .event-log {
+            max-height: 120px;
+            overflow-y: auto;
+            background: #1a1a2e;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                width: 100%;
+                height: auto;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                padding: 8px 0;
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            .sidebar h3 {
+                display: none;
+            }
+            .sidebar a {
+                display: inline-block;
+                padding: 6px 12px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+            main {
+                margin-left: 0;
+                padding: 15px;
+                padding-bottom: 60px;
+            }
+            .unit {
+                padding: 15px;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .demo-box {
+                width: 160px;
+                height: 160px;
+                font-size: 15px;
+            }
+            .slider-container img {
+                height: 200px;
+            }
+            .counter-display {
+                font-size: 60px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav class="sidebar">
+        <h3>DOM操作与事件实战</h3>
+        <a href="#unit-1">2.1 DOM概念</a>
+        <a href="#unit-2">2.2 获取元素</a>
+        <a href="#unit-3">2.3 修改内容</a>
+        <a href="#unit-3-1">&nbsp;&nbsp;2.3.1 修改内容</a>
+        <a href="#unit-3-2">&nbsp;&nbsp;2.3.2 修改属性</a>
+        <a href="#unit-4">2.4 样式操作</a>
+        <a href="#unit-5">2.5 节点增删改</a>
+        <a href="#unit-6">2.6 基础事件</a>
+        <a href="#unit-7">2.7 简易实战</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- ==================== 2.1 DOM概念与节点树 ==================== -->
+        <div class="unit" id="unit-1">
+            <h2>2.1 DOM 概念与节点树</h2>
+
+            <div class="explain">
+                <p><strong>DOM</strong> = <strong>D</strong>ocument <strong>O</strong>bject <strong>M</strong>odel（文档对象模型）</p>
+                <p><strong>大白话</strong>：浏览器把 HTML 页面变成了一棵"树"——每个 HTML 标签、每段文字、每个属性都是树上的一个"节点"。JavaScript 通过这棵树来<strong>找到、读取、修改</strong>页面上的任何内容。</p>
+            </div>
+
+            <h3 class="h3-sub">2.1.1 DOM 节点树层级结构</h3>
+
+            <div class="explain">
+                <p>想象一下，整个 HTML 文档被浏览器变成了这样一棵"倒着长的树"：</p>
+            </div>
+
+            <div class="tree-box">文档（document）
+  └── 根节点 &lt;html&gt;
+        ├── &lt;head&gt; 分支
+        │     ├── &lt;meta&gt;
+        │     ├── &lt;title&gt;
+        │     └── 文本节点："页面标题"
+        └── &lt;body&gt; 分支
+              ├── &lt;h1&gt;
+              │     └── 文本节点："你好世界"
+              ├── &lt;p&gt;
+              │     └── 文本节点："这是一个段落"
+              └── &lt;div&gt;
+                    ├── 文本节点："内容"
+                    └── ...</div>
+
+            <div class="explain">
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>文档节点</strong>（document）：整棵树的根，代表整个页面</li>
+                    <li><strong>根节点</strong>（<code>&lt;html&gt;</code>）：树的"树干"，下面分两个大分支</li>
+                    <li><strong>元素节点</strong>：每个 HTML 标签（<code>&lt;head&gt;</code>、<code>&lt;body&gt;</code>、<code>&lt;h1&gt;</code>、<code>&lt;p&gt;</code> 等）</li>
+                    <li><strong>文本节点</strong>：标签里面包着的文字</li>
+                    <li><strong>属性节点</strong>：标签上的属性（如 <code>class="red"</code>、<code>id="main"</code>）</li>
+                    <li><strong>注释节点</strong>：<code>&lt;!-- 注释内容 --&gt;</code></li>
+                </ul>
+            </div>
+
+            <h3 class="h3-sub">2.1.2 四大节点详解</h3>
+
+            <div class="demo">
+                <div class="demo-label">四大节点表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>节点类型</th>
+                        <th>大白话</th>
+                        <th>举例</th>
+                    </tr>
+                    <tr>
+                        <td><strong>元素节点</strong></td>
+                        <td>HTML 标签本身</td>
+                        <td><code>&lt;h1&gt;</code>、<code>&lt;p&gt;</code>、<code>&lt;div&gt;</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>文本节点</strong></td>
+                        <td>标签里的文字</td>
+                        <td>"你好世界"、"这是一个段落"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>属性节点</strong></td>
+                        <td>标签上的属性</td>
+                        <td><code>class="red"</code>、<code>id="main"</code>、<code>href="#"</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>注释节点</strong></td>
+                        <td>HTML 注释</td>
+                        <td><code>&lt;!-- 这里是注释 --&gt;</code></td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3 class="h3-sub">2.1.3 head 和 body 常用标签节点</h3>
+
+            <div class="explain">
+                <p><strong><code>&lt;head&gt;</code> 分支下的常用节点</strong>：</p>
+            </div>
+            <div class="tree-box">&lt;head&gt;
+  ├── &lt;meta charset="UTF-8"&gt;           ← 字符编码
+  ├── &lt;meta name="viewport" ...&gt;       ← 移动端适配
+  ├── &lt;title&gt;页面标题&lt;/title&gt;          ← 标题（含文本节点）
+  └── &lt;link rel="stylesheet" href=""&gt;  ← 外部CSS</div>
+
+            <div class="explain">
+                <p><strong><code>&lt;body&gt;</code> 分支下的常用节点</strong>：</p>
+            </div>
+            <div class="tree-box">&lt;body&gt;
+  ├── &lt;h1&gt;一级标题&lt;/h1&gt;               ← 标题（含文本节点）
+  ├── &lt;p&gt;段落文字&lt;/p&gt;                  ← 段落
+  ├── &lt;div&gt;容器&lt;/div&gt;                  ← 容器
+  ├── &lt;ul&gt;/&lt;ol&gt;/&lt;li&gt;列表&lt;/li&gt;&lt;/ul&gt;     ← 列表
+  ├── &lt;a href="#"&gt;链接&lt;/a&gt;             ← 链接（含属性节点）
+  ├── &lt;img src="..." alt="..."&gt;        ← 图片（含属性节点）
+  └── &lt;input type="text"&gt;              ← 输入框</div>
+
+            <div class="note-box">
+                💡 记住：<strong>元素节点</strong>是最常用的操作对象——找到它，然后改它的内容、样式或属性。
+            </div>
+        </div>
+
+        <!-- ==================== 2.2 获取元素节点 ==================== -->
+        <div class="unit" id="unit-2">
+            <h2>2.2 获取元素节点</h2>
+
+            <div class="explain">
+                <p>想操作页面元素，第一步是<strong>找到它</strong>。JavaScript 提供了几种"找人"的方法。</p>
+                <p><strong>最常用的三种方法</strong>：</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">获取元素三种方法表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>方法</th>
+                        <th>用法</th>
+                        <th>返回</th>
+                    </tr>
+                    <tr>
+                        <td><code>getElementById('id名')</code></td>
+                        <td>通过 id 找元素</td>
+                        <td>一个元素</td>
+                    </tr>
+                    <tr>
+                        <td><code>getElementsByTagName('标签名')</code></td>
+                        <td>通过标签名找</td>
+                        <td>多个元素（类数组）</td>
+                    </tr>
+                    <tr>
+                        <td><code>getElementsByClassName('类名')</code></td>
+                        <td>通过类名找</td>
+                        <td>多个元素（类数组）</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">🎯 交互演示：点击按钮获取不同方式的元素</div>
+                <div id="getElementsDemo">
+                    <p id="intro" style="padding:8px; background:#eaf6ff; border-radius:4px;">这是一个段落，有 id 属性。</p>
+                    <p class="text" style="padding:8px; background:#fff3cd; border-radius:4px; margin-top:5px;">这是第一个段落（class="text"）</p>
+                    <p class="text" style="padding:8px; background:#fff3cd; border-radius:4px; margin-top:5px;">这是第二个段落（class="text"）</p>
+                    <ul id="demoList" style="margin-top:10px;">
+                        <li>项目1</li>
+                        <li>项目2</li>
+                        <li>项目3</li>
+                    </ul>
+                </div>
+                <div style="margin-top:10px;">
+                    <button class="demo-btn" onclick="demoGetById()">getElementById('intro')</button>
+                    <button class="demo-btn green" onclick="demoGetByTag()">getElementsByTagName('p')</button>
+                    <button class="demo-btn orange" onclick="demoGetByClass()">getElementsByClassName('text')</button>
+                    <button class="demo-btn purple" onclick="demoGetLi()">getElementsByTagName('li')</button>
+                </div>
+                <div class="demo-output" id="getElementOutput">点击按钮查看获取结果...</div>
+            </div>
+
+            <script>
+                function demoGetById() {
+                    let intro = document.getElementById('intro');
+                    let output = document.getElementById('getElementOutput');
+                    output.innerHTML = '<span style="color:#3498db;">[getElementById]</span>\n' +
+                        '获取到元素：' + intro.outerHTML.substring(0, 80) + '...\n' +
+                        'innerText: "' + intro.innerText + '"';
+                }
+                function demoGetByTag() {
+                    let ps = document.getElementsByTagName('p');
+                    let output = document.getElementById('getElementOutput');
+                    let info = '<span style="color:#27ae60;">[getElementsByTagName("p")]</span>\n';
+                    info += '找到 ' + ps.length + ' 个 &lt;p&gt; 元素：\n';
+                    for (let i = 0; i < ps.length; i++) {
+                        info += '  ps[' + i + '].innerText = "' + ps[i].innerText + '"\n';
+                    }
+                    output.innerHTML = info;
+                }
+                function demoGetByClass() {
+                    let items = document.getElementsByClassName('text');
+                    let output = document.getElementById('getElementOutput');
+                    let info = '<span style="color:#f39c12;">[getElementsByClassName("text")]</span>\n';
+                    info += '找到 ' + items.length + ' 个 class="text" 元素：\n';
+                    for (let i = 0; i < items.length; i++) {
+                        info += '  items[' + i + '].innerText = "' + items[i].innerText + '"\n';
+                    }
+                    output.innerHTML = info;
+                }
+                function demoGetLi() {
+                    let items = document.getElementsByTagName('li');
+                    let output = document.getElementById('getElementOutput');
+                    let info = '<span style="color:#9b59b6;">[getElementsByTagName("li")]</span>\n';
+                    info += '共有 ' + items.length + ' 个项目：\n';
+                    for (let i = 0; i < items.length; i++) {
+                        info += '  items[' + i + '].innerText = "' + items[i].innerText + '"\n';
+                    }
+                    output.innerHTML = info;
+                }
+            </script>
+
+            <input type="checkbox" id="code-2-2" class="code-toggle">
+            <label for="code-2-2" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span> 1</span>&lt;h1&gt;获取页面元素&lt;/h1&gt;
+<span> 2</span>&lt;p id="intro"&gt;这是一个段落，有 id 属性。&lt;/p&gt;
+<span> 3</span>&lt;p class="text"&gt;这是第一个段落（class="text"）&lt;/p&gt;
+<span> 4</span>&lt;p class="text"&gt;这是第二个段落（class="text"）&lt;/p&gt;
+<span> 5</span>&lt;ul&gt;
+<span> 6</span>    &lt;li&gt;项目1&lt;/li&gt;
+<span> 7</span>    &lt;li&gt;项目2&lt;/li&gt;
+<span> 8</span>    &lt;li&gt;项目3&lt;/li&gt;
+<span> 9</span>&lt;/ul&gt;
+<span>10</span>
+<span>11</span>&lt;script&gt;
+<span>12</span>    // 1. 通过 id 获取（最常用）
+<span>13</span>    let intro = document.getElementById('intro');
+<span>14</span>    console.log(intro);
+<span>15</span>
+<span>16</span>    // 2. 通过标签名获取（返回一个集合）
+<span>17</span>    let paragraphs = document.getElementsByTagName('p');
+<span>18</span>    console.log(paragraphs.length);   // 3
+<span>19</span>    console.log(paragraphs[0]);       // 第一个 &lt;p&gt;
+<span>20</span>
+<span>21</span>    // 3. 通过类名获取
+<span>22</span>    let textItems = document.getElementsByClassName('text');
+<span>23</span>    console.log(textItems.length);    // 2
+<span>24</span>
+<span>25</span>    // 4. 获取所有 &lt;li&gt;
+<span>26</span>    let items = document.getElementsByTagName('li');
+<span>27</span>    console.log('共有' + items.length + '个项目');
+<span>28</span>&lt;/script&gt;</div>
+
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：<code>getElementById</code> 是单数（Element），只返回一个；<code>getElementsByTagName</code> 是复数（Elements），返回多个。<strong>方法名必须写对</strong>，大小写敏感。
+            </div>
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：通过 <code>getElementsByTagName</code> 或 <code>getElementsByClassName</code> 获取到的是<strong>动态集合</strong>，如果页面元素变化，这个集合也会自动更新。
+            </div>
+        </div>
+
+        <!-- ==================== 2.3 修改元素内容与属性 ==================== -->
+        <div class="unit" id="unit-3">
+            <h2>2.3 修改元素内容与属性</h2>
+
+            <div class="explain">
+                <p>找到元素之后，就可以改它的内容或属性了。</p>
+            </div>
+
+            <!-- 2.3.1 修改内容 -->
+            <h3 class="h3-sub" id="unit-3-1">2.3.1 修改内容</h3>
+
+            <div class="explain">
+                <p><code>innerHTML</code> 获取或设置元素里的 <strong>HTML 内容</strong>（可以包含标签）</p>
+                <p><code>innerText</code> 获取或设置元素里的<strong>纯文本</strong>（标签会被忽略）</p>
+                <p><code>textContent</code> 类似 innerText，但保留所有文本</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">🎯 交互演示：点击按钮修改文本和HTML内容</div>
+                <div class="demo-area">
+                    <p id="contentDemo">这是原始内容</p>
+                </div>
+                <div style="margin-top:10px;">
+                    <button class="demo-btn" onclick="demoInnerText()">修改 innerText（纯文本）</button>
+                    <button class="demo-btn green" onclick="demoInnerHTML()">修改 innerHTML（含标签）</button>
+                    <button class="demo-btn red" onclick="demoResetContent()">重置内容</button>
+                </div>
+                <div class="demo-result" id="contentResult">当前内容：这是原始内容</div>
+            </div>
+
+            <script>
+                let contentState = 0;
+                function demoInnerText() {
+                    let el = document.getElementById('contentDemo');
+                    el.innerText = '这是用 innerText 修改的纯文字（<b>标签不会生效</b>）';
+                    document.getElementById('contentResult').innerHTML = '✅ innerText 只修改纯文本，<code>&lt;b&gt;</code>标签不会被解析';
+                }
+                function demoInnerHTML() {
+                    let el = document.getElementById('contentDemo');
+                    el.innerHTML = '这是用 innerHTML 修改的 <b style="color:red;">粗体红色</b> 文字';
+                    document.getElementById('contentResult').innerHTML = '✅ innerHTML 会解析 HTML 标签，<code>&lt;b&gt;</code>标签生效了！';
+                }
+                function demoResetContent() {
+                    document.getElementById('contentDemo').innerText = '这是原始内容';
+                    document.getElementById('contentResult').innerHTML = '当前内容：这是原始内容';
+                }
+            </script>
+
+            <div class="demo">
+                <div class="demo-label">innerHTML vs innerText 对比表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>属性</th>
+                        <th>能识别 HTML 标签？</th>
+                        <th>场景</th>
+                    </tr>
+                    <tr>
+                        <td><code>innerHTML</code></td>
+                        <td>✅ 能</td>
+                        <td>需要插入带格式的内容</td>
+                    </tr>
+                    <tr>
+                        <td><code>innerText</code></td>
+                        <td>❌ 不能</td>
+                        <td>只想改文字，防止注入</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-2-3-1" class="code-toggle">
+            <label for="code-2-3-1" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span> 1</span>&lt;p id="message"&gt;原来的内容&lt;/p&gt;
+<span> 2</span>&lt;div id="info"&gt;这是 &lt;strong&gt;重要&lt;/strong&gt; 信息&lt;/div&gt;
+<span> 3</span>
+<span> 4</span>&lt;script&gt;
+<span> 5</span>    // 1. 修改纯文本
+<span> 6</span>    let msg = document.getElementById('message');
+<span> 7</span>    msg.innerText = '这是新的内容！';
+<span> 8</span>    console.log(msg.innerText);  // 这是新的内容！
+<span> 9</span>
+<span>10</span>    // 2. innerHTML 可以插入 HTML 标签
+<span>11</span>    let info = document.getElementById('info');
+<span>12</span>    console.log(info.innerHTML);        // 这是 &lt;strong&gt;重要&lt;/strong&gt; 信息
+<span>13</span>    console.log(info.innerText);        // 这是 重要 信息（不带标签）
+<span>14</span>
+<span>15</span>    // 修改成带标签的内容
+<span>16</span>    info.innerHTML = '这是 &lt;span style="color:red;"&gt;更新后&lt;/span&gt; 的信息';
+<span>17</span>&lt;/script&gt;</div>
+
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：<code>innerHTML</code> 如果用户输入的内容直接赋值进去，有安全风险。如果用 <code>innerText</code>，所有内容都会被当作纯文本，不会解析标签，更安全。
+            </div>
+
+            <!-- 2.3.2 修改属性 -->
+            <h3 class="h3-sub" id="unit-3-2">2.3.2 修改属性</h3>
+
+            <div class="demo">
+                <div class="demo-label">常用属性操作表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>属性</th>
+                        <th>示例</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td><code>href</code></td>
+                        <td><code>link.href = '...'</code></td>
+                        <td>修改链接地址</td>
+                    </tr>
+                    <tr>
+                        <td><code>src</code></td>
+                        <td><code>img.src = '...'</code></td>
+                        <td>修改图片路径</td>
+                    </tr>
+                    <tr>
+                        <td><code>alt</code></td>
+                        <td><code>img.alt = '...'</code></td>
+                        <td>修改替代文字</td>
+                    </tr>
+                    <tr>
+                        <td><code>title</code></td>
+                        <td><code>img.title = '...'</code></td>
+                        <td>修改悬停提示</td>
+                    </tr>
+                    <tr>
+                        <td><code>id</code></td>
+                        <td><code>div.id = 'newId'</code></td>
+                        <td>修改 id</td>
+                    </tr>
+                    <tr>
+                        <td><code>className</code></td>
+                        <td><code>div.className = 'newClass'</code></td>
+                        <td>修改 class（注意不是 <code>class</code>）</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">🎯 交互演示：修改链接和图片属性</div>
+                <div class="demo-area">
+                    <p><a id="demoLink" href="https://www.baidu.com" target="_blank">百度一下</a> | <span id="linkDisplay">href = https://www.baidu.com</span></p>
+                    <img id="demoPhoto" src="https://via.placeholder.com/120x80/3498db/ffffff?text=原始图片" alt="示例图片" title="鼠标悬停提示" style="margin-top:10px; border-radius:4px; border:2px solid #ddd;">
+                </div>
+                <div style="margin-top:10px;">
+                    <button class="demo-btn" onclick="demoChangeLink()">修改链接 → 谷歌</button>
+                    <button class="demo-btn green" onclick="demoChangeImg()">修改图片</button>
+                    <button class="demo-btn red" onclick="demoResetAttr()">重置属性</button>
+                </div>
+                <div class="demo-result" id="attrResult">当前状态：未修改</div>
+            </div>
+
+            <script>
+                function demoChangeLink() {
+                    let link = document.getElementById('demoLink');
+                    link.href = 'https://www.google.com';
+                    link.innerText = '谷歌搜索';
+                    document.getElementById('linkDisplay').innerText = 'href = https://www.google.com';
+                    document.getElementById('attrResult').innerHTML = '✅ 修改了 <code>href</code> 和 <code>innerText</code>';
+                }
+                function demoChangeImg() {
+                    let img = document.getElementById('demoPhoto');
+                    img.src = 'https://via.placeholder.com/120x80/27ae60/ffffff?text=新图片';
+                    img.alt = '新图片';
+                    img.title = '鼠标悬停提示（已修改）';
+                    document.getElementById('attrResult').innerHTML = '✅ 修改了 <code>src</code>、<code>alt</code>、<code>title</code>';
+                }
+                function demoResetAttr() {
+                    let link = document.getElementById('demoLink');
+                    link.href = 'https://www.baidu.com';
+                    link.innerText = '百度一下';
+                    document.getElementById('linkDisplay').innerText = 'href = https://www.baidu.com';
+                    let img = document.getElementById('demoPhoto');
+                    img.src = 'https://via.placeholder.com/120x80/3498db/ffffff?text=原始图片';
+                    img.alt = '示例图片';
+                    img.title = '鼠标悬停提示';
+                    document.getElementById('attrResult').innerHTML = '当前状态：已重置';
+                }
+            </script>
+
+            <input type="checkbox" id="code-2-3-2" class="code-toggle">
+            <label for="code-2-3-2" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span> 1</span>&lt;a id="link" href="https://www.baidu.com"&gt;百度一下&lt;/a&gt;
+<span> 2</span>&lt;img id="photo" src="https://via.placeholder.com/150" alt="示例图片"&gt;
+<span> 3</span>
+<span> 4</span>&lt;script&gt;
+<span> 5</span>    // 1. 修改链接的 href 属性和文本
+<span> 6</span>    let link = document.getElementById('link');
+<span> 7</span>    link.href = 'https://www.google.com';
+<span> 8</span>    link.innerText = '谷歌搜索';
+<span> 9</span>
+<span>10</span>    // 2. 修改图片的 src 和 alt
+<span>11</span>    let photo = document.getElementById('photo');
+<span>12</span>    photo.src = 'https://via.placeholder.com/200';
+<span>13</span>    photo.alt = '新图片';
+<span>14</span>    photo.title = '鼠标悬停提示';
+<span>15</span>&lt;/script&gt;</div>
+
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：修改 <code>class</code> 属性时，要用 <code>className</code> 而不是 <code>class</code>。因为 <code>class</code> 是 JavaScript 的保留字，所以 DOM 中用 <code>className</code> 代替。
+            </div>
+        </div>
+
+        <!-- ==================== 2.4 样式操作 ==================== -->
+        <div class="unit" id="unit-4">
+            <h2>2.4 样式操作</h2>
+
+            <div class="explain">
+                <p>修改元素的 CSS 样式有三种方式。</p>
+            </div>
+
+            <h3 class="h3-sub">方式一：直接修改 style 属性</h3>
+
+            <div class="demo">
+                <div class="demo-label">🎯 交互演示：直接修改 style 属性</div>
+                <div class="demo-area">
+                    <p class="style-preview" id="stylePreview">这段文字会变色 🎨</p>
+                </div>
+                <div style="margin-top:10px;">
+                    <button class="demo-btn" onclick="demoStyleColor()">color: red</button>
+                    <button class="demo-btn green" onclick="demoStyleFont()">fontSize: 28px</button>
+                    <button class="demo-btn orange" onclick="demoStyleBg()">backgroundColor: yellow</button>
+                    <button class="demo-btn purple" onclick="demoStyleAll()">全部样式</button>
+                    <button class="demo-btn red" onclick="demoStyleReset()">重置样式</button>
+                </div>
+                <div class="demo-result" id="styleResult">当前状态：默认样式</div>
+            </div>
+
+            <script>
+                function demoStyleColor() {
+                    let el = document.getElementById('stylePreview');
+                    el.style.color = 'red';
+                    document.getElementById('styleResult').innerHTML = '✅ <code>el.style.color = "red"</code>';
+                }
+                function demoStyleFont() {
+                    let el = document.getElementById('stylePreview');
+                    el.style.fontSize = '28px';
+                    document.getElementById('styleResult').innerHTML = '✅ <code>el.style.fontSize = "28px"</code>';
+                }
+                function demoStyleBg() {
+                    let el = document.getElementById('stylePreview');
+                    el.style.backgroundColor = '#fff3cd';
+                    document.getElementById('styleResult').innerHTML = '✅ <code>el.style.backgroundColor = "yellow"</code>';
+                }
+                function demoStyleAll() {
+                    let el = document.getElementById('stylePreview');
+                    el.style.color = 'white';
+                    el.style.fontSize = '28px';
+                    el.style.backgroundColor = '#9b59b6';
+                    el.style.padding = '15px';
+                    el.style.borderRadius = '8px';
+                    document.getElementById('styleResult').innerHTML = '✅ 同时修改了 color、fontSize、backgroundColor、padding、borderRadius';
+                }
+                function demoStyleReset() {
+                    let el = document.getElementById('stylePreview');
+                    el.style.cssText = '';
+                    document.getElementById('styleResult').innerHTML = '当前状态：已重置';
+                }
+            </script>
+
+            <div class="demo">
+                <div class="demo-label">CSS 属性名称转换表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>CSS 属性</th>
+                        <th>JavaScript 写法（驼峰命名）</th>
+                    </tr>
+                    <tr>
+                        <td><code>background-color</code></td>
+                        <td><code>backgroundColor</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>font-size</code></td>
+                        <td><code>fontSize</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>margin-top</code></td>
+                        <td><code>marginTop</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>border-radius</code></td>
+                        <td><code>borderRadius</code></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="note-box">
+                💡 <strong>规则</strong>：CSS 中的 <code>-</code> 去掉，后面首字母大写。<code>background-color</code> → <code>backgroundColor</code>。
+            </div>
+
+            <h3 class="h3-sub">方式二：通过 className 切换样式</h3>
+
+            <div class="explain">
+                <p><code>元素.className = '类名'</code> 可以整体替换元素的 class 属性。</p>
+            </div>
+
+            <input type="checkbox" id="code-2-4-2" class="code-toggle">
+            <label for="code-2-4-2" class="toggle-label">查看 className 示例代码</label>
+            <div class="code-block"><span> 1</span>&lt;style&gt;
+<span> 2</span>    .highlight {
+<span> 3</span>        background-color: yellow;
+<span> 4</span>        font-weight: bold;
+<span> 5</span>        padding: 10px;
+<span> 6</span>        border: 2px solid orange;
+<span> 7</span>    }
+<span> 8</span>    .normal {
+<span> 9</span>        background-color: white;
+<span>10</span>        padding: 10px;
+<span>11</span>    }
+<span>12</span>&lt;/style&gt;
+<span>13</span>
+<span>14</span>&lt;p id="text" class="normal"&gt;点击按钮会让这段文字高亮&lt;/p&gt;
+<span>15</span>&lt;button onclick="toggleHighlight()"&gt;切换高亮&lt;/button&gt;
+<span>16</span>
+<span>17</span>&lt;script&gt;
+<span>18</span>    function toggleHighlight() {
+<span>19</span>        let text = document.getElementById('text');
+<span>20</span>        if (text.className === 'normal') {
+<span>21</span>            text.className = 'highlight';
+<span>22</span>        } else {
+<span>23</span>            text.className = 'normal';
+<span>24</span>        }
+<span>25</span>    }
+<span>26</span>&lt;/script&gt;</div>
+
+            <h3 class="h3-sub">方式三：通过 classList 添加/移除类（推荐）</h3>
+
+            <div class="explain">
+                <p><code>classList</code> 提供了更灵活的类操作：</p>
+                <p><code>元素.classList.add('类名')</code> &nbsp; // 添加一个类</p>
+                <p><code>元素.classList.remove('类名')</code> &nbsp; // 移除一个类</p>
+                <p><code>元素.classList.toggle('类名')</code> &nbsp; // 切换（有就删，没有就加）</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">🎯 交互演示：classList add/remove/toggle</div>
+                <div class="demo-area">
+                    <div id="classListBox" style="padding: 20px; border: 2px solid #ccc; border-radius: 6px; text-align: center; transition: all 0.3s;">
+                        这是一个盒子（当前 class：空）
+                    </div>
+                </div>
+                <div style="margin-top:10px;">
+                    <button class="demo-btn green" onclick="classListAdd()">classList.add('active')</button>
+                    <button class="demo-btn red" onclick="classListRemove()">classList.remove('active')</button>
+                    <button class="demo-btn orange" onclick="classListToggle()">classList.toggle('active')</button>
+                </div>
+                <div class="demo-result" id="classListResult">当前 class：""（空）</div>
+            </div>
+
+            <style>
+                .active-class-demo {
+                    background-color: #4CAF50;
+                    color: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    border-color: #4CAF50 !important;
+                }
+            </style>
+
+            <script>
+                function classListAdd() {
+                    let box = document.getElementById('classListBox');
+                    box.classList.add('active-class-demo');
+                    document.getElementById('classListResult').innerHTML = '当前 class："' + box.className + '"';
+                }
+                function classListRemove() {
+                    let box = document.getElementById('classListBox');
+                    box.classList.remove('active-class-demo');
+                    document.getElementById('classListResult').innerHTML = '当前 class："' + box.className + '"';
+                }
+                function classListToggle() {
+                    let box = document.getElementById('classListBox');
+                    box.classList.toggle('active-class-demo');
+                    document.getElementById('classListResult').innerHTML = '当前 class："' + box.className + '"';
+                }
+            </script>
+
+            <div class="demo">
+                <div class="demo-label">三种样式操作方式对比表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>方式</th>
+                        <th>代码</th>
+                        <th>适用场景</th>
+                    </tr>
+                    <tr>
+                        <td><code>style</code> 属性</td>
+                        <td><code>div.style.color = 'red'</code></td>
+                        <td>改变单个样式属性</td>
+                    </tr>
+                    <tr>
+                        <td><code>className</code></td>
+                        <td><code>div.className = 'highlight'</code></td>
+                        <td>整体切换预定义的样式类</td>
+                    </tr>
+                    <tr>
+                        <td><code>classList</code></td>
+                        <td><code>div.classList.add('active')</code></td>
+                        <td>推荐，灵活不覆盖原有类</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：通过 <code>style</code> 设置 CSS 属性时，属性名用<strong>驼峰命名</strong>，不能带 <code>-</code>。<code>backgroundColor</code> 不是 <code>background-color</code>。
+            </div>
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：<code>className = 'highlight'</code> 会<strong>覆盖</strong>元素原来的所有 class。如果原来有 <code>class="normal big"</code>，赋值后变成 <code>class="highlight"</code>。要用 <code>classList.add()</code> 来追加。
+            </div>
+        </div>
+
+        <!-- ==================== 2.5 节点增删改 ==================== -->
+        <div class="unit" id="unit-5">
+            <h2>2.5 节点增删改</h2>
+
+            <div class="explain">
+                <p>除了修改已有元素，JavaScript 还可以<strong>创建新元素、插入页面、删除元素</strong>。</p>
+            </div>
+
+            <h3 class="h3-sub">2.5.1 创建和插入节点</h3>
+
+            <div class="explain">
+                <p><code>document.createElement('标签名')</code> — 创建新元素</p>
+                <p><code>新元素.innerText = '...'</code> — 添加内容</p>
+                <p><code>父元素.appendChild(新元素)</code> — 放到最后</p>
+                <p><code>父元素.insertBefore(新元素, 参照元素)</code> — 放到某个元素前面</p>
+            </div>
+
+            <h3 class="h3-sub">2.5.2 删除节点</h3>
+
+            <div class="explain">
+                <p><code>父元素.removeChild(子元素)</code> — 删除子元素</p>
+                <p><code>元素.remove()</code> — 直接删除自己（推荐）</p>
+            </div>
+
+            <h3 class="h3-sub">2.5.3 替换节点</h3>
+
+            <div class="explain">
+                <p><code>父元素.replaceChild(新元素, 旧元素)</code></p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">🎯 交互演示：添加、删除、替换节点</div>
+                <div class="demo-area">
+                    <ul id="nodeList" class="node-list">
+                        <li>项目 A <button onclick="this.parentElement.remove()">删除</button></li>
+                        <li>项目 B <button onclick="this.parentElement.remove()">删除</button></li>
+                        <li>项目 C <button onclick="this.parentElement.remove()">删除</button></li>
+                    </ul>
+                </div>
+                <div style="margin-top:10px;">
+                    <button class="demo-btn green" onclick="demoAddNode()">appendChild 添加</button>
+                    <button class="demo-btn orange" onclick="demoInsertBefore()">insertBefore 插入</button>
+                    <button class="demo-btn purple" onclick="demoReplaceNode()">replaceChild 替换第一个</button>
+                    <button class="demo-btn red" onclick="demoRemoveAll()">删除全部</button>
+                </div>
+                <div class="demo-result" id="nodeResult">当前列表：A, B, C</div>
+            </div>
+
+            <script>
+                let nodeCounter = 0;
+                function demoAddNode() {
+                    let list = document.getElementById('nodeList');
+                    nodeCounter++;
+                    let li = document.createElement('li');
+                    li.innerHTML = '新项目' + nodeCounter + ' <button onclick="this.parentElement.remove()">删除</button>';
+                    list.appendChild(li);
+                    updateNodeResult();
+                }
+                function demoInsertBefore() {
+                    let list = document.getElementById('nodeList');
+                    nodeCounter++;
+                    let li = document.createElement('li');
+                    li.innerHTML = '插入项' + nodeCounter + ' <button onclick="this.parentElement.remove()">删除</button>';
+                    li.style.background = '#fff3cd';
+                    let first = list.firstElementChild;
+                    if (first) {
+                        list.insertBefore(li, first);
+                    } else {
+                        list.appendChild(li);
+                    }
+                    updateNodeResult();
+                }
+                function demoReplaceNode() {
+                    let list = document.getElementById('nodeList');
+                    let first = list.firstElementChild;
+                    if (first) {
+                        nodeCounter++;
+                        let li = document.createElement('li');
+                        li.innerHTML = '替换后的内容' + nodeCounter;
+                        li.style.background = '#d4edda';
+                        li.innerHTML += ' <button onclick="this.parentElement.remove()">删除</button>';
+                        list.replaceChild(li, first);
+                        updateNodeResult();
+                    }
+                }
+                function demoRemoveAll() {
+                    let list = document.getElementById('nodeList');
+                    list.innerHTML = '';
+                    updateNodeResult();
+                }
+                function updateNodeResult() {
+                    let items = document.getElementById('nodeList').children;
+                    let names = [];
+                    for (let i = 0; i < items.length; i++) {
+                        names.push(items[i].innerText.replace('删除', '').trim());
+                    }
+                    document.getElementById('nodeResult').innerHTML = '当前列表：' + (names.length ? names.join(', ') : '（空）');
+                }
+            </script>
+
+            <div class="demo">
+                <div class="demo-label">节点操作速查表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>操作</th>
+                        <th>方法</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>创建元素</td>
+                        <td><code>document.createElement('标签')</code></td>
+                        <td>创建新元素</td>
+                    </tr>
+                    <tr>
+                        <td>添加内容</td>
+                        <td><code>元素.innerText = '...'</code></td>
+                        <td>设置文字</td>
+                    </tr>
+                    <tr>
+                        <td>插入末尾</td>
+                        <td><code>父元素.appendChild(子元素)</code></td>
+                        <td>加到最后一个</td>
+                    </tr>
+                    <tr>
+                        <td>插入前面</td>
+                        <td><code>父元素.insertBefore(新, 参照)</code></td>
+                        <td>加在某个元素前</td>
+                    </tr>
+                    <tr>
+                        <td>删除子元素</td>
+                        <td><code>父元素.removeChild(子元素)</code></td>
+                        <td>删除指定的子元素</td>
+                    </tr>
+                    <tr>
+                        <td>删除自己</td>
+                        <td><code>元素.remove()</code></td>
+                        <td>直接删除自己</td>
+                    </tr>
+                    <tr>
+                        <td>替换子元素</td>
+                        <td><code>父元素.replaceChild(新, 旧)</code></td>
+                        <td>用新元素替换旧元素</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-2-5" class="code-toggle">
+            <label for="code-2-5" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span> 1</span>&lt;ul id="list"&gt;
+<span> 2</span>    &lt;li&gt;项目1&lt;/li&gt;
+<span> 3</span>    &lt;li&gt;项目2&lt;/li&gt;
+<span> 4</span>&lt;/ul&gt;
+<span> 5</span>&lt;button onclick="addItem()"&gt;添加项目&lt;/button&gt;
+<span> 6</span>
+<span> 7</span>&lt;script&gt;
+<span> 8</span>    function addItem() {
+<span> 9</span>        // 1. 创建新的 &lt;li&gt; 元素
+<span>10</span>        let newItem = document.createElement('li');
+<span>11</span>
+<span>12</span>        // 2. 设置内容
+<span>13</span>        newItem.innerText = '新项目';
+<span>14</span>
+<span>15</span>        // 3. 获取父元素
+<span>16</span>        let list = document.getElementById('list');
+<span>17</span>
+<span>18</span>        // 4. 把新元素添加到列表末尾
+<span>19</span>        list.appendChild(newItem);
+<span>20</span>    }
+<span>21</span>&lt;/script&gt;</div>
+
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：<code>createElement</code> 只是创建了"虚拟"的元素，还没放到页面上。必须用 <code>appendChild</code>、<code>insertBefore</code> 等方法<strong>插入到 DOM 树</strong>才能看到。
+            </div>
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：<code>removeChild</code> 需要先拿到父元素，再指定要删哪个子元素。而 <code>元素.remove()</code> 更直接，不需要知道父元素是谁。
+            </div>
+        </div>
+
+        <!-- ==================== 2.6 基础事件 ==================== -->
+        <div class="unit" id="unit-6">
+            <h2>2.6 基础事件</h2>
+
+            <div class="explain">
+                <p><strong>事件</strong>就是<strong>用户的操作</strong>（点击按钮、鼠标滑过、页面加载……），JavaScript 可以"监听"这些事件，然后做出响应。</p>
+            </div>
+
+            <h3 class="h3-sub">2.6.1 点击事件（onclick）</h3>
+
+            <div class="explain">
+                <p>最常用的事件——用户点击某个元素时触发。</p>
+                <p><strong>方式一</strong>：在 HTML 中绑定（行内） <code>&lt;button onclick="alert('点')"&gt;点我&lt;/button&gt;</code></p>
+                <p><strong>方式二</strong>：在 JS 中绑定（推荐） <code>btn.onclick = function() { ... };</code></p>
+            </div>
+
+            <h3 class="h3-sub">2.6.2 页面载入事件（onload）</h3>
+
+            <div class="explain">
+                <p><code>window.onload = function() { ... };</code> — 页面完全加载后执行。</p>
+                <p>如果你把 <code>&lt;script&gt;</code> 放在 <code>&lt;head&gt;</code> 里，脚本执行时 <code>&lt;body&gt;</code> 还没解析完，<code>getElementById</code> 就找不到元素。<code>window.onload</code> 保证<strong>等整个页面准备好了再执行</strong>。</p>
+            </div>
+
+            <h3 class="h3-sub">2.6.3 其他常见事件</h3>
+
+            <div class="demo">
+                <div class="demo-label">🎯 交互演示：事件体验盒子（鼠标移入/移出/点击）</div>
+                <div class="demo-box" id="eventBox" onmouseover="eventOver()" onmouseout="eventOut()" onclick="eventClick()">
+                    鼠标移过来
+                </div>
+                <div class="event-log" id="eventLog">
+                    <div>📡 事件记录：</div>
+                </div>
+            </div>
+
+            <script>
+                let eventLogCount = 0;
+                function addEventLog(msg) {
+                    eventLogCount++;
+                    let log = document.getElementById('eventLog');
+                    let time = new Date().toLocaleTimeString();
+                    log.innerHTML += '<div>[' + time + '] #' + eventLogCount + ' ' + msg + '</div>';
+                    log.scrollTop = log.scrollHeight;
+                }
+                function eventOver() {
+                    let box = document.getElementById('eventBox');
+                    box.style.backgroundColor = '#e74c3c';
+                    box.innerText = '鼠标进来了！';
+                    addEventLog('🔵 onmouseover — 鼠标移入');
+                }
+                function eventOut() {
+                    let box = document.getElementById('eventBox');
+                    box.style.backgroundColor = '#3498db';
+                    box.innerText = '鼠标移走了~';
+                    addEventLog('🔴 onmouseout — 鼠标移出');
+                }
+                function eventClick() {
+                    let box = document.getElementById('eventBox');
+                    box.innerText = '点击！';
+                    box.style.backgroundColor = '#9b59b6';
+                    addEventLog('⚡ onclick — 点击了盒子');
+                    setTimeout(function() {
+                        box.style.backgroundColor = '#3498db';
+                    }, 500);
+                }
+            </script>
+
+            <div class="demo">
+                <div class="demo-label">事件类型表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>事件</th>
+                        <th>触发时机</th>
+                        <th>示例</th>
+                    </tr>
+                    <tr>
+                        <td><code>onclick</code></td>
+                        <td>点击元素</td>
+                        <td><code>btn.onclick = fn</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>ondblclick</code></td>
+                        <td>双击元素</td>
+                        <td><code>btn.ondblclick = fn</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>onmouseover</code></td>
+                        <td>鼠标移到元素上</td>
+                        <td><code>div.onmouseover = fn</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>onmouseout</code></td>
+                        <td>鼠标离开元素</td>
+                        <td><code>div.onmouseout = fn</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>onchange</code></td>
+                        <td>表单内容改变</td>
+                        <td><code>input.onchange = fn</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>onfocus</code></td>
+                        <td>元素获得焦点</td>
+                        <td><code>input.onfocus = fn</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>onblur</code></td>
+                        <td>元素失去焦点</td>
+                        <td><code>input.onblur = fn</code></td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-2-6" class="code-toggle">
+            <label for="code-2-6" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span> 1</span>&lt;div id="box"&gt;鼠标移过来&lt;/div&gt;
+<span> 2</span>&lt;p id="log"&gt;事件记录：&lt;/p&gt;
+<span> 3</span>
+<span> 4</span>&lt;script&gt;
+<span> 5</span>    let box = document.getElementById('box');
+<span> 6</span>    let log = document.getElementById('log');
+<span> 7</span>
+<span> 8</span>    // 鼠标移入
+<span> 9</span>    box.onmouseover = function() {
+<span>10</span>        box.style.backgroundColor = '#e74c3c';
+<span>11</span>        box.innerText = '鼠标进来了';
+<span>12</span>        log.innerText = '事件记录：鼠标移入';
+<span>13</span>    };
+<span>14</span>
+<span>15</span>    // 鼠标移出
+<span>16</span>    box.onmouseout = function() {
+<span>17</span>        box.style.backgroundColor = '#3498db';
+<span>18</span>        box.innerText = '鼠标移走了';
+<span>19</span>        log.innerText = '事件记录：鼠标移出';
+<span>20</span>    };
+<span>21</span>
+<span>22</span>    // 点击
+<span>23</span>    box.onclick = function() {
+<span>24</span>        box.innerText = '点击！';
+<span>25</span>        log.innerText = '事件记录：点击了盒子';
+<span>26</span>    };
+<span>27</span>&lt;/script&gt;</div>
+
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：事件绑定时写的是<strong>函数名或函数体</strong>，不能加括号调用。<code>btn.onclick = myFunc</code> ✅（把函数本身赋值），<code>btn.onclick = myFunc()</code> ❌（这样是直接把函数执行结果赋值，不是绑定事件）。
+            </div>
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：<code>window.onload</code> 只能绑定一个函数。如果再写一次 <code>window.onload = function(){}</code>，会覆盖前一个。如果需要在页面加载后执行多个操作，可以把所有操作放在一个 <code>onload</code> 函数里。
+            </div>
+        </div>
+
+        <!-- ==================== 2.7 简易实战 ==================== -->
+        <div class="unit" id="unit-7">
+            <h2>2.7 简易实战</h2>
+
+            <div class="explain">
+                <p>综合运用前面学到的知识，完成几个能直接运行的交互小项目。</p>
+            </div>
+
+            <!-- 实战一：待办事项列表 -->
+            <div class="project-demo">
+                <h4>📋 实战一：待办事项列表</h4>
+                <p class="explain">点击按钮添加新的待办事项，点击事项可以删除它。</p>
+                <div class="todo-input">
+                    <input type="text" id="todoInput" placeholder="输入待办事项" onkeydown="if(event.key==='Enter') addTodo()">
+                    <button class="demo-btn green" onclick="addTodo()">添加</button>
+                </div>
+                <div id="todoList"></div>
+                <div class="demo-result" id="todoResult">💡 试试输入内容后点击"添加"，或按回车键</div>
+            </div>
+
+            <script>
+                // 添加默认事项
+                (function() {
+                    addTodoItem('学习 JavaScript');
+                    addTodoItem('练习 DOM 操作');
+                })();
+
+                function addTodo() {
+                    let input = document.getElementById('todoInput');
+                    let text = input.value.trim();
+                    if (text === '') {
+                        document.getElementById('todoResult').innerHTML = '⚠️ 请输入内容！';
+                        return;
+                    }
+                    addTodoItem(text);
+                    input.value = '';
+                    document.getElementById('todoResult').innerHTML = '✅ 已添加："' + text + '"';
+                }
+
+                function addTodoItem(text) {
+                    let list = document.getElementById('todoList');
+                    let item = document.createElement('div');
+                    item.className = 'todo-item';
+
+                    let textSpan = document.createElement('span');
+                    textSpan.innerText = text;
+
+                    let deleteBtn = document.createElement('button');
+                    deleteBtn.innerText = '删除';
+                    deleteBtn.onclick = function() {
+                        list.removeChild(item);
+                        document.getElementById('todoResult').innerHTML = '🗑️ 已删除："' + text + '"';
+                    };
+
+                    item.appendChild(textSpan);
+                    item.appendChild(deleteBtn);
+                    list.appendChild(item);
+                }
+            </script>
+
+            <input type="checkbox" id="code-2-7-1" class="code-toggle">
+            <label for="code-2-7-1" class="toggle-label">查看待办事项源代码</label>
+            <div class="code-block"><span> 1</span>&lt;div class="todo-input"&gt;
+<span> 2</span>    &lt;input type="text" id="todoInput" placeholder="输入待办事项"&gt;
+<span> 3</span>    &lt;button onclick="addTodo()"&gt;添加&lt;/button&gt;
+<span> 4</span>&lt;/div&gt;
+<span> 5</span>&lt;div id="todoList"&gt;&lt;/div&gt;
+<span> 6</span>
+<span> 7</span>&lt;script&gt;
+<span> 8</span>    function addTodo() {
+<span> 9</span>        let input = document.getElementById('todoInput');
+<span>10</span>        let text = input.value.trim();
+<span>11</span>
+<span>12</span>        if (text === '') {
+<span>13</span>            alert('请输入内容');
+<span>14</span>            return;
+<span>15</span>        }
+<span>16</span>
+<span>17</span>        addTodoItem(text);
+<span>18</span>        input.value = '';
+<span>19</span>    }
+<span>20</span>
+<span>21</span>    function addTodoItem(text) {
+<span>22</span>        let list = document.getElementById('todoList');
+<span>23</span>        let item = document.createElement('div');
+<span>24</span>        item.className = 'todo-item';
+<span>25</span>
+<span>26</span>        let textSpan = document.createElement('span');
+<span>27</span>        textSpan.innerText = text;
+<span>28</span>
+<span>29</span>        let deleteBtn = document.createElement('button');
+<span>30</span>        deleteBtn.innerText = '删除';
+<span>31</span>        deleteBtn.onclick = function() {
+<span>32</span>            list.removeChild(item);
+<span>33</span>        };
+<span>34</span>
+<span>35</span>        item.appendChild(textSpan);
+<span>36</span>        item.appendChild(deleteBtn);
+<span>37</span>        list.appendChild(item);
+<span>38</span>    }
+<span>39</span>&lt;/script&gt;</div>
+
+            <!-- 实战二：点击计数器 -->
+            <div class="project-demo">
+                <h4>🔢 实战二：点击计数器</h4>
+                <p class="explain">每点一次按钮，数字加 1。点击归零可以重置。</p>
+                <div class="counter-display" id="counter">0</div>
+                <div class="counter-btns">
+                    <button class="demo-btn green" style="font-size:20px; padding:10px 30px;" onclick="increment()">+1</button>
+                    <button class="demo-btn red" style="font-size:20px; padding:10px 30px;" onclick="resetCount()">归零</button>
+                </div>
+                <div class="demo-result" id="counterResult">当前计数：0</div>
+            </div>
+
+            <script>
+                let count = 0;
+                function increment() {
+                    count++;
+                    document.getElementById('counter').innerText = count;
+                    document.getElementById('counterResult').innerText = '当前计数：' + count;
+                }
+                function resetCount() {
+                    count = 0;
+                    document.getElementById('counter').innerText = count;
+                    document.getElementById('counterResult').innerText = '当前计数：0（已归零）';
+                }
+            </script>
+
+            <input type="checkbox" id="code-2-7-2" class="code-toggle">
+            <label for="code-2-7-2" class="toggle-label">查看点击计数器源代码</label>
+            <div class="code-block"><span> 1</span>&lt;div class="count" id="counter"&gt;0&lt;/div&gt;
+<span> 2</span>&lt;button class="btn-add" onclick="increment()"&gt;+1&lt;/button&gt;
+<span> 3</span>&lt;button class="btn-reset" onclick="resetCount()"&gt;归零&lt;/button&gt;
+<span> 4</span>
+<span> 5</span>&lt;script&gt;
+<span> 6</span>    let count = 0;
+<span> 7</span>
+<span> 8</span>    function increment() {
+<span> 9</span>        count++;
+<span>10</span>        document.getElementById('counter').innerText = count;
+<span>11</span>    }
+<span>12</span>
+<span>13</span>    function resetCount() {
+<span>14</span>        count = 0;
+<span>15</span>        document.getElementById('counter').innerText = count;
+<span>16</span>    }
+<span>17</span>&lt;/script&gt;</div>
+
+            <!-- 实战三：简易图片轮播 -->
+            <div class="project-demo">
+                <h4>🖼️ 实战三：简易图片轮播（手动切换）</h4>
+                <p class="explain">点击"上一张"或"下一张"切换图片。</p>
+                <div class="slider-container">
+                    <img id="sliderImg" src="https://via.placeholder.com/400x250/3498db/ffffff?text=图片1" alt="轮播图">
+                </div>
+                <div class="slider-controls">
+                    <button onclick="prevImage()">◀ 上一张</button>
+                    <button onclick="nextImage()">下一张 ▶</button>
+                </div>
+                <p class="slider-label" id="imageLabel">第 1 / 5 张</p>
+            </div>
+
+            <script>
+                let images = [
+                    'https://via.placeholder.com/400x250/3498db/ffffff?text=图片1',
+                    'https://via.placeholder.com/400x250/e74c3c/ffffff?text=图片2',
+                    'https://via.placeholder.com/400x250/2ecc71/ffffff?text=图片3',
+                    'https://via.placeholder.com/400x250/f39c12/ffffff?text=图片4',
+                    'https://via.placeholder.com/400x250/9b59b6/ffffff?text=图片5'
+                ];
+                let currentIndex = 0;
+                let sliderImg = document.getElementById('sliderImg');
+                let imageLabel = document.getElementById('imageLabel');
+
+                function updateImage() {
+                    sliderImg.src = images[currentIndex];
+                    imageLabel.innerText = '第 ' + (currentIndex + 1) + ' / ' + images.length + ' 张';
+                }
+                function nextImage() {
+                    currentIndex++;
+                    if (currentIndex >= images.length) currentIndex = 0;
+                    updateImage();
+                }
+                function prevImage() {
+                    currentIndex--;
+                    if (currentIndex < 0) currentIndex = images.length - 1;
+                    updateImage();
+                }
+            </script>
+
+            <input type="checkbox" id="code-2-7-3" class="code-toggle">
+            <label for="code-2-7-3" class="toggle-label">查看图片轮播源代码</label>
+            <div class="code-block"><span> 1</span>&lt;div class="slider"&gt;
+<span> 2</span>    &lt;img id="sliderImg" src="..." alt="轮播图"&gt;
+<span> 3</span>&lt;/div&gt;
+<span> 4</span>&lt;div class="controls"&gt;
+<span> 5</span>    &lt;button onclick="prevImage()"&gt;◀ 上一张&lt;/button&gt;
+<span> 6</span>    &lt;button onclick="nextImage()"&gt;下一张 ▶&lt;/button&gt;
+<span> 7</span>&lt;/div&gt;
+<span> 8</span>&lt;p id="imageLabel"&gt;第 1 / 5 张&lt;/p&gt;
+<span> 9</span>
+<span>10</span>&lt;script&gt;
+<span>11</span>    let images = [
+<span>12</span>        '图片1.jpg',
+<span>13</span>        '图片2.jpg',
+<span>14</span>        '图片3.jpg',
+<span>15</span>        '图片4.jpg',
+<span>16</span>        '图片5.jpg'
+<span>17</span>    ];
+<span>18</span>    let currentIndex = 0;
+<span>19</span>    let imgElement = document.getElementById('sliderImg');
+<span>20</span>    let label = document.getElementById('imageLabel');
+<span>21</span>
+<span>22</span>    function updateImage() {
+<span>23</span>        imgElement.src = images[currentIndex];
+<span>24</span>        label.innerText = '第 ' + (currentIndex + 1) + ' / ' + images.length + ' 张';
+<span>25</span>    }
+<span>26</span>
+<span>27</span>    function nextImage() {
+<span>28</span>        currentIndex++;
+<span>29</span>        if (currentIndex >= images.length) {
+<span>30</span>            currentIndex = 0;
+<span>31</span>        }
+<span>32</span>        updateImage();
+<span>33</span>    }
+<span>34</span>
+<span>35</span>    function prevImage() {
+<span>36</span>        currentIndex--;
+<span>37</span>        if (currentIndex < 0) {
+<span>38</span>            currentIndex = images.length - 1;
+<span>39</span>        }
+<span>40</span>        updateImage();
+<span>41</span>    }
+<span>42</span>&lt;/script&gt;</div>
+
+            <div class="demo">
+                <div class="demo-label">实战项目总结表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>项目</th>
+                        <th>用到的知识点</th>
+                    </tr>
+                    <tr>
+                        <td>待办事项</td>
+                        <td>获取元素、创建元素、事件绑定、增删节点</td>
+                    </tr>
+                    <tr>
+                        <td>点击计数器</td>
+                        <td>变量、事件绑定、修改元素内容</td>
+                    </tr>
+                    <tr>
+                        <td>图片轮播</td>
+                        <td>数组、事件绑定、修改属性（src）、条件判断</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</body>
+
+</html>

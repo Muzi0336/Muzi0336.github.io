@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>箭头函数与this</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        .explain p {
+            margin-bottom: 8px;
+        }
+
+        .explain ul, .explain ol {
+            margin-left: 20px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        .explain li {
+            margin-bottom: 4px;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        .demo pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            margin-top: 8px;
+        }
+
+        .demo .output-area {
+            background: #1a1a2e;
+            color: #0f0;
+            padding: 10px 12px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            margin-top: 8px;
+            white-space: pre-wrap;
+            min-height: 30px;
+        }
+
+        .demo button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 5px 5px 5px 0;
+            transition: background 0.2s;
+        }
+
+        .demo button:hover {
+            background: #2980b9;
+        }
+
+        .demo input[type="text"] {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+            margin: 5px 5px 5px 0;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked + .toggle-label + .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked + .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        /* 提示框 */
+        .tip-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px 15px;
+            margin: 12px 0;
+            border-radius: 0 4px 4px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .tip-box strong {
+            color: #856404;
+        }
+
+        .warn-box {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 12px 15px;
+            margin: 12px 0;
+            border-radius: 0 4px 4px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .warn-box strong {
+            color: #721c24;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 12px 15px;
+            margin: 12px 0;
+            border-radius: 0 4px 4px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* 子标题 */
+        .unit h3 {
+            font-size: 17px;
+            color: #34495e;
+            margin: 15px 0 10px 0;
+        }
+
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                width: 100%;
+                height: auto;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                padding: 8px 0;
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            .sidebar h3 {
+                display: none;
+            }
+            .sidebar a {
+                display: inline-block;
+                padding: 6px 12px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+            main {
+                margin-left: 0;
+                padding: 15px;
+                padding-bottom: 60px;
+            }
+            .unit {
+                padding: 15px;
+            }
+            .unit h2 {
+                font-size: 17px;
+            }
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav class="sidebar">
+        <h3>箭头函数与this</h3>
+        <a href="#unit-1">1.1 箭头函数语法</a>
+        <a href="#unit-2">1.2 this是什么</a>
+        <a href="#unit-3">1.3 普通函数vs箭头函数this</a>
+        <a href="#unit-4">1.4 适用场景</a>
+        <a href="#unit-5">实践作业</a>
+        <a href="#unit-6">本章复盘</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- ========== 1.1 箭头函数语法 ========== -->
+        <div class="unit" id="unit-1">
+            <h2>1.1 箭头函数语法</h2>
+
+            <div class="explain">
+                <p>箭头函数是 ES6 提供的一种<strong>简洁的函数写法</strong>，用 <code>=&gt;</code> 符号代替 <code>function</code> 关键字。</p>
+                <p>箭头函数让代码更短、更易读，但不能完全替代普通函数——两者的行为（尤其是 <code>this</code>）有本质区别。</p>
+            </div>
+
+            <!-- 语法速查表 -->
+            <div class="demo">
+                <div class="demo-label">语法速查表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>场景</th>
+                        <th>写法</th>
+                        <th>示例</th>
+                    </tr>
+                    <tr>
+                        <td>多个参数</td>
+                        <td><code>(参数1, 参数2) =&gt; 表达式</code></td>
+                        <td><code>(a, b) =&gt; a + b</code></td>
+                    </tr>
+                    <tr>
+                        <td>一个参数</td>
+                        <td><code>参数 =&gt; 表达式</code></td>
+                        <td><code>n =&gt; n * 2</code></td>
+                    </tr>
+                    <tr>
+                        <td>没有参数</td>
+                        <td><code>() =&gt; 表达式</code></td>
+                        <td><code>() =&gt; 'Hi'</code></td>
+                    </tr>
+                    <tr>
+                        <td>多行函数体</td>
+                        <td><code>() =&gt; { ... }</code></td>
+                        <td><code>() =&gt; { let x = 1; return x; }</code></td>
+                    </tr>
+                    <tr>
+                        <td>返回对象</td>
+                        <td><code>() =&gt; ({ ... })</code></td>
+                        <td><code>name =&gt; ({ name })</code></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                ⚠️ <strong>新手易错</strong>：返回一个对象时，必须用小括号包裹 <code>{}</code>，否则大括号会被当成函数体。<code>name =&gt; ({ name })</code> ✅，<code>name =&gt; { name }</code> ❌。
+            </div>
+
+            <!-- 代码示例 -->
+            <input type="checkbox" id="code-1" class="code-toggle">
+            <label for="code-1" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// ========== 基础语法对比 ==========
+<span>2</span>
+<span>3</span>// 传统函数
+<span>4</span>function add(a, b) {
+<span>5</span>    return a + b;
+<span>6</span>}
+<span>7</span>
+<span>8</span>// 箭头函数完整写法
+<span>9</span>let add = (a, b) =&gt; {
+<span>10</span>    return a + b;
+<span>11</span>};
+<span>12</span>
+<span>13</span>// 箭头函数简写（只有一行时省略 {} 和 return）
+<span>14</span>let add = (a, b) =&gt; a + b;
+<span>15</span>
+<span>16</span>// 只有一个参数时，可以省略小括号
+<span>17</span>let double = n =&gt; n * 2;
+<span>18</span>
+<span>19</span>// 没有参数时，必须写小括号
+<span>20</span>let sayHi = () =&gt; 'Hi！';</div>
+
+            <!-- 代码逐行讲解 -->
+            <div class="demo">
+                <div class="demo-label">代码逐行讲解：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>代码</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td><code>function add(a, b) { ... }</code></td>
+                        <td>传统函数写法</td>
+                    </tr>
+                    <tr>
+                        <td><code>let add = (a, b) =&gt; { ... }</code></td>
+                        <td>箭头函数完整写法，等价于传统函数</td>
+                    </tr>
+                    <tr>
+                        <td><code>let add = (a, b) =&gt; a + b</code></td>
+                        <td>只有一行表达式时省略 <code>{}</code> 和 <code>return</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>let double = n =&gt; n * 2</code></td>
+                        <td>单参数省略小括号</td>
+                    </tr>
+                    <tr>
+                        <td><code>let sayHi = () =&gt; 'Hi!'</code></td>
+                        <td>无参数必须保留小括号</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 返回对象示例 -->
+            <input type="checkbox" id="code-1b" class="code-toggle">
+            <label for="code-1b" class="toggle-label">查看：返回对象与回调用法</label>
+            <div class="code-block"><span>1</span>// ========== 返回对象要特别注意 ==========
+<span>2</span>// 错误写法：{} 会被当成函数体，不是对象
+<span>3</span>// let getUser = (name) =&gt; { name: name };  // ❌ 报错
+<span>4</span>
+<span>5</span>// 正确写法：用小括号包起来
+<span>6</span>let getUser = (name) =&gt; ({ name: name });
+<span>7</span>console.log(getUser('张三'));  // { name: '张三' }
+<span>8</span>
+<span>9</span>// ========== 常见使用场景 ==========
+<span>10</span>// 回调函数（配合数组方法）
+<span>11</span>let numbers = [1, 2, 3, 4, 5];
+<span>12</span>
+<span>13</span>// 传统写法
+<span>14</span>let doubled1 = numbers.map(function(n) {
+<span>15</span>    return n * 2;
+<span>16</span>});
+<span>17</span>
+<span>18</span>// 箭头函数写法（简洁很多）
+<span>19</span>let doubled2 = numbers.map(n =&gt; n * 2);
+<span>20</span>console.log(doubled2);  // [2, 4, 6, 8, 10]</div>
+        </div>
+
+        <!-- ========== 1.2 this是什么 ========== -->
+        <div class="unit" id="unit-2">
+            <h2>1.2 this是什么</h2>
+
+            <div class="explain">
+                <p><code>this</code> 就是"<strong>当前正在调用这个函数的对象</strong>"。通俗点说——<strong>谁调用了这个函数，<code>this</code> 就是谁</strong>。</p>
+                <p><code>this</code> 的值不是在写代码时确定的，而是在<strong>运行时</strong>根据"谁调用了它"来决定的。这是 JavaScript <code>this</code> 最容易让人迷糊的地方。</p>
+            </div>
+
+            <!-- 基本规则 -->
+            <div class="demo">
+                <div class="demo-label">this 基本规则：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>场景</th>
+                        <th>this 指向谁</th>
+                    </tr>
+                    <tr>
+                        <td>全局调用 <code>fn()</code></td>
+                        <td><code>window</code>（浏览器环境）</td>
+                    </tr>
+                    <tr>
+                        <td>对象调用 <code>obj.fn()</code></td>
+                        <td><code>obj</code></td>
+                    </tr>
+                    <tr>
+                        <td>事件处理函数</td>
+                        <td>触发事件的那个 DOM 元素</td>
+                    </tr>
+                    <tr>
+                        <td>箭头函数</td>
+                        <td><strong>继承外层作用域的 this</strong></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 代码示例 -->
+            <input type="checkbox" id="code-2" class="code-toggle">
+            <label for="code-2" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// ========== 情况1：全局调用 ==========
+<span>2</span>function showThis() {
+<span>3</span>    console.log(this);   // window（浏览器中全局对象）
+<span>4</span>}
+<span>5</span>showThis();   // 等价于 window.showThis()
+<span>6</span>
+<span>7</span>// ========== 情况2：对象方法调用 ==========
+<span>8</span>let user = {
+<span>9</span>    name: '张三',
+<span>10</span>    sayName: function() {
+<span>11</span>        console.log(this);     // user 对象本身
+<span>12</span>        console.log(this.name); // 张三
+<span>13</span>    }
+<span>14</span>};
+<span>15</span>user.sayName();   // this = user（因为是 user 调用了 sayName）
+<span>16</span>
+<span>17</span>// ========== 情况3：普通函数赋值给变量再调用 ==========
+<span>18</span>let fn = user.sayName;
+<span>19</span>// fn();  // this 变成了 window，name 变成 undefined
+<span>20</span>// 因为现在是 fn() 在调用，不是 user.fn() 在调用</div>
+
+            <!-- 代码逐行讲解 -->
+            <div class="demo">
+                <div class="demo-label">代码逐行讲解：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>代码</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td><code>showThis()</code></td>
+                        <td>直接调用，<code>this</code> 指向 <code>window</code>（全局对象）</td>
+                    </tr>
+                    <tr>
+                        <td><code>user.sayName()</code></td>
+                        <td><code>user</code> 调用，<code>this</code> 指向 <code>user</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>let fn = user.sayName</code></td>
+                        <td>把函数拿出来赋给 <code>fn</code>，此时 <code>fn</code> 和 <code>user</code> 没关系了</td>
+                    </tr>
+                    <tr>
+                        <td><code>fn()</code></td>
+                        <td>直接调用，<code>this</code> 又变回 <code>window</code></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                💡 <strong>记忆口诀</strong>：<code>this</code> 就看<strong>调用方式</strong>，不看定义位置。<code>obj.fn()</code> 就是 <code>obj</code>，<code>fn()</code> 就是 <code>window</code>。
+            </div>
+        </div>
+
+        <!-- ========== 1.3 普通函数vs箭头函数this ========== -->
+        <div class="unit" id="unit-3">
+            <h2>1.3 普通函数vs箭头函数this</h2>
+
+            <div class="explain">
+                <p>这是本章的<strong>核心重点</strong>——两者对 <code>this</code> 的处理方式完全不同。</p>
+                <p><strong>普通函数的 this</strong>：运行时决定，谁调用就是谁。</p>
+                <p><strong>箭头函数的 this</strong>：定义时决定，继承外层作用域的 this。</p>
+            </div>
+
+            <h3>对比示例一：对象方法中（最关键的坑）</h3>
+
+            <input type="checkbox" id="code-3" class="code-toggle">
+            <label for="code-3" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>let person = {
+<span>2</span>    name: '小明',
+<span>3</span>    age: 18,
+<span>4</span>
+<span>5</span>    // ✅ 普通函数：this 指向调用它的对象
+<span>6</span>    sayName: function() {
+<span>7</span>        console.log('普通函数：' + this.name);  // 小明
+<span>8</span>    },
+<span>9</span>
+<span>10</span>    // ❌ 箭头函数：this 继承外层（这里是 window）
+<span>11</span>    sayAge: () =&gt; {
+<span>12</span>        console.log('箭头函数：' + this.age);   // undefined（window.age 不存在）
+<span>13</span>    },
+<span>14</span>
+<span>15</span>    // 演示嵌套中的 this 差异
+<span>16</span>    introduce: function() {
+<span>17</span>        console.log('外层普通函数：' + this.name);  // 小明 ✅
+<span>18</span>
+<span>19</span>        // 嵌套普通函数（this 丢失）
+<span>20</span>        function inner() {
+<span>21</span>            console.log('内层普通函数：' + this.name);  // undefined ❌
+<span>22</span>        }
+<span>23</span>
+<span>24</span>        // 嵌套箭头函数（this 继承外层）
+<span>25</span>        let innerArrow = () =&gt; {
+<span>26</span>            console.log('内层箭头函数：' + this.name);  // 小明 ✅
+<span>27</span>        }
+<span>28</span>
+<span>29</span>        inner();
+<span>30</span>        innerArrow();
+<span>31</span>    }
+<span>32</span>};
+<span>33</span>
+<span>34</span>person.sayName();      // 普通函数：小明
+<span>35</span>person.sayAge();       // 箭头函数：undefined
+<span>36</span>person.introduce();
+<span>37</span>// 外层普通函数：小明
+<span>38</span>// 内层普通函数：undefined
+<span>39</span>// 内层箭头函数：小明</div>
+
+            <!-- 运行结果对比 -->
+            <div class="demo">
+                <div class="demo-label">运行结果对比：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>函数</th>
+                        <th>结果</th>
+                        <th>原因</th>
+                    </tr>
+                    <tr>
+                        <td><code>person.sayName()</code>（普通函数）</td>
+                        <td><code>小明</code> ✅</td>
+                        <td><code>person</code> 调用，<code>this</code> = <code>person</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>person.sayAge()</code>（箭头函数）</td>
+                        <td><code>undefined</code> ❌</td>
+                        <td>箭头函数 <code>this</code> 继承外层 <code>window</code>，<code>window.age</code> 不存在</td>
+                    </tr>
+                    <tr>
+                        <td><code>introduce</code> 里的 <code>inner()</code></td>
+                        <td><code>undefined</code> ❌</td>
+                        <td>嵌套普通函数独立调用，<code>this</code> = <code>window</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>introduce</code> 里的 <code>innerArrow()</code></td>
+                        <td><code>小明</code> ✅</td>
+                        <td>箭头函数继承外层 <code>introduce</code> 的 <code>this</code>（即 <code>person</code>）</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>对比示例二：定时器中（经典场景）</h3>
+
+            <input type="checkbox" id="code-3b" class="code-toggle">
+            <label for="code-3b" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>let team = {
+<span>2</span>    name: '前端组',
+<span>3</span>    members: ['小明', '小红', '小刚'],
+<span>4</span>
+<span>5</span>    // 传统写法：用 that = this 保存外层 this
+<span>6</span>    showTeamOld: function() {
+<span>7</span>        let that = this;  // 先把 this 存起来
+<span>8</span>        setTimeout(function() {
+<span>9</span>            console.log('传统写法：' + that.name + '的成员');
+<span>10</span>            that.members.forEach(function(m) {
+<span>11</span>                console.log('  - ' + m);
+<span>12</span>            });
+<span>13</span>        }, 100);
+<span>14</span>    },
+<span>15</span>
+<span>16</span>    // 箭头函数写法：自然继承外层 this
+<span>17</span>    showTeamNew: function() {
+<span>18</span>        setTimeout(() =&gt; {
+<span>19</span>            console.log('箭头写法：' + this.name + '的成员');
+<span>20</span>            this.members.forEach(m =&gt; {
+<span>21</span>                console.log('  - ' + m);
+<span>22</span>            });
+<span>23</span>        }, 100);
+<span>24</span>    }
+<span>25</span>};
+<span>26</span>
+<span>27</span>team.showTeamOld();
+<span>28</span>// 传统写法：前端组的成员
+<span>29</span>//   - 小明
+<span>30</span>//   - 小红
+<span>31</span>//   - 小刚
+<span>32</span>
+<span>33</span>team.showTeamNew();
+<span>34</span>// 箭头写法：前端组的成员
+<span>35</span>//   - 小明
+<span>36</span>//   - 小红
+<span>37</span>//   - 小刚</div>
+
+            <div class="tip-box">
+                💡 箭头函数出现之前，开发者用 <code>let that = this</code> 或 <code>let self = this</code> 保存外层 <code>this</code>，然后在内部函数里用 <code>that</code>。箭头函数让这种"存 this"的写法不再需要了。
+            </div>
+        </div>
+
+        <!-- ========== 1.4 适用场景 ========== -->
+        <div class="unit" id="unit-4">
+            <h2>1.4 适用场景</h2>
+
+            <div class="explain">
+                <p>箭头函数并非万能，有些场景适合用，有些场景<strong>绝对不能用</strong>。</p>
+            </div>
+
+            <!-- 适合用箭头函数 -->
+            <div class="demo">
+                <div class="demo-label">适合用箭头函数的场景：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>场景</th>
+                        <th>示例</th>
+                        <th>原因</th>
+                    </tr>
+                    <tr>
+                        <td>数组方法的回调</td>
+                        <td><code>arr.map(x =&gt; x * 2)</code></td>
+                        <td>简洁，不需要自己的 this</td>
+                    </tr>
+                    <tr>
+                        <td>定时器回调</td>
+                        <td><code>setTimeout(() =&gt; {...}, 1000)</code></td>
+                        <td>自然继承外层 this</td>
+                    </tr>
+                    <tr>
+                        <td>Promise 回调</td>
+                        <td><code>.then(data =&gt; ...)</code></td>
+                        <td>简洁，不需要自己的 this</td>
+                    </tr>
+                    <tr>
+                        <td>事件监听（不依赖 this）</td>
+                        <td><code>addEventListener('click', () =&gt; ...)</code></td>
+                        <td>不需要 this 指向事件元素</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 不适合用箭头函数 -->
+            <div class="demo">
+                <div class="demo-label">不适合用箭头函数的场景：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>场景</th>
+                        <th>示例</th>
+                        <th>原因</th>
+                    </tr>
+                    <tr>
+                        <td>对象方法</td>
+                        <td><code>{ name: 'A', say: () =&gt; this.name }</code></td>
+                        <td>this 不指向对象本身</td>
+                    </tr>
+                    <tr>
+                        <td>需要动态 this 的函数</td>
+                        <td><code>button.onclick = () =&gt; this</code></td>
+                        <td>this 不是触发事件的元素</td>
+                    </tr>
+                    <tr>
+                        <td>构造函数</td>
+                        <td><code>let Person = () =&gt; {}</code></td>
+                        <td>箭头函数不能 new</td>
+                    </tr>
+                    <tr>
+                        <td>需要 arguments 的函数</td>
+                        <td><code>() =&gt; console.log(arguments)</code></td>
+                        <td>箭头函数没有 arguments</td>
+                    </tr>
+                </table>
+            </div>
+
+            <input type="checkbox" id="code-4" class="code-toggle">
+            <label for="code-4" class="toggle-label">查看源代码</label>
+            <div class="code-block"><span>1</span>// ✅ 适合：数组回调
+<span>2</span>let articles = [
+<span>3</span>    { title: 'JavaScript入门', views: 100 },
+<span>4</span>    { title: 'CSS布局', views: 200 },
+<span>5</span>    { title: 'HTML语义化', views: 150 }
+<span>6</span>];
+<span>7</span>
+<span>8</span>// map 回调用箭头函数，简洁清晰
+<span>9</span>let titles = articles.map(article =&gt; article.title);
+<span>10</span>console.log(titles);  // ['JavaScript入门', 'CSS布局', 'HTML语义化']
+<span>11</span>
+<span>12</span>// filter 回调用箭头函数
+<span>13</span>let popular = articles.filter(article =&gt; article.views &gt; 120);
+<span>14</span>console.log(popular);
+<span>15</span>
+<span>16</span>// ❌ 不适合：对象方法
+<span>17</span>let badExample = {
+<span>18</span>    name: '我是错误的',
+<span>19</span>    say: () =&gt; {
+<span>20</span>        // this 指向 window，不是 badExample
+<span>21</span>        console.log(this.name);  // undefined
+<span>22</span>    }
+<span>23</span>};
+<span>24</span>badExample.say();
+<span>25</span>
+<span>26</span>// ✅ 对象方法用传统函数
+<span>27</span>let goodExample = {
+<span>28</span>    name: '我是正确的',
+<span>29</span>    say() {   // 方法简写，也是传统函数
+<span>30</span>        console.log(this.name);  // 我是正确的
+<span>31</span>    }
+<span>32</span>};
+<span>33</span>goodExample.say();
+<span>34</span>
+<span>35</span>// ❌ 不适合：需要动态 this 的 DOM 事件
+<span>36</span>let btn = document.createElement('button');
+<span>37</span>btn.innerText = '点我';
+<span>38</span>document.body.appendChild(btn);
+<span>39</span>
+<span>40</span>// 箭头函数里 this 是 window，不是按钮
+<span>41</span>btn.addEventListener('click', () =&gt; {
+<span>42</span>    console.log('箭头：', this);  // window
+<span>43</span>});
+<span>44</span>
+<span>45</span>// 普通函数里 this 是触发事件的按钮元素
+<span>46</span>btn.addEventListener('click', function() {
+<span>47</span>    console.log('普通：', this);  // &lt;button&gt;点我&lt;/button&gt;
+<span>48</span>});</div>
+
+            <!-- 选择速查表 -->
+            <div class="demo">
+                <div class="demo-label">选择速查表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>你要做什么</th>
+                        <th>用什么函数</th>
+                    </tr>
+                    <tr>
+                        <td>数组方法的回调函数</td>
+                        <td>✅ 箭头函数</td>
+                    </tr>
+                    <tr>
+                        <td>对象的方法</td>
+                        <td>✅ 普通函数（或方法简写）</td>
+                    </tr>
+                    <tr>
+                        <td>定时器/异步回调里要用外层 this</td>
+                        <td>✅ 箭头函数</td>
+                    </tr>
+                    <tr>
+                        <td>DOM 事件里要用 <code>this</code> 指向事件元素</td>
+                        <td>✅ 普通函数</td>
+                    </tr>
+                    <tr>
+                        <td>需要 <code>new</code> 创建实例的构造函数</td>
+                        <td>✅ 普通函数</td>
+                    </tr>
+                    <tr>
+                        <td>需要用 <code>arguments</code> 对象</td>
+                        <td>✅ 普通函数</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="warn-box">
+                ⚠️ <strong>新手易错</strong>：<strong>对象的方法不要用箭头函数</strong>。这是最常见的坑。<code>{ fn: () =&gt; this.xxx }</code> 里的 <code>this</code> 永远不是这个对象。
+            </div>
+            <div class="warn-box">
+                ⚠️ <strong>新手易错</strong>：箭头函数<strong>没有自己的 <code>this</code>、<code>arguments</code>、<code>super</code>、<code>new.target</code></strong>。它就是个"借用"外层 <code>this</code> 的简写函数，不是万能替代品。
+            </div>
+            <div class="warn-box">
+                ⚠️ <strong>新手易错</strong>：箭头函数不能用作<strong>构造函数</strong>，<code>new (() =&gt; {})</code> 会直接报错：<code>TypeError: xxx is not a constructor</code>。
+            </div>
+        </div>
+
+        <!-- ========== 实践作业 ========== -->
+        <div class="unit" id="unit-5">
+            <h2>实践作业</h2>
+
+            <div class="explain">
+                <p><strong>题目</strong>：修复一段 <code>this</code> 指向错误的代码。</p>
+                <p><strong>原始代码</strong>（下面的代码有3处 <code>this</code> 指向错误，请找出并修复）：</p>
+            </div>
+
+            <input type="checkbox" id="code-5a" class="code-toggle">
+            <label for="code-5a" class="toggle-label">查看原始代码</label>
+            <div class="code-block"><span>1</span>let blog = {
+<span>2</span>    name: '我的博客',
+<span>3</span>    posts: ['ES6入门', 'React教程', 'Next.js实战'],
+<span>4</span>
+<span>5</span>    // 错误1：对象方法用了箭头函数
+<span>6</span>    showName: () =&gt; {
+<span>7</span>        console.log('博客名：' + this.name);
+<span>8</span>    },
+<span>9</span>
+<span>10</span>    // 错误2：嵌套回调里的 this 丢失
+<span>11</span>    showPosts: function() {
+<span>12</span>        this.posts.forEach(function(post) {
+<span>13</span>            console.log(this.name + ' - ' + post);
+<span>14</span>        });
+<span>15</span>    },
+<span>16</span>
+<span>17</span>    // 错误3：定时器里 this 丢失
+<span>18</span>    delayedShow: function() {
+<span>19</span>        setTimeout(function() {
+<span>20</span>            console.log('延迟显示：' + this.name);
+<span>21</span>        }, 1000);
+<span>22</span>    }
+<span>23</span>};</div>
+
+            <div class="explain">
+                <p><strong>参考答案</strong>（先自己写，再对照）：</p>
+            </div>
+
+            <input type="checkbox" id="code-5b" class="code-toggle">
+            <label for="code-5b" class="toggle-label">查看参考答案</label>
+            <div class="code-block"><span>1</span>let blog = {
+<span>2</span>    name: '我的博客',
+<span>3</span>    posts: ['ES6入门', 'React教程', 'Next.js实战'],
+<span>4</span>
+<span>5</span>    // 修复1：对象方法改用普通函数
+<span>6</span>    showName: function() {
+<span>7</span>        console.log('博客名：' + this.name);  // 博客名：我的博客 ✅
+<span>8</span>    },
+<span>9</span>
+<span>10</span>    // 修复2：forEach 回调用箭头函数（继承外层 this）
+<span>11</span>    showPosts: function() {
+<span>12</span>        this.posts.forEach((post) =&gt; {
+<span>13</span>            console.log(this.name + ' - ' + post);
+<span>14</span>            // 我的博客 - ES6入门
+<span>15</span>            // 我的博客 - React教程
+<span>16</span>            // 我的博客 - Next.js实战
+<span>17</span>        });
+<span>18</span>    },
+<span>19</span>
+<span>20</span>    // 修复3：定时器回调用箭头函数（继承外层 this）
+<span>21</span>    delayedShow: function() {
+<span>22</span>        setTimeout(() =&gt; {
+<span>23</span>            console.log('延迟显示：' + this.name);  // 延迟显示：我的博客 ✅
+<span>24</span>        }, 1000);
+<span>25</span>    }
+<span>26</span>};
+<span>27</span>
+<span>28</span>blog.showName();
+<span>29</span>blog.showPosts();
+<span>30</span>blog.delayedShow();</div>
+
+            <!-- 修复总结 -->
+            <div class="demo">
+                <div class="demo-label">修复总结：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>错误</th>
+                        <th>修复方案</th>
+                        <th>原因</th>
+                    </tr>
+                    <tr>
+                        <td>对象方法用了箭头函数</td>
+                        <td>改成 <code>function()</code></td>
+                        <td>对象方法需要 <code>this</code> 指向对象本身</td>
+                    </tr>
+                    <tr>
+                        <td><code>forEach</code> 回调里 <code>this</code> 丢失</td>
+                        <td>回调改成箭头函数</td>
+                        <td>箭头函数继承外层 <code>this</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>setTimeout</code> 里 <code>this</code> 丢失</td>
+                        <td>回调改成箭头函数</td>
+                        <td>箭头函数继承外层 <code>this</code></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- ========== 本章复盘 ========== -->
+        <div class="unit" id="unit-6">
+            <h2>本章复盘</h2>
+
+            <div class="explain">
+                <p>本章核心要点一览：</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">箭头函数与 this 核心要点：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>要点</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td><strong>箭头函数语法</strong></td>
+                        <td><code>=&gt;</code> 简写函数，单行可省略 <code>{}</code> 和 <code>return</code>，返回对象需 <code>({})</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>this 的本质</strong></td>
+                        <td>谁调用就指向谁，运行时决定</td>
+                    </tr>
+                    <tr>
+                        <td><strong>普通函数 this</strong></td>
+                        <td>取决于调用方式：<code>obj.fn()</code> → obj，<code>fn()</code> → window</td>
+                    </tr>
+                    <tr>
+                        <td><strong>箭头函数 this</strong></td>
+                        <td>继承外层作用域的 this，定义时就确定了</td>
+                    </tr>
+                    <tr>
+                        <td><strong>对象方法</strong></td>
+                        <td>❌ 不要用箭头函数，this 会指向错误</td>
+                    </tr>
+                    <tr>
+                        <td><strong>嵌套/回调函数</strong></td>
+                        <td>✅ 用箭头函数，自然继承外层 this</td>
+                    </tr>
+                    <tr>
+                        <td><strong>构造函数</strong></td>
+                        <td>❌ 箭头函数不能 new</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DOM 事件</strong></td>
+                        <td>需要 this 指向元素时用普通函数，否则箭头函数也行</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</body>
+
+</html>

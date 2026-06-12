@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组高阶方法</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            padding: 0 15px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 8px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        /* 每个知识点单元 */
+        .unit {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .unit h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* 讲解文字 */
+        .explain {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .explain strong {
+            color: #e74c3c;
+        }
+
+        .explain code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+
+        /* 演示区 */
+        .demo {
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 10px 0;
+        }
+
+        .demo pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+            overflow-x: auto;
+        }
+
+        .demo .output-area {
+            background: #1a1a2e;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        .demo .output-area::before {
+            content: "▶ 输出结果";
+            display: block;
+            color: #3498db;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .demo button.run-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+            transition: background 0.2s;
+        }
+
+        .demo button.run-btn:hover {
+            background: #219a52;
+        }
+
+        .demo-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        /* 纯CSS展开折叠 - checkbox隐藏 */
+        .code-toggle {
+            display: none;
+        }
+
+        /* label作为按钮 */
+        .toggle-label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .toggle-label:hover {
+            background: #2980b9;
+        }
+
+        /* 代码块默认隐藏 */
+        .code-block {
+            display: none;
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+
+        .code-block span {
+            display: inline-block;
+            width: 2.5em;
+            margin-right: 1em;
+            text-align: right;
+            color: #666;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* checkbox选中时显示代码块 */
+        .code-toggle:checked + .toggle-label + .code-block {
+            display: block;
+        }
+
+        /* checkbox选中时改变按钮颜色 */
+        .code-toggle:checked + .toggle-label {
+            background: #e74c3c;
+        }
+
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .tip-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px 16px;
+            margin: 12px 0;
+            border-radius: 0 6px 6px 0;
+            line-height: 1.7;
+        }
+
+        .tip-box strong {
+            color: #856404;
+        }
+
+        .section-intro {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .section-intro h2 {
+            color: white;
+            border-bottom-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .section-intro .learn-path {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 12px;
+        }
+
+        .section-intro .learn-path p {
+            margin: 4px 0;
+        }
+
+        /* ===== 手机适配 ===== */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                width: 100%;
+                height: auto;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                padding: 8px 0;
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .sidebar h3 {
+                display: none;
+            }
+
+            .sidebar a {
+                display: inline-block;
+                padding: 6px 12px;
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+
+            main {
+                margin-left: 0;
+                padding: 15px;
+                padding-bottom: 60px;
+            }
+
+            .unit {
+                padding: 15px;
+            }
+
+            .unit h2 {
+                font-size: 17px;
+            }
+
+            .code-block {
+                font-size: 11px;
+                padding: 10px;
+                overflow-x: auto;
+            }
+
+            .demo {
+                padding: 12px;
+                overflow-x: auto;
+            }
+
+            .comparison-table {
+                font-size: 13px;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 6px 8px;
+            }
+
+            .demo pre {
+                font-size: 11px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 侧边导航 -->
+    <nav class="sidebar">
+        <h3>数组高阶方法</h3>
+        <a href="#unit-1">1.1 forEach 遍历</a>
+        <a href="#unit-2">1.2 map 映射</a>
+        <a href="#unit-3">1.3 filter 过滤</a>
+        <a href="#unit-4">1.4 find 查找</a>
+        <a href="#unit-5">1.5 reduce 归纳</a>
+        <a href="#unit-6">1.6 some 和 every</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main>
+
+        <!-- 学习路径引言 -->
+        <div class="section-intro">
+            <h2>数组高阶方法</h2>
+            <p>用更优雅的方式处理列表数据</p>
+            <div class="learn-path">
+                <p><strong>学习路径建议：</strong></p>
+                <p>1. 先学 1.1-1.2（forEach 和 map），掌握遍历和变换</p>
+                <p>2. 再学 1.3-1.4（filter 和 find），学会筛选数据</p>
+                <p>3. 然后学 1.5（reduce），掌握最强的数据处理工具</p>
+                <p>4. 最后看 1.6（some/every），快速判断条件</p>
+            </div>
+            <div class="tip-box" style="background: rgba(255,255,255,0.15); border-left-color: #fff; margin-top: 12px;">
+                <strong style="color: #fff;">⚠️ 常见错误提示</strong><br>
+                • 这些方法<strong style="color: #ffd700;">不会修改原数组</strong>，它们返回一个新数组/新值<br>
+                • <code style="background: rgba(255,255,255,0.2); color: #fff;">forEach</code> 没有返回值（返回 undefined），不要写 let result = arr.forEach(...)<br>
+                • <code style="background: rgba(255,255,255,0.2); color: #fff;">reduce</code> 的初始值别忘了传，空数组不传初始值会报错<br>
+                • <code style="background: rgba(255,255,255,0.2); color: #fff;">map / filter / find</code> 里的回调必须 return 一个值
+            </div>
+        </div>
+
+        <!-- 第1节：forEach 遍历 -->
+        <div class="unit" id="unit-1">
+            <h2>1.1 forEach 遍历</h2>
+
+            <div class="explain">
+                <p><code>forEach</code> 就是<strong>把数组里的每个元素都过一遍</strong>，对每个元素执行你给的函数。</p>
+                <p>它是 <code>for</code> 循环的"升级版"，写法更简洁。</p>
+            </div>
+
+            <div class="explain">
+                <p><strong>基本语法：</strong></p>
+                <div class="demo" style="margin-top: 8px;">
+<pre>数组.forEach(function(当前元素, 当前索引, 原数组) {
+    // 对每个元素执行的操作
+});</pre>
+                </div>
+            </div>
+
+            <div class="explain">
+                <p><strong>回调函数参数说明：</strong></p>
+                <table class="comparison-table">
+                    <tr>
+                        <th>参数</th>
+                        <th>含义</th>
+                        <th>可选？</th>
+                    </tr>
+                    <tr>
+                        <td><code>当前元素</code></td>
+                        <td>正在处理的那个元素</td>
+                        <td>否</td>
+                    </tr>
+                    <tr>
+                        <td><code>当前索引</code></td>
+                        <td>元素的下标</td>
+                        <td>是</td>
+                    </tr>
+                    <tr>
+                        <td><code>原数组</code></td>
+                        <td>forEach 所在的数组本身</td>
+                        <td>是</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示代码：</div>
+                <button class="run-btn" onclick="runForEach()">▶ 运行示例</button>
+                <pre><span style="color:#666;">1</span>  // 模拟博客文章列表
+<span style="color:#666;">2</span>  let posts = [
+<span style="color:#666;">3</span>      { title: 'JavaScript入门', author: '小明' },
+<span style="color:#666;">4</span>      { title: 'CSS布局技巧', author: '小红' },
+<span style="color:#666;">5</span>      { title: 'React教程', author: '小明' }
+<span style="color:#666;">6</span>  ];
+<span style="color:#666;">7</span>
+<span style="color:#666;">8</span>  // forEach 遍历每个元素
+<span style="color:#666;">9</span>  posts.forEach(function(post, index) {
+<span style="color:#666;">10</span>      console.log(`${index + 1}. ${post.title} — 作者：${post.author}`);
+<span style="color:#666;">11</span>  });
+<span style="color:#666;">12</span>
+<span style="color:#666;">13</span>  // 用箭头函数更简洁
+<span style="color:#666;">14</span>  posts.forEach((post, index) => {
+<span style="color:#666;">15</span>      console.log(`第${index + 1}篇：${post.title}`);
+<span style="color:#666;">16</span>  });
+<span style="color:#666;">17</span>
+<span style="color:#666;">18</span>  // forEach 没有返回值
+<span style="color:#666;">19</span>  let result = posts.forEach(post => post.title);
+<span style="color:#666;">20</span>  console.log(result);  // undefined</pre>
+                <div class="output-area" id="output-forEach" style="display:none;"></div>
+            </div>
+
+            <div class="tip-box">
+                <strong>⚠️ 新手易错：</strong><code>forEach</code> 没有返回值，不能用 <code>let arr = arr.forEach(...)</code> 来接收结果。它只是"过一遍"，不做变换。想变换用 <code>map</code>。
+            </div>
+
+            <input type="checkbox" id="code-1" class="code-toggle">
+            <label for="code-1" class="toggle-label">查看完整源代码</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;forEach 示例&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;forEach 遍历&lt;/h1&gt;
+<span>9</span>    &lt;script&gt;
+<span>10</span>        let posts = [
+<span>11</span>            { title: 'JavaScript入门', author: '小明' },
+<span>12</span>            { title: 'CSS布局技巧', author: '小红' },
+<span>13</span>            { title: 'React教程', author: '小明' }
+<span>14</span>        ];
+<span>15</span>
+<span>16</span>        posts.forEach(function(post, index) {
+<span>17</span>            console.log(`${index + 1}. ${post.title} — 作者：${post.author}`);
+<span>18</span>        });
+<span>19</span>
+<span>20</span>        posts.forEach((post, index) => {
+<span>21</span>            console.log(`第${index + 1}篇：${post.title}`);
+<span>22</span>        });
+<span>23</span>
+<span>24</span>        let result = posts.forEach(post => post.title);
+<span>25</span>        console.log(result);  // undefined
+<span>26</span>    &lt;/script&gt;
+<span>27</span>&lt;/body&gt;
+<span>28</span>&lt;/html&gt;</div>
+        </div>
+
+        <!-- 第2节：map 映射 -->
+        <div class="unit" id="unit-2">
+            <h2>1.2 map 映射</h2>
+
+            <div class="explain">
+                <p><code>map</code> 是<strong>把数组里的每个元素都变一下</strong>，返回一个全新的数组，长度和原数组一样。</p>
+                <p>好比你有一篮子水果 <code>[苹果, 香蕉, 橘子]</code>，<code>map</code> 就是给每个水果贴个标签，变成 <code>[标签苹果, 标签香蕉, 标签橘子]</code>。</p>
+            </div>
+
+            <div class="explain">
+                <p><strong>基本语法：</strong></p>
+                <div class="demo" style="margin-top: 8px;">
+<pre>let 新数组 = 数组.map(function(当前元素, 当前索引) {
+    return 变换后的值;
+});</pre>
+                </div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">运行结果：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>操作</th>
+                        <th>原数组</th>
+                        <th>新数组</th>
+                    </tr>
+                    <tr>
+                        <td>提取标题</td>
+                        <td><code>[{}, {}, {}]</code></td>
+                        <td><code>['标题1', '标题2', '标题3']</code></td>
+                    </tr>
+                    <tr>
+                        <td>添加字段</td>
+                        <td><code>[{views:1200}, ...]</code></td>
+                        <td><code>[{views:1200, isPopular:true}, ...]</code></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示代码：</div>
+                <button class="run-btn" onclick="runMap()">▶ 运行示例</button>
+                <pre><span style="color:#666;">1</span>  // 模拟博客文章列表
+<span style="color:#666;">2</span>  let posts = [
+<span style="color:#666;">3</span>      { title: 'JavaScript入门', views: 1200 },
+<span style="color:#666;">4</span>      { title: 'CSS布局技巧', views: 850 },
+<span style="color:#666;">5</span>      { title: 'React教程', views: 3200 },
+<span style="color:#666;">6</span>      { title: 'HTML语义化', views: 650 }
+<span style="color:#666;">7</span>  ];
+<span style="color:#666;">8</span>
+<span style="color:#666;">9</span>  // map 提取所有标题
+<span style="color:#666;">10</span> let titles = posts.map(post => post.title);
+<span style="color:#666;">11</span> console.log(titles);
+<span style="color:#666;">12</span>
+<span style="color:#666;">13</span> // map 变换格式：加上"次浏览"
+<span style="color:#666;">14</span> let summaries = posts.map(post =>
+<span style="color:#666;">15</span>     `${post.title}（${post.views}次浏览）`
+<span style="color:#666;">16</span> );
+<span style="color:#666;">17</span> console.log(summaries);
+<span style="color:#666;">18</span>
+<span style="color:#666;">19</span> // map 生成新对象（添加新字段）
+<span style="color:#666;">20</span> let enriched = posts.map(post => ({
+<span style="color:#666;">21</span>     ...post,
+<span style="color:#666;">22</span>     isPopular: post.views > 1000
+<span style="color:#666;">23</span> }));
+<span style="color:#666;">24</span> console.log(enriched);</pre>
+                <div class="output-area" id="output-map" style="display:none;"></div>
+            </div>
+
+            <div class="tip-box">
+                <strong>⚠️ 新手易错：</strong><code>map</code> 里<strong>必须 return</strong> 一个值。如果忘了 return，新数组里每个元素都是 undefined。箭头函数简写 <code>post => post.title</code> 会自动 return，但写了 <code>{}</code> 就必须手动 return。
+            </div>
+
+            <input type="checkbox" id="code-2" class="code-toggle">
+            <label for="code-2" class="toggle-label">查看完整源代码</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;map 示例&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;map 映射&lt;/h1&gt;
+<span>9</span>    &lt;script&gt;
+<span>10</span>        let posts = [
+<span>11</span>            { title: 'JavaScript入门', views: 1200 },
+<span>12</span>            { title: 'CSS布局技巧', views: 850 },
+<span>13</span>            { title: 'React教程', views: 3200 },
+<span>14</span>            { title: 'HTML语义化', views: 650 }
+<span>15</span>        ];
+<span>16</span>
+<span>17</span>        let titles = posts.map(post => post.title);
+<span>18</span>        console.log(titles);
+<span>19</span>
+<span>20</span>        let summaries = posts.map(post =>
+<span>21</span>            `${post.title}（${post.views}次浏览）`
+<span>22</span>        );
+<span>23</span>        console.log(summaries);
+<span>24</span>
+<span>25</span>        let enriched = posts.map(post => ({
+<span>26</span>            ...post,
+<span>27</span>            isPopular: post.views > 1000
+<span>28</span>        }));
+<span>29</span>        console.log(enriched);
+<span>30</span>
+<span>31</span>        console.log(posts);  // 原数组不变
+<span>32</span>    &lt;/script&gt;
+<span>33</span>&lt;/body&gt;
+<span>34</span>&lt;/html&gt;</div>
+        </div>
+
+        <!-- 第3节：filter 过滤 -->
+        <div class="unit" id="unit-3">
+            <h2>1.3 filter 过滤</h2>
+
+            <div class="explain">
+                <p><code>filter</code> 是<strong>从数组里挑出符合条件的元素</strong>，返回一个新数组，长度可能比原数组短。</p>
+                <p>好比你有一篮子水果，<code>filter</code> 就是只留下红苹果，其他的都不要。</p>
+            </div>
+
+            <div class="explain">
+                <p><strong>基本语法：</strong></p>
+                <div class="demo" style="margin-top: 8px;">
+<pre>let 新数组 = 数组.filter(function(当前元素) {
+    return 条件;  // true 保留，false 丢弃
+});</pre>
+                </div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">filter 工作原理：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>元素</th>
+                        <th>条件 views &gt; 1000</th>
+                        <th>结果</th>
+                    </tr>
+                    <tr>
+                        <td><code>{views: 1200}</code></td>
+                        <td>1200 &gt; 1000 → true</td>
+                        <td>✅ 保留</td>
+                    </tr>
+                    <tr>
+                        <td><code>{views: 850}</code></td>
+                        <td>850 &gt; 1000 → false</td>
+                        <td>❌ 丢弃</td>
+                    </tr>
+                    <tr>
+                        <td><code>{views: 3200}</code></td>
+                        <td>3200 &gt; 1000 → true</td>
+                        <td>✅ 保留</td>
+                    </tr>
+                    <tr>
+                        <td><code>{views: 650}</code></td>
+                        <td>650 &gt; 1000 → false</td>
+                        <td>❌ 丢弃</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示代码：</div>
+                <button class="run-btn" onclick="runFilter()">▶ 运行示例</button>
+                <pre><span style="color:#666;">1</span>  let posts = [
+<span style="color:#666;">2</span>      { title: 'JavaScript入门', views: 1200, draft: false },
+<span style="color:#666;">3</span>      { title: 'CSS布局技巧', views: 850, draft: false },
+<span style="color:#666;">4</span>      { title: 'React教程', views: 3200, draft: true },
+<span style="color:#666;">5</span>      { title: 'HTML语义化', views: 650, draft: false },
+<span style="color:#666;">6</span>      { title: '未完成的文章', views: 0, draft: true }
+<span style="color:#666;">7</span>  ];
+<span style="color:#666;">8</span>
+<span style="color:#666;">9</span>  // 过滤已发布的文章
+<span style="color:#666;">10</span> let published = posts.filter(post => post.draft === false);
+<span style="color:#666;">11</span> console.log(published);
+<span style="color:#666;">12</span>
+<span style="color:#666;">13</span> // 过滤浏览量超过1000的文章
+<span style="color:#666;">14</span> let popular = posts.filter(post => post.views > 1000);
+<span style="color:#666;">15</span> console.log(popular);
+<span style="color:#666;">16</span>
+<span style="color:#666;">17</span> // 链式调用：先过滤再提取标题
+<span style="color:#666;">18</span> let popularTitles = posts
+<span style="color:#666;">19</span>     .filter(post => post.views > 1000)
+<span style="color:#666;">20</span>     .map(post => post.title);
+<span style="color:#666;">21</span> console.log(popularTitles);</pre>
+                <div class="output-area" id="output-filter" style="display:none;"></div>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 提示：</strong><code>filter</code> 和 <code>map</code> 经常<strong>链式调用</strong>：先 filter 筛选，再 map 变换。这是数据处理中最常见的组合。
+            </div>
+
+            <input type="checkbox" id="code-3" class="code-toggle">
+            <label for="code-3" class="toggle-label">查看完整源代码</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;filter 示例&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;filter 过滤&lt;/h1&gt;
+<span>9</span>    &lt;script&gt;
+<span>10</span>        let posts = [
+<span>11</span>            { title: 'JavaScript入门', views: 1200, draft: false },
+<span>12</span>            { title: 'CSS布局技巧', views: 850, draft: false },
+<span>13</span>            { title: 'React教程', views: 3200, draft: true },
+<span>14</span>            { title: 'HTML语义化', views: 650, draft: false },
+<span>15</span>            { title: '未完成的文章', views: 0, draft: true }
+<span>16</span>        ];
+<span>17</span>
+<span>18</span>        let published = posts.filter(post => post.draft === false);
+<span>19</span>        console.log(published);
+<span>20</span>
+<span>21</span>        let popular = posts.filter(post => post.views > 1000);
+<span>22</span>        console.log(popular);
+<span>23</span>
+<span>24</span>        let beginnerPosts = posts.filter(post => post.title.includes('入门'));
+<span>25</span>        console.log(beginnerPosts);
+<span>26</span>
+<span>27</span>        let popularTitles = posts
+<span>28</span>            .filter(post => post.views > 1000)
+<span>29</span>            .map(post => post.title);
+<span>30</span>        console.log(popularTitles);
+<span>31</span>    &lt;/script&gt;
+<span>32</span>&lt;/body&gt;
+<span>33</span>&lt;/html&gt;</div>
+        </div>
+
+        <!-- 第4节：find 查找 -->
+        <div class="unit" id="unit-4">
+            <h2>1.4 find 查找</h2>
+
+            <div class="explain">
+                <p><code>find</code> 是<strong>从数组里找到第一个符合条件的元素</strong>，只返回一个元素（不是数组）。找不到返回 <code>undefined</code>。</p>
+                <p>和 <code>filter</code> 的区别：<code>filter</code> 返回所有匹配的（数组），<code>find</code> 只返回第一个匹配的（单个元素）。</p>
+            </div>
+
+            <div class="explain">
+                <p><strong>基本语法：</strong></p>
+                <div class="demo" style="margin-top: 8px;">
+<pre>let 结果 = 数组.find(function(当前元素) {
+    return 条件;
+});</pre>
+                </div>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">filter vs find 对比：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>特性</th>
+                        <th><code>filter</code></th>
+                        <th><code>find</code></th>
+                    </tr>
+                    <tr>
+                        <td>返回值</td>
+                        <td>数组（所有匹配的）</td>
+                        <td>单个元素（第一个匹配的）</td>
+                    </tr>
+                    <tr>
+                        <td>找不到</td>
+                        <td>返回空数组 <code>[]</code></td>
+                        <td>返回 <code>undefined</code></td>
+                    </tr>
+                    <tr>
+                        <td>使用场景</td>
+                        <td>我要所有符合条件的</td>
+                        <td>我只要第一个</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示代码：</div>
+                <button class="run-btn" onclick="runFind()">▶ 运行示例</button>
+                <pre><span style="color:#666;">1</span>  let posts = [
+<span style="color:#666;">2</span>      { id: 1, title: 'JavaScript入门', views: 1200 },
+<span style="color:#666;">3</span>      { id: 2, title: 'CSS布局技巧', views: 850 },
+<span style="color:#666;">4</span>      { id: 3, title: 'React教程', views: 3200 },
+<span style="color:#666;">5</span>      { id: 4, title: 'HTML语义化', views: 650 }
+<span style="color:#666;">6</span>  ];
+<span style="color:#666;">7</span>
+<span style="color:#666;">8</span>  // find：找到 id 为 3 的文章
+<span style="color:#666;">9</span>  let post = posts.find(post => post.id === 3);
+<span style="color:#666;">10</span> console.log(post);
+<span style="color:#666;">11</span>
+<span style="color:#666;">12</span> // find：找不到返回 undefined
+<span style="color:#666;">13</span> let notFound = posts.find(post => post.id === 99);
+<span style="color:#666;">14</span> console.log(notFound);  // undefined
+<span style="color:#666;">15</span>
+<span style="color:#666;">16</span> // filter vs find
+<span style="color:#666;">17</span> let filtered = posts.filter(p => p.views > 1000);
+<span style="color:#666;">18</span> let found = posts.find(p => p.views > 1000);
+<span style="color:#666;">19</span> console.log('filter:', filtered);  // 数组
+<span style="color:#666;">20</span> console.log('find:', found);       // 单个对象</pre>
+                <div class="output-area" id="output-find" style="display:none;"></div>
+            </div>
+
+            <div class="tip-box">
+                <strong>⚠️ 新手易错：</strong><code>find</code> 返回的是<strong>元素本身</strong>（引用），不是副本。修改 <code>find</code> 的结果会直接影响原数组。
+            </div>
+
+            <input type="checkbox" id="code-4" class="code-toggle">
+            <label for="code-4" class="toggle-label">查看完整源代码</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;find 示例&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;find 查找&lt;/h1&gt;
+<span>9</span>    &lt;script&gt;
+<span>10</span>        let posts = [
+<span>11</span>            { id: 1, title: 'JavaScript入门', views: 1200 },
+<span>12</span>            { id: 2, title: 'CSS布局技巧', views: 850 },
+<span>13</span>            { id: 3, title: 'React教程', views: 3200 },
+<span>14</span>            { id: 4, title: 'HTML语义化', views: 650 }
+<span>15</span>        ];
+<span>16</span>
+<span>17</span>        let post = posts.find(post => post.id === 3);
+<span>18</span>        console.log(post);
+<span>19</span>
+<span>20</span>        let popular = posts.find(post => post.views > 2000);
+<span>21</span>        console.log(popular);
+<span>22</span>
+<span>23</span>        let notFound = posts.find(post => post.id === 99);
+<span>24</span>        console.log(notFound);  // undefined
+<span>25</span>
+<span>26</span>        let filtered = posts.filter(p => p.views > 1000);
+<span>27</span>        let found = posts.find(p => p.views > 1000);
+<span>28</span>        console.log(filtered);  // 数组
+<span>29</span>        console.log(found);     // 单个对象
+<span>30</span>    &lt;/script&gt;
+<span>31</span>&lt;/body&gt;
+<span>32</span>&lt;/html&gt;</div>
+        </div>
+
+        <!-- 第5节：reduce 归纳 -->
+        <div class="unit" id="unit-5">
+            <h2>1.5 reduce 归纳</h2>
+
+            <div class="explain">
+                <p><code>reduce</code> 是最强大的数组方法——把数组里的所有元素<strong>归拢成一个值</strong>（数字、字符串、对象、数组都行）。</p>
+                <p>它可以替代 <code>map</code>、<code>filter</code>、<code>forEach</code> 的所有功能（虽然不一定需要这么做）。</p>
+            </div>
+
+            <div class="explain">
+                <p><strong>基本语法：</strong></p>
+                <div class="demo" style="margin-top: 8px;">
+<pre>let 结果 = 数组.reduce(function(累加器, 当前元素) {
+    return 新的累加器;
+}, 初始值);</pre>
+                </div>
+            </div>
+
+            <div class="explain">
+                <p><strong>回调函数参数说明：</strong></p>
+                <table class="comparison-table">
+                    <tr>
+                        <th>参数</th>
+                        <th>含义</th>
+                    </tr>
+                    <tr>
+                        <td><code>累加器</code></td>
+                        <td>每轮计算的结果，传递给下一轮</td>
+                    </tr>
+                    <tr>
+                        <td><code>当前元素</code></td>
+                        <td>正在处理的元素</td>
+                    </tr>
+                    <tr>
+                        <td><code>当前索引</code></td>
+                        <td>正在处理的元素的下标（可选）</td>
+                    </tr>
+                    <tr>
+                        <td><code>原数组</code></td>
+                        <td>reduce 所在的数组（可选）</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">reduce 执行过程（以 [10,20,30,40,50] 求和为例）：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>轮次</th>
+                        <th>累加器 (acc)</th>
+                        <th>当前元素 (cur)</th>
+                        <th>返回值</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>0（初始值）</td>
+                        <td>10</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>10</td>
+                        <td>20</td>
+                        <td>30</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>30</td>
+                        <td>30</td>
+                        <td>60</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>60</td>
+                        <td>40</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>100</td>
+                        <td>50</td>
+                        <td>150</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示代码：</div>
+                <button class="run-btn" onclick="runReduce()">▶ 运行示例</button>
+                <pre><span style="color:#666;">1</span>  // ========== 求和（最经典用法） ==========
+<span style="color:#666;">2</span>  let numbers = [10, 20, 30, 40, 50];
+<span style="color:#666;">3</span>  let sum = numbers.reduce((acc, cur) => acc + cur, 0);
+<span style="color:#666;">4</span>  console.log('总和：' + sum);   // 150
+<span style="color:#666;">5</span>
+<span style="color:#666;">6</span>  // ========== 统计博客数据 ==========
+<span style="color:#666;">7</span>  let posts = [
+<span style="color:#666;">8</span>      { title: 'JavaScript入门', views: 1200, category: 'JS' },
+<span style="color:#666;">9</span>      { title: 'CSS布局技巧', views: 850, category: 'CSS' },
+<span style="color:#666;">10</span>     { title: 'React教程', views: 3200, category: 'React' },
+<span style="color:#666;">11</span>     { title: 'HTML语义化', views: 650, category: 'HTML' },
+<span style="color:#666;">12</span>     { title: 'Vue入门', views: 1800, category: 'Vue' }
+<span style="color:#666;">13</span> ];
+<span style="color:#666;">14</span>
+<span style="color:#666;">15</span> // 用 reduce 统计总浏览量
+<span style="color:#666;">16</span> let totalViews = posts.reduce((sum, post) => sum + post.views, 0);
+<span style="color:#666;">17</span> console.log('总浏览量：' + totalViews);  // 7700
+<span style="color:#666;">18</span>
+<span style="color:#666;">19</span> // 用 reduce 按分类分组
+<span style="color:#666;">20</span> let grouped = posts.reduce((groups, post) => {
+<span style="color:#666;">21</span>     let cat = post.category;
+<span style="color:#666;">22</span>     if (!groups[cat]) groups[cat] = [];
+<span style="color:#666;">23</span>     groups[cat].push(post.title);
+<span style="color:#666;">24</span>     return groups;
+<span style="color:#666;">25</span> }, {});
+<span style="color:#666;">26</span> console.log(grouped);</pre>
+                <div class="output-area" id="output-reduce" style="display:none;"></div>
+            </div>
+
+            <div class="tip-box">
+                <strong>⚠️ 新手易错：</strong><code>reduce</code> 的初始值（第二个参数）<strong>不要省略</strong>。空数组不传初始值会报错 <code>TypeError: Reduce of empty array with no initial value</code>。传初始值更安全。<br>
+                <strong>⚠️ 新手易错：</strong><code>reduce</code> 的回调函数<strong>必须返回累加器</strong>。忘了 return，累加器会变成 undefined。
+            </div>
+
+            <input type="checkbox" id="code-5" class="code-toggle">
+            <label for="code-5" class="toggle-label">查看完整源代码</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;reduce 示例&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;reduce 归纳&lt;/h1&gt;
+<span>9</span>    &lt;script&gt;
+<span>10</span>        let numbers = [10, 20, 30, 40, 50];
+<span>11</span>        let sum = numbers.reduce((acc, cur) => acc + cur, 0);
+<span>12</span>        console.log('总和：' + sum);
+<span>13</span>
+<span>14</span>        let posts = [
+<span>15</span>            { title: 'JavaScript入门', views: 1200, category: 'JS' },
+<span>16</span>            { title: 'CSS布局技巧', views: 850, category: 'CSS' },
+<span>17</span>            { title: 'React教程', views: 3200, category: 'React' },
+<span>18</span>            { title: 'HTML语义化', views: 650, category: 'HTML' },
+<span>19</span>            { title: 'Vue入门', views: 1800, category: 'Vue' }
+<span>20</span>        ];
+<span>21</span>
+<span>22</span>        let totalViews = posts.reduce((sum, post) => sum + post.views, 0);
+<span>23</span>        console.log('总浏览量：' + totalViews);
+<span>24</span>
+<span>25</span>        let grouped = posts.reduce((groups, post) => {
+<span>26</span>            let cat = post.category;
+<span>27</span>            if (!groups[cat]) groups[cat] = [];
+<span>28</span>            groups[cat].push(post.title);
+<span>29</span>            return groups;
+<span>30</span>        }, {});
+<span>31</span>        console.log(grouped);
+<span>32</span>
+<span>33</span>        let mostViewed = posts.reduce((max, post) => {
+<span>34</span>            return post.views > max.views ? post : max;
+<span>35</span>        }, posts[0]);
+<span>36</span>        console.log('最多浏览：' + mostViewed.title);
+<span>37</span>    &lt;/script&gt;
+<span>38</span>&lt;/body&gt;
+<span>39</span>&lt;/html&gt;</div>
+        </div>
+
+        <!-- 第6节：some 和 every -->
+        <div class="unit" id="unit-6">
+            <h2>1.6 some 和 every</h2>
+
+            <div class="explain">
+                <p><code>some</code> 检查数组里<strong>是否至少有一个</strong>元素符合条件；<code>every</code> 检查<strong>是否所有</strong>元素都符合条件。返回布尔值。</p>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">some vs every 对比：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>方法</th>
+                        <th>逻辑</th>
+                        <th>类比</th>
+                        <th>找到第一个就</th>
+                    </tr>
+                    <tr>
+                        <td><code>some</code></td>
+                        <td>有一个满足就 true</td>
+                        <td>班里<strong>有没有</strong>及格的同学？</td>
+                        <td>停止，返回 true</td>
+                    </tr>
+                    <tr>
+                        <td><code>every</code></td>
+                        <td>全部满足才 true</td>
+                        <td>班里<strong>是不是</strong>都及格了？</td>
+                        <td>不满足就停止，返回 false</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="demo">
+                <div class="demo-label">演示代码：</div>
+                <button class="run-btn" onclick="runSomeEvery()">▶ 运行示例</button>
+                <pre><span style="color:#666;">1</span>  let posts = [
+<span style="color:#666;">2</span>      { title: 'JavaScript入门', views: 1200, published: true },
+<span style="color:#666;">3</span>      { title: 'CSS布局技巧', views: 850, published: true },
+<span style="color:#666;">4</span>      { title: 'React教程', views: 3200, published: false },
+<span style="color:#666;">5</span>      { title: 'HTML语义化', views: 650, published: true }
+<span style="color:#666;">6</span>  ];
+<span style="color:#666;">7</span>
+<span style="color:#666;">8</span>  // ========== some ==========
+<span style="color:#666;">9</span>  let hasViral = posts.some(post => post.views > 3000);
+<span style="color:#666;">10</span> console.log('有爆款文章？' + hasViral);  // true
+<span style="color:#666;">11</span>
+<span style="color:#666;">12</span> let hasSuperPopular = posts.some(post => post.views > 10000);
+<span style="color:#666;">13</span> console.log('有超热门？' + hasSuperPopular);  // false
+<span style="color:#666;">14</span>
+<span style="color:#666;">15</span> // ========== every ==========
+<span style="color:#666;">16</span> let allPublished = posts.every(post => post.published === true);
+<span style="color:#666;">17</span> console.log('全部已发布？' + allPublished);  // false
+<span style="color:#666;">18</span>
+<span style="color:#666;">19</span> let allAbove500 = posts.every(post => post.views > 500);
+<span style="color:#666;">20</span> console.log('全部超过500？' + allAbove500);  // true</pre>
+                <div class="output-area" id="output-someEvery" style="display:none;"></div>
+            </div>
+
+            <!-- 速查表 -->
+            <div class="demo">
+                <div class="demo-label">所有数组高阶方法速查表：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>方法</th>
+                        <th>作用</th>
+                        <th>返回值</th>
+                        <th>改变原数组？</th>
+                    </tr>
+                    <tr>
+                        <td><code>forEach</code></td>
+                        <td>遍历执行</td>
+                        <td><code>undefined</code></td>
+                        <td>否</td>
+                    </tr>
+                    <tr>
+                        <td><code>map</code></td>
+                        <td>映射变换</td>
+                        <td>新数组</td>
+                        <td>否</td>
+                    </tr>
+                    <tr>
+                        <td><code>filter</code></td>
+                        <td>过滤筛选</td>
+                        <td>新数组</td>
+                        <td>否</td>
+                    </tr>
+                    <tr>
+                        <td><code>find</code></td>
+                        <td>查找第一个</td>
+                        <td>单个元素</td>
+                        <td>否</td>
+                    </tr>
+                    <tr>
+                        <td><code>reduce</code></td>
+                        <td>归纳为一个值</td>
+                        <td>任意值</td>
+                        <td>否</td>
+                    </tr>
+                    <tr>
+                        <td><code>some</code></td>
+                        <td>至少一个满足？</td>
+                        <td>布尔值</td>
+                        <td>否</td>
+                    </tr>
+                    <tr>
+                        <td><code>every</code></td>
+                        <td>全部满足？</td>
+                        <td>布尔值</td>
+                        <td>否</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 本章复盘 -->
+            <div class="demo">
+                <div class="demo-label">本章复盘——核心要点：</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>方法</th>
+                        <th>一句话说明</th>
+                        <th>典型场景</th>
+                    </tr>
+                    <tr>
+                        <td><strong>forEach</strong></td>
+                        <td>遍历每个元素，不返回值</td>
+                        <td>打印日志、DOM操作</td>
+                    </tr>
+                    <tr>
+                        <td><strong>map</strong></td>
+                        <td>每个元素变一下，返回新数组</td>
+                        <td>提取字段、格式转换</td>
+                    </tr>
+                    <tr>
+                        <td><strong>filter</strong></td>
+                        <td>挑出符合条件的，返回新数组</td>
+                        <td>筛选数据</td>
+                    </tr>
+                    <tr>
+                        <td><strong>find</strong></td>
+                        <td>找第一个符合条件的，返回单个</td>
+                        <td>根据ID找数据</td>
+                    </tr>
+                    <tr>
+                        <td><strong>reduce</strong></td>
+                        <td>所有元素归拢成一个值</td>
+                        <td>求和、分组、统计</td>
+                    </tr>
+                    <tr>
+                        <td><strong>some</strong></td>
+                        <td>至少有一个满足？</td>
+                        <td>检查是否存在</td>
+                    </tr>
+                    <tr>
+                        <td><strong>every</strong></td>
+                        <td>全部满足？</td>
+                        <td>表单验证</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                <strong>⚠️ 新手易错：</strong>这些方法都<strong>不会修改原数组</strong>。如果要更新原数组，用返回的新数组去覆盖：<code>posts = posts.filter(...)</code>。
+            </div>
+
+            <input type="checkbox" id="code-6" class="code-toggle">
+            <label for="code-6" class="toggle-label">查看完整源代码</label>
+            <div class="code-block"><span>1</span>&lt;!DOCTYPE html&gt;
+<span>2</span>&lt;html lang="zh-CN"&gt;
+<span>3</span>&lt;head&gt;
+<span>4</span>    &lt;meta charset="UTF-8"&gt;
+<span>5</span>    &lt;title&gt;some 和 every 示例&lt;/title&gt;
+<span>6</span>&lt;/head&gt;
+<span>7</span>&lt;body&gt;
+<span>8</span>    &lt;h1&gt;some 和 every&lt;/h1&gt;
+<span>9</span>    &lt;script&gt;
+<span>10</span>        let posts = [
+<span>11</span>            { title: 'JavaScript入门', views: 1200, published: true },
+<span>12</span>            { title: 'CSS布局技巧', views: 850, published: true },
+<span>13</span>            { title: 'React教程', views: 3200, published: false },
+<span>14</span>            { title: 'HTML语义化', views: 650, published: true }
+<span>15</span>        ];
+<span>16</span>
+<span>17</span>        let hasViral = posts.some(post => post.views > 3000);
+<span>18</span>        console.log('有爆款文章？' + hasViral);
+<span>19</span>
+<span>20</span>        let hasSuperPopular = posts.some(post => post.views > 10000);
+<span>21</span>        console.log('有超热门？' + hasSuperPopular);
+<span>22</span>
+<span>23</span>        let allPublished = posts.every(post => post.published === true);
+<span>24</span>        console.log('全部已发布？' + allPublished);
+<span>25</span>
+<span>26</span>        let allAbove500 = posts.every(post => post.views > 500);
+<span>27</span>        console.log('全部超过500？' + allAbove500);
+<span>28</span>    &lt;/script&gt;
+<span>29</span>&lt;/body&gt;
+<span>30</span>&lt;/html&gt;</div>
+        </div>
+
+    </main>
+
+    <script>
+        // ========== forEach 演示 ==========
+        function runForEach() {
+            let output = [];
+            let posts = [
+                { title: 'JavaScript入门', author: '小明' },
+                { title: 'CSS布局技巧', author: '小红' },
+                { title: 'React教程', author: '小明' }
+            ];
+
+            output.push('--- 传统 forEach ---');
+            posts.forEach(function(post, index) {
+                output.push(`${index + 1}. ${post.title} — 作者：${post.author}`);
+            });
+
+            output.push('');
+            output.push('--- 箭头函数 ---');
+            posts.forEach((post, index) => {
+                output.push(`第${index + 1}篇：${post.title}`);
+            });
+
+            output.push('');
+            output.push('--- forEach 返回值 ---');
+            let result = posts.forEach(post => post.title);
+            output.push('result = ' + result);  // undefined
+
+            let el = document.getElementById('output-forEach');
+            el.style.display = 'block';
+            el.textContent = output.join('\n');
+        }
+
+        // ========== map 演示 ==========
+        function runMap() {
+            let output = [];
+            let posts = [
+                { title: 'JavaScript入门', views: 1200 },
+                { title: 'CSS布局技巧', views: 850 },
+                { title: 'React教程', views: 3200 },
+                { title: 'HTML语义化', views: 650 }
+            ];
+
+            output.push('--- map 提取所有标题 ---');
+            let titles = posts.map(post => post.title);
+            output.push(JSON.stringify(titles, null, 2));
+
+            output.push('');
+            output.push('--- map 变换格式 ---');
+            let summaries = posts.map(post => `${post.title}（${post.views}次浏览）`);
+            output.push(JSON.stringify(summaries, null, 2));
+
+            output.push('');
+            output.push('--- map 生成新对象 ---');
+            let enriched = posts.map(post => ({
+                ...post,
+                isPopular: post.views > 1000
+            }));
+            output.push(JSON.stringify(enriched, null, 2));
+
+            output.push('');
+            output.push('--- 原数组不变 ---');
+            output.push(JSON.stringify(posts, null, 2));
+
+            let el = document.getElementById('output-map');
+            el.style.display = 'block';
+            el.textContent = output.join('\n');
+        }
+
+        // ========== filter 演示 ==========
+        function runFilter() {
+            let output = [];
+            let posts = [
+                { title: 'JavaScript入门', views: 1200, draft: false },
+                { title: 'CSS布局技巧', views: 850, draft: false },
+                { title: 'React教程', views: 3200, draft: true },
+                { title: 'HTML语义化', views: 650, draft: false },
+                { title: '未完成的文章', views: 0, draft: true }
+            ];
+
+            output.push('--- 已发布的文章 ---');
+            let published = posts.filter(post => post.draft === false);
+            output.push(published.map(p => `  • ${p.title}`).join('\n'));
+
+            output.push('');
+            output.push('--- 浏览量超过 1000 ---');
+            let popular = posts.filter(post => post.views > 1000);
+            output.push(popular.map(p => `  • ${p.title} (${p.views}次)`).join('\n'));
+
+            output.push('');
+            output.push('--- 标题包含"入门" ---');
+            let beginnerPosts = posts.filter(post => post.title.includes('入门'));
+            output.push(beginnerPosts.map(p => `  • ${p.title}`).join('\n'));
+
+            output.push('');
+            output.push('--- 链式调用：filter + map ---');
+            let popularTitles = posts
+                .filter(post => post.views > 1000)
+                .map(post => post.title);
+            output.push(JSON.stringify(popularTitles));
+
+            let el = document.getElementById('output-filter');
+            el.style.display = 'block';
+            el.textContent = output.join('\n');
+        }
+
+        // ========== find 演示 ==========
+        function runFind() {
+            let output = [];
+            let posts = [
+                { id: 1, title: 'JavaScript入门', views: 1200 },
+                { id: 2, title: 'CSS布局技巧', views: 850 },
+                { id: 3, title: 'React教程', views: 3200 },
+                { id: 4, title: 'HTML语义化', views: 650 }
+            ];
+
+            output.push('--- find：找到 id 为 3 的文章 ---');
+            let post = posts.find(post => post.id === 3);
+            output.push(JSON.stringify(post, null, 2));
+
+            output.push('');
+            output.push('--- find：找不到返回 undefined ---');
+            let notFound = posts.find(post => post.id === 99);
+            output.push('notFound = ' + notFound);
+
+            output.push('');
+            output.push('--- filter vs find ---');
+            let filtered = posts.filter(p => p.views > 1000);
+            let found = posts.find(p => p.views > 1000);
+            output.push('filter 结果（数组）：' + JSON.stringify(filtered));
+            output.push('find 结果（单个）：' + JSON.stringify(found));
+
+            let el = document.getElementById('output-find');
+            el.style.display = 'block';
+            el.textContent = output.join('\n');
+        }
+
+        // ========== reduce 演示 ==========
+        function runReduce() {
+            let output = [];
+            let numbers = [10, 20, 30, 40, 50];
+
+            output.push('--- 求和 ---');
+            let sum = numbers.reduce((acc, cur) => acc + cur, 0);
+            output.push('总和：' + sum);
+
+            output.push('');
+            output.push('--- 统计博客数据 ---');
+            let posts = [
+                { title: 'JavaScript入门', views: 1200, category: 'JS' },
+                { title: 'CSS布局技巧', views: 850, category: 'CSS' },
+                { title: 'React教程', views: 3200, category: 'React' },
+                { title: 'HTML语义化', views: 650, category: 'HTML' },
+                { title: 'Vue入门', views: 1800, category: 'Vue' }
+            ];
+
+            let totalViews = posts.reduce((sum, post) => sum + post.views, 0);
+            output.push('总浏览量：' + totalViews);
+
+            output.push('');
+            output.push('--- 按分类分组 ---');
+            let grouped = posts.reduce((groups, post) => {
+                let cat = post.category;
+                if (!groups[cat]) groups[cat] = [];
+                groups[cat].push(post.title);
+                return groups;
+            }, {});
+            output.push(JSON.stringify(grouped, null, 2));
+
+            output.push('');
+            output.push('--- 找浏览量最高的文章 ---');
+            let mostViewed = posts.reduce((max, post) => {
+                return post.views > max.views ? post : max;
+            }, posts[0]);
+            output.push('最多浏览：' + mostViewed.title + ' (' + mostViewed.views + '次)');
+
+            let el = document.getElementById('output-reduce');
+            el.style.display = 'block';
+            el.textContent = output.join('\n');
+        }
+
+        // ========== some / every 演示 ==========
+        function runSomeEvery() {
+            let output = [];
+            let posts = [
+                { title: 'JavaScript入门', views: 1200, published: true },
+                { title: 'CSS布局技巧', views: 850, published: true },
+                { title: 'React教程', views: 3200, published: false },
+                { title: 'HTML语义化', views: 650, published: true }
+            ];
+
+            output.push('--- some：有没有爆款？ ---');
+            let hasViral = posts.some(post => post.views > 3000);
+            output.push('有爆款文章？' + hasViral);
+
+            output.push('');
+            output.push('--- some：有没有未发布的草稿？ ---');
+            let hasDraft = posts.some(post => post.published === false);
+            output.push('有草稿？' + hasDraft);
+
+            output.push('');
+            output.push('--- some：有没有超热门？ ---');
+            let hasSuperPopular = posts.some(post => post.views > 10000);
+            output.push('有超热门？' + hasSuperPopular);
+
+            output.push('');
+            output.push('--- every：是否全部已发布？ ---');
+            let allPublished = posts.every(post => post.published === true);
+            output.push('全部已发布？' + allPublished);
+
+            output.push('');
+            output.push('--- every：是否全部超过 500 浏览？ ---');
+            let allAbove500 = posts.every(post => post.views > 500);
+            output.push('全部超过500？' + allAbove500);
+
+            let el = document.getElementById('output-someEvery');
+            el.style.display = 'block';
+            el.textContent = output.join('\n');
+        }
+    </script>
+</body>
+
+</html>
