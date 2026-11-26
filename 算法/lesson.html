@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>课程 · 朝云暮辞 ARENA</title>
+<meta name="description" content="算法课程：解释、边界提醒与可运行代码。">
+<link rel="stylesheet" href="../C语言/assets/style.css">
+<link rel="stylesheet" href="../C语言/assets/detail.css">
+<link rel="stylesheet" href="assets/arena.css">
+<style>
+.lcode pre{display:none}
+.lcode pre.on{display:block}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../index.html"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg><span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span></a>
+  <nav class="nav"><a href="index.html">题库</a><a href="paths.html">学习路径</a><a href="learn.html" class="active">算法学习</a><a href="lab.html">动画实验室</a><a href="me.html">学习记录</a><a href="../C语言/index.html">真题</a></nav>
+</div>
+
+<div class="lesson-wrap">
+  <div class="crumbs" id="crumbs" style="padding-top:26px"></div>
+  <div id="lesson"></div>
+</div>
+
+<footer class="site-foot"><div class="sf-inner">
+  <div class="sf-top"><div class="sf-brand"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg><div><span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span><p>课程内容整理自 ARENA LAB，经作者授权收录；排版按朝云暮辞重做。</p></div></div>
+  <nav class="sf-links"><a href="index.html">题库</a><a href="learn.html">算法学习</a><a href="paths.html">学习路径</a><a href="../C语言/index.html">C 语言真题</a></nav></div>
+  <div class="sf-bottom"><span>© 2026 朝云暮辞</span><span id="footSlug">—</span></div>
+</div></footer>
+
+<script src="data.js"></script>
+<script src="assets/arena.js"></script>
+<script>
+(function(){
+  const slug = A.qp('slug') || A.data.lessons[0].slug;
+  const idx = A.data.lessons.findIndex(l => l.slug === slug);
+  const l = A.data.lessons[idx] || A.data.lessons[0];
+  const ch = A.data.chapters.find(c => c.slug === l.chapter) || A.data.chapters[0];
+  const prev = A.data.lessons[idx - 1], next = A.data.lessons[idx + 1];
+  document.title = l.title + ' · 朝云暮辞 ARENA';
+  document.getElementById('footSlug').textContent = 'LESSON-' + l.slug;
+
+  A.markLesson(l.slug);
+  document.getElementById('crumbs').innerHTML = `<a href="learn.html">算法学习</a><span class="arrow">/</span><span>${A.esc(ch.title)}</span><span>/</span><span>${A.esc(l.title)}</span>`;
+
+  let codeNo = 0;
+  function blockHTML(b){
+    if (b.kind === 'p') return `<p class="prose" style="margin-top:10px">${A.esc(b.text)}</p>`;
+    if (b.kind === 'list') return `<ul>${b.items.map(x => `<li>${A.esc(x)}</li>`).join('')}</ul>`;
+    if (b.kind === 'note') return `<div class="lnote">${A.esc(b.text)}</div>`;
+    if (b.kind === 'code'){
+      const id = 'lc' + (codeNo++);
+      const c = b.code || {};
+      return `<div class="lcode" id="${id}">
+        <div class="lcode-head"><span>${A.esc(c.title || '代码')}</span><span class="sp"></span>
+          <button data-lang="cpp" class="on" type="button">C++</button><button data-lang="python" type="button">Python</button>
+          <button class="copy" type="button">复制</button>
+        </div>
+        <pre class="on" data-lang="cpp">${A.highlight(c.cpp || '', 'cpp')}</pre>
+        <pre data-lang="python">${A.highlight(c.python || '', 'python')}</pre>
+        ${c.note ? `<div class="note">${A.esc(c.note)}</div>` : ''}
+      </div>`;
+    }
+    return '';
+  }
+
+  const practice = (l.practice || []).map(id => A.byId(id)).filter(Boolean);
+  document.getElementById('lesson').innerHTML = `
+    <div class="lesson-head">
+      <div class="lesson-eyebrow">— ${A.esc(ch.en)} / ${l.index}</div>
+      <h1 class="lesson-title">${A.esc(l.title)}</h1>
+      <p class="lesson-lead">${A.esc(l.lead)}</p>
+      <div class="lesson-meta">
+        <span class="chip track">${A.esc(ch.title)}</span>
+        <span class="chip">${l.minutes} MIN</span>
+        ${(l.tags||[]).map(t => `<span class="chip">${A.esc(t)}</span>`).join('')}
+      </div>
+    </div>
+    <div class="lesson-body">
+      ${l.sections.map((s, i) => `<section class="lsection">
+        <div class="mono-note" style="margin-bottom:8px">${String(i+1).padStart(2,'0')} / SECTION</div>
+        <h2>${A.esc(s.title)}</h2>
+        ${s.blocks.map(blockHTML).join('')}
+      </section>`).join('')}
+      ${(l.pitfalls||[]).length ? `<section class="lsection"><div class="mono-note" style="margin-bottom:8px">— / PITFALLS</div><h2>容易写错的地方</h2><div class="pitfalls">${l.pitfalls.map(x=>`<p>${A.esc(x)}</p>`).join('')}</div></section>` : ''}
+      ${practice.length ? `<div class="practice"><div class="cap">— PRACTICE / 对应题目</div>${practice.map(x=>`<a href="q.html?id=${x.id}"><span>${x.id}</span>${A.esc(x.title)}</a>`).join('')}</div>` : ''}
+    </div>
+    <div class="qnav">
+      ${prev ? `<a href="lesson.html?slug=${encodeURIComponent(prev.slug)}"><span class="k">← 上一篇</span><span class="t">${A.esc(prev.title)}</span></a>` : '<a class="disabled"><span class="k">← 上一篇</span><span class="t">已经是第一篇</span></a>'}
+      ${next ? `<a class="next" href="lesson.html?slug=${encodeURIComponent(next.slug)}"><span class="k">下一篇 →</span><span class="t">${A.esc(next.title)}</span></a>` : '<a class="next disabled"><span class="k">下一篇 →</span><span class="t">已经是最后一篇</span></a>'}
+    </div>
+    <div class="qfoot"><a href="learn.html">← 返回课程目录</a><span class="qid">${A.esc(ch.title)} · ${l.index}</span></div>`;
+
+  document.querySelectorAll('.lcode').forEach(card => {
+    const c = card.querySelectorAll('pre');
+    card.querySelectorAll('[data-lang]').forEach(btn => {
+      if (btn.tagName !== 'BUTTON' || btn.classList.contains('copy')) return;
+      btn.addEventListener('click', () => {
+        card.querySelectorAll('button[data-lang]').forEach(x => x.classList.toggle('on', x === btn));
+        card.querySelectorAll('pre').forEach(x => x.classList.toggle('on', x.dataset.lang === btn.dataset.lang));
+      });
+    });
+    const copyBtn = card.querySelector('.copy');
+    copyBtn.addEventListener('click', () => {
+      const lang = card.querySelector('button[data-lang].on').dataset.lang;
+      const active = card.querySelector('pre[data-lang="' + lang + '"]');
+      A.copy(active.textContent, copyBtn);
+    });
+  });
+})();
+</script>
+</body>
+</html>

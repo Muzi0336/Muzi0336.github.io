@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习记录 · 朝云暮辞 ARENA</title>
+<meta name="description" content="题库进度、收藏、已读课程与代码草稿的本地记录。">
+<link rel="stylesheet" href="../C语言/assets/style.css">
+<link rel="stylesheet" href="../C语言/assets/detail.css">
+<link rel="stylesheet" href="assets/arena.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../index.html"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg><span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span></a>
+  <nav class="nav"><a href="index.html">题库</a><a href="paths.html">学习路径</a><a href="learn.html">算法学习</a><a href="lab.html">动画实验室</a><a href="me.html" class="active">学习记录</a><a href="../C语言/index.html">真题</a></nav>
+</div>
+
+<main class="ar-wrap">
+  <section class="ar-hero">
+    <div>
+      <div class="eyebrow">— Me / Local</div>
+      <h1>只记在，<br>这台设备上。</h1>
+      <p class="lede">题库的完成状态、收藏、自测选择、课程已读和代码草稿都保存在浏览器 localStorage 里。不上传、不登录，换一台设备就从零开始。</p>
+    </div>
+    <div class="ar-stat"><div class="num" id="pct">0</div><div class="lab"><b>% 题库已完成</b><span id="ratio">0 / 145</span></div></div>
+  </section>
+
+  <div class="me-grid">
+    <div class="me-stat"><div class="k">DONE</div><div class="v" id="mDone">0</div><div class="s">已完成题目</div></div>
+    <div class="me-stat"><div class="k">READING</div><div class="v" id="mRead">0</div><div class="s">正在读</div></div>
+    <div class="me-stat"><div class="k">BOOKMARK</div><div class="v" id="mBook">0</div><div class="s">收藏题目</div></div>
+    <div class="me-stat"><div class="k">LESSON</div><div class="v" id="mLesson">0</div><div class="s">已读课程</div></div>
+  </div>
+
+  <div class="me-cols">
+    <section class="me-col">
+      <h2>正在推进</h2>
+      <div class="me-list" id="doing"></div>
+    </section>
+    <section class="me-col">
+      <h2>收藏夹</h2>
+      <div class="me-list" id="bookmarks"></div>
+    </section>
+  </div>
+
+  <div class="me-actions">
+    <button id="export" type="button">导出记录 JSON</button>
+    <button id="reset" class="danger" type="button">清空本机记录</button>
+    <a href="index.html" style="border:1px solid var(--line-2);padding:7px 12px;font-size:11.5px;color:var(--ink-2)">回到题库 →</a>
+  </div>
+  <div class="foot"><div>记录键：arena.v1 · 只在本机生效。</div><div>清理浏览器缓存会同时清掉这些记录。</div></div>
+</main>
+
+<footer class="site-foot"><div class="sf-inner">
+  <div class="sf-top"><div class="sf-brand"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg><div><span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span><p>题库、路径与课程整理自 ARENA LAB，经作者授权收录。</p></div></div>
+  <nav class="sf-links"><a href="index.html">题库</a><a href="paths.html">学习路径</a><a href="learn.html">算法学习</a><a href="../C语言/index.html">C 语言真题</a></nav></div>
+  <div class="sf-bottom"><span>© 2026 朝云暮辞</span><span>本地记录 · 不上传</span></div>
+</div></footer>
+
+<script src="data.js"></script>
+<script src="assets/arena.js"></script>
+<script>
+(function(){
+  function render(){
+    const s = A.summary();
+    const pct = Math.round(s.done / s.total * 100);
+    document.getElementById('pct').textContent = pct;
+    document.getElementById('ratio').textContent = `${s.done} / ${s.total}`;
+    document.getElementById('mDone').textContent = s.done;
+    document.getElementById('mRead').textContent = s.reading;
+    document.getElementById('mBook').textContent = s.book;
+    document.getElementById('mLesson').textContent = s.lessons;
+
+    const doing = A.data.problems.filter(p => A.statusOf(p.id) !== 'todo');
+    document.getElementById('doing').innerHTML = doing.length ? doing.map(p => {
+      const st = A.statusOf(p.id);
+      return `<a class="me-row" href="q.html?id=${p.id}"><span class="q">${p.id}</span><span class="t">${A.esc(p.title)}</span><span class="b">${st === 'done' ? '已完成' : '在读'}</span></a>`;
+    }).join('') : '<div class="me-empty">还没有标记过题目。打开一道题，点「在读」或「已完成」就会出现在这里。</div>';
+
+    const books = A.data.problems.filter(p => A.isBook(p.id));
+    document.getElementById('bookmarks').innerHTML = books.length ? books.map(p =>
+      `<a class="me-row" href="q.html?id=${p.id}"><span class="q">${p.id}</span><span class="t">${A.esc(p.title)}</span><span class="b">★</span></a>`
+    ).join('') : '<div class="me-empty">收藏夹是空的。题目页右上角的「收藏」会把题放进这里。</div>';
+  }
+
+  document.getElementById('export').addEventListener('click', () => {
+    const text = JSON.stringify({ exported: new Date().toISOString(), data: A.state }, null, 2);
+    const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
+    const a = document.createElement('a');
+    a.href = url; a.download = 'arena-progress.json'; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+
+  document.getElementById('reset').addEventListener('click', () => {
+    if (!confirm('清空本机所有题库进度、收藏、自测和代码草稿？这个操作不能撤销。')) return;
+    A.reset(); render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

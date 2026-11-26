@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>题库 · 朝云暮辞 ARENA</title>
+<meta name="description" content="145 道算法题，7 个知识分类。题面、推导、参考代码与算法演示放在同一页，进度保存在本地。">
+<link rel="stylesheet" href="../C语言/assets/style.css">
+<link rel="stylesheet" href="../C语言/assets/detail.css">
+<link rel="stylesheet" href="assets/arena.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+  <nav class="nav">
+    <a href="index.html" class="active">题库</a>
+    <a href="paths.html">学习路径</a>
+    <a href="learn.html">算法学习</a>
+    <a href="lab.html">动画实验室</a>
+    <a href="me.html">学习记录</a>
+    <a href="../C语言/index.html">真题</a>
+  </nav>
+</div>
+
+<main class="ar-wrap">
+  <section class="ar-hero">
+    <div>
+      <div class="eyebrow">— Library / 145</div>
+      <h1>把算法，<br>推演清楚。</h1>
+      <p class="lede">145 道题，7 个知识分类。每道题都摊开成同一张纸：题意、推导、正确性、复杂度、三语参考代码，以及可以逐帧看懂的算法演示。进度只记在这台设备上。</p>
+    </div>
+    <div class="ar-stat">
+      <div class="num" id="heroCount">145</div>
+      <div class="lab"><b>道题在库</b><span>7 分类 · 17 演示</span></div>
+    </div>
+  </section>
+
+  <section class="ar-filters">
+    <div class="searchbox">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
+      <input id="search" type="search" placeholder="搜索题目、考点或题面…" autocomplete="off">
+      <span class="hits" id="hits"></span>
+    </div>
+    <div class="selects">
+      <label class="sel"><select id="track"></select><svg viewBox="0 0 10 10"><path d="m2 3.5 3 3 3-3" stroke="currentColor" fill="none"/></svg></label>
+      <label class="sel"><select id="diff"><option value="">全部难度</option><option>入门</option><option>进阶</option><option>挑战</option></select><svg viewBox="0 0 10 10"><path d="m2 3.5 3 3 3-3" stroke="currentColor" fill="none"/></svg></label>
+      <label class="sel"><select id="status"><option value="">全部状态</option><option value="todo">未开始</option><option value="reading">在读</option><option value="done">已完成</option></select><svg viewBox="0 0 10 10"><path d="m2 3.5 3 3 3-3" stroke="currentColor" fill="none"/></svg></label>
+    </div>
+    <label class="check"><input id="onlyBook" type="checkbox">只看收藏</label>
+  </section>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:10px 0 2px">
+    <span class="ar-count" id="countLine">—</span>
+    <span class="ar-count">按题号排序</span>
+  </div>
+
+  <section class="ar-list" id="list"></section>
+
+  <div class="foot">
+    <div>题目与解析整理自 <a href="https://arena.wuzl.top" target="_blank" rel="noopener">竞序 · ARENA LAB</a>，经作者授权收录；界面与交互按朝云暮辞重做。</div>
+    <div>进度保存在浏览器 localStorage · 换设备不会同步。</div>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>一个用来放学习资料的小站。题库、路径与课程整理自 ARENA LAB，解析与演示版权归原作者，经授权收录。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="index.html">题库</a><a href="paths.html">学习路径</a><a href="learn.html">算法学习</a><a href="lab.html">动画实验室</a><a href="../C语言/index.html">C 语言真题</a>
+      </nav>
+    </div>
+    <div class="sf-bottom"><span>© 2026 朝云暮辞</span><span>v0.9 · 145 题 · 17 演示</span></div>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="assets/arena.js"></script>
+<script>
+(function(){
+  const list = document.getElementById('list');
+  const search = document.getElementById('search');
+  const trackSel = document.getElementById('track');
+  const diffSel = document.getElementById('diff');
+  const statusSel = document.getElementById('status');
+  const onlyBook = document.getElementById('onlyBook');
+  const hits = document.getElementById('hits');
+  const countLine = document.getElementById('countLine');
+
+  const params = new URLSearchParams(location.search);
+  trackSel.innerHTML = '<option value="">全部分类</option>' + A.data.tracks.map(t => `<option value="${A.attr(t.name)}">${A.esc(t.name)} · ${t.count}</option>`).join('');
+  if (params.get('track')) trackSel.value = params.get('track');
+  if (params.get('diff')) diffSel.value = params.get('diff');
+  if (params.get('q')) search.value = params.get('q');
+
+  function render(){
+    const q = search.value.trim().toLowerCase();
+    const tr = trackSel.value, df = diffSel.value, st = statusSel.value;
+    const book = onlyBook.checked;
+    const rows = A.data.problems.filter(p => {
+      if (tr && p.track !== tr) return false;
+      if (df && p.difficulty !== df) return false;
+      if (st && A.statusOf(p.id) !== st) return false;
+      if (book && !A.isBook(p.id)) return false;
+      if (!q) return true;
+      const hay = (p.title + ' ' + p.objective + ' ' + p.statement + ' ' + p.track + ' ' + p.id + ' ' + p.keyQuestion).toLowerCase();
+      return hay.includes(q);
+    });
+
+    hits.textContent = rows.length ? rows.length + ' 题' : '';
+    countLine.textContent = `— 显示 ${rows.length} / ${A.data.problems.length} 题` + (tr ? ' · ' + tr : '') + (df ? ' · ' + df : '');
+    document.getElementById('heroCount').textContent = A.data.problems.length;
+
+    if (!rows.length){
+      list.innerHTML = '<div class="ar-empty"><b>没有找到这一题。</b>换个关键词，或把筛选条件放宽一点。</div>';
+      return;
+    }
+
+    list.innerHTML = rows.map(p => {
+      const state = A.statusOf(p.id);
+      const dot = state === 'done' ? '<i class="dot done"></i>' : state === 'reading' ? '<i class="dot read"></i>' : '';
+      const stLabel = state === 'done' ? '<span class="st done">已完成</span>' : state === 'reading' ? '<span class="st read">在读</span>' : '';
+      return `<a class="arow" href="q.html?id=${p.id}">
+        <div class="arow-idx"><b>${String(p.idx).padStart(3,'0')}</b><small>${p.id}</small></div>
+        <div class="arow-main">
+          <h3>${dot}${A.esc(p.title)}</h3>
+          <p>${A.esc(p.objective || p.statement.slice(0, 90))}</p>
+          <div class="tags"><span class="chip track">${A.esc(p.track)}</span><span class="chip diff-${A.attr(p.difficulty)}">${A.esc(p.difficulty)}</span>${(p.animation && p.animation.type !== 'none') ? '<span class="chip">动画</span>' : ''}</div>
+        </div>
+        <div class="arow-side">
+          ${A.isBook(p.id) ? '<span class="bm">★ 已收藏</span>' : ''}
+          <span class="mins">${p.minutes} MIN</span>
+          ${stLabel}
+        </div>
+      </a>`;
+    }).join('');
+  }
+
+  let t = 0;
+  search.addEventListener('input', () => { clearTimeout(t); t = setTimeout(render, 120); });
+  [trackSel, diffSel, statusSel, onlyBook].forEach(el => el.addEventListener('change', render));
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>题目 · 朝云暮辞 ARENA</title>
+<meta name="description" content="题面、推导、正确性、复杂度、三语参考代码与算法演示。">
+<link rel="stylesheet" href="../C语言/assets/style.css">
+<link rel="stylesheet" href="../C语言/assets/detail.css">
+<link rel="stylesheet" href="assets/arena.css">
+<style>
+.code-card.open .code-view.on{display:block}
+.code-card:not(.open) .code-view{display:none}
+.mx{font-family:var(--mono);font-size:.93em;background:rgba(25,25,23,.045);padding:0 3px;border-radius:2px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+  <nav class="nav">
+    <a href="index.html" class="active">题库</a>
+    <a href="paths.html">学习路径</a>
+    <a href="learn.html">算法学习</a>
+    <a href="lab.html">动画实验室</a>
+    <a href="me.html">学习记录</a>
+    <a href="../C语言/index.html">真题</a>
+  </nav>
+</div>
+
+<div class="qwrap">
+  <div class="crumbs" id="crumbs"></div>
+  <div class="qlayout">
+    <article class="qmain" id="main"></article>
+    <aside class="qside" id="side"></aside>
+  </div>
+</div>
+
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>题目、解析与演示整理自 ARENA LAB，经作者授权收录；界面按朝云暮辞重做。进度只保存在本机。</p>
+        </div>
+      </div>
+      <nav class="sf-links"><a href="index.html">题库</a><a href="paths.html">学习路径</a><a href="learn.html">算法学习</a><a href="lab.html">动画实验室</a><a href="../C语言/index.html">C 语言真题</a></nav>
+    </div>
+    <div class="sf-bottom"><span>© 2026 朝云暮辞</span><span id="footId">—</span></div>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="assets/arena.js"></script>
+<script src="assets/lab.js"></script>
+<script>
+(function(){
+  const id = A.qp('id') || A.data.problems[0].id;
+  const p = A.byId(id) || A.data.problems[0];
+  const idx = p.idx - 1;
+  const prev = A.data.problems[idx - 1];
+  const next = A.data.problems[idx + 1];
+  const sameTrack = A.data.problems.filter(x => x.track === p.track);
+
+  document.title = p.title + ' · 朝云暮辞 ARENA';
+  document.getElementById('crumbs').innerHTML = `<a href="index.html">题库</a><span class="arrow">/</span><span>${String(p.idx).padStart(3,'0')}</span><span>/</span><span>${p.id}</span>`;
+  document.getElementById('footId').textContent = `ARENA-${p.id} · v${p.version || '0.9'}`;
+
+  const fmt = (s) => {
+    let h = A.esc(s || '');
+    h = h.replace(/\$([^$]+)\$/g, (m, x) => '<span class="mx">' + x.replace(/\\mathrm\{([^}]*)\}/g, '$1').replace(/\\/g, '') + '</span>');
+    return h;
+  };
+  const chipDiff = `<span class="chip diff-${A.attr(p.difficulty)}">${A.esc(p.difficulty)}</span>`;
+
+  const sourceUrl = (p.source || '').match(/https?:\/\/[^\s；]+/);
+  const sourceText = (p.source || '').split('；').slice(0,2).join(' · ') || '—';
+
+  const codeLangs = [
+    { key: 'cpp', label: 'C++ 11' },
+    { key: 'c', label: 'C 11' },
+    { key: 'python', label: 'Python 3.11' },
+  ];
+  const langName = { cpp: 'C++', c: 'C', python: 'Python' };
+
+  const sections = [];
+  sections.push(`<div class="sec first">
+    <div class="sec-head"><span class="sec-no">01</span><h2>题目</h2><span class="note">${A.esc(p.track)} · ${p.minutes} MIN</span></div>
+    <div class="prose">${fmt(p.statement)}</div>
+  </div>`);
+
+  sections.push(`<div class="sec">
+    <div class="sec-head"><span class="sec-no">02</span><h2>输入与输出</h2></div>
+    <div class="io-grid">
+      <div class="io-card"><div class="cap">INPUT</div><div class="prose">${fmt(p.input)}</div></div>
+      <div class="io-card"><div class="cap">OUTPUT</div><div class="prose">${fmt(p.output)}</div></div>
+    </div>
+    ${(p.constraints||[]).length ? `<div class="constraints">${p.constraints.map(c=>`<span>${A.esc(c)}</span>`).join('')}</div>` : ''}
+  </div>`);
+
+  const samples = (p.samples || []).map((s, i) => `<div class="sample-item">
+    <div class="sample-lab"><b>样例 ${String(i+1).padStart(2,'0')}</b><span>${i===0?'SAMPLE':'EXTRA'}</span></div>
+    <div class="sample-grid">
+      <div class="sample-box"><div class="cap">输入</div><pre>${A.esc(s.input)}</pre></div>
+      <div class="sample-box"><div class="cap">输出</div><pre>${A.esc(s.output)}</pre></div>
+    </div>
+    ${s.why ? `<div class="sample-why"><b>为什么</b>　${fmt(s.why)}</div>` : ''}
+  </div>`).join('');
+  if (samples) sections.push(`<div class="sec"><div class="sec-head"><span class="sec-no">03</span><h2>样例</h2><span class="note">${(p.samples||[]).length} 组</span></div><div class="samples">${samples}</div></div>`);
+
+  sections.push(`<div class="sec">
+    <div class="sec-head"><span class="sec-no">04</span><h2>目标与关键问题</h2></div>
+    <div class="objectives">${(p.objectives||[]).map((o,i)=>`<div class="objective"><span class="k">0${i+1}</span><span>${fmt(o)}</span></div>`).join('')}</div>
+    ${p.keyQuestion ? `<div class="keyq"><b>KEY QUESTION</b>${fmt(p.keyQuestion)}</div>` : ''}
+  </div>`);
+
+  const a = p.analysis || {};
+  sections.push(`<div class="sec">
+    <div class="sec-head"><span class="sec-no">05</span><h2>思路推导</h2></div>
+    <div class="obs">${(a.observations||[]).map((o,i)=>`<div class="obs-item"><span class="n">0${i+1}</span><p>${fmt(o)}</p></div>`).join('')}</div>
+    <div class="derive">
+      <div class="derive-item"><h3>做法</h3><div class="prose small">${fmt(a.approach)}</div></div>
+      <div class="derive-item"><h3>正确性</h3><div class="prose small">${fmt(a.correctness)}</div></div>
+      <div class="split2" style="margin-top:2px">
+        <div class="panel"><div class="cap">TIME</div><div class="v">${A.esc((a.complexity||{}).time || '—')}</div></div>
+        <div class="panel"><div class="cap">SPACE</div><div class="v">${A.esc((a.complexity||{}).space || '—')}</div></div>
+      </div>
+    </div>
+    ${(p.hints||[]).length ? `<details class="hints"><summary>卡住了？展开 ${p.hints.length} 条提示</summary><div class="hint-list">${p.hints.map(h=>`<p>${fmt(h)}</p>`).join('')}</div></details>` : ''}
+    ${(p.pitfalls||[]).length ? `<div class="pitfalls">${p.pitfalls.map(x=>`<p>${fmt(x)}</p>`).join('')}</div>` : ''}
+  </div>`);
+
+  const codeViews = codeLangs.map((l,i)=>`<div class="code-view ${i===0?'on':''}" data-lang="${l.key}"><pre>${A.highlight((p.code||{})[l.key] || '', l.key)}</pre></div>`).join('');
+  sections.push(`<div class="sec">
+    <div class="sec-head"><span class="sec-no">06</span><h2>参考代码</h2><span class="note">默认折叠 · 可复制</span></div>
+    <div class="code-card" id="codeCard">
+      <div class="code-tabs">
+        ${codeLangs.map((l,i)=>`<button data-lang="${l.key}" class="${i===0?'on':''}">${l.label}</button>`).join('')}
+        <span class="sp"></span>
+        <button class="fold" id="foldBtn" type="button">展开代码</button>
+        <button class="copy" id="copyBtn" type="button">复制</button>
+      </div>
+      ${codeViews}
+    </div>
+    <p class="code-tip">先自己写一遍，再展开对照。三份代码是同一思路的不同写法，不保证是唯一解。</p>
+  </div>`);
+
+  sections.push(`<div class="sec" id="editorSec">
+    <div class="sec-head"><span class="sec-no">07</span><h2>手敲代码</h2><span class="note">自动保存 · 关键词补全</span></div>
+    <div class="editor-card">
+      <div class="ed-head">
+        <span class="k">SCRATCH / ${p.id}</span>
+        <select id="edLang">${codeLangs.map(l=>`<option value="${l.key}">${l.label}</option>`).join('')}</select>
+        <span class="st" id="edStat">空白 · 自动保存</span>
+        <span class="sp"></span>
+        <button id="edClear" type="button">清空</button>
+      </div>
+      <div class="ed-wrap">
+        <textarea id="edText" spellcheck="false" placeholder="在这里默写。Tab 缩进，输入两个字母以上会弹出关键字补全。"></textarea>
+        <div class="ac" id="ac"></div>
+      </div>
+      <div class="ed-foot"><span>草稿只存在本机 · 切换语言会分别保存</span><span id="edCount">0 字符</span></div>
+    </div>
+  </div>`);
+
+  const quiz = p.quizzes || [];
+  sections.push(`<div class="sec">
+    <div class="sec-head"><span class="sec-no">08</span><h2>理解自测</h2><span class="note">${quiz.length} 题 · 不自动判分</span></div>
+    ${quiz.length ? `<div class="quiz" id="quiz">${quiz.map((q,qi)=>`<div class="quiz-item">
+      <div class="quiz-q"><b>Q${qi+1}</b><span>${fmt(q.question)}</span></div>
+      <div class="quiz-opts">${q.options.map((o,oi)=>`<button class="qopt" type="button" data-q="${qi}" data-o="${oi}"><span class="l">${String.fromCharCode(65+oi)}</span><span>${fmt(o)}</span></button>`).join('')}</div>
+    </div>`).join('')}<p class="quiz-note">选择会记在本机。这里没有标准答案的自动判定——回到上面的推导，自己核对为什么。</p></div>` : '<p class="prose small">这道题没有附自测。</p>'}
+  </div>`);
+
+  if (p.animation && p.animation.type !== 'none'){
+    sections.push(`<div class="sec">
+      <div class="sec-head"><span class="sec-no">09</span><h2>算法演示</h2><span class="note">可逐帧查看</span></div>
+      <div id="demo"></div>
+    </div>`);
+  }
+
+  sections.push(`<div class="qnav">
+    ${prev ? `<a href="q.html?id=${prev.id}"><span class="k">← 上一题 · ${String(prev.idx).padStart(3,'0')}</span><span class="t">${A.esc(prev.title)}</span></a>` : '<a class="disabled"><span class="k">← 上一题</span><span class="t">已经是第一题</span></a>'}
+    ${next ? `<a class="next" href="q.html?id=${next.id}"><span class="k">下一题 · ${String(next.idx).padStart(3,'0')} →</span><span class="t">${A.esc(next.title)}</span></a>` : '<a class="next disabled"><span class="k">下一题 →</span><span class="t">已经是最后一题</span></a>'}
+  </div>
+  <div class="qfoot"><a href="index.html">← 返回题库</a><span class="qid">ARENA-${p.id} · ${A.esc(p.track)}</span></div>`);
+
+  document.getElementById('main').innerHTML = `
+    <div class="q-eyebrow"><span class="accent">— ${A.esc(p.track)}</span><span>${A.esc(p.difficulty)}</span><span>${p.minutes} MIN</span><span>#${String(p.idx).padStart(3,'0')}</span></div>
+    <h1 class="qtitle">${A.esc(p.title)}</h1>
+    <div class="qmeta"><span>题号 ${p.id}</span><span class="sep"></span>${chipDiff}<span class="sep"></span><span class="dim">${A.esc(sourceText)}</span></div>
+    <div class="toolrow">
+      <span class="tl">STATUS</span>
+      <button class="tbtn" data-st="todo" type="button">未开始</button>
+      <button class="tbtn" data-st="reading" type="button">在读</button>
+      <button class="tbtn" data-st="done" type="button">已完成</button>
+      <span class="sp"></span>
+      <button class="tbtn accent" id="bmBtn" type="button">☆ 收藏</button>
+    </div>
+    ${sections.join('')}`;
+
+  // 手机端隐藏手敲区后，章节号顺延，避免 06 直接跳到 08
+  if (matchMedia('(max-width:900px)').matches) {
+    [...document.querySelectorAll('#main .sec')]
+      .filter(s => getComputedStyle(s).display !== 'none')
+      .forEach((s, i) => {
+        const n = s.querySelector('.sec-no');
+        if (n) n.textContent = String(i + 1).padStart(2, '0');
+      });
+  }
+
+  // 侧栏
+  const sameList = sameTrack.filter(x => x.id !== p.id).slice(0, 6);
+  document.getElementById('side').innerHTML = `
+    <div class="card">
+      <div class="card-head"><span class="k">PROGRESS <span>/ 本地</span></span></div>
+      <div class="status-btns" id="sideStatus">
+        <button data-st="todo" type="button">未开始</button><button data-st="reading" type="button">在读</button><button data-st="done" type="button">已完成</button>
+      </div>
+      <button class="bookmark" id="sideBook" type="button"><span>收藏这道题</span><span>☆</span></button>
+      <p class="side-note">进度与草稿只存在这台设备的浏览器里，不会上传。</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="k">INFO <span>/ 题目</span></span></div>
+      <div class="side-meta">
+        <div class="r"><span>分类</span><b>${A.esc(p.track)}</b></div>
+        <div class="r"><span>难度</span><b>${A.esc(p.difficulty)}</b></div>
+        <div class="r"><span>建议时长</span><b>${p.minutes} 分钟</b></div>
+        <div class="r"><span>题号</span><b>${p.id}</b></div>
+        <div class="r"><span>版本</span><b>v${A.esc(p.version)}</b></div>
+        <div class="r"><span>来源</span><b>${sourceUrl ? `<a href="${A.attr(sourceUrl[0])}" target="_blank" rel="noopener" style="text-decoration:underline">OJ 原题 ↗</a>` : '整理稿'}</b></div>
+      </div>
+      <p class="side-note">${A.esc(sourceText)}</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="k">SAME TRACK <span>/ ${A.esc(p.track)}</span></span><a class="act" href="index.html?track=${encodeURIComponent(p.track)}">全部 →</a></div>
+      <div class="side-practice">${sameList.map(x=>`<a href="q.html?id=${x.id}"><span style="color:var(--muted);font-family:var(--mono);font-size:9.5px">${x.id}</span><span>${A.esc(x.title)}</span></a>`).join('')}</div>
+    </div>`;
+
+  function syncStatus(){
+    const st = A.statusOf(p.id);
+    document.querySelectorAll('.tbtn[data-st]').forEach(b => b.classList.toggle('on', b.dataset.st === st));
+    document.querySelectorAll('#sideStatus button').forEach(b => b.classList.toggle('on', b.dataset.st === st));
+    const bm = document.getElementById('bmBtn'), sb = document.getElementById('sideBook');
+    const on = A.isBook(p.id);
+    bm.classList.toggle('on', on); bm.textContent = on ? '★ 已收藏' : '☆ 收藏';
+    sb.classList.toggle('on', on); sb.innerHTML = `<span>${on ? '已收藏这道题' : '收藏这道题'}</span><span>${on ? '★' : '☆'}</span>`;
+  }
+  document.querySelectorAll('.tbtn[data-st], #sideStatus button').forEach(b => b.addEventListener('click', () => { A.setStatus(p.id, b.dataset.st); syncStatus(); }));
+  document.getElementById('bmBtn').addEventListener('click', () => { A.toggleBook(p.id); syncStatus(); });
+  document.getElementById('sideBook').addEventListener('click', () => { A.toggleBook(p.id); syncStatus(); });
+  syncStatus();
+
+  // 代码折叠 / 切换 / 复制
+  const card = document.getElementById('codeCard');
+  let open = false;
+  const fold = document.getElementById('foldBtn');
+  fold.addEventListener('click', () => {
+    open = !open;
+    card.classList.toggle('open', open);
+    fold.textContent = open ? '收起代码' : '展开代码';
+    if (open) card.querySelector('.code-view.on').scrollTop = 0;
+  });
+  document.querySelectorAll('.code-tabs [data-lang]').forEach(b => b.addEventListener('click', () => {
+    const lang = b.dataset.lang;
+    document.querySelectorAll('.code-tabs [data-lang]').forEach(x => x.classList.toggle('on', x === b));
+    document.querySelectorAll('.code-view').forEach(v => v.classList.toggle('on', v.dataset.lang === lang));
+  }));
+  document.getElementById('copyBtn').addEventListener('click', (e) => {
+    const lang = card.querySelector('.code-tabs [data-lang].on').dataset.lang;
+    A.copy((p.code||{})[lang] || '', e.currentTarget);
+  });
+
+  // 手敲代码 + 补全
+  const KW = {
+    cpp: 'auto break case char const continue default do double else enum extern float for goto if inline int long register return short signed sizeof static struct switch typedef union unsigned void volatile while class namespace template typename public private protected virtual override new delete using bool true false nullptr constexpr noexcept vector string pair map set queue stack priority_queue unordered_map cout cin endl std printf scanf sort max min swap abs',
+    c: 'auto break case char const continue default do double else enum extern float for goto if int long register return short signed sizeof static struct switch typedef union unsigned void volatile while printf scanf fgets strlen malloc free memset sort abs',
+    python: 'False None True and as assert async await break class continue def del elif else except finally for from global if import in is lambda nonlocal not or pass raise return try while with yield print input range len int str list dict set tuple sum min max sorted enumerate zip'
+  };
+  const ed = document.getElementById('edText');
+  const edLang = document.getElementById('edLang');
+  const ac = document.getElementById('ac');
+  const edStat = document.getElementById('edStat');
+  const edCount = document.getElementById('edCount');
+  let acItems = [], acSel = 0, saveTimer = 0;
+
+  function loadDraft(){
+    const text = A.getCode(p.id, edLang.value);
+    ed.value = text;
+    edStat.textContent = text ? '已载入草稿' : '空白 · 自动保存';
+    updateCount();
+  }
+  function updateCount(){ edCount.textContent = ed.value.length + ' 字符 / ' + (ed.value ? ed.value.split('\n').length : 0) + ' 行'; }
+  function saveDraft(){
+    A.setCode(p.id, edLang.value, ed.value);
+    edStat.textContent = '已保存 · ' + new Date().toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit'});
+  }
+  ed.addEventListener('input', () => {
+    updateCount();
+    clearTimeout(saveTimer); saveTimer = setTimeout(saveDraft, 800);
+    const before = ed.value.slice(0, ed.selectionStart);
+    const m = before.match(/[A-Za-z_][A-Za-z0-9_]*$/);
+    if (!m || m[0].length < 2) { closeAc(); return; }
+    const prefix = m[0].toLowerCase();
+    acItems = KW[edLang.value].split(' ').filter(k => k.toLowerCase().startsWith(prefix) && k.toLowerCase() !== prefix).slice(0, 8);
+    if (!acItems.length) { closeAc(); return; }
+    acSel = 0;
+    ac.innerHTML = '<div class="ac-head">KEYWORD · Tab / Enter</div>' + acItems.map((k,i)=>`<div class="item ${i===0?'sel':''}" data-k="${k}"><span>${k}</span><span class="hint">${edLang.value === 'python' ? 'Python' : edLang.value === 'c' ? 'C' : 'C++'}</span></div>`).join('');
+    ac.classList.add('show');
+  });
+  function closeAc(){ ac.classList.remove('show'); acItems = []; }
+  function acceptAc(){
+    const token = acItems[acSel]; if (!token) return;
+    const pos = ed.selectionStart;
+    const before = ed.value.slice(0, pos), after = ed.value.slice(pos);
+    const m = before.match(/[A-Za-z_][A-Za-z0-9_]*$/);
+    if (!m) return;
+    const start = pos - m[0].length;
+    ed.value = ed.value.slice(0, start) + token + after;
+    ed.selectionStart = ed.selectionEnd = start + token.length;
+    closeAc(); updateCount(); saveDraft(); ed.focus();
+  }
+  ac.addEventListener('mousedown', (e) => {
+    const item = e.target.closest('.item'); if (!item) return;
+    e.preventDefault(); acceptAc();
+  });
+  ed.addEventListener('keydown', (e) => {
+    if (ac.classList.contains('show')){
+      if (e.key === 'Tab' || e.key === 'Enter'){ e.preventDefault(); acceptAc(); return; }
+      if (e.key === 'Escape'){ closeAc(); return; }
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+        e.preventDefault();
+        acSel = (acSel + (e.key === 'ArrowDown' ? 1 : -1) + acItems.length) % acItems.length;
+        ac.querySelectorAll('.item').forEach((x,i)=>x.classList.toggle('sel', i === acSel));
+        return;
+      }
+    }
+    if (e.key === 'Tab'){
+      e.preventDefault();
+      const s = ed.selectionStart, t = ed.selectionEnd;
+      ed.value = ed.value.slice(0, s) + '    ' + ed.value.slice(t);
+      ed.selectionStart = ed.selectionEnd = s + 4;
+      updateCount();
+    }
+  });
+  ed.addEventListener('blur', () => setTimeout(closeAc, 120));
+  edLang.addEventListener('change', () => { saveDraft(); loadDraft(); });
+  document.getElementById('edClear').addEventListener('click', () => {
+    if (!confirm('清空当前语言的草稿？')) return;
+    ed.value = ''; A.setCode(p.id, edLang.value, ''); updateCount(); edStat.textContent = '已清空';
+  });
+  loadDraft();
+
+  // 自测选择
+  const qState = A.state.quiz[p.id] || {};
+  document.querySelectorAll('.qopt').forEach(btn => {
+    const qi = +btn.dataset.q, oi = +btn.dataset.o;
+    if (qState[qi] === oi) btn.classList.add('picked');
+    btn.addEventListener('click', () => {
+      A.state.quiz[p.id] = A.state.quiz[p.id] || {};
+      A.state.quiz[p.id][qi] = oi; A.save();
+      document.querySelectorAll(`.qopt[data-q="${qi}"]`).forEach(x => x.classList.toggle('picked', x === btn));
+    });
+  });
+
+  // 演示
+  if (p.animation && p.animation.type !== 'none' && window.renderArenaDemo){
+    renderArenaDemo(document.getElementById('demo'), p, { compact: false });
+  }
+})();
+</script>
+</body>
+</html>
