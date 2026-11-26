@@ -66,13 +66,14 @@ Collection of C language exam papers, 2019–2025 (2023 not available), 236 ques
 
 ### Algorithm Library (`算法/`)
 
-Static edition of ARENA LAB, rebuilt in the site's paper-and-ink style with the author's permission. 145 problems across 7 tracks, 6 learning paths, 21 lessons, and 17 step-by-step algorithm demos. No backend: progress, bookmarks, quiz choices and code drafts stay in `localStorage` (`arena.v1`).
+Static edition of ARENA LAB, rebuilt in the site's paper-and-ink style with the author's permission. 145 problems across 7 tracks, 6 learning paths, 21 lessons, and 17 step-by-step algorithm demos. No backend: bookmarks, quiz choices and code drafts stay in `localStorage` (`arena.v1`).
 
 - `算法/index.html` — problem list with search, track/difficulty/status filters and bookmark-only view
 - `算法/q.html` — problem detail: statement, samples, derivation, complexity, collapsible C++/C/Python solutions with copy, scratch editor with keyword completion, self-check quiz, demo player, and prev/next navigation within the same track
 - `算法/paths.html` — six learning paths with per-path progress
 - `算法/learn.html`, `算法/lesson.html` — course index and lesson pages
-- `算法/lab.html` — 17 algorithm animations with play/step/reset controls
+- `算法/lab.html` — 17 algorithm animations, drawn live with HTML/SVG code (no screenshot frames) with play/step/reset controls
+- `算法/assets/lab.js` — demo renderers and player; `算法/assets/demo_captions.js` — step captions
 - `算法/data.js` — problems, paths and lessons data; `算法/assets/` — styles and scripts
 
 ## License

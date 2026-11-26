@@ -356,7 +356,7 @@
   .ar-hero{grid-template-columns:1fr;gap:28px}
   .path-head{grid-template-columns:44px minmax(0,1fr);gap:14px}
   .path-side{grid-column:2;text-align:left;margin-top:4px}
-  .lab-layout{grid-template-columns:1fr}
+  .lab-layout{grid-template-columns:minmax(0,1fr)}
   .player-side{grid-template-columns:1fr 1fr}
 }
 @media (max-width:900px){
@@ -430,3 +430,54 @@
   .path-no{white-space:nowrap}
   .path-side{grid-column:1;margin-top:8px}
 }
+
+/* ---------- 代码动画 ---------- */
+.player-stage{min-height:360px}
+.dv{padding:20px 20px 14px;color:#dcd8cc;font-family:var(--sans);font-size:12px;min-height:360px;box-sizing:border-box}
+.dv-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+.dv-box{min-width:50px;padding:8px 6px;border:1px solid #3a444d;background:#1c2228;text-align:center;border-radius:2px}
+.dv-box b{display:block;font-family:var(--mono);font-size:15px;font-weight:500;color:#e9e6dc;line-height:1.4}
+.dv-box span{display:block;font-family:var(--mono);font-size:9px;color:#8f9288;margin-top:2px;white-space:nowrap}
+.dv-box.cur{border-color:#e65324;background:#3a2a24}
+.dv-box.done{border-color:#5fbf9a;background:#22342d}
+.dv-box.left{border-color:#5fbf9a}
+.dv-box.right{border-color:#5a8fbf}
+.dv-chars .dv-box{min-width:46px}
+.dv-table{width:100%;border-collapse:collapse;margin-top:12px;font-family:var(--mono);font-size:10.5px}
+.dv-table th,.dv-table td{border:1px solid #2e373e;padding:5px 7px;text-align:center;color:#c9c6bb}
+.dv-table th{color:#8f9288;font-weight:400;background:#171b20}
+.dv-table td.cur{background:#3a2a24;color:#f0b08a;border-color:#e65324}
+.dv-table td.src{background:#22342d;color:#8fd4b2}
+.dv-table td.done{color:#9ca09a}
+.dv-meta{margin-top:12px;font-family:var(--mono);font-size:10.5px;color:#9a9c92;line-height:1.8}
+.dv-meta b{color:#e65324;font-weight:500}
+.dv-result{margin-top:14px;padding:10px 12px;border-left:2px solid #e65324;background:rgba(230,83,36,.08);color:#e9e6dc;font-size:12px}
+.dv-result b{color:#f0b08a}
+.dv-hint{margin-top:10px;font-size:10.5px;color:#8f9288}
+.dv-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-family:var(--mono);font-size:9.5px;color:#9a9c92}
+.dv-legend i{display:inline-block;width:8px;height:8px;margin-right:5px;vertical-align:middle}
+.dv-svg{display:block;width:100%;height:auto;max-height:300px;margin:0 auto}
+.dv-grid-text{display:inline-grid;grid-template-columns:repeat(4,38px);gap:4px;margin:0 auto}
+.dv-grid-text span{display:flex;align-items:center;justify-content:center;height:38px;border:1px solid #333c44;font-family:var(--mono);color:#a9aca4;background:#1a1f24}
+.dv-grid-text .c-O{color:#f0b08a;border-color:#5a4438;background:#2a211e}
+.dv-grid-text .c-S{color:#8fd4b2;border-color:#345043;background:#1d2a24}
+.dv-grid-text .c-X{color:#777b72}
+.dv-grid-text span.on{border-color:#e65324;background:#3a2a24;color:#fff}
+.dv-grid-text span.done{color:#8fd4b2;border-color:#345043}
+.dv-bars{display:flex;justify-content:center;gap:16px;height:160px;padding-top:16px}
+.dv-bar{position:relative;width:46px;height:130px;border-bottom:1px solid #3a444d}
+.dv-bar i{position:absolute;left:7px;bottom:0;width:32px;background:#39434b}
+.dv-bar u{position:absolute;left:7px;bottom:0;width:32px;background:rgba(90,143,191,.6);z-index:2}
+.dv-bar em{position:absolute;top:-16px;left:0;right:0;text-align:center;font-family:var(--mono);font-size:9px;color:#8f9288;font-style:normal}
+.dv-bar span{position:absolute;bottom:-18px;left:0;right:0;text-align:center;font-family:var(--mono);font-size:9px;color:#8f9288}
+.dv-bar span.on{color:#e65324}
+.dv-code{background:#0f1216;border-left:2px solid #e65324;padding:8px 10px;font-family:var(--mono);font-size:10px;line-height:1.8;color:#b9b6ab;white-space:pre;overflow:auto}
+.dv-code .on{color:#f0b08a;background:rgba(230,83,36,.1);display:block}
+.dv-thumb{width:92px;height:56px;overflow:hidden;background:#12151a;position:relative}
+.dv-thumb-in{width:460px;transform:scale(.2);transform-origin:top left;pointer-events:none}
+.dv{max-width:100%;overflow-x:auto}
+.dv-table{min-width:520px}
+@media(max-width:640px){.dv{padding:14px 12px;min-height:300px}.player-stage{min-height:300px}.dv-table{min-width:460px;font-size:10px}.dv-box{min-width:40px;padding:6px 4px}.dv-svg{max-height:240px}}
+.player,.lab-layout{min-width:0}
+.player-stage{overflow-x:auto}
+@media(max-width:640px){.lab-layout{grid-template-columns:minmax(0,1fr)}.player{width:100%;max-width:100%}}
