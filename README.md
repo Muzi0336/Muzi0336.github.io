@@ -74,7 +74,9 @@ Static edition of ARENA LAB, rebuilt in the site's paper-and-ink style with the 
 - `算法/learn.html`, `算法/lesson.html` — course index and lesson pages
 - `算法/lab.html` — 17 algorithm animations, drawn live with HTML/SVG code (no screenshot frames) with play/step/reset controls
 - `算法/assets/lab.js` — demo renderers and player; `算法/assets/demo_captions.js` — step captions
-- `算法/data.js` — problems, paths and lessons data; `算法/assets/` — styles and scripts
+- `算法/assets/app_data.js` — lightweight shared index (42 KB); `算法/assets/search_data.js` — full-text search index loaded on demand
+- `算法/assets/problems/<id>.js` — one problem per file, fetched only by `q.html`
+- `算法/assets/lessons/<slug>.js` — one lesson per file, fetched only by `lesson.html`
 
 ## License
 

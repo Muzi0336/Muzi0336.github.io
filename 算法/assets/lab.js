@@ -390,11 +390,11 @@
   };
 
   function preview(problem) {
-    const type = (problem.animation || {}).type;
-    const fs = build(type, problem.animation || {});
-    if (!fs.length) return "";
-    const html = typeof fs[0] === "string" ? fs[0] : fs[0].html;
-    return `<div class="dv-thumb"><div class="dv-thumb-in">${html}</div></div>`;
+    const type = (problem.animation || {}).type || "demo";
+    let seed = 0;
+    for (let i = 0; i < type.length; i++) seed = (seed * 31 + type.charCodeAt(i)) % 997;
+    const bars = Array.from({ length: 9 }, (_, i) => `<i style="height:${18 + ((seed * (i + 5)) % 72)}%"></i>`).join("");
+    return `<div class="dv-thumb" aria-hidden="true"><div class="dv-thumb-art">${bars}</div></div>`;
   }
 
   window.arenaDemoPreview = preview;

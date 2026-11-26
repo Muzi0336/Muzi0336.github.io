@@ -53,10 +53,21 @@
   </div>
 </footer>
 
-<script src="data.js"></script>
+<script src="assets/app_data.js"></script>
 <script src="assets/arena.js"></script>
-<script src="assets/demo_captions.js"></script>
-<script src="assets/lab.js"></script>
+<script>
+(function(){
+  var raw = new URLSearchParams(location.search).get('id');
+  var item = A.byId(raw) || A.data.problems[0];
+  document.write('<script src="assets/problems/' + item.id + '.js"><\/script>');
+  if (item.animation && item.animation.type !== 'none') {
+    document.write('<script src="assets/demo_captions.js"><\/script>');
+    document.write('<script src="assets/lab.js"><\/script>');
+  }
+})();
+</script>
+
+
 <script>
 (function(){
   const id = A.qp('id') || A.data.problems[0].id;

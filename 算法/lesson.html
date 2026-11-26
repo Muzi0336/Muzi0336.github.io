@@ -30,8 +30,15 @@
   <div class="sf-bottom"><span>© 2026 朝云暮辞</span><span id="footSlug">—</span></div>
 </div></footer>
 
-<script src="data.js"></script>
+<script src="assets/app_data.js"></script>
 <script src="assets/arena.js"></script>
+<script>
+(function(){
+  var raw = new URLSearchParams(location.search).get('slug');
+  var item = A.data.lessons.find(function(l){ return l.slug === raw; }) || A.data.lessons[0];
+  document.write('<script src="assets/lessons/' + item.slug + '.js"><\/script>');
+})();
+</script>
 <script>
 (function(){
   const slug = A.qp('slug') || A.data.lessons[0].slug;
