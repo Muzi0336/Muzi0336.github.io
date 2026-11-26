@@ -73,7 +73,6 @@ Static edition of ARENA LAB, rebuilt in the site's paper-and-ink style with the 
 - `算法/paths.html` — six learning paths with per-path progress
 - `算法/learn.html`, `算法/lesson.html` — course index and lesson pages
 - `算法/lab.html` — 17 algorithm animations with play/step/reset controls
-- `算法/me.html` — local progress overview, JSON export and reset
 - `算法/data.js` — problems, paths and lessons data; `算法/assets/` — styles and scripts
 
 ## License
