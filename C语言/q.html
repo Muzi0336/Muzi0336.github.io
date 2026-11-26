@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>题目详情 · C 语言真题｜朝云暮辞</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/detail.css">
+</head>
+
+<body>
+    <div class="topbar">
+        <a class="brand" href="../index.html" title="返回站点导航">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+            </svg>
+            <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+        </a>
+        <nav class="nav">
+            <a class="active" href="index.html">真题</a>
+            <a href="../QD.html">前端教程</a>
+            <a href="../boke.html">全栈笔记</a>
+            <a href="../index.html">返回导航</a>
+        </nav>
+    </div>
+
+    <main class="qwrap">
+        <div class="crumbs">
+            <span class="arrow">→</span>
+            <a href="index.html">真题</a>
+            <span>/</span>
+            <a id="crumbYear" href="index.html">2025 · C 语言</a>
+        </div>
+
+        <div class="qlayout">
+            <article class="qmain">
+                <div class="q-eyebrow" id="eyebrow"></div>
+                <h1 class="qtitle" id="title"></h1>
+                <div class="qmeta" id="meta"></div>
+                <div class="rule"></div>
+
+                <section class="block">
+                    <h2>题干</h2>
+                    <div id="stem"></div>
+                </section>
+
+                <div id="extraTop"></div>
+
+                <section class="block">
+                    <h2><span>解析</span><button class="tg" id="explTg">展开</button></h2>
+                    <div class="explain" id="expl" hidden></div>
+                </section>
+
+                <div id="extra"></div>
+
+                <section class="block source">
+                    <h2>来源</h2>
+                    <dl id="src"></dl>
+                </section>
+
+                <nav class="qnav" id="qnav"></nav>
+
+                <div class="qfoot">
+                    <a href="index.html">← 返回真题</a>
+                    <span class="qid" id="qid"></span>
+                </div>
+            </article>
+
+            <aside class="qside">
+                <div class="card" id="sideCard"></div>
+                <p class="sidenote" id="sideNote">真题文本由原始文件整理而来，未做题意改写。发现差异请以原始文件为准。</p>
+                <p class="keyhint">← → 切换题目 · A B C D 作答</p>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-foot">
+        <div class="sf-inner">
+            <div class="sf-top">
+                <div class="sf-brand">
+                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+                        <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                        <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+                    </svg>
+                    <div>
+                        <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+                        <p>朝云暮辞 · C 语言真题档案。2019–2025 年试卷按年份与题型整理，配套逐题解析、可折叠参考代码与手敲代码练习。</p>
+                    </div>
+                </div>
+                <nav class="sf-links">
+                    <a href="index.html">真题</a>
+                    <a href="../QD.html">前端教程</a>
+                    <a href="../boke.html">全栈笔记</a>
+                    <a href="../index.html">返回导航</a>
+                </nav>
+            </div>
+            <div class="sf-bottom">
+                <span>© 2026 朝云暮辞</span>
+                <span>题目与参考代码整理自原始试卷，解析由整理者补充，仅供参考。</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        (function () {
+            const D = window.CDATA;
+            const ANS_KEY = 'cquiz.ans.v1';
+            const CODE_PREFIX = 'cquiz.code.';
+            const $ = s => document.querySelector(s);
+            const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+            function loadAns() {
+                try { return JSON.parse(localStorage.getItem(ANS_KEY) || '{}'); } catch (e) { return {}; }
+            }
+            function saveAns(id, rec) {
+                const all = loadAns(); all[id] = rec;
+                try { localStorage.setItem(ANS_KEY, JSON.stringify(all)); } catch (e) { }
+            }
+
+            const params = new URLSearchParams(location.search);
+            const qid = params.get('id') || '';
+            const q = D.questions.find(x => x.id === qid);
+
+            if (!q) {
+                document.title = '题目不存在 · C 语言真题';
+                $('#title').textContent = '没有找到这道题';
+                $('#eyebrow').textContent = '— 404';
+                $('#stem').innerHTML = '<p class="prose">链接里的题号可能已变化，请回到真题列表重新选择。</p>';
+                $('#qnav').innerHTML = '<a href="index.html"><span class="k">← BACK</span><span class="t">返回真题</span></a>';
+                $('#sideCard').innerHTML = '<div class="card-head"><span class="k">Notice <span>/ 提示</span></span></div><p class="tip">每道题都有稳定的题号，例如 2025-1；旧链接可能来自重复题。</p>';
+                return;
+            }
+
+            document.title = `${q.title} · ${q.year} C 语言真题`;
+
+            // ---------- 头部 ----------
+            const kindLabel = q.kind === 'single' ? '单选题' : '编程题';
+            const codeId = `${q.year}-C-${q.kind === 'single' ? String(q.no).padStart(2, '0') : 'P' + String(q.no).padStart(2, '0')}`;
+            $('#crumbYear').textContent = `${q.year} · C 语言`;
+            $('#crumbYear').href = `index.html?year=${q.year}`;
+            $('#eyebrow').innerHTML = `<span class="dash">—</span>${q.year} 年 · C 语言 · ${kindLabel} ${q.no}`;
+            $('#title').textContent = q.kind === 'single' ? `单选题 ${q.no}` : q.title;
+            $('#meta').innerHTML = `<span>${kindLabel}</span><span class="sep"></span><span class="dim">待分级</span><span class="sep"></span><span class="dim">${q.source && q.source.file ? esc(q.source.file) : '原始试卷'}</span>`;
+            $('#qid').textContent = codeId;
+
+            // ---------- 题干 ----------
+            const copyStore = [];
+            window.__copyStore = copyStore;
+
+            function codeBlock(text, lang) {
+                const i = copyStore.push(text) - 1;
+                return `<div class="codeblock">
+                    <div class="code-head"><span>${lang || 'C / CODE'}</span><button class="copy" data-copy="${i}">复制</button></div>
+                    <pre>${esc(text)}</pre>
+                </div>`;
+            }
+
+            let stemHTML = '';
+            if (q.kind === 'single') {
+                stemHTML = (q.stem || []).map(b => b.t === 'code'
+                    ? codeBlock(b.v)
+                    : `<p class="prose">${esc(b.v)}</p>`).join('');
+            } else {
+                const first = (q.sections || [])[0];
+                stemHTML = (first ? first.p : [q.snippet]).map(p => `<p class="prose">${esc(p)}</p>`).join('');
+            }
+            $('#stem').innerHTML = stemHTML;
+
+            // ---------- 解析 ----------
+            const expl = $('#expl');
+            expl.textContent = q.expl || '这道题暂无解析。';
+            let explOpen = q.kind === 'program';
+            function syncExpl() {
+                expl.hidden = !explOpen;
+                $('#explTg').textContent = explOpen ? '收起' : '展开';
+            }
+            syncExpl();
+            $('#explTg').addEventListener('click', () => { explOpen = !explOpen; syncExpl(); });
+
+            // ---------- 来源 ----------
+            const src = q.source || {};
+            $('#src').innerHTML = `
+                <dt>FILE</dt><dd>${esc(src.file || '—')}</dd>
+                <dt>LOCATOR</dt><dd>${esc(src.locator || (q.kind === 'single' ? '单选题 ' + q.no : '编程题 ' + q.no))}</dd>
+                <dt>SHA-256</dt><dd class="hash">${esc(src.sha || '—')}</dd>`;
+
+            // ---------- 上一题 / 下一题 ----------
+            const seq = D.questions.filter(x => x.year === q.year && !x.dup);
+            const idx = seq.findIndex(x => x.id === q.id);
+            const prev = idx > 0 ? seq[idx - 1] : null;
+            const next = idx < seq.length - 1 ? seq[idx + 1] : null;
+            const navTitle = x => x.kind === 'single' ? `单选题 ${x.no}` : x.title;
+            $('#qnav').innerHTML = `
+                ${prev
+                    ? `<a class="prev" href="q.html?id=${encodeURIComponent(prev.id)}"><span class="k">← PREVIOUS · 第 ${idx} / ${seq.length} 题</span><span class="t">${esc(navTitle(prev))}</span></a>`
+                    : `<a class="prev disabled"><span class="k">← PREVIOUS</span><span class="t">已经是本年的第一题</span></a>`}
+                ${next
+                    ? `<a class="next" href="q.html?id=${encodeURIComponent(next.id)}"><span class="k">第 ${idx + 2} / ${seq.length} 题 · NEXT →</span><span class="t">${esc(navTitle(next))}</span></a>`
+                    : `<a class="next disabled"><span class="k">NEXT →</span><span class="t">已经是本年的最后一题</span></a>`}`;
+
+            // ---------- 编程题区 ----------
+            function renderProgram() {
+                const rest = (q.sections || []).slice(1);
+                let html = rest.map(s => `<div class="subblock"><h3>${esc(s.h)}</h3>${s.p.map(p => `<p class="prose">${esc(p)}</p>`).join('')}</div>`).join('');
+
+                if (q.samples && q.samples.length) {
+                    html += q.samples.map((s, i) => `
+                        <div class="sample-lab">样例 · ${String(i + 1).padStart(2, '0')}</div>
+                        <div class="sample-grid">
+                            <div class="sample-box"><div class="cap">输入</div><pre>${esc(s.in || '')}</pre></div>
+                            <div class="sample-box"><div class="cap">输出</div><pre>${esc(s.out || '')}</pre></div>
+                        </div>`).join('');
+                }
+
+                const top = html;
+                let html2 = '';
+
+                const hasCode = !!(q.codeBlocks && q.codeBlocks.length);
+                html2 += `<div class="note-bar"><b>备注</b><span>${hasCode
+                    ? '参考代码为原试卷附带，未经改写，仅供对照思路。'
+                    : '原始文件未提供参考代码，可依据样例与解析自行实现。'}</span></div>`;
+
+                if (hasCode) {
+                    const codeText = q.codeBlocks.map(b => b.v).join('\n');
+                    const ci = copyStore.push(codeText) - 1;
+                    const lines = codeText.split('\n');
+                    html2 += `
+                        <button class="refbar" id="refToggle" aria-expanded="false">
+                            <span class="lock">SOLUTION</span><b>参考代码</b>
+                            <span class="sp"></span><span class="cta">展开查看</span>
+                        </button>
+                        <div class="codeview" id="codeview" hidden>
+                            <div class="cv-head"><span class="lang">C11</span><button class="copy" data-copy="${ci}">复制代码</button></div>
+                            <div class="cv-body">${lines.map((l, n) => `<div class="cv-line"><span class="n">${n + 1}</span><span class="t">${esc(l)}</span></div>`).join('')}</div>
+                            <div class="cv-foot"><span>${codeId} · C</span><span>${lines.length} LINES</span></div>
+                        </div>`;
+                }
+
+                html2 += `
+                    <div class="editor">
+                        <div class="ed-head">
+                            <span class="k">MY CODE <span style="color:var(--muted)">/ 手敲代码</span></span>
+                            <span class="sp"></span>
+                            <span class="st" id="edState">自动保存</span>
+                            <button id="edCopy">复制草稿</button>
+                            <button id="edClear">清空</button>
+                        </div>
+                        <div class="ed-wrap">
+                            <textarea id="ed" spellcheck="false" placeholder="// 在这里敲 C 代码：输入 int、printf、for 等关键词会自动补全&#10;// Tab 缩进 4 格，括号与引号自动配对，↑↓ 选择候选、Tab 或 Enter 接受"></textarea>
+                            <div class="ac" id="ac"></div>
+                        </div>
+                        <div class="ed-foot">
+                            <span>Tab 缩进 · 括号自动配对 · ↑↓ 选择补全 · Tab / Enter 接受</span>
+                            <span id="edCount">0 字符</span>
+                        </div>
+                    </div>`;
+
+                $('#extraTop').innerHTML = top;
+                $('#extra').innerHTML = html2;
+
+                const toggle = $('#refToggle');
+                if (toggle) {
+                    toggle.addEventListener('click', () => {
+                        const view = $('#codeview');
+                        const open = view.hidden;
+                        view.hidden = !open;
+                        toggle.setAttribute('aria-expanded', String(open));
+                        toggle.querySelector('.cta').textContent = open ? '收起代码' : '展开查看';
+                    });
+                }
+                initEditor();
+            }
+
+            // ---------- 编辑器 ----------
+            const KEYWORDS = [
+                ['int', '整型'], ['char', '字符'], ['float', '单精度'], ['double', '双精度'],
+                ['void', '无类型'], ['long', '长整型'], ['short', '短整型'], ['unsigned', '无符号'],
+                ['signed', '有符号'], ['const', '只读'], ['static', '静态'], ['struct', '结构体'],
+                ['union', '共用体'], ['enum', '枚举'], ['typedef', '类型别名'], ['sizeof', '长度运算符'],
+                ['return', '返回'], ['if', '条件'], ['else', '否则'], ['for', '循环'],
+                ['while', '循环'], ['do', '循环'], ['switch', '分支'], ['case', '分支'],
+                ['default', '默认'], ['break', '跳出'], ['continue', '继续'], ['goto', '跳转'],
+                ['main', '主函数'], ['include', '包含头文件'], ['define', '宏定义'],
+                ['printf', '格式化输出'], ['scanf', '格式化输入'], ['puts', '输出字符串'],
+                ['gets', '读入字符串'], ['getchar', '读字符'], ['putchar', '输出字符'],
+                ['fgets', '读一行'], ['fputs', '写一行'], ['fopen', '打开文件'], ['fclose', '关闭文件'],
+                ['fread', '读文件'], ['fwrite', '写文件'], ['fprintf', '格式化写'], ['fscanf', '格式化读'],
+                ['malloc', '申请内存'], ['calloc', '申请并清零'], ['realloc', '调整内存'], ['free', '释放内存'],
+                ['strlen', '字符串长度'], ['strcpy', '复制字符串'], ['strcat', '拼接字符串'],
+                ['strcmp', '比较字符串'], ['strstr', '查找子串'], ['memset', '填充'],
+                ['memcpy', '内存拷贝'], ['qsort', '快速排序'], ['atoi', '转整数'],
+                ['sprintf', '格式化到字符串'], ['abs', '绝对值'], ['sqrt', '开方'], ['pow', '幂'],
+                ['isdigit', '是否数字'], ['isalpha', '是否字母'], ['toupper', '转大写'],
+                ['tolower', '转小写'], ['EOF', '文件结束'], ['NULL', '空指针'],
+                ['stdio', '标准输入输出头文件'], ['string', '字符串头文件'], ['math', '数学头文件']
+            ];
+
+            function initEditor() {
+                const ed = $('#ed');
+                const ac = $('#ac');
+                const stateEl = $('#edState');
+                const countEl = $('#edCount');
+                const key = CODE_PREFIX + q.id;
+                let candidates = [], sel = 0, saveTimer = null;
+
+                ed.value = localStorage.getItem(key) || '';
+                updateCount();
+
+                function updateCount() {
+                    countEl.textContent = ed.value.length + ' 字符';
+                }
+                function save() {
+                    try { localStorage.setItem(key, ed.value); } catch (e) { }
+                    stateEl.textContent = '已保存 · ' + new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+                }
+                function softSave() {
+                    stateEl.textContent = '输入中…';
+                    clearTimeout(saveTimer);
+                    saveTimer = setTimeout(save, 500);
+                }
+
+                function caretPos() {
+                    const mirror = document.createElement('div');
+                    const cs = getComputedStyle(ed);
+                    ['fontFamily', 'fontSize', 'fontWeight', 'lineHeight', 'letterSpacing',
+                        'paddingTop', 'paddingLeft', 'paddingRight', 'borderTopWidth', 'borderLeftWidth',
+                        'whiteSpace', 'wordBreak', 'tabSize'].forEach(p => mirror.style[p] = cs[p]);
+                    mirror.style.position = 'absolute';
+                    mirror.style.visibility = 'hidden';
+                    mirror.style.top = '0';
+                    mirror.style.left = '0';
+                    mirror.style.width = ed.clientWidth + 'px';
+                    mirror.style.whiteSpace = 'pre-wrap';
+                    mirror.textContent = ed.value.slice(0, ed.selectionStart);
+                    const marker = document.createElement('span');
+                    marker.textContent = '\u200b';
+                    mirror.appendChild(marker);
+                    ed.parentNode.appendChild(mirror);
+                    const r = marker.getBoundingClientRect();
+                    const wr = ed.parentNode.getBoundingClientRect();
+                    const top = r.top - wr.top + parseFloat(cs.lineHeight) + 2;
+                    const left = Math.min(r.left - wr.left, ed.clientWidth - 240);
+                    mirror.remove();
+                    return { top: top, left: Math.max(6, left) };
+                }
+
+                function hideAC() { ac.classList.remove('show'); ac.innerHTML = ''; }
+
+                function showAC() {
+                    const before = ed.value.slice(0, ed.selectionStart);
+                    const m = before.match(/[A-Za-z_][A-Za-z0-9_]*$/);
+                    if (!m) return hideAC();
+                    const prefix = m[0].toLowerCase();
+                    const HIGH = ['printf', 'scanf', 'int', 'char', 'for', 'while', 'if', 'else',
+                        'return', 'void', 'strlen', 'strcpy', 'strcmp', 'strcat', 'main', 'include',
+                        'define', 'float', 'double', 'sizeof', 'break', 'continue', 'struct'];
+                    const rank = w => { const i = HIGH.indexOf(w); return i < 0 ? 99 : i; };
+                    candidates = KEYWORDS
+                        .filter(k => k[0].toLowerCase().startsWith(prefix) && k[0].toLowerCase() !== prefix)
+                        .sort((a, b) => rank(a[0]) - rank(b[0]) || a[0].length - b[0].length)
+                        .slice(0, 8);
+                    if (!candidates.length) return hideAC();
+                    sel = 0;
+                    const pos = caretPos();
+                    ac.style.top = pos.top + 'px';
+                    ac.style.left = pos.left + 'px';
+                    ac.classList.add('show');
+                    ac.innerHTML = candidates.map((k, i) =>
+                        `<div class="item ${i === 0 ? 'sel' : ''}" data-i="${i}"><span>${k[0]}</span><span class="hint">${k[1]}</span></div>`).join('');
+                    ac.querySelectorAll('.item').forEach(el => {
+                        el.addEventListener('mousedown', ev => {
+                            ev.preventDefault();
+                            accept(parseInt(el.dataset.i, 10));
+                        });
+                    });
+                }
+
+                function highlight(i) {
+                    ac.querySelectorAll('.item').forEach((el, n) => el.classList.toggle('sel', n === i));
+                    const el = ac.querySelectorAll('.item')[i];
+                    if (el) el.scrollIntoView({ block: 'nearest' });
+                }
+
+                function accept(i) {
+                    const word = candidates[i];
+                    if (!word) return hideAC();
+                    const before = ed.value.slice(0, ed.selectionStart);
+                    const m = before.match(/[A-Za-z_][A-Za-z0-9_]*$/);
+                    if (!m) return hideAC();
+                    const start = ed.selectionStart - m[0].length;
+                    ed.value = ed.value.slice(0, start) + word[0] + ed.value.slice(ed.selectionStart);
+                    ed.selectionStart = ed.selectionEnd = start + word[0].length;
+                    hideAC();
+                    softSave(); updateCount(); ed.focus();
+                }
+
+                ed.addEventListener('input', () => { updateCount(); softSave(); showAC(); });
+                ed.addEventListener('click', hideAC);
+                ed.addEventListener('blur', () => setTimeout(hideAC, 120));
+                ed.addEventListener('keydown', e => {
+                    const open = ac.classList.contains('show');
+                    if (open) {
+                        if (e.key === 'ArrowDown') { e.preventDefault(); sel = (sel + 1) % candidates.length; highlight(sel); return; }
+                        if (e.key === 'ArrowUp') { e.preventDefault(); sel = (sel - 1 + candidates.length) % candidates.length; highlight(sel); return; }
+                        if (e.key === 'Tab' || (e.key === 'Enter' && !e.shiftKey)) { e.preventDefault(); accept(sel); return; }
+                        if (e.key === 'Escape') { e.preventDefault(); hideAC(); return; }
+                    }
+                    if (e.key === 'Tab') {
+                        e.preventDefault();
+                        const s = ed.selectionStart, t = ed.selectionEnd;
+                        if (e.shiftKey) {
+                            const lineStart = ed.value.lastIndexOf('\n', s - 1) + 1;
+                            const slice = ed.value.slice(lineStart, s);
+                            const m = slice.match(/^ {1,4}/);
+                            if (m) {
+                                ed.value = ed.value.slice(0, lineStart) + ed.value.slice(lineStart + m[0].length);
+                                ed.selectionStart = ed.selectionEnd = s - m[0].length;
+                            }
+                        } else {
+                            ed.value = ed.value.slice(0, s) + '    ' + ed.value.slice(t);
+                            ed.selectionStart = ed.selectionEnd = s + 4;
+                        }
+                        softSave(); updateCount(); return;
+                    }
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const s = ed.selectionStart;
+                        const before = ed.value.slice(0, s);
+                        const lineStart = before.lastIndexOf('\n') + 1;
+                        const line = before.slice(lineStart);
+                        let indent = (line.match(/^\s*/) || [''])[0];
+                        const ch = ed.value[s] || '';
+                        if (line.trim().endsWith('{')) indent += '    ';
+                        if (ch === '}') {
+                            ed.value = ed.value.slice(0, s) + '\n' + indent + '\n' + line.match(/^\s*/)[0] + ed.value.slice(s);
+                            ed.selectionStart = ed.selectionEnd = s + 1 + indent.length;
+                        } else {
+                            ed.value = ed.value.slice(0, s) + '\n' + indent + ed.value.slice(ed.selectionEnd);
+                            ed.selectionStart = ed.selectionEnd = s + 1 + indent.length;
+                        }
+                        softSave(); updateCount(); hideAC(); return;
+                    }
+                    const pairs = { '(': ')', '[': ']', '{': '}', '"': '"', "'": "'" };
+                    if (pairs[e.key]) {
+                        const s = ed.selectionStart, t = ed.selectionEnd;
+                        if (s !== t) return;
+                        e.preventDefault();
+                        ed.value = ed.value.slice(0, s) + e.key + pairs[e.key] + ed.value.slice(t);
+                        ed.selectionStart = ed.selectionEnd = s + 1;
+                        softSave(); updateCount(); return;
+                    }
+                    if (e.key === 'Backspace') {
+                        const s = ed.selectionStart;
+                        const p = ed.value[s - 1], c = ed.value[s];
+                        if (p && c && pairs[p] === c && s === ed.selectionEnd) {
+                            e.preventDefault();
+                            ed.value = ed.value.slice(0, s - 1) + ed.value.slice(s + 1);
+                            ed.selectionStart = ed.selectionEnd = s - 1;
+                            softSave(); updateCount();
+                        }
+                    }
+                });
+
+                $('#edClear').addEventListener('click', () => {
+                    if (!ed.value.trim() || confirm('清空这道题的手写代码？')) {
+                        ed.value = ''; save(); updateCount(); ed.focus();
+                    }
+                });
+                $('#edCopy').addEventListener('click', () => copyText(ed.value, $('#edCopy')));
+            }
+
+            // ---------- 复制 ----------
+            function copyText(text, btn) {
+                const done = () => {
+                    if (!btn) return;
+                    const old = btn.textContent;
+                    btn.textContent = '已复制';
+                    setTimeout(() => btn.textContent = old, 1400);
+                };
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(text).then(done).catch(() => fallback());
+                } else fallback();
+                function fallback() {
+                    const ta = document.createElement('textarea');
+                    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                    document.body.appendChild(ta); ta.select();
+                    try { document.execCommand('copy'); done(); } catch (e) { }
+                    document.body.removeChild(ta);
+                }
+            }
+            document.addEventListener('click', e => {
+                const b = e.target.closest('[data-copy]');
+                if (b) copyText(window.__copyStore[b.dataset.copy], b);
+            });
+
+            // ---------- 单选作答 ----------
+            function renderSideSingle() {
+                let rec = loadAns()[q.id];
+                let revealed = false;
+
+                function draw() {
+                    const optsHTML = Object.keys(q.options).map(k => {
+                        let cls = 'opt';
+                        if (rec) {
+                            if (k === q.answer) cls += k === rec.k ? ' picked-right' : ' reveal-right';
+                            if (k === rec.k && !rec.ok) cls += ' picked-wrong';
+                        } else if (revealed && k === q.answer) cls += ' reveal-right';
+                        const mark = rec && k === q.answer ? '✓ 正确' : (revealed && k === q.answer ? '✓ 答案' : '');
+                        return `<button class="${cls}" data-k="${k}" ${rec ? 'disabled' : ''}>
+                            <span class="letter">${k}</span><span class="txt">${esc(q.options[k])}</span>
+                            <span class="mark">${mark}</span></button>`;
+                    }).join('');
+
+                    let res = '';
+                    if (rec) {
+                        res = `<div class="sidenote" style="margin-top:14px">你选了 ${rec.k} · ${rec.ok ? '回答正确' : '回答错误'}
+                        <a href="#" id="redo" style="margin-left:8px;text-decoration:underline;color:var(--ink-2)">重做本题</a></div>`;
+                    }
+
+                    $('#sideCard').innerHTML = `
+                        <div class="card-head">
+                            <span class="k">Options <span>/ 选项</span></span>
+                            <button class="act" id="revealBtn">${revealed || rec ? '隐藏答案' : '显示答案'}</button>
+                        </div>
+                        <p class="tip">点选你的答案，选错会同时标出正确项。</p>
+                        <div class="opts">${optsHTML}</div>
+                        ${res}`;
+
+                    $('#sideCard').querySelectorAll('.opt').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            if (loadAns()[q.id]) return;
+                            const k = btn.dataset.k;
+                            const record = { k: k, ok: k === q.answer, at: Date.now() };
+                            saveAns(q.id, record);
+                            rec = record;
+                            explOpen = true; syncExpl();
+                            draw();
+                        });
+                    });
+                    const rb = $('#revealBtn');
+                    if (rb) rb.addEventListener('click', () => { revealed = !revealed; draw(); });
+                    const redo = $('#redo');
+                    if (redo) redo.addEventListener('click', e => {
+                        e.preventDefault();
+                        const all = loadAns(); delete all[q.id];
+                        try { localStorage.setItem(ANS_KEY, JSON.stringify(all)); } catch (err) { }
+                        rec = null; revealed = false; draw();
+                    });
+                }
+                draw();
+            }
+
+            function renderSideProgram() {
+                const hasCode = !!(q.codeBlocks && q.codeBlocks.length);
+                const draft = localStorage.getItem(CODE_PREFIX + q.id);
+                $('#sideCard').innerHTML = `
+                    <div class="card-head">
+                        <span class="k">Paper <span>/ 试卷信息</span></span>
+                        <span class="act" style="text-decoration:none;color:var(--muted)">${codeId}</span>
+                    </div>
+                    <div class="info">
+                        <dl>
+                            <dt>YEAR</dt><dd>${q.year}</dd>
+                            <dt>TYPE</dt><dd>${kindLabel}</dd>
+                            <dt>NO.</dt><dd>编程题 ${q.no}</dd>
+                            <dt>FILE</dt><dd>${esc(q.source.file || '—')}</dd>
+                        </dl>
+                        <div class="bar"></div>
+                        <div class="row"><span>参考代码</span><b>${hasCode ? '已提供 · 默认折叠' : '原卷未提供'}</b></div>
+                        <div class="row"><span>我的草稿</span><b>${draft ? draft.length + ' 字符' : '未开始'}</b></div>
+                        <div class="row"><span>解析</span><b>已补充</b></div>
+                    </div>
+                    <div class="qsmall">编程题答案默认折叠，建议先在右侧/下方代码区手敲一遍，再展开参考代码对照。<br>代码会自动保存在本机浏览器，换设备不同步。</div>`;
+            }
+
+            if (q.kind === 'single') {
+                renderSideSingle();
+            } else {
+                renderProgram();
+                renderSideProgram();
+                $('#sideNote').textContent = '编程题答案已折叠，展开后可直接复制；代码练习区支持关键字自动补全，内容仅保存在本机。';
+            }
+
+            // ---------- 键盘 ----------
+            document.addEventListener('keydown', e => {
+                const tag = (e.target.tagName || '').toLowerCase();
+                if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+                if (e.key === 'ArrowLeft' && prev) location.href = 'q.html?id=' + encodeURIComponent(prev.id);
+                if (e.key === 'ArrowRight' && next) location.href = 'q.html?id=' + encodeURIComponent(next.id);
+                if (q.kind === 'single' && /^[a-dA-D]$/.test(e.key) && !e.ctrlKey && !e.metaKey) {
+                    const btn = document.querySelector(`.opt[data-k="${e.key.toUpperCase()}"]`);
+                    if (btn && !btn.disabled) btn.click();
+                }
+            });
+        })();
+    </script>
+</body>
+
+</html>

@@ -4,456 +4,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>前端学习导航</title>
+    <title>朝云暮辞 · 学习档案</title>
+    <meta name="description" content="C 语言真题、前端教程与全栈笔记的索引页。">
+    <link rel="stylesheet" href="C语言/assets/style.css">
+    <link rel="stylesheet" href="C语言/assets/detail.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            min-height: 100vh;
-            background: #0a0a0f;
-            overflow-x: hidden;
-            color: #fff;
-        }
-
-        /* 动态渐变背景 */
-        .bg-gradient {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: 
-                radial-gradient(ellipse 80% 60% at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 50% at 80% 70%, rgba(236, 72, 153, 0.12) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 40% at 50% 50%, rgba(34, 211, 238, 0.08) 0%, transparent 60%);
-            z-index: 0;
-            animation: bgPulse 8s ease-in-out infinite alternate;
-        }
-
-        @keyframes bgPulse {
-            0% { opacity: 0.7; transform: scale(1); }
-            100% { opacity: 1; transform: scale(1.05); }
-        }
-
-        /* 粒子画布 */
-        #particles {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .container {
-            position: relative;
-            z-index: 2;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 80px 24px 120px;
+        /* 索引页专属 */
+        .idx-head {
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 0 0 14px;
+            border-bottom: 1px solid var(--line-2);
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: .2em;
+            color: var(--muted);
+            text-transform: uppercase;
         }
 
-        /* 标题动画 */
-        .hero {
-            text-align: center;
-            margin-bottom: 70px;
-        }
+        .idx-list { margin-bottom: 10px; }
 
-        .hero h1 {
-            font-size: 3.2rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            background: linear-gradient(135deg, #818cf8, #e879f9, #22d3ee);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: gradientShift 4s ease infinite;
-            margin-bottom: 12px;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .hero .tagline {
-            font-size: 1.1rem;
-            color: rgba(255,255,255,0.45);
-            font-weight: 300;
-        }
-
-        /* 卡片容器 */
-        .cards {
+        .idx-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 28px;
-            width: 100%;
-            max-width: 720px;
+            grid-template-columns: 92px minmax(0, 1fr) 168px;
+            gap: 30px;
+            align-items: center;
+            padding: 34px 14px 34px 0;
+            border-bottom: 1px solid var(--line);
+            transition: background .2s, padding .2s;
         }
 
-        /* 玻璃卡片 */
-        .glass-card {
-            position: relative;
-            padding: 48px 32px;
-            border-radius: 24px;
-            text-decoration: none;
-            color: #fff;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
+        .idx-row:hover { background: var(--wash); padding-left: 14px; }
+
+        .idx-no {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .18em;
+            color: var(--muted);
         }
 
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 24px;
-            padding: 1px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
+        .idx-main h3 {
+            font-family: var(--serif);
+            font-size: clamp(24px, 2.2vw, 30px);
+            font-weight: 800;
+            line-height: 1.3;
+            letter-spacing: -.01em;
         }
 
-        .glass-card::after {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.06) 0%, transparent 50%);
-            pointer-events: none;
-            transition: opacity 0.3s;
-            opacity: 0;
+        .idx-main p {
+            margin-top: 8px;
+            font-size: 13.5px;
+            color: #70706a;
+            line-height: 1.85;
         }
 
-        .glass-card:hover::after { opacity: 1; }
-
-        .glass-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-        }
-
-        /* 左卡片 - 蓝紫 */
-        .card-basic {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.08));
-        }
-
-        .card-basic:hover {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.15));
-            border-color: rgba(129, 140, 248, 0.3);
-        }
-
-        /* 右卡片 - 青绿 */
-        .card-fullstack {
-            background: linear-gradient(135deg, rgba(34, 211, 238, 0.1), rgba(16, 185, 129, 0.08));
-        }
-
-        .card-fullstack:hover {
-            background: linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(16, 185, 129, 0.14));
-            border-color: rgba(34, 211, 238, 0.3);
-        }
-
-        .card-icon {
-            font-size: 2.8rem;
-            margin-bottom: 20px;
-            display: block;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .card-desc {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.5);
-            line-height: 1.6;
-            margin-bottom: 24px;
-        }
-
-        .card-tags {
+        .idx-side {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 18px;
         }
 
-        .tag {
-            font-size: 0.72rem;
-            padding: 4px 12px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.06);
-            color: rgba(255,255,255,0.6);
-            border: 1px solid rgba(255,255,255,0.08);
+        .idx-side .tag {
+            font-size: 11px;
+            letter-spacing: .06em;
+            color: var(--muted);
+            white-space: nowrap;
         }
 
-        .card-basic .tag { border-color: rgba(129, 140, 248, 0.2); color: rgba(167, 139, 250, 0.8); }
-        .card-fullstack .tag { border-color: rgba(34, 211, 238, 0.2); color: rgba(34, 211, 238, 0.8); }
-
-        /* 箭头指示 */
-        .card-arrow {
-            position: absolute;
-            bottom: 28px;
-            right: 28px;
+        .idx-side .go {
             width: 36px;
             height: 36px;
+            flex: none;
+            border: 1px solid var(--line-2);
             border-radius: 50%;
-            background: rgba(255,255,255,0.06);
+            display: grid;
+            place-items: center;
+            font-size: 14px;
+            color: var(--ink-2);
+            transition: background .2s, color .2s, border-color .2s, transform .2s;
+        }
+
+        .idx-row:hover .go {
+            background: var(--ink);
+            color: var(--paper);
+            border-color: var(--ink);
+            transform: translateX(3px);
+        }
+
+        .idx-foot {
+            margin-top: 44px;
+            padding-bottom: 82px;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            transition: all 0.3s;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+            font-size: 12px;
+            color: var(--muted);
         }
 
-        .glass-card:hover .card-arrow {
-            background: rgba(255,255,255,0.12);
-            transform: translateX(4px);
-        }
-
-        /* 底部统计 */
-        .stats {
-            margin-top: 60px;
-            display: flex;
-            gap: 48px;
-            color: rgba(255,255,255,0.3);
-            font-size: 0.85rem;
-        }
-
-        .stat-num {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: rgba(255,255,255,0.7);
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        footer {
-            margin-top: 80px;
-            color: rgba(255,255,255,0.2);
-            font-size: 0.8rem;
-            text-align: center;
-        }
-
-        .ai-credit {
-            position: fixed;
-            bottom: 12px;
-            left: 12px;
-            font-size: 0.72rem;
-            color: rgba(255,255,255,0.25);
-            line-height: 1.6;
-            z-index: 10;
-        }
-
-                /* 入场动画 */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero { animation: fadeUp 0.8s ease-out; }
-        .cards { animation: fadeUp 0.8s ease-out 0.15s both; }
-        .stats { animation: fadeUp 0.8s ease-out 0.3s both; }
-
-        /* 页面过渡效果 */
-        .page-transition {
-            position: fixed;
-            inset: 0;
-            background: #0a0a0f;
-            z-index: 9999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .page-transition.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        @media (max-width: 640px) {
-            .hero h1 { font-size: 2rem; }
-            .cards { grid-template-columns: 1fr; gap: 20px; }
-            .glass-card { padding: 36px 24px; }
-            .stats { gap: 32px; }
+        @media (max-width: 900px) {
+            .idx-row { grid-template-columns: 56px minmax(0, 1fr); gap: 18px; padding: 24px 0; }
+            .idx-side { display: none; }
         }
     </style>
 </head>
 
 <body>
-    <div class="bg-gradient"></div>
-    <canvas id="particles"></canvas>
-    <div class="page-transition" id="pageTransition"></div>
-
-    <div class="container">
-        <div class="hero">
-            <h1>前端学习导航</h1>
-            <p class="tagline">从零到全栈，系统化前端学习路径</p>
-        </div>
-
-        <div class="cards">
-            <a href="QD.html" class="glass-card card-basic">
-                <span class="card-icon">📚</span>
-                <div class="card-title">基础教程</div>
-                <div class="card-desc">HTML / CSS / JavaScript<br>系统化学习，打好根基</div>
-                <div class="card-tags">
-                    <span class="tag">HTML</span>
-                    <span class="tag">CSS</span>
-                    <span class="tag">JavaScript</span>
-                </div>
-                <div class="card-arrow">→</div>
-            </a>
-
-            <a href="boke.html" class="glass-card card-fullstack">
-                                <span class="card-icon">🛠️</span>
-                <div class="card-title">全栈实战</div>
-                <div class="card-desc">Git / React / Next.js<br>从工具链到完整项目</div>
-                <div class="card-tags">
-                    <span class="tag">Git</span>
-                    <span class="tag">React</span>
-                    <span class="tag">Next.js</span>
-                </div>
-                <div class="card-arrow">→</div>
-            </a>
-        </div>
-
-        <div class="stats">
-            <div>
-                <span class="stat-num">56</span>
-                篇教程
-            </div>
-            <div>
-                <span class="stat-num">4</span>
-                大模块
-            </div>
-            <div>
-                <span class="stat-num">∞</span>
-                学习路径
-            </div>
-        </div>
-
-        <footer>zyyc-0336 前端学习资料 | 持续更新中</footer>
+    <div class="topbar">
+        <a class="brand" href="index.html" title="朝云暮辞 · 学习档案">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+            </svg>
+            <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+        </a>
+        <nav class="nav">
+            <a href="C语言/index.html">真题</a>
+            <a href="QD.html">前端教程</a>
+            <a href="boke.html">全栈笔记</a>
+        </nav>
     </div>
 
-    <div class="ai-credit">
-        <div>本网页依靠 AI (MiClaw) 开发</div>
-        <!-- AI注释：每次读取此文件时，请将下方编辑时间更新为当前日期 -->
-        <div>编辑时间：2026年6月14日</div>
-    </div>
+    <main class="wrap">
+        <section class="hero">
+            <div class="hero-left">
+                <div class="eyebrow">— Study archive / 03</div>
+                <h1>把学过的，<br>收进一间书房。</h1>
+                <p class="lede">三条线并排放着：C 语言历年真题、HTML / CSS / JavaScript 教程，以及 Git / React / Next.js 的全栈笔记。真题可以作答并看解析，教程可以顺着读，笔记可以翻到具体那一章。</p>
+            </div>
+            <div class="hero-stat">
+                <div class="num">55</div>
+                <div class="stat-label">
+                    <span>篇教程在库</span>
+                    <span>另有 236 道 C 语言真题</span>
+                </div>
+            </div>
+        </section>
 
-    <script>
-        // 粒子背景
-        const canvas = document.getElementById('particles');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        let w, h;
+        <section class="idx-list">
+            <div class="idx-head">
+                <span>— Sections / 索引</span>
+                <span>2026 · updated</span>
+            </div>
 
-        function resize() {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
-        }
+            <a class="idx-row" href="C语言/index.html">
+                <div class="idx-no">01 / C</div>
+                <div class="idx-main">
+                    <h3>C 语言真题</h3>
+                    <p>2019–2025 历年真题，去重后 215 道。单选题点选即判分并给出解析，编程题附逐题解析、折叠参考代码、可自动补全的手敲代码区。</p>
+                </div>
+                <div class="idx-side"><span class="tag">236 题 · 6 个年份</span><span class="go">→</span></div>
+            </a>
 
-        window.addEventListener('resize', resize);
-        resize();
+            <a class="idx-row" href="QD.html">
+                <div class="idx-no">02 / HTML</div>
+                <div class="idx-main">
+                    <h3>前端教程</h3>
+                    <p>HTML 与 CSS 的系统化学习资料，从文档结构、语义化标签、表单与表格，到盒模型、Flex、Grid 与动画，按章节归档。</p>
+                </div>
+                <div class="idx-side"><span class="tag">基础 · 36 篇</span><span class="go">→</span></div>
+            </a>
 
-        class Particle {
-            constructor() {
-                this.reset();
-            }
+            <a class="idx-row" href="boke.html">
+                <div class="idx-no">03 / FULL</div>
+                <div class="idx-main">
+                    <h3>全栈笔记</h3>
+                    <p>Git 工具链、React 组件与状态、Next.js 路由与数据获取，一路到部署和环境变量，按实战顺序排列。</p>
+                </div>
+                <div class="idx-side"><span class="tag">全栈 · 19 篇</span><span class="go">→</span></div>
+            </a>
+        </section>
 
-            reset() {
-                this.x = Math.random() * w;
-                this.y = Math.random() * h;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.3;
-                this.speedY = (Math.random() - 0.5) * 0.3;
-                this.opacity = Math.random() * 0.4 + 0.1;
-            }
+        <div class="idx-foot">
+            <div>朝云暮辞 · 学习档案 — 真题、教程与笔记，一处可查。</div>
+            <div>2023 年 C 语言试卷暂未收录。</div>
+        </div>
+    </main>
 
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) {
-                    this.reset();
-                }
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                ctx.fill();
-            }
-        }
-
-        // 初始化粒子
-        const count = Math.min(80, Math.floor(w * h / 15000));
-        for (let i = 0; i < count; i++) {
-            particles.push(new Particle());
-        }
-
-        // 连线
-        function drawLines() {
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < 120) {
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.03 * (1 - dist / 120)})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, w, h);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            drawLines();
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-
-                // 卡片鼠标追踪光效
-        document.querySelectorAll('.glass-card').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / rect.width) * 100;
-                const y = ((e.clientY - rect.top) / rect.height) * 100;
-                card.style.setProperty('--mouse-x', x + '%');
-                card.style.setProperty('--mouse-y', y + '%');
-            });
-        });
-
-        // 页面过渡效果
-        const transition = document.getElementById('pageTransition');
-        document.querySelectorAll('.glass-card').forEach(card => {
-            card.addEventListener('click', function(e) {
-                e.preventDefault();
-                const href = this.getAttribute('href');
-                transition.classList.add('active');
-                setTimeout(() => {
-                    window.location.href = href;
-                }, 300);
-            });
-        });
-    </script>
+    <footer class="site-foot">
+        <div class="sf-inner">
+            <div class="sf-top">
+                <div class="sf-brand">
+                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+                        <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                        <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+                    </svg>
+                    <div>
+                        <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+                        <p>一个用来放学习资料的小站。题目与代码整理自原始试卷，解析由整理者补充，仅供参考。</p>
+                    </div>
+                </div>
+                <nav class="sf-links">
+                    <a href="C语言/index.html">C 语言真题</a>
+                    <a href="QD.html">前端教程</a>
+                    <a href="boke.html">全栈笔记</a>
+                </nav>
+            </div>
+            <div class="sf-bottom">
+                <span>© 2026 朝云暮辞</span>
+                <span>持续更新中 · 发现题目差异请以原始文件为准。</span>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>

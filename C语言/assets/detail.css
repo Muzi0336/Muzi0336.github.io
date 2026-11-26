@@ -1,0 +1,82 @@
+/* ---------- 详情页补充：解析 / 样例 / 代码 / 编辑器 ---------- */
+.block h2 .tg{margin-left:auto;font-size:11.5px;font-weight:400;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px}
+.block h2:has(.tg)::after{content:none}
+.block h2 .tg:hover{color:var(--ink)}
+.explain{background:var(--paper-2);border:1px solid var(--line);border-left:2px solid var(--ink);padding:18px 20px;font-size:14.5px;line-height:1.95;color:#2b2b25;white-space:pre-wrap}
+.explain[hidden]{display:none}
+
+.subblock{margin-bottom:26px}
+#extraTop:not(:empty){margin-bottom:26px}
+.subblock h3{font-size:14px;font-weight:700;letter-spacing:.02em;margin-bottom:8px}
+.subblock .prose{font-size:16px;line-height:1.95}
+
+.samples{margin:6px 0 26px}
+.sample-lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--muted);margin:18px 0 9px}
+.sample-grid{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);background:var(--paper-2);overflow:hidden}
+.sample-grid .sample-box{background:transparent;border:0;border-radius:0;padding:13px 16px 15px;min-width:0}
+.sample-box+.sample-box{border-left:1px solid var(--line)}
+.sample-box .cap{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--muted);margin-bottom:7px}
+.sample-box pre{margin:0;font-family:var(--mono);font-size:12.5px;line-height:1.75;white-space:pre-wrap;word-break:break-all;color:#26261f}
+
+.note-bar{display:flex;gap:10px;background:#f7efe0;border:1px solid #e7dac2;color:#5b4a31;font-size:12px;line-height:1.7;padding:10px 14px;margin:4px 0 16px}
+.note-bar b{font-weight:600;white-space:nowrap}
+
+.refbar{width:100%;display:flex;align-items:center;gap:14px;border:1px solid var(--line-2);background:var(--paper-2);padding:16px 18px;text-align:left;transition:background .16s}
+.refbar:hover{background:#f1efe5}
+.refbar .lock{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--muted)}
+.refbar b{font-size:14px;letter-spacing:.02em}
+.refbar .sp{flex:1}
+.refbar .cta{font-size:11.5px;border:1px solid var(--ink);padding:6px 12px;white-space:nowrap}
+
+.codeview{margin-top:14px;background:#0f1115;color:#e8e6de;overflow:hidden;border-radius:2px}
+.codeview[hidden]{display:none}
+.cv-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.1)}
+.cv-head .lang{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:#adaa9f}
+.cv-head .copy{font-size:11.5px;color:#dcd9cc;border:1px solid rgba(255,255,255,.25);padding:3px 9px;border-radius:2px}
+.cv-head .copy:hover{background:rgba(255,255,255,.1)}
+.cv-body{max-height:600px;overflow:auto;padding:14px 0 16px}
+.cv-line{display:flex;font-family:var(--mono);font-size:12.8px;line-height:1.85}
+.cv-line .n{width:48px;flex:none;text-align:right;padding-right:14px;color:#5c6068;user-select:none}
+.cv-line .t{white-space:pre;padding-right:22px;color:#e8e6de}
+.cv-line .t:empty::after{content:" "}
+.cv-foot{display:flex;justify-content:space-between;padding:8px 14px;border-top:1px solid rgba(255,255,255,.08);font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:#7d7a72}
+
+.editor{margin-top:14px;border:1px solid var(--line-2);background:var(--paper-2)}
+.ed-head{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.ed-head .k{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--ink-2)}
+.ed-head .st{font-size:11px;color:var(--muted)}
+.ed-head .sp{flex:1}
+.ed-head button{font-size:11.5px;color:var(--ink-2);border:1px solid var(--line-2);padding:4px 10px;border-radius:2px;white-space:nowrap}
+.ed-head button:hover{background:var(--wash);color:var(--ink)}
+.ed-wrap{position:relative}
+.ed-wrap textarea{display:block;width:100%;min-height:260px;resize:vertical;border:0;outline:0;background:#fbf9f1;padding:18px 20px;font-family:var(--mono);font-size:13.5px;line-height:1.9;color:#22221c;tab-size:4;white-space:pre;overflow:auto}
+.ed-wrap textarea::placeholder{color:#a3a396}
+.ed-foot{display:flex;justify-content:space-between;gap:14px;padding:8px 14px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);flex-wrap:wrap}
+.ac{position:absolute;z-index:40;display:none;width:236px;max-height:250px;overflow:auto;background:#171a1e;border-radius:6px;box-shadow:0 14px 34px rgba(0,0,0,.3);padding:4px}
+.ac.show{display:block}
+.ac .item{display:flex;justify-content:space-between;gap:10px;padding:6px 9px;font-family:var(--mono);font-size:12.5px;color:#d9d9d2;cursor:pointer;border-radius:4px}
+.ac .item .hint{font-size:10px;color:#878a92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ac .item.sel{background:#2b3038;color:#fff}
+
+.info dl{display:grid;grid-template-columns:84px minmax(0,1fr);gap:10px 14px;font-family:var(--mono);font-size:11.5px;line-height:1.7}
+.info dt{color:var(--muted);letter-spacing:.1em}
+.info dd{color:var(--ink-2);word-break:break-all}
+.info .bar{height:1px;background:var(--line);margin:14px 0}
+.info .row{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--ink-2);margin-bottom:6px}
+.info .row b{font-weight:600;color:var(--ink)}
+.info .qsmall{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.7}
+.info .qsmall a{text-decoration:underline;text-underline-offset:3px;color:var(--ink-2)}
+.info .qsmall a:hover{color:var(--ink)}
+
+.site-foot{background:#edeae0;border-top:1px solid var(--line-2);margin-top:0}
+.sf-inner{max-width:1240px;margin:0 auto;padding:46px 48px 26px}
+.sf-top{display:flex;justify-content:space-between;gap:44px;flex-wrap:wrap;padding-bottom:32px}
+.sf-brand{display:flex;gap:12px;align-items:flex-start;max-width:460px}
+.sf-brand p{font-size:12.5px;color:var(--muted);line-height:1.85;margin-top:8px}
+.sf-links{display:flex;gap:26px;font-size:12.5px;color:var(--ink-2);align-items:flex-start;flex-wrap:wrap}
+.sf-links a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.sf-bottom{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px;font-size:11.5px;color:var(--muted)}
+
+.qwrap{padding-bottom:96px}
+.qside{top:112px}
+.cv-empty{padding:22px 18px;font-size:12.5px;color:#b8b5aa}

@@ -56,6 +56,14 @@ note/
 └── CSS/                # CSS examples (10 files + style.css)
 ```
 
+### C Language Past Papers (`C语言/`)
+
+Collection of C language exam papers, 2019–2025 (2023 not available), 236 questions in total.
+
+- `C语言/index.html` — paper index with keyword search, year/type/status filters; 21 duplicate questions folded by default
+- `C语言/q.html` — question detail: answer checking for single-choice, per-question explanation, prev/next navigation within the same year, collapsible and copyable reference solutions, and an in-browser code editor with keyword autocomplete
+- `C语言/data.js` — extracted and cleaned question data (stems, options, answers, explanations, source file hashes)
+
 ## License
 
 MIT License
