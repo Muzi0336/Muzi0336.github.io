@@ -109,6 +109,10 @@
             const D = window.CDATA;
             const ANS_KEY = 'cquiz.ans.v1';
             const CODE_PREFIX = 'cquiz.code.';
+            const SIDE_NOTE_DESKTOP = '编程题答案已折叠，展开后可直接复制；代码练习区支持关键字自动补全，内容仅保存在本机。';
+            const SIDE_NOTE_MOBILE = '编程题答案已折叠，展开后可复制；手机端不显示代码练习区，可在电脑上继续手敲。';
+            const QSMALL_DESKTOP = '编程题答案默认折叠，建议先在右侧/下方代码区手敲一遍，再展开参考代码对照。<br>代码会自动保存在本机浏览器，换设备不同步。';
+            const QSMALL_MOBILE = '编程题答案默认折叠，建议先自己想一遍，再展开参考代码对照；手机端不显示代码练习区。';
             const $ = s => document.querySelector(s);
             const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -574,7 +578,7 @@
                         <div class="row"><span>我的草稿</span><b>${draft ? draft.length + ' 字符' : '未开始'}</b></div>
                         <div class="row"><span>解析</span><b>已补充</b></div>
                     </div>
-                    <div class="qsmall">编程题答案默认折叠，建议先在右侧/下方代码区手敲一遍，再展开参考代码对照。<br>代码会自动保存在本机浏览器，换设备不同步。</div>`;
+                    <div class="qsmall" id="sideSmall">${QSMALL_DESKTOP}</div>`;
             }
 
             if (q.kind === 'single') {
@@ -582,8 +586,42 @@
             } else {
                 renderProgram();
                 renderSideProgram();
-                $('#sideNote').textContent = '编程题答案已折叠，展开后可直接复制；代码练习区支持关键字自动补全，内容仅保存在本机。';
+                $('#sideNote').textContent = SIDE_NOTE_DESKTOP;
             }
+
+            // ---------- 移动/窄屏：答题卡上移到题干下方 ----------
+            const qlayoutEl = $('.qlayout');
+            const qmainEl = $('.qmain');
+            const qsideEl = $('.qside');
+            const mqStack = window.matchMedia('(max-width: 1080px)');
+            const mqPhone = window.matchMedia('(max-width: 900px)');
+            qsideEl.dataset.kind = q.kind;
+            function syncProgramNotes() {
+                if (q.kind !== 'program') return;
+                const phone = mqPhone.matches;
+                $('#sideNote').textContent = phone ? SIDE_NOTE_MOBILE : SIDE_NOTE_DESKTOP;
+                const sm = $('#sideSmall');
+                if (sm) sm.innerHTML = phone ? QSMALL_MOBILE : QSMALL_DESKTOP;
+            }
+            function placeSide() {
+                if (mqStack.matches) {
+                    const stemBlock = qmainEl.querySelector('.block');
+                    const srcBlock = qmainEl.querySelector('.block.source');
+                    if (q.kind === 'single' && stemBlock) {
+                        stemBlock.after(qsideEl);
+                    } else if (srcBlock) {
+                        srcBlock.before(qsideEl);
+                    }
+                } else if (qsideEl.parentElement !== qlayoutEl) {
+                    qlayoutEl.appendChild(qsideEl);
+                }
+                syncProgramNotes();
+            }
+            placeSide();
+            [mqStack, mqPhone].forEach(mq => {
+                if (mq.addEventListener) mq.addEventListener('change', placeSide);
+                else if (mq.addListener) mq.addListener(placeSide);
+            });
 
             // ---------- 键盘 ----------
             document.addEventListener('keydown', e => {

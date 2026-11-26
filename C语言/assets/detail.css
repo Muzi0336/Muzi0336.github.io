@@ -80,3 +80,27 @@
 .qwrap{padding-bottom:96px}
 .qside{top:112px}
 .cv-empty{padding:22px 18px;font-size:12.5px;color:#b8b5aa}
+
+/* ---------- 移动端 ---------- */
+@media (max-width:900px){
+  .editor{display:none}
+
+  .sample-grid{grid-template-columns:1fr}
+  .sample-grid .sample-box+.sample-box{border-left:0;border-top:1px solid var(--line)}
+  .samples{margin-bottom:20px}
+  .sample-lab{margin:14px 0 8px}
+  .sample-box pre{font-size:12px}
+
+  .explain{white-space:pre-wrap;overflow-wrap:break-word}
+  .refbar .lock{font-size:9px}
+  .refbar b{font-size:13px}
+  .cv-head .lang{font-size:9.5px}
+  .cv-foot{font-size:9px;color:#a8a59c}
+  .cv-line .n{color:#7c818a}
+  .info dl{grid-template-columns:74px minmax(0,1fr);gap:8px 12px;font-size:10.5px}
+  .info .row{font-size:11.5px}
+  .info .qsmall{font-size:11px}
+
+  .sf-brand{gap:10px}
+  .sf-brand svg{width:24px;height:24px}
+}
