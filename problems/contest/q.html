@@ -547,7 +547,7 @@
                     if (rec) {
                         res = `<div class="sidenote" style="margin-top:14px">
                             ${revealed ? `你选了 ${rec.k} · ${rec.ok ? '回答正确' : '回答错误'}` : '已作答 · 答案已隐藏'}
-                            <button id="redo" type="button" style="margin-left:8px;border:1px solid var(--line-2);background:var(--paper-2);padding:2px 8px;font-size:11px;color:var(--ink-2);cursor:pointer">重新答题</button>
+                            <button id="redo" type="button" style="margin-left:8px;border:1px solid var(--line-2);background:var(--paper-2);padding:2px 8px;font-size:12.5px;color:var(--ink-2);cursor:pointer">重新答题</button>
                         </div>`;
                     }
 
@@ -608,7 +608,7 @@
                         <div class="row"><span>解析</span><b>已补充</b></div>
                     </div>
                     <div class="qsmall" id="sideSmall">${QSMALL_DESKTOP}</div>
-                    <button id="clearProg" type="button" style="margin-top:12px;width:100%;border:1px solid var(--line-2);background:var(--paper-2);padding:7px 10px;font-size:11px;color:#9c3d28">清除本题记录</button>`;
+                    <button id="clearProg" type="button" style="margin-top:12px;width:100%;border:1px solid var(--line-2);background:var(--paper-2);padding:7px 10px;font-size:12.5px;color:#9c3d28">清除本题记录</button>`;
                 const clearProg = $('#clearProg');
                 if (clearProg) clearProg.addEventListener('click', () => {
                     if (!confirm('清除这道题的草稿和作答记录？')) return;

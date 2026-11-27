@@ -27,7 +27,7 @@
 
 .ycard .yc-no {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: .18em;
     color: var(--muted);
 }
@@ -41,7 +41,7 @@
 }
 
 .ycard .yc-sub {
-    font-size: 11.5px;
+    font-size: 12.5px;
     color: var(--muted);
     letter-spacing: .03em;
 }
@@ -67,7 +67,7 @@
 
 .paper-row .pr-no {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: .12em;
     color: var(--muted);
 }
@@ -80,13 +80,13 @@
 
 .paper-row .pr-sub {
     margin-top: 5px;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
 }
 
 .paper-row .pr-side {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: .06em;
     color: var(--ink-2);
     text-align: right;
@@ -94,7 +94,7 @@
 
 .paper-row .pr-go {
     text-align: right;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
 }
 
@@ -113,12 +113,12 @@
     flex-direction: column;
     gap: 4px;
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: .14em;
     color: #a83a30;
 }
 
-.yblock .yb-no span:last-child { color: var(--muted); font-size: 10px; }
+.yblock .yb-no span:last-child { color: var(--muted); font-size: 11px; }
 
 .yblock .yb-main { min-width: 0; }
 
@@ -153,7 +153,7 @@
 }
 
 .yblock .yb-toggle {
-    font-size: 12.5px;
+    font-size: 13.5px;
     color: var(--ink-2);
     border-bottom: 1px solid var(--line-2);
     padding-bottom: 2px;
@@ -177,7 +177,7 @@
 }
 
 .yblock .yb-side span {
-    font-size: 11.5px;
+    font-size: 12.5px;
     color: var(--muted);
     letter-spacing: .02em;
 }
@@ -215,7 +215,7 @@
 
 .qline .ql-no span {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
     letter-spacing: .02em;
 }
@@ -228,7 +228,7 @@
 
 .qline .ql-sub {
     margin-top: 5px;
-    font-size: 12.5px;
+    font-size: 13.5px;
     color: var(--muted);
     line-height: 1.7;
 }
@@ -242,7 +242,7 @@
 
 .qline .ql-side {
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: 13px;
     color: var(--ink-2);
     text-align: right;
     padding-top: 3px;
@@ -274,12 +274,12 @@
     flex-direction: column;
     gap: 4px;
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: .14em;
     color: #a83a30;
 }
 
-.yentry .ye-no span:last-child { color: var(--muted); font-size: 10px; }
+.yentry .ye-no span:last-child { color: var(--muted); font-size: 11px; }
 
 .yentry .ye-main { min-width: 0; }
 
@@ -314,7 +314,7 @@
 }
 
 .yentry .ye-go {
-    font-size: 12.5px;
+    font-size: 13.5px;
     color: var(--ink-2);
     border-bottom: 1px solid var(--line-2);
     padding-bottom: 2px;
@@ -331,13 +331,13 @@
 }
 
 .yentry .ye-side b { font-size: 19px; font-weight: 700; letter-spacing: -.01em; }
-.yentry .ye-side span { font-size: 11.5px; color: var(--muted); }
+.yentry .ye-side span { font-size: 12.5px; color: var(--muted); }
 
 /* ---------- 题库列表页头 ---------- */
 .bank-back {
     display: inline-block;
     margin: 26px 0 0;
-    font-size: 12.5px;
+    font-size: 13.5px;
     color: var(--muted);
     letter-spacing: .02em;
 }
@@ -353,13 +353,13 @@
     padding: 12px 16px;
     border: 1px solid var(--line);
     background: var(--paper-2, #faf8f3);
-    font-size: 12.5px;
+    font-size: 13.5px;
     color: var(--ink-2);
 }
 
 .bank-scope .sk {
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: 11.5px;
     letter-spacing: .14em;
     color: #a83a30;
 }
@@ -374,7 +374,7 @@
     align-items: center;
     gap: 16px;
     padding: 14px 0 2px;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
     letter-spacing: .02em;
 }
@@ -429,7 +429,7 @@
 
 .q-row .q-no .idx {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: .05em;
     color: var(--muted);
     flex: none;
@@ -437,7 +437,7 @@
 
 .q-row .q-no .num {
     font-family: var(--mono);
-    font-size: 12.5px;
+    font-size: 13.5px;
     letter-spacing: .03em;
     color: var(--ink);
     white-space: nowrap;
@@ -451,14 +451,14 @@
 
 .q-row .q-top {
     margin-top: 3px;
-    font-size: 11.5px;
+    font-size: 12.5px;
     color: var(--muted);
 }
 
 .q-row .q-diff,
 .q-row .q-pct {
     font-family: var(--mono);
-    font-size: 11.5px;
+    font-size: 12.5px;
     letter-spacing: .04em;
     text-align: right;
     color: var(--ink-2);
@@ -470,7 +470,7 @@
 
 .diff-tag {
     display: inline-block;
-    font-size: 10.5px;
+    font-size: 11.5px;
     letter-spacing: .06em;
     border: 1px solid var(--line-2);
     padding: 2px 8px;
@@ -485,7 +485,7 @@
 .src-tag {
     display: inline-block;
     font-family: var(--mono);
-    font-size: 9.5px;
+    font-size: 11.5px;
     letter-spacing: .12em;
     padding: 2px 6px;
     border: 1px solid var(--line);
@@ -499,7 +499,7 @@
     align-items: center;
     gap: 8px;
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: 11.5px;
     letter-spacing: .1em;
     color: var(--muted);
     padding: 22px 0 0;
@@ -514,7 +514,7 @@
 
 .sheet-head .sh-eyebrow {
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: 11.5px;
     letter-spacing: .22em;
     color: var(--muted);
     text-transform: uppercase;
@@ -546,7 +546,7 @@
 .sheet-meta div:last-child { border-right: 0; }
 .sheet-meta .k {
     font-family: var(--mono);
-    font-size: 9.5px;
+    font-size: 11.5px;
     letter-spacing: .16em;
     color: var(--muted);
     display: block;
@@ -566,7 +566,7 @@
     place-items: center;
     border: 1px solid var(--line-2);
     font-family: var(--mono);
-    font-size: 11.5px;
+    font-size: 12.5px;
     color: var(--ink-2);
     transition: background .16s, color .16s, border-color .16s;
 }
@@ -583,7 +583,7 @@
 }
 .sec-title span {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: .2em;
     color: var(--muted);
     text-transform: uppercase;
@@ -593,7 +593,7 @@
 .sec-title em {
     font-style: normal;
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: 11.5px;
     letter-spacing: .06em;
     color: var(--muted);
 }
@@ -616,7 +616,7 @@
 .outline { position: sticky; top: 108px; }
 .outline .ol-head {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: .18em;
     color: var(--muted);
     padding-bottom: 10px;
@@ -627,14 +627,14 @@
     display: flex;
     gap: 10px;
     padding: 7px 0;
-    font-size: 12.5px;
+    font-size: 13.5px;
     color: var(--ink-2);
     line-height: 1.5;
 }
 .outline a i {
     font-style: normal;
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 11px;
     color: var(--muted);
     flex: none;
     padding-top: 2px;
@@ -648,7 +648,7 @@
     align-items: center;
     gap: 10px;
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: 11.5px;
     letter-spacing: .1em;
     color: var(--muted);
     flex-wrap: wrap;
@@ -677,7 +677,7 @@
 }
 .io-card .cap {
     font-family: var(--mono);
-    font-size: 9.5px;
+    font-size: 11.5px;
     letter-spacing: .18em;
     color: var(--muted);
     margin-bottom: 7px;
@@ -698,12 +698,12 @@
 .meta-bar div:last-child { border-right: 0; }
 .meta-bar .k {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: 11.5px;
     letter-spacing: .16em;
     color: var(--muted);
     display: block;
 }
-.meta-bar .v { font-size: 13px; font-weight: 600; margin-top: 3px; display: block; }
+.meta-bar .v { font-size: 13.5px; font-weight: 600; margin-top: 3px; display: block; }
 
 .prose {
     font-size: 15px;
@@ -715,7 +715,7 @@
 .prose li { margin-bottom: 6px; }
 .prose code {
     font-family: var(--mono);
-    font-size: 12.5px;
+    font-size: 13.5px;
     background: rgba(25, 25, 23, .055);
     padding: 1px 5px;
     border-radius: 2px;
@@ -723,7 +723,7 @@
 .prose table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 13.5px;
     margin: 6px 0 18px;
     background: var(--paper-2);
 }
@@ -740,7 +740,7 @@
     color: #e8e6de;
     padding: 14px 16px;
     font-family: var(--mono);
-    font-size: 12.5px;
+    font-size: 13.5px;
     line-height: 1.75;
     overflow-x: auto;
     margin: 0 0 16px;
@@ -751,7 +751,7 @@
 .ed-head .langs { display: flex; gap: 4px; }
 .ed-head .langs button {
     font-family: var(--mono);
-    font-size: 9.5px;
+    font-size: 11.5px;
     letter-spacing: .1em;
     padding: 3px 8px;
     border: 1px solid var(--line);
@@ -768,7 +768,7 @@
 .s-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
 .s-tabs button {
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: 11.5px;
     letter-spacing: .1em;
     padding: 5px 12px;
     border: 1px solid var(--line-2);
@@ -780,7 +780,7 @@
 .empty-sample {
     border: 1px dashed var(--line-2);
     padding: 16px 18px;
-    font-size: 13px;
+    font-size: 13.5px;
     color: var(--muted);
     background: var(--paper-2);
 }
@@ -797,7 +797,7 @@
     padding: 10px 14px;
     border-bottom: 1px solid var(--line);
     font-family: var(--mono);
-    font-size: 9.5px;
+    font-size: 11.5px;
     letter-spacing: .16em;
     color: var(--muted);
 }
@@ -808,7 +808,7 @@
     gap: 12px;
     padding: 8px 0;
     border-bottom: 1px solid var(--line);
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
 }
 .side-card .row2:last-child { border-bottom: 0; }
@@ -830,7 +830,7 @@
 .nav-pair a:hover { background: #f1efe5; }
 .nav-pair a .k {
     font-family: var(--mono);
-    font-size: 9.5px;
+    font-size: 11.5px;
     letter-spacing: .16em;
     color: var(--muted);
     display: block;
@@ -868,15 +868,48 @@
 
 /* 题库行：序号、关键词与通过率可读性 */
 .qline .ql-no b{color:var(--ink);font-size:18px;font-weight:700}
-.qline .ql-no span{color:var(--ink-2);font-size:11.5px}
-.qline .ql-sub{display:flex;align-items:baseline;gap:8px;color:var(--ink-2);font-size:13px}
-.qline .ql-k{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--accent);flex:none}
+.qline .ql-no span{color:var(--ink-2);font-size:12.5px}
+.qline .ql-sub{display:flex;align-items:baseline;gap:8px;color:var(--ink-2);font-size:13.5px}
+.qline .ql-k{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;color:var(--accent);flex:none}
 .qline .ql-side b{display:block;color:var(--ink);font-size:14px;font-weight:600;line-height:1.2}
-.qline .ql-side span{display:block;margin-top:3px;font-size:9.5px;letter-spacing:.1em;color:var(--muted)}
-.bank-legend{font-size:11.5px;line-height:1.7;color:var(--muted);padding:0 0 14px;margin-top:-2px}
+.qline .ql-side span{display:block;margin-top:3px;font-size:11.5px;letter-spacing:.1em;color:var(--muted)}
+.bank-legend{font-size:12.5px;line-height:1.7;color:var(--muted);padding:0 0 14px;margin-top:-2px}
 /* 蓝桥题目：错题本按钮 */
 .lq-wrong-box{display:flex;flex-direction:column;gap:6px;padding:12px 14px 14px;border-top:1px solid var(--line)}
-.lq-wrong-btn{align-self:flex-start;background:none;border:1px solid var(--line-2);padding:7px 11px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--ink-2);cursor:pointer;transition:.16s}
+.lq-wrong-btn{align-self:flex-start;background:none;border:1px solid var(--line-2);padding:7px 11px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-2);cursor:pointer;transition:.16s}
 .lq-wrong-btn:hover{border-color:var(--ink);color:var(--ink)}
 .lq-wrong-btn.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
-.lq-wrong-box span{font-size:10.5px;line-height:1.6;color:var(--muted)}
+.lq-wrong-box span{font-size:11.5px;line-height:1.6;color:var(--muted)}
+
+/* ---------- 阅读性微调（桌面） ---------- */
+@media (min-width: 901px){
+  .hero.slim .lede{font-size:16px;line-height:1.9;color:var(--ink-2)}
+  .bank-countline{font-size:13px}
+  .bank-legend{font-size:12.5px;color:var(--ink-2)}
+  .qline .ql-no span{display:block;width:max-content;font-size:12px;white-space:nowrap}
+  .qline{grid-template-columns:100px minmax(0,1fr) 96px}
+  .qline .ql-sub{font-size:13.5px;color:var(--ink-2)}
+  .qline .ql-k{font-size:11.5px}
+  .qline .ql-side b{font-size:15px}
+  .qline .ql-side span{font-size:11.5px}
+  .paper-row .pr-no{font-size:12.5px}
+  .paper-row .pr-sub{font-size:13.5px;color:var(--ink-2)}
+  .paper-row .pr-side{font-size:12.5px}
+  .paper-row .pr-go{font-size:13px}
+  .meta-bar .k{font-size:12px}
+  .meta-bar .v{font-size:14px}
+  .side-card .sc-head{font-size:12px}
+  .side-card .row2{font-size:13px}
+  .side-card .row2 b{font-size:13.5px}
+}
+
+
+/* ---------- 手机端：筛选条与计数换行 ---------- */
+@media (max-width: 600px){
+  .bank-scope{font-size:12.5px;line-height:1.8;padding:10px 12px;gap:8px}
+  .bank-scope .sk-link{margin-left:0;width:100%;text-align:right}
+  .selects,.sel{min-width:0}
+  .sel select{width:100%;min-width:0}
+  .bank-countline{flex-direction:column;align-items:flex-start;gap:2px}
+  .bank-legend{font-size:12px;line-height:1.75}
+}

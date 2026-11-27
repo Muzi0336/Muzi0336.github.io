@@ -41,7 +41,7 @@
 
         .idx-no {
             font-family: var(--mono);
-            font-size: 11px;
+            font-size: 12.5px;
             letter-spacing: .18em;
             color: var(--muted);
             white-space: nowrap;
@@ -57,14 +57,14 @@
 
         .idx-main p {
             margin-top: 8px;
-            font-size: 13.5px;
-            color: #70706a;
+            font-size: 14.5px;
+            color: #55554c;
             line-height: 1.85;
         }
 
         .idx-back {
             font-family: var(--mono);
-            font-size: 10px;
+            font-size: 11.5px;
             letter-spacing: .08em;
             color: var(--muted);
             text-decoration: none;
@@ -80,7 +80,7 @@
         }
 
         .idx-side .tag {
-            font-size: 11px;
+            font-size: 12.5px;
             letter-spacing: .06em;
             color: var(--muted);
             white-space: nowrap;
@@ -120,12 +120,13 @@
         @media (max-width: 900px) {
             .idx-row { grid-template-columns: 56px minmax(0, 1fr); gap: 18px; padding: 24px 0; }
             .idx-side { display: none; }
+            .idx-no { font-size: 11px; letter-spacing: .04em; white-space: normal; line-height: 1.5; }
             .idx-main p { color: #47473f; }
         }
 
         @media (max-width: 600px) {
             .idx-row { grid-template-columns: 56px minmax(0, 1fr); gap: 12px; padding: 18px 0; }
-            .idx-no { font-size: 10px; letter-spacing: .12em; }
+            .idx-no { font-size: 11px; letter-spacing: .04em; }
             .idx-main h3 { font-size: 20px; }
             .idx-main p { margin-top: 6px; font-size: 12.5px; line-height: 1.8; }
             .idx-head { font-size: 9.5px; letter-spacing: .14em; gap: 10px; }

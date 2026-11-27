@@ -20,14 +20,14 @@
   position: sticky;
   top: 112px;
   padding-top: 30px;
-  font-size: 13px;
+  font-size: 13.5px;
 }
 
 .docnav .back {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 12.5px;
+  font-size: 13.5px;
   color: var(--muted);
   padding-bottom: 22px;
 }
@@ -55,7 +55,7 @@
 
 .docnav-list a .n {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: 11.5px;
   color: var(--muted);
   letter-spacing: .06em;
 }
@@ -78,7 +78,7 @@
   padding-top: 14px;
   border-top: 1px solid var(--line);
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: .1em;
   color: var(--muted);
   line-height: 1.9;
@@ -89,7 +89,7 @@
 
 .doc-eyebrow {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: 11.5px;
   letter-spacing: .2em;
   color: var(--muted);
   margin-bottom: 14px;
@@ -127,7 +127,7 @@
 
 .chip {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: 11.5px;
   letter-spacing: .06em;
   color: var(--ink-2);
   border: 1px solid var(--line-2);
@@ -146,7 +146,7 @@
   padding: 0 0 14px;
   border-bottom: 1px solid var(--line-2);
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: 11.5px;
   letter-spacing: .2em;
   color: var(--muted);
   text-transform: uppercase;
@@ -166,7 +166,7 @@
 
 .idx-no {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: .18em;
   color: var(--muted);
   white-space: nowrap;
@@ -195,7 +195,7 @@
 }
 
 .idx-side .tag {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: .06em;
   color: var(--muted);
   white-space: nowrap;
@@ -230,7 +230,7 @@
 @media (max-width: 600px) {
   .idx-row { grid-template-columns: 48px minmax(0, 1fr); gap: 12px; padding: 16px 0; }
   .idx-main h3 { font-size: 19px; }
-  .idx-main p { font-size: 12.5px; }
+  .idx-main p { font-size: 13.5px; }
 }
 
 /* ---------- 小节 ---------- */
@@ -245,7 +245,7 @@
 
 .sec-no {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: .14em;
   color: var(--muted);
   margin-bottom: 8px;
@@ -329,7 +329,7 @@
 
 .codecard .cc-head .lang {
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: 11.5px;
   letter-spacing: .16em;
   color: #9c9a92;
   text-transform: uppercase;
@@ -338,7 +338,7 @@
 .codecard .cc-head .sp { flex: 1; }
 
 .codecard .cc-head button {
-  font-size: 11px;
+  font-size: 12px;
   color: #cfcdc3;
   border: 1px solid rgba(255, 255, 255, .2);
   border-radius: 2px;
@@ -353,7 +353,7 @@
   padding: 16px 18px 18px;
   overflow-x: auto;
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: 13.5px;
   line-height: 1.85;
   color: #e6e4dc;
   white-space: pre;
@@ -454,7 +454,7 @@
   border-radius: 999px;
   color: #e8e6de;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: .04em;
   backdrop-filter: blur(6px);
   z-index: 3;
@@ -467,7 +467,7 @@
   border: 1px solid rgba(255, 255, 255, .22);
   border-radius: 999px;
   color: #e8e6de;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1;
   transition: background .15s, border-color .15s;
 }
@@ -499,7 +499,7 @@
   transform: translateX(-50%);
   color: rgba(232, 230, 222, .55);
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: .12em;
   white-space: nowrap;
   z-index: 3;
@@ -535,7 +535,7 @@
 
 .docside .k {
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: 11.5px;
   letter-spacing: .18em;
   color: var(--muted);
   padding-bottom: 12px;
@@ -597,7 +597,7 @@
 
 .qnav a .k {
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: 11.5px;
   letter-spacing: .16em;
   color: var(--muted);
 }
@@ -655,15 +655,15 @@
 /* 小屏顶栏：六个入口挤不下，只留本节的上下游 */
 @media (max-width: 640px) {
   .lb-hint { display: none; }
-  .lb-bar { bottom: 14px; font-size: 10.5px; padding: 6px 10px; }
+  .lb-bar { bottom: 14px; font-size: 11.5px; padding: 6px 10px; }
   .lb-bar button { min-width: 28px; height: 28px; }
   .lb-close { top: 12px; right: 12px; width: 34px; height: 34px; }
   .lb-img { max-width: 100vw; max-height: 80vh; }
   .topbar { height: 60px; padding: 0 16px; gap: 12px; }
   .brand svg { width: 24px; height: 24px; }
-  .brand-text b { font-size: 13px; }
+  .brand-text b { font-size: 13.5px; }
   .brand-text small { display: none; }
-  .nav { gap: 12px; font-size: 12px; }
+  .nav { gap: 12px; font-size: 13px; }
 }
 
 @media print {
@@ -671,4 +671,16 @@
   .docwrap { display: block; max-width: none; padding: 0; }
   .dsec { break-inside: avoid-page; }
   .codecard pre { white-space: pre-wrap; word-break: break-all; }
+}
+
+
+/* ---------- 阅读性微调（桌面） ---------- */
+@media (min-width: 901px){
+  .docnav-list a .n{font-size:12px}
+  .docnav-list a .t{font-size:13.5px}
+  .docnav .navstat{font-size:12px}
+  .doc-eyebrow{font-size:12px;letter-spacing:.16em}
+  .doc-lead{font-size:16px;color:var(--ink-2)}
+  .doc-meta{font-size:12.5px}
+  .idx-main p{font-size:14px}
 }

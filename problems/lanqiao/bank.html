@@ -193,7 +193,7 @@
 
             function row(p, i) {
                 return '<a class="qline" href="problem.html?id=' + encodeURIComponent(p.id) + '">' +
-                    '<div class="ql-no"><b>' + String(i + 1).padStart(3, '0') + '</b><span>题号 · ' + LQ.esc(LQ.numText(p)) + '</span></div>' +
+                    '<div class="ql-no"><b>' + String(i + 1).padStart(3, '0') + '</b><span>题号 ' + LQ.esc(LQ.numText(p)) + '</span></div>' +
                     '<div class="ql-main">' +
                     '<div class="ql-title">' + LQ.esc(p.title) + '</div>' +
                     '<div class="ql-sub"><span class="ql-k">关键词</span>' + LQ.esc(subline(p)) + '</div>' +
