@@ -156,6 +156,23 @@
         });
     };
 
+    // 题解分片（Dotcpp 博客），按年份懒加载；缺文件按「无题解」处理
+    LQ.SOLS = {};
+    LQ.loadSol = function (year) {
+        if (LQ.SOLS[year]) return Promise.resolve(LQ.SOLS[year]);
+        return new Promise(function (res) {
+            var s = document.createElement('script');
+            s.src = 'data/sol-' + year + '.js';
+            s.onload = function () {
+                var pack = (window.LQ_SOL || {})[year] || {};
+                LQ.SOLS[year] = pack;
+                res(pack);
+            };
+            s.onerror = function () { LQ.SOLS[year] = {}; res({}); };
+            document.head.appendChild(s);
+        });
+    };
+
     LQ.problem = function (id) {
         var c = LQ.catalog();
         var row = c.problems.filter(function (p) { return p.id === id; })[0];

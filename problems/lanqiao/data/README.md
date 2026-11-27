@@ -8,15 +8,30 @@
 |---|---|---|
 | `catalog.js` | 167 KB | 轻量索引：15 个年份、97 张卷、757 道题的摘要行 |
 | `p-<年份届>.js` | 19–245 KB | 按年份分片的题目全文，按需懒加载 |
+| `sol-<年份届>.js` | 19–412 KB | 按年份分片的题解（Dotcpp 博客），仅题目页按年懒加载 |
 | `README.md` | — | 本说明 |
 
-全量 JSON 不在站点目录保留；需要离线备份时跑 `build/build_layer0.py`，它会把 `problems.json` 写到 `build/` 下。
+全量 JSON 不在站点目录保留；需要离线备份时跑 `source/build/build_layer0.py`，它会把 `problems.json` 写到 `source/` 下。
+
+## 题解分片
+
+`source/build/crawl_solutions.py` 抓 `blog.dotcpp.com/tijie/p<题号>/` 的题解列表，再逐篇读 `blog.dotcpp.com/a/<文章 id>` 的正文，按年份写成 `sol-<年份届>.js`：
+
+```js
+window.LQ_SOL["2026年第十七届"] = { "3351": [ { aid, title, date, likes, views, md } ] }
+```
+
+- 每题最多收前 5 篇（列表第一页前 5），单篇正文超过 4000 字截断。
+- 450 道 Dotcpp 题里 345 道有题解，共 1222 篇、约 158 万字；没题解的题在页面上显示「本题暂无收录题解」并给原站题解页链接。
+- 洛谷题不抓题解（洛谷讨论区要登录、内容由前端渲染）。
+- 题解正文是纯文本 + 轻量 markdown（围栏代码转 `<pre>`、`#` 行转标题、链接与行内代码保留），版权归原作者，页面附原文链接。
 
 ## 加载方式
 
 ```html
 <script src="data/catalog.js"></script>            <!-- window.LQ_CATALOG -->
 <script src="data/p-2026年第十七届.js"></script>     <!-- window.LQ_PAGES["2026年第十七届"] -->
+<script src="data/sol-2026年第十七届.js"></script>   <!-- window.LQ_SOL["2026年第十七届"] -->
 ```
 
 `catalog.js` 里的 `problems` 是摘要行（`id/title/diff/pct/year/src/tracks`），点开某题时再加载对应年份分片取全文。

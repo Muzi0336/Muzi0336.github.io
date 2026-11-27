@@ -51,6 +51,7 @@
                 <div class="io-grid" id="ioGrid"></div>
                 <div id="body"></div>
                 <div id="samples"></div>
+                <div id="sol"></div>
                 <div class="sec-title" id="sec-write"><span>Write</span><b>手敲代码</b><span class="sp"></span><em>只存本机 · 不运行</em></div>
                 <div class="editor" id="editorMount"></div>
                 <div class="nav-pair" id="navPair"></div>
@@ -115,6 +116,103 @@
             var paperId = LQ.qs('p');
 
             var IO_HEADS = ['输入格式', '输出格式', '输入', '输出'];
+
+            // 题解正文：保留换行（代码段不能被合并成一行），围栏代码转 pre，裸标题/链接轻量处理
+            function solText(md) {
+                var lines = String(md || '').replace(/\r/g, '').split('\n');
+                var out = [], buf = [], code = [], inCode = false;
+                function flushBuf() {
+                    if (!buf.length) return;
+                    out.push('<p>' + buf.join('<br>') + '</p>');
+                    buf = [];
+                }
+                function flushCode() {
+                    if (!code.length) return;
+                    out.push('<pre class="sol-code">' + LQ.esc(code.join('\n')) + '</pre>');
+                    code = [];
+                }
+                function inline(t) {
+                    return LQ.esc(t)
+                        .replace(/!\[\]\((https?:\/\/[^)\s]+)\)/g, '<img src="$1" alt="题解配图" loading="lazy">')
+                        .replace(/\[([^\]]{1,80})\]\((https?:\/\/[^)\s]+)(?:\s+&quot;[^&]*&quot;|\s+"[^"]*")?\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+                        .replace(/`([^`\n]{1,80})`/g, '<code>$1</code>')
+                        .replace(/\*\*([^*\n]{1,60})\*\*/g, '<b>$1</b>');
+                }
+                lines.forEach(function (l) {
+                    if (/^\s*```/.test(l)) {
+                        if (inCode) { flushCode(); inCode = false; }
+                        else { flushBuf(); inCode = true; }
+                        return;
+                    }
+                    if (inCode) { code.push(l); return; }
+                    var t = l.trim();
+                    if (!t) { flushBuf(); return; }
+                    if (/^#{1,6}\s+/.test(t)) {
+                        flushBuf();
+                        out.push('<h5 class="sol-h">' + inline(t.replace(/^#{1,6}\s+/, '')) + '</h5>');
+                        return;
+                    }
+                    if (/^[*\-_=]{3,}$/.test(t)) { flushBuf(); out.push('<hr class="sol-hr">'); return; }
+                    buf.push(inline(l));
+                });
+                flushBuf();
+                flushCode();
+                return '<div class="sol-text">' + out.join('') + '</div>';
+            }
+
+            function renderSol(q) {
+                var mount = $('#sol');
+                if (!mount) return;
+                var head = function (em) {
+                    return '<div class="sec-title" id="sec-sol"><span>Solution</span><b>题解</b><span class="sp"></span><em>' + em + '</em></div>';
+                };
+                if (q.src !== 'dotcpp') {
+                    mount.innerHTML = head('洛谷题 · 未收录') +
+                        '<div class="sol-empty" style="margin-top:14px"><span>本题来自洛谷题单，本站只收录 Dotcpp 题解区的题解。</span>' +
+                        '<a href="' + LQ.esc(q.url || '#') + '" target="_blank" rel="noopener">看洛谷讨论 ↗</a></div>';
+                    return;
+                }
+                mount.innerHTML = head('加载中…') + '<div class="sol-wrap" id="solWrap"></div>';
+
+                LQ.loadSol(q.year).then(function (pack) {
+                    var list = (pack && pack[q.id]) || [];
+                    var em = document.querySelector('#sec-sol em');
+                    var wrap = document.querySelector('#solWrap');
+                    if (!em || !wrap) return;
+                    em.textContent = list.length ? list.length + ' 篇 · 来自 Dotcpp 博客' : '本题暂无收录题解';
+
+                    if (!list.length) {
+                        wrap.innerHTML = '<div class="sol-empty"><span>Dotcpp 题解区里这道题还没有题解，或都被隐藏了。</span>' +
+                            '<a href="https://blog.dotcpp.com/tijie/p' + encodeURIComponent(q.id) + '/" target="_blank" rel="noopener">去题解页看看 ↗</a></div>';
+                        return;
+                    }
+
+                    wrap.innerHTML = list.map(function (a) {
+                        return '<article class="sol-item">' +
+                            '<header class="sol-head">' +
+                            '<h4>' + LQ.esc(a.title || '未命名题解') + '</h4>' +
+                            '<div class="sol-meta">' + [a.date, a.likes ? a.likes + ' 赞' : '', a.views ? a.views + ' 浏览' : '']
+                                .filter(Boolean).map(function (x) { return '<span>' + LQ.esc(x) + '</span>'; }).join('') + '</div>' +
+                            '<span class="sol-arrow">展开 ↓</span>' +
+                            '</header>' +
+                            '<div class="sol-body" hidden>' + solText(a.md) + '</div>' +
+                            '<div class="sol-foot"><span>内容来自 Dotcpp 博客，版权归原作者</span>' +
+                            '<a href="https://blog.dotcpp.com/a/' + encodeURIComponent(a.aid) + '" target="_blank" rel="noopener">原文 ↗</a></div>' +
+                            '</article>';
+                    }).join('');
+
+                    Array.prototype.forEach.call(wrap.querySelectorAll('.sol-head'), function (h) {
+                        h.addEventListener('click', function () {
+                            var item = h.parentNode;
+                            var body = item.querySelector('.sol-body');
+                            var on = item.classList.toggle('on');
+                            body.hidden = !on;
+                            item.querySelector('.sol-arrow').textContent = on ? '收起 ↑' : '展开 ↓';
+                            if (on && LQ.renderMath) LQ.renderMath(body);
+                        });
+                    });
+                });
+            }
 
             LQ.problem(id).then(function (q) {
                 document.title = q.title + ' · 蓝桥真题｜朝云暮辞';
@@ -221,6 +319,9 @@
                 $('#outline').innerHTML = outlineItems.map(function (x) {
                     return '<a href="#' + x[0] + '"><i>' + x[1] + '</i><span>' + LQ.esc(x[2]) + '</span></a>';
                 }).join('');
+
+                // 题解区
+                renderSol(q);
 
                 // 右侧信息
                 var parts = LQ.trackParts(q.tracks);
