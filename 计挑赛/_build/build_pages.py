@@ -106,9 +106,11 @@ def convert(text, cfg):
                    '学习工具/错题本.html', 'index.html']:
         text = text.replace(f'href="../{target}"', f'href="../../{target}"')
     text = text.replace('href="assets/', 'href="../assets/')
+    text = text.replace('src="assets/', 'src="../assets/')
     text = text.replace('href="../index.html#contest"', 'href="../../index.html#contest"')
     text = text.replace('href="../计挑赛/index.html"', 'href="../../计挑赛/index.html"')
     # language copy & storage keys
+    text = text.replace("const LANG = 'C';", f"const LANG = '{name}';")
     text = text.replace('C 语言真题', f'{name} 真题').replace('C语言真题', f'{name} 真题')
     text = text.replace('C 语言', name).replace('C语言', name)
     text = text.replace('window.CDATA', 'window.' + cfg['global'])

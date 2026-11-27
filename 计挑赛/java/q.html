@@ -106,9 +106,11 @@
     </footer>
 
     <script src="data.js"></script>
+    <script src="../assets/quiz-ai.js"></script>
     <script>
         (function () {
             const D = window.CDATA_JAVA;
+            const LANG = 'Java';
             const ANS_KEY = 'contest.ans.java.v1';
             const CODE_PREFIX = 'contest.code.java.';
             const SIDE_NOTE_DESKTOP = '编程题答案已折叠，展开后可直接复制；代码练习区支持关键字自动补全，内容仅保存在本机。';
@@ -647,6 +649,30 @@
                 if (mq.addEventListener) mq.addEventListener('change', placeSide);
                 else if (mq.addListener) mq.addListener(placeSide);
             });
+
+            if (window.QuizAI) {
+                window.QuizAI.mount({
+                    question: q,
+                    language: LANG,
+                    codeId: codeId,
+                    getCode: () => {
+                        const ed = $('#ed');
+                        return ed ? ed.value : '';
+                    },
+                    getAnswerInfo: () => {
+                        const rec = loadAns()[q.id];
+                        const visible = !!document.querySelector('#sideCard .opt.reveal-right');
+                        return {
+                            selected: rec ? rec.k : null,
+                            correct: visible ? q.answer : null
+                        };
+                    },
+                    isRefVisible: () => {
+                        const view = $('#codeview');
+                        return !!(view && !view.hidden);
+                    }
+                });
+            }
 
             // ---------- 键盘 ----------
             document.addEventListener('keydown', e => {
