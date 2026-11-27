@@ -1,2 +1,11 @@
 title: 前端学习教程
 description: 这是zyyc-0336写的哦！记得一键三连ヽ(=^･ω･^=)丿
+exclude:
+  - README.md
+  - articles/algorithm-competition/README.md
+  - articles/algorithm-competition/笔记
+  - articles/algorithm-competition/tools
+  - articles/data-structures/README.md
+  - articles/data-structures/笔记
+  - articles/data-structures/tools
+  - problems/contest/_build
