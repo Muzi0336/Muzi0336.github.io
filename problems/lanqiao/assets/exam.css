@@ -473,7 +473,7 @@
     word-break: break-word;
 }
 
-.sol-text p { margin: 0 0 12px; }
+.sol-text p { margin: 0 0 12px; white-space: pre-wrap; }
 .sol-text .sol-h {
     font-size: 14px;
     font-weight: 700;
