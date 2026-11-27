@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>年份题库 · 蓝桥真题｜朝云暮辞</title>
+    <meta name="description" content="按年份查看蓝桥杯真题：某一年全部题目按题号排开，Dotcpp 与洛谷混排，可按难度与关键词筛选。">
+    <link rel="stylesheet" href="../../assets/css/site.css">
+    <link rel="stylesheet" href="../../assets/css/detail.css">
+    <link rel="stylesheet" href="assets/exam.css">
+</head>
+
+<body>
+    <div class="topbar">
+        <a class="brand" href="../../index.html" title="朝云暮辞 · 学习档案">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+            </svg>
+            <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
+        </a>
+        <nav class="nav">
+            <a href="../../index.html#contest">计挑赛</a>
+            <a href="index.html" class="active">蓝桥真题</a>
+            <a href="../algorithm/index.html">算法题库</a>
+            <a href="../algorithm/learn.html">算法学习</a>
+            <a href="../algorithm/lab.html">动画实验室</a>
+            <a href="../../articles/data-structures/index.html">数据结构</a>
+            <a href="../../articles/algorithm-competition/index.html">算法竞赛</a>
+            <a href="../../articles/frontend/index.html">前端教程</a>
+            <a href="../../articles/fullstack/index.html">全栈笔记</a>
+            <a href="../../tools/mistakes.html">错题本</a>
+            <a href="../../settings.html">设置</a>
+        </nav>
+    </div>
+
+    <main class="wrap">
+        <a class="bank-back" href="index.html">← 返回年份归档</a>
+        <div class="bank-scope" id="scope"></div>
+
+        <section class="hero slim">
+            <div class="hero-left">
+                <div class="eyebrow" id="bkEye">— YEAR</div>
+                <h1 id="bkTitle">全部年份</h1>
+                <p class="lede" id="bkLede"></p>
+            </div>
+            <div class="hero-stat">
+                <div class="num" id="bkNum">757</div>
+                <div class="stat-label"><span id="bkUnit">道题在库</span><span id="bkSub"></span></div>
+            </div>
+        </section>
+
+        <section class="filters">
+            <div class="searchbox">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></svg>
+                <input id="q" type="search" placeholder="搜索题号、标题、考点或题面…" autocomplete="off">
+                <span class="hits" id="hits">—</span>
+            </div>
+            <div class="selects">
+                <div class="sel">
+                    <select id="yearSel"></select>
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4l4 4 4-4" /></svg>
+                </div>
+                <div class="sel">
+                    <select id="diffSel">
+                        <option value="">全部难度</option>
+                        <option value="入门">入门</option>
+                        <option value="简单">简单</option>
+                        <option value="中等">中等</option>
+                        <option value="困难">困难</option>
+                        <option value="未评定">未评定</option>
+                    </select>
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4l4 4 4-4" /></svg>
+                </div>
+            </div>
+        </section>
+
+        <div class="bank-countline">
+            <span id="countLine">—</span>
+            <span>按题号排序</span>
+        </div>
+
+        <section class="qlist2" id="list"></section>
+
+        <div class="foot">
+            <div>题面与样例整理自 Dotcpp 与洛谷，通过率为站点口径，仅作参考。</div>
+            <div>同一年不分卷，Dotcpp 题号带 #，洛谷题号带 P。</div>
+        </div>
+    </main>
+
+    <footer class="site-foot">
+        <div class="sf-inner">
+            <div class="sf-top">
+                <div class="sf-brand">
+                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" style="flex:none">
+                        <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                        <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+                    </svg>
+                    <div>
+                        <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
+                        <p>蓝桥真题档案。2012–2026 年省赛、国赛真题按年份整理，题面与样例整理自 Dotcpp 与洛谷，通过率取自站点口径，仅供练习参考。</p>
+                    </div>
+                </div>
+                <nav class="sf-links">
+                    <a href="index.html">年份归档</a>
+                    <a href="bank.html">全部题目</a>
+                    <a href="../contest/index.html">计挑赛</a>
+                    <a href="../algorithm/index.html">算法题库</a>
+                    <a href="../../articles/data-structures/index.html">数据结构教程</a>
+                    <a href="../../index.html">返回导航</a>
+                </nav>
+            </div>
+            <div class="sf-bottom">
+                <span>© 2026 朝云暮辞</span>
+                <span>题目版权归命题方所有，本页仅作学习归档。</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="data/catalog.js"></script>
+    <script src="assets/exam.js"></script>
+    <script>
+        (function () {
+            var CAT = LQ.catalog();
+            var yearsDesc = CAT.years.slice().reverse();
+            var params = new URLSearchParams(location.search);
+            var year = params.get('y') || '';
+            if (year && yearsDesc.indexOf(year) < 0) year = '';
+            var qEl = document.getElementById('q');
+            var ySel = document.getElementById('yearSel');
+            var dSel = document.getElementById('diffSel');
+
+            ySel.innerHTML = '<option value="">全部年份 · ' + CAT.problems.length + '</option>' + yearsDesc.map(function (y) {
+                return '<option value="' + LQ.esc(y) + '">' + LQ.esc(cnYear(y)) + '</option>';
+            }).join('');
+            ySel.value = year;
+
+            function cnYear(y) { return y.replace(/(\d{4})年(.*)/, '$1 年 · $2'); }
+
+            function numKey(p) {
+                return String(p.id).replace(/\D/g, '').padStart(6, '0');
+            }
+
+            var scope = CAT.problems.filter(function (p) { return !year || p.year === year; })
+                .sort(function (a, b) { return numKey(a).localeCompare(numKey(b)); });
+
+            // 头部与范围条
+            var stages = [], sub = [], grp = [];
+            var SUB = ['C/C++', 'C++', 'Java', 'Python'];
+            scope.forEach(function (p) {
+                (p.stages || []).forEach(function (s) { if (s && stages.indexOf(s) < 0) stages.push(s); });
+                (p.tracks || []).forEach(function (t) {
+                    SUB.forEach(function (k) { if (t.indexOf(k) >= 0 && sub.indexOf(k) < 0) sub.push(k); });
+                    var m = t.match(/大学([ABC])组/);
+                    if (m && grp.indexOf(m[1]) < 0) grp.push(m[1]);
+                    if (t.indexOf('研究生组') >= 0 && grp.indexOf('研究生') < 0) grp.push('研究生');
+                });
+            });
+            sub = SUB.filter(function (k) { return sub.indexOf(k) >= 0; });
+            grp = ['A', 'B', 'C', '研究生'].filter(function (k) { return grp.indexOf(k) >= 0; });
+            var gtxt = [];
+            var abc = grp.filter(function (g) { return g !== '研究生'; });
+            if (abc.length) gtxt.push(abc.length > 1 ? '大学' + abc.join('/') + '组' : '大学' + abc[0] + '组');
+            if (grp.indexOf('研究生') >= 0) gtxt.push('研究生组');
+            var keys = [stages.join(' / '), sub.join('、'), gtxt.join('、')].filter(Boolean).join(' ｜ ');
+
+            document.getElementById('bkEye').textContent = year ? ('— YEAR ' + String(yearsDesc.indexOf(year) + 1).padStart(2, '0')) : ('— ALL / ' + CAT.problems.length);
+            document.getElementById('bkTitle').textContent = year ? cnYear(year) : '全部年份';
+            document.getElementById('bkLede').textContent = year
+                ? '这一年一共 ' + scope.length + ' 道题，不分卷、不分 Dotcpp 与洛谷，按题号排开。'
+                : '2012–2026 年全部 ' + scope.length + ' 道题，按题号排开；也可以在上面的年份下拉里切到某一年。';
+            document.getElementById('bkNum').textContent = scope.length;
+
+            var official = scope.filter(function (p) { return p.src === 'dotcpp'; }).length;
+            document.getElementById('bkSub').textContent = official + ' 官方 · ' + (scope.length - official) + ' 洛谷';
+            document.getElementById('scope').innerHTML =
+                '<span class="sk">' + (year ? 'YEAR' : 'ALL') + '</span>' +
+                '<strong>' + LQ.esc(year ? cnYear(year) : '全部年份') + '</strong>' +
+                '<span>' + LQ.esc(keys || '未标注') + '</span>' +
+                '<span class="sk-link">' + official + ' 官方 · ' + (scope.length - official) + ' 洛谷</span>';
+
+            function subline(p) {
+                var parts = LQ.trackParts(p.tracks);
+                var a = [];
+                if (parts.subject && parts.subject !== '未区分科目' && parts.subject !== '未标注') a.push(parts.subject);
+                if (parts.group && parts.group !== '—') a.push(parts.group);
+                var st = (p.stages || []).filter(Boolean).join(' / ');
+                if (st) a.push(st);
+                return a.join(' · ') || '未标注科目与组别';
+            }
+
+            function row(p, i) {
+                return '<a class="qline" href="problem.html?id=' + encodeURIComponent(p.id) + '">' +
+                    '<div class="ql-no"><b>' + String(i + 1).padStart(3, '0') + '</b><span>' + LQ.esc(LQ.numText(p)) + '</span></div>' +
+                    '<div class="ql-main">' +
+                    '<div class="ql-title">' + LQ.esc(p.title) + '</div>' +
+                    '<div class="ql-sub">' + LQ.esc(subline(p)) + '</div>' +
+                    '<div class="ql-tags">' + LQ.labels.diff(p.diff) + LQ.labels.src(p.src) + '</div>' +
+                    '</div>' +
+                    '<div class="ql-side">' + LQ.pct(p.pct) + '</div></a>';
+            }
+
+            function render() {
+                var q = qEl.value.trim().toLowerCase();
+                var df = dSel.value;
+                var rows = scope.filter(function (p) {
+                    if (df && p.diff !== df) return false;
+                    if (!q) return true;
+                    var hay = (p.id + ' ' + p.title + ' ' + (p.tracks || []).join(' ') + ' ' + (p.stages || []).join(' ')).toLowerCase();
+                    return hay.indexOf(q) >= 0;
+                });
+
+                document.getElementById('hits').textContent = rows.length ? rows.length + ' 题' : '';
+                document.getElementById('countLine').textContent =
+                    '— 显示 ' + rows.length + ' / ' + scope.length + ' 题' +
+                    (year ? ' · ' + year : '') + (df ? ' · ' + df : '');
+
+                document.getElementById('list').innerHTML = rows.length
+                    ? rows.map(row).join('')
+                    : '<div class="empty" style="display:block"><b>没有匹配的题目</b>换个关键词，或把难度调回「全部」。</div>';
+            }
+
+            qEl.addEventListener('input', render);
+            dSel.addEventListener('change', render);
+            ySel.addEventListener('change', function () {
+                location.href = ySel.value ? ('bank.html?y=' + encodeURIComponent(ySel.value)) : 'bank.html';
+            });
+            render();
+        })();
+    </script>
+</body>
+
+</html>

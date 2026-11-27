@@ -24,7 +24,17 @@
 │
 ├── problems/                      # 真题：题库、卷面、题目详情
 │   ├── contest/                   # 计挑赛 C / C++ / Java / Python
-│   └── algorithm/                 # 算法题库、学习路径、课程、动画实验室
+│   ├── algorithm/                 # 算法题库、学习路径、课程、动画实验室
+│   └── lanqiao/                   # 蓝桥杯真题
+│       ├── index.html             # 年份归档
+│       ├── bank.html              # 全部题目
+│       ├── paper.html             # 卷面
+│       ├── problem.html           # 题目详情
+│       ├── assets/                # 蓝桥专属 exam.css / exam.js
+│       ├── data/                  # 运行时题库数据
+│       ├── images/                # 题干插图
+│       ├── vendor/                # KaTeX
+│       └── source/                # 原始题面、总表、JSON 与抓取脚本
 │
 ├── tools/                         # 学习工具
 │   └── mistakes.html              # 错题本
@@ -38,8 +48,6 @@
 │   └── js/
 │       ├── tutorial.js            # 教程阅读器：目录、代码复制、图片放大
 │       └── quiz-ai.js             # 题库 AI 助教与代码核对模块
-│
-└── 蓝桥杯真题/                    # 例外：当前保持原目录，不参与本次迁移
 ```
 
 ## 分类规则
@@ -50,6 +58,7 @@
 - **assets/**：至少被两个栏目共用的样式和脚本。只被单个栏目使用的资源，继续放在该栏目的 `assets/` 内，避免把专属资源堆到根目录。
 - **根目录页面文件**：只允许首页、404 等站点级入口；栏目页和正文页一律进入对应分类目录。
 - **命名**：根目录及分类目录使用英文；历史文章文件名保持不变，避免破坏已有引用。新增文件优先使用小写英文和连字符。
+- **导航**：所有页面共用同一套 11 项顶栏；蓝桥真题页面同样包含“设置”，不再单独保留“学习路径”入口。
 
 ## 路径迁移对照
 
@@ -62,6 +71,8 @@
 | `/frontend/` | `/articles/frontend/` |
 | `/boke/` | `/articles/fullstack/` |
 | `/学习工具/错题本.html` | `/tools/mistakes.html` |
+| `/蓝桥杯真题/exam/` | `/problems/lanqiao/` |
+| `/蓝桥杯真题/` | `/problems/lanqiao/` |
 | `/计挑赛/assets/style.css` | `/assets/css/site.css` |
 | `/计挑赛/assets/detail.css` | `/assets/css/detail.css` |
 | `/计挑赛/assets/quiz-ai.js` | `/assets/js/quiz-ai.js` |
@@ -86,6 +97,10 @@ C、C++、Java、Python 四套题库，按语言和题型归档。单选题可�
 ### 算法题库（`problems/algorithm/`）
 
 145 道题、7 个分类、6 条学习路径、21 篇课程、17 个代码动画。`index.html` 是统一分类入口，顶栏只保留“算法题库”；选择分类或路径后进入 `bank.html` 的题库列表排版。路径总览仍保留在 `paths.html`，题目页只加载当前题的数据文件。
+
+### 蓝桥真题（`problems/lanqiao/`）
+
+2012–2026 年蓝桥杯省赛、国赛真题 757 道。`index.html` 按年份归档，`bank.html` 是全部题目列表，`paper.html` 是卷面，`problem.html` 是题目详情。题目页已接入 AI 助教，原始抓取数据与构建脚本统一收在 `source/`。
 
 ### 教程与笔记（`articles/`）
 

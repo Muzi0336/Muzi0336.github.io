@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蓝桥真题 · 按年份归档｜朝云暮辞</title>
+    <meta name="description" content="2012–2026 年蓝桥杯省赛、国赛真题，按年份从 2026 往下归档，共 757 题。选一年进去看该年全部题目，题面、样例、时限与通过率可查，手敲代码区只存本机、不评测。">
+    <link rel="stylesheet" href="../../assets/css/site.css">
+    <link rel="stylesheet" href="../../assets/css/detail.css">
+    <link rel="stylesheet" href="assets/exam.css">
+</head>
+
+<body>
+    <div class="topbar">
+        <a class="brand" href="../../index.html" title="朝云暮辞 · 学习档案">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+            </svg>
+            <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
+        </a>
+        <nav class="nav">
+            <a href="../../index.html#contest">计挑赛</a>
+            <a href="index.html" class="active">蓝桥真题</a>
+            <a href="../algorithm/index.html">算法题库</a>
+            <a href="../algorithm/learn.html">算法学习</a>
+            <a href="../algorithm/lab.html">动画实验室</a>
+            <a href="../../articles/data-structures/index.html">数据结构</a>
+            <a href="../../articles/algorithm-competition/index.html">算法竞赛</a>
+            <a href="../../articles/frontend/index.html">前端教程</a>
+            <a href="../../articles/fullstack/index.html">全栈笔记</a>
+            <a href="../../tools/mistakes.html">错题本</a>
+            <a href="../../settings.html">设置</a>
+        </nav>
+    </div>
+
+    <main class="wrap">
+        <section class="hero">
+            <div class="hero-left">
+                <div class="eyebrow">— Lanqiao / 15 years</div>
+                <h1>真题，<br>按年归堆。</h1>
+                <p class="lede">2012 年至 2026 年蓝桥杯省赛与国赛真题，一年一个入口，从 2026 往下排。选一年进去，看到的是那一年的全部题目：不分卷、不分洛谷与 Dotcpp，只按题号排开。</p>
+                <p class="lede" style="margin-top:14px"><a class="ye-go" href="bank.html">直接看全部 757 题 →</a></p>
+            </div>
+            <div class="hero-stat">
+                <div class="num" id="statNum">757</div>
+                <div class="stat-label">
+                    <span>道真题入库</span>
+                    <span id="statSub">15 个年份</span>
+                </div>
+            </div>
+        </section>
+
+        <div id="years"></div>
+
+        <div class="foot">
+            <div>题面与样例整理自 Dotcpp 与洛谷，通过率为站点口径，仅作参考。</div>
+            <div>Dotcpp 题号带 #，洛谷题号带 P；进年份后点题名看题面。</div>
+        </div>
+    </main>
+
+    <footer class="site-foot">
+        <div class="sf-inner">
+            <div class="sf-top">
+                <div class="sf-brand">
+                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" style="flex:none">
+                        <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                        <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+                    </svg>
+                    <div>
+                        <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
+                        <p>蓝桥真题档案。2012–2026 年省赛、国赛真题按年份整理，题面与样例整理自 Dotcpp 与洛谷，通过率取自站点口径，仅供练习参考。</p>
+                    </div>
+                </div>
+                <nav class="sf-links">
+                    <a href="index.html">蓝桥真题</a>
+                    <a href="bank.html">全部题目</a>
+                    <a href="../contest/index.html">计挑赛</a>
+                    <a href="../algorithm/index.html">算法题库</a>
+                    <a href="../../articles/data-structures/index.html">数据结构教程</a>
+                    <a href="../../index.html">返回导航</a>
+                </nav>
+            </div>
+            <div class="sf-bottom">
+                <span>© 2026 朝云暮辞</span>
+                <span>题目版权归命题方所有，本页仅作学习归档。</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="data/catalog.js"></script>
+    <script src="assets/exam.js"></script>
+    <script>
+        (function () {
+            var CAT = LQ.catalog();
+            var yearsDesc = CAT.years.slice().reverse();
+
+            function cnYear(y) {
+                return y.replace(/(\d{4})年(.*)/, '$1 年 · $2');
+            }
+
+            // 某一年的关键词：赛段 / 科目 / 组别（按已知词表精确归类）
+            function keywordsOf(all) {
+                var st = [], sub = [], grp = [];
+                var SUB = ['C/C++', 'C++', 'Java', 'Python'];
+                all.forEach(function (p) {
+                    (p.stages || []).forEach(function (s) { if (s && st.indexOf(s) < 0) st.push(s); });
+                    (p.tracks || []).forEach(function (t) {
+                        SUB.forEach(function (k) { if (t.indexOf(k) >= 0 && sub.indexOf(k) < 0) sub.push(k); });
+                        var m = t.match(/大学([ABC])组/);
+                        if (m && grp.indexOf(m[1]) < 0) grp.push(m[1]);
+                        if (t.indexOf('研究生组') >= 0 && grp.indexOf('研究生') < 0) grp.push('研究生');
+                    });
+                });
+                sub = SUB.filter(function (k) { return sub.indexOf(k) >= 0; });
+                var order = ['A', 'B', 'C', '研究生'];
+                grp = order.filter(function (k) { return grp.indexOf(k) >= 0; });
+                var gtxt = [];
+                var abc = grp.filter(function (g) { return g !== '研究生'; });
+                if (abc.length) gtxt.push(abc.length > 1 ? '大学' + abc.join('/') + '组' : '大学' + abc[0] + '组');
+                if (grp.indexOf('研究生') >= 0) gtxt.push('研究生组');
+                return [st.join(' / '), sub.join('、'), gtxt.join('、')].filter(Boolean).join(' ｜ ');
+            }
+
+            function stageStat(all) {
+                var c = {};
+                all.forEach(function (p) {
+                    var s = (p.stages || []).filter(Boolean).join(' / ') || '未标注';
+                    c[s] = (c[s] || 0) + 1;
+                });
+                return Object.keys(c).map(function (k) { return k + ' ' + c[k] + ' 题'; }).join(' · ');
+            }
+
+            document.getElementById('statNum').textContent = CAT.problems.length;
+            document.getElementById('statSub').textContent = CAT.years.length + ' 个年份';
+
+            document.getElementById('years').innerHTML = yearsDesc.map(function (y, i) {
+                var all = CAT.problems.filter(function (p) { return p.year === y; });
+                var official = all.filter(function (p) { return p.src === 'dotcpp'; }).length;
+                var luogu = all.length - official;
+                return '<a class="yentry" href="bank.html?y=' + encodeURIComponent(y) + '">' +
+                    '<div class="ye-no"><span>' + String(i + 1).padStart(2, '0') + ' /</span><span>YEAR</span></div>' +
+                    '<div class="ye-main">' +
+                    '<h2>' + LQ.esc(cnYear(y)) + '</h2>' +
+                    '<p class="ye-key">' + LQ.esc(keywordsOf(all) || '未标注') + '</p>' +
+                    '<p class="ye-desc">' + LQ.esc(stageStat(all)) + '</p>' +
+                    '<div class="ye-rule"></div>' +
+                    '<span class="ye-go">进入 ' + all.length + ' 道题 →</span>' +
+                    '</div>' +
+                    '<div class="ye-side"><b>' + all.length + ' 题</b><span>' + official + ' 官方 · ' + luogu + ' 洛谷</span></div>' +
+                    '</a>';
+            }).join('');
+        })();
+    </script>
+</body>
+
+</html>
