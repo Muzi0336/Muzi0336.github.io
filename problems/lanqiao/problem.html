@@ -60,6 +60,10 @@
                 <div class="side-card">
                     <div class="sc-head"><span>Info / 信息</span><span id="sideId"></span></div>
                     <div class="sc-body" id="sideBody"></div>
+                    <div class="lq-wrong-box">
+                        <button class="lq-wrong-btn" id="lqWrong" type="button">加入错题本</button>
+                        <span>只记在本机，可在错题本里按蓝桥杯查看</span>
+                    </div>
                 </div>
                 <div class="side-card" id="noteCard" hidden>
                     <div class="sc-head"><span>Note / 声明</span></div>
@@ -235,6 +239,36 @@
                 ].map(function (x) {
                     return '<div class="row2"><span>' + LQ.esc(x[0]) + '</span><b>' + x[1] + '</b></div>';
                 }).join('');
+
+                // 错题本
+                var wrongBtn = $('#lqWrong');
+                function paintWrong() {
+                    var wrong = LQ.STORE.get('lq.wrong', {}) || {};
+                    var on = !!wrong[q.id];
+                    wrongBtn.classList.toggle('on', on);
+                    wrongBtn.textContent = on ? '已加入错题本 · 点击移出' : '加入错题本';
+                    wrongBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+                }
+                wrongBtn.addEventListener('click', function () {
+                    var wrong = LQ.STORE.get('lq.wrong', {}) || {};
+                    if (wrong[q.id]) {
+                        delete wrong[q.id];
+                    } else {
+                        wrong[q.id] = {
+                            id: q.id,
+                            year: q.year,
+                            title: q.title,
+                            tracks: q.tracks || [],
+                            src: q.src,
+                            diff: q.diff,
+                            pct: q.pct,
+                            excerpt: q.sections && q.sections[0] ? String(q.sections[0].md || '').replace(/!\[[^\]]*\]\([^)]*\)/g, ' ').replace(/:::[^\s]*/g, ' ').replace(/[#*_>`\n\r]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 120) : ''
+                        };
+                    }
+                    LQ.STORE.set('lq.wrong', wrong);
+                    paintWrong();
+                });
+                paintWrong();
 
                 if (q.note) {
                     $('#noteCard').hidden = false;

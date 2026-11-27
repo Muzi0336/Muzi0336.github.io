@@ -124,15 +124,12 @@
   document.getElementById('pathGrid').innerHTML = paths.map(p => {
     const done = p.problems.filter(id => A.statusOf(id) === 'done').length;
     const pct = p.problems.length ? Math.round(done / p.problems.length * 100) : 0;
-    return `<a class="hub-path" href="bank.html?path=${encodeURIComponent(p.slug)}">
-      <span class="hub-path-no">${A.esc(p.index)} / PATH</span>
-      <div class="hub-path-body">
-        <h3>${A.esc(p.name)}</h3>
-        <p>${A.esc(p.description)}</p>
-        <div class="hub-path-bar"><i style="width:${pct}%"></i></div>
-        <div class="hub-path-meta"><span>计划 ${p.planned_count} 题 · 现有 ${p.problems.length} 题</span><span>${done ? '已完成 ' + done : '尚未开始'}</span></div>
-      </div>
-      <span class="hub-path-go">→</span>
+    return `<a class="hub-track" href="bank.html?path=${encodeURIComponent(p.slug)}" title="计划 ${p.planned_count} 题 · 现有 ${p.problems.length} 题 · 完成 ${pct}%">
+      <span class="hub-track-no">${A.esc(p.index)}</span>
+      <span class="hub-track-en">PATH</span>
+      <h3>${A.esc(p.name)}</h3>
+      <p>${A.esc(p.description)}</p>
+      <span class="hub-track-foot"><b>${p.problems.length}</b> 题 <i>${done ? '已完成 ' + done + ' →' : '进入 →'}</i></span>
     </a>`;
   }).join('');
 })();

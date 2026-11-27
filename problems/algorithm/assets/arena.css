@@ -542,7 +542,7 @@
 .hub-track-foot i{font-style:normal;color:var(--ink-2);transition:.18s}
 .hub-track:hover .hub-track-foot i{color:var(--accent);transform:translateX(2px)}
 
-.hub-path-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+.hub-path-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-left:1px solid var(--line);border-top:1px solid var(--line)}
 .hub-path{display:grid;grid-template-columns:86px minmax(0,1fr) 26px;gap:22px;align-items:center;padding:24px 18px 24px 4px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);transition:background .18s}
 .hub-path:nth-child(2n){border-right:0}
 .hub-path:hover{background:rgba(255,255,255,.25)}
@@ -571,6 +571,7 @@
   .hub-tally{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:24px;max-width:420px}
   .hub-tally-grid{grid-template-columns:repeat(4,1fr)}
   .hub-track-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hub-path-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:700px){
   .ar-wrap{padding:0 22px}
