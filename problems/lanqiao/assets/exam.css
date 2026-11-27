@@ -259,7 +259,11 @@
 .yentry {
     display: grid;
     grid-template-columns: 86px minmax(0, 1fr) 176px;
-    gap: 34px;
+    grid-template-areas:
+        "no main side"
+        "no main go";
+    column-gap: 34px;
+    row-gap: 10px;
     align-items: start;
     padding: 34px 12px 32px 8px;
     margin: 0 -12px 0 -8px;
@@ -270,6 +274,7 @@
 .yentry:hover { background: var(--wash); }
 
 .yentry .ye-no {
+    grid-area: no;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -281,7 +286,10 @@
 
 .yentry .ye-no span:last-child { color: var(--muted); font-size: 11px; }
 
-.yentry .ye-main { min-width: 0; }
+.yentry .ye-main {
+    grid-area: main;
+    min-width: 0;
+}
 
 .yentry .ye-main h2 {
     font-family: var(--serif);
@@ -305,15 +313,11 @@
     line-height: 1.7;
 }
 
-.yentry .ye-rule {
-    width: 62%;
-    max-width: 520px;
-    height: 1px;
-    background: var(--line-2);
-    margin: 18px 0 14px;
-}
-
 .yentry .ye-go {
+    grid-area: go;
+    justify-self: end;
+    align-self: start;
+    margin-top: 4px;
     font-size: 13.5px;
     color: var(--ink-2);
     border-bottom: 1px solid var(--line-2);
@@ -323,6 +327,7 @@
 .yentry:hover .ye-go { color: var(--ink); border-color: var(--ink); }
 
 .yentry .ye-side {
+    grid-area: side;
     text-align: right;
     display: flex;
     flex-direction: column;
@@ -380,8 +385,16 @@
 }
 
 @media (max-width: 900px) {
-    .yentry { grid-template-columns: 54px minmax(0, 1fr); gap: 18px; }
+    .yentry {
+        grid-template-columns: 54px minmax(0, 1fr);
+        grid-template-areas:
+            "no main"
+            "no go";
+        column-gap: 18px;
+        row-gap: 14px;
+    }
     .yentry .ye-side { display: none; }
+    .yentry .ye-go { justify-self: start; }
 }
 
 /* ---------- 题库列表页 ---------- */

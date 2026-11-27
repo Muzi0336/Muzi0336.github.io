@@ -186,10 +186,11 @@
                 const status = rec ? `<em class="${rec.ok ? 'ok' : 'bad'}">${rec.ok ? '已答对' : '答错'}</em>` : (draft ? '<em class="ok">已练习</em>' : '');
                 const label = q.kind === 'single' ? `单选题` : `编程题`;
                 const sub = q.kind === 'single' ? `第 ${q.no} 题` : `编程题 ${q.no}`;
+                const heading = q.kind === 'single' ? `单选题 ${q.no}` : q.title;
                 return `<a class="row" href="q.html?id=${encodeURIComponent(q.id)}">
                     <div class="row-year"><b>${q.year}</b><small>Java</small><small>${sub}</small></div>
                     <div class="row-main">
-                        <h3>${esc(q.title)}${dot}</h3>
+                        <h3>${esc(heading)}${dot}</h3>
                         <p>${esc(q.snippet)}</p>
                     </div>
                     <div class="row-side">${q.dup ? '<span class="tag dup">重复</span>' : ''}<span class="tag">${label}</span>${status}</div>
