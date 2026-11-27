@@ -77,6 +77,8 @@ Static edition of ARENA LAB, rebuilt in the site's paper-and-ink style with the 
 - `算法/assets/app_data.js` — lightweight shared index (42 KB); `算法/assets/search_data.js` — full-text search index loaded on demand
 - `算法/assets/problems/<id>.js` — one problem per file, fetched only by `q.html`
 - `算法/assets/lessons/<slug>.js` — one lesson per file, fetched only by `lesson.html`
+- `算法/wrong.html` — algorithm wrong book grouped by track, with per-item removal
+- `C语言/wrong.html` — C language wrong book grouped by year; `错题本.html` — entry page with both counts
 
 ## License
 

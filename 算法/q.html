@@ -24,7 +24,7 @@
     <a href="index.html" class="active">题库</a>
     <a href="paths.html">学习路径</a>
     <a href="learn.html">算法学习</a>
-    <a href="lab.html">动画实验室</a>
+    <a href="lab.html">动画实验室</a><a href="wrong.html">错题本</a>
     <a href="../index.html">返回导航</a>
   </nav>
 </div>
@@ -47,7 +47,7 @@
           <p>题目、解析与演示整理自 ARENA LAB，经作者授权收录；界面按朝云暮辞重做。进度只保存在本机。</p>
         </div>
       </div>
-      <nav class="sf-links"><a href="index.html">题库</a><a href="paths.html">学习路径</a><a href="learn.html">算法学习</a><a href="lab.html">动画实验室</a><a href="../C语言/index.html">C 语言真题</a></nav>
+      <nav class="sf-links"><a href="index.html">题库</a><a href="paths.html">学习路径</a><a href="learn.html">算法学习</a><a href="lab.html">动画实验室</a><a href="wrong.html">错题本</a><a href="../C语言/index.html">C 语言真题</a></nav>
     </div>
     <div class="sf-bottom"><span>© 2026 朝云暮辞</span><span id="footId">—</span></div>
   </div>
@@ -233,7 +233,9 @@
         <button data-st="todo" type="button">未开始</button><button data-st="reading" type="button">在读</button><button data-st="done" type="button">已完成</button>
       </div>
       <button class="bookmark" id="sideBook" type="button"><span>收藏这道题</span><span>☆</span></button>
-      <p class="side-note">进度与草稿只存在这台设备的浏览器里，不会上传。</p>
+      <button class="bookmark" id="sideWrong" type="button"><span>加入错题本</span><span>＋</span></button>
+      <button class="bookmark record-clear" id="sideClear" type="button"><span>清除本题做题记录</span><span>×</span></button>
+      <p class="side-note">进度、草稿和错题标记只存在这台设备的浏览器里，不会上传。</p>
     </div>
     <div class="card">
       <div class="card-head"><span class="k">INFO <span>/ 题目</span></span></div>
@@ -261,10 +263,22 @@
     bm.classList.toggle('on', on); bm.textContent = on ? '★ 已收藏' : '☆ 收藏';
     sb.classList.toggle('on', on); sb.innerHTML = `<span>${on ? '已收藏这道题' : '收藏这道题'}</span><span>${on ? '★' : '☆'}</span>`;
   }
+  function syncWrong(){
+    const on = A.isWrong(p.id), b = document.getElementById('sideWrong');
+    b.classList.toggle('on', on);
+    b.innerHTML = `<span>${on ? '已加入错题本' : '加入错题本'}</span><span>${on ? '✓' : '＋'}</span>`;
+  }
+  document.getElementById('sideWrong').addEventListener('click', () => { A.toggleWrong(p.id); syncWrong(); });
+  document.getElementById('sideClear').addEventListener('click', () => {
+    if (!confirm('清除这道题的进度、自测选择、草稿和错题标记？')) return;
+    A.clearRecords(p.id);
+    location.reload();
+  });
   document.querySelectorAll('.tbtn[data-st], #sideStatus button').forEach(b => b.addEventListener('click', () => { A.setStatus(p.id, b.dataset.st); syncStatus(); }));
   document.getElementById('bmBtn').addEventListener('click', () => { A.toggleBook(p.id); syncStatus(); });
   document.getElementById('sideBook').addEventListener('click', () => { A.toggleBook(p.id); syncStatus(); });
   syncStatus();
+  syncWrong();
 
   // 代码折叠 / 切换 / 复制
   const card = document.getElementById('codeCard');

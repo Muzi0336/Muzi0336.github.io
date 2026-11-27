@@ -22,7 +22,7 @@
             <a class="active" href="index.html">真题</a>
             <a href="../QD.html">前端教程</a>
             <a href="../boke.html">全栈笔记</a>
-            <a href="../算法/index.html">算法</a>
+            <a href="../算法/index.html">算法</a><a href="wrong.html">错题本</a>
             <a href="../index.html">返回导航</a>
         </nav>
     </div>
@@ -94,7 +94,7 @@
                     <a href="index.html">真题</a>
                     <a href="../QD.html">前端教程</a>
                     <a href="../boke.html">全栈笔记</a>
-            <a href="../算法/index.html">算法</a>
+            <a href="../算法/index.html">算法</a><a href="wrong.html">错题本</a>
             <a href="../index.html">返回导航</a>
                 </nav>
             </div>
@@ -524,7 +524,7 @@
                     let res = '';
                     if (rec) {
                         res = `<div class="sidenote" style="margin-top:14px">你选了 ${rec.k} · ${rec.ok ? '回答正确' : '回答错误'}
-                        <a href="#" id="redo" style="margin-left:8px;text-decoration:underline;color:var(--ink-2)">重做本题</a></div>`;
+                        <a href="#" id="redo" style="margin-left:8px;text-decoration:underline;color:var(--ink-2)">清除本题记录</a></div>`;
                     }
 
                     $('#sideCard').innerHTML = `
@@ -552,8 +552,10 @@
                     const redo = $('#redo');
                     if (redo) redo.addEventListener('click', e => {
                         e.preventDefault();
+                        if (!confirm('清除这道题的作答记录？')) return;
                         const all = loadAns(); delete all[q.id];
                         try { localStorage.setItem(ANS_KEY, JSON.stringify(all)); } catch (err) { }
+                        try { localStorage.removeItem(CODE_PREFIX + q.id); } catch (err) { }
                         rec = null; revealed = false; draw();
                     });
                 }
@@ -580,7 +582,16 @@
                         <div class="row"><span>我的草稿</span><b>${draft ? draft.length + ' 字符' : '未开始'}</b></div>
                         <div class="row"><span>解析</span><b>已补充</b></div>
                     </div>
-                    <div class="qsmall" id="sideSmall">${QSMALL_DESKTOP}</div>`;
+                    <div class="qsmall" id="sideSmall">${QSMALL_DESKTOP}</div>
+                    <button id="clearProg" type="button" style="margin-top:12px;width:100%;border:1px solid var(--line-2);background:var(--paper-2);padding:7px 10px;font-size:11px;color:#9c3d28">清除本题记录</button>`;
+                const clearProg = $('#clearProg');
+                if (clearProg) clearProg.addEventListener('click', () => {
+                    if (!confirm('清除这道题的草稿和作答记录？')) return;
+                    try { localStorage.removeItem(CODE_PREFIX + q.id); } catch (err) { }
+                    const all = loadAns(); delete all[q.id];
+                    try { localStorage.setItem(ANS_KEY, JSON.stringify(all)); } catch (err) { }
+                    location.reload();
+                });
             }
 
             if (q.kind === 'single') {

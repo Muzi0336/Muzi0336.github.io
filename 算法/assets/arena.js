@@ -26,6 +26,26 @@
     isBook(id) {
       return !!A.state.book[id];
     },
+    isWrong(id) {
+      return !!(A.state.wrong && A.state.wrong[id]);
+    },
+    wrongCount() {
+      return Object.keys(A.state.wrong || {}).length;
+    },
+    toggleWrong(id) {
+      A.state.wrong = A.state.wrong || {};
+      if (A.state.wrong[id]) delete A.state.wrong[id];
+      else A.state.wrong[id] = Date.now();
+      A.save();
+      return !!A.state.wrong[id];
+    },
+    clearRecords(id) {
+      delete A.state.status[id];
+      delete A.state.quiz[id];
+      delete A.state.code[id];
+      if (A.state.wrong) delete A.state.wrong[id];
+      A.save();
+    },
     markLesson(slug) {
       A.state.lessons[slug] = Date.now();
       A.save();
@@ -72,7 +92,7 @@
       try { localStorage.setItem(KEY, JSON.stringify(A.state)); } catch (e) {}
     },
     reset() {
-      A.state = { status: {}, book: {}, quiz: {}, lessons: {}, code: {} };
+      A.state = { status: {}, book: {}, quiz: {}, lessons: {}, code: {}, wrong: {} };
       A.save();
     },
     highlight(code, lang) {
@@ -121,11 +141,12 @@
     ta.remove();
   }
 
-  let state = { status: {}, book: {}, quiz: {}, lessons: {}, code: {} };
+  let state = { status: {}, book: {}, quiz: {}, lessons: {}, code: {}, wrong: {} };
   try {
     const raw = localStorage.getItem(KEY);
     if (raw) state = Object.assign(state, JSON.parse(raw));
   } catch (e) {}
+  if (!state.wrong) state.wrong = {};
   A.state = state;
 
   window.A = A;
