@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第20章 Tailwind CSS 实用指南</title>
+<link rel="stylesheet" href="assets/book.css">
+
+<div id="progress"></div>
+
+<nav>
+  <a href="index.html" class="back-link">← 返回</a>
+  <span class="nav-title">Tailwind CSS 实用指南</span>
+  <div class="nav-links">
+
+    <a href="#201">20.1 基础</a>
+    <a href="#202">20.2 布局</a>
+    <a href="#203">20.3 组件</a>
+    <a href="#204">20.4 自定义</a>
+  
+  </div>
+</nav>
+
+<div class="content">
+
+<!-- Header -->
+<h1>第20章 Tailwind CSS 实用指南</h1>
+<p style="color:#94a3b8;margin-bottom:6px">实用优先的 CSS 框架，快速构建现代 UI</p>
+<p style="font-size:.9em;color:#64748b">作者：zyyc-0336 &nbsp;|&nbsp; 日期：2026-06-12</p>
+
+<blockquote>
+<strong>本文是前端学习路径第20章</strong>（阶段五：外围生态）<br>
+上一章：<a href="#">19. 部署与上线</a> ｜ 下一章：<a href="#">21. 使用第三方React组件</a>
+</blockquote>
+
+<div class="callout tip">
+<strong>阶段简介：外围生态</strong><br>
+前四阶段我们掌握了 HTML/CSS/JS 基础、React 框架、Next.js 全栈开发。从本章开始进入<strong>第五阶段：外围生态</strong>——学习 Tailwind CSS 原子化样式、第三方组件集成、数据库对接、主题切换等实战技能，让你的项目从"能跑"进化到"好用又好看"。
+</div>
+
+<blockquote>
+<strong>一句话总结</strong>：Tailwind 让你不用写 CSS 文件，直接在 HTML 的 <code>class</code> 里用工具类拼出所有样式。
+</blockquote>
+
+<hr>
+
+<details>
+<summary>学习路径建议</summary>
+<div class="details-body">
+<div class="code-block"><pre><code>原子化 CSS 概念（为什么用 Tailwind）
+  ↓
+在 Next.js 中安装配置
+  ↓
+常用工具类（文字/背景/间距/圆角/阴影）
+  ↓
+响应式前缀（sm:/md:/lg:）
+  ↓
+暗色模式（dark:）
+  ↓
+自定义主题
+  ↓
+实战：用 Tailwind 重写导航栏和文章卡片</code></pre></div>
+</div>
+</details>
+
+<hr>
+
+<!-- ========== 20.1 ========== -->
+<h2 id="s20-1">20.1 什么是原子化 CSS</h2>
+
+<div class="section">
+<h3>概念解释</h3>
+
+<p><strong>传统 CSS</strong>：给每个组件写一套专属样式。</p>
+
+<div class="code-block"><span class="code-label">CSS</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>/* 传统写法 */
+.card {
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}</code></pre></div>
+
+<p><strong>原子化 CSS</strong>：把样式拆成最小粒度的"工具类"，直接组合使用。</p>
+
+<div class="code-block"><span class="code-label">JSX</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>&lt;!-- Tailwind 写法：不用写 CSS 文件 --&gt;
+&lt;div class="p-4 bg-white rounded-lg shadow-md"&gt;
+  内容
+&lt;/div&gt;</code></pre></div>
+
+<h3>两种方式对比</h3>
+
+<div class="table-wrap"><table>
+<thead><tr><th>对比项</th><th>传统 CSS</th><th>Tailwind 原子化</th></tr></thead>
+<tbody>
+<tr><td>样式写在哪</td><td>单独的 .css 文件</td><td>直接写在 class 里</td></tr>
+<tr><td>命名</td><td>自己起类名（.card, .btn）</td><td>用官方工具类（p-4, bg-white）</td></tr>
+<tr><td>复用方式</td><td>复用类名</td><td>复用组合（或抽组件）</td></tr>
+<tr><td>文件体积</td><td>可能越来越大</td><td>自动删除未使用的类，很小</td></tr>
+<tr><td>上手难度</td><td>低</td><td>需要记工具类名</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn">
+<strong>⚠️ "class 那么长，不会很乱吗？"</strong> 刚开始确实觉得长，但用熟了比写 CSS 快很多。而且组件化后，样式跟结构在一起，修改时不用 CSS 和 HTML 来回跳。
+</div>
+</div>
+
+<hr>
+
+<!-- ========== 20.2 ========== -->
+<h2 id="s20-2">20.2 在 Next.js 中安装 Tailwind</h2>
+
+<div class="section">
+<h3>安装步骤</h3>
+
+<div class="code-block"><span class="code-label">Bash</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code># 第 1 步：安装依赖
+npm install -D tailwindcss @tailwindcss/postcss postcss
+
+# 第 2 步：初始化配置
+npx tailwindcss init</code></pre></div>
+
+<h3>配置 postcss.config.mjs</h3>
+
+<div class="code-block"><span class="code-label">JS</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>// postcss.config.mjs
+const config = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+export default config;</code></pre></div>
+
+<h3>配置全局 CSS</h3>
+
+<div class="code-block"><span class="code-label">CSS</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>/* app/globals.css */
+@import "tailwindcss";</code></pre></div>
+
+<h3>在 layout.tsx 中引入</h3>
+
+<div class="code-block"><span class="code-label">TSX</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>// app/layout.tsx
+import "./globals.css";
+
+export default function RootLayout({ children }) {
+  return (
+    &lt;html lang="zh"&gt;
+      &lt;body&gt;{children}&lt;/body&gt;
+    &lt;/html&gt;
+  );
+}</code></pre></div>
+
+<h3>验证安装</h3>
+
+<div class="code-block"><span class="code-label">TSX</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>// app/page.tsx
+export default function Home() {
+  return (
+    &lt;h1 className="text-3xl font-bold text-blue-600 p-8"&gt;
+      Tailwind 安装成功！
+    &lt;/h1&gt;
+  );
+}</code></pre></div>
+
+<p>看到蓝色大标题就说明成功了。</p>
+
+<div class="callout warn">
+<strong>⚠️ 忘记引入 globals.css</strong>：Tailwind 不会生效，页面没有样式。<br>
+<strong>⚠️ 用 className 而不是 class</strong>：在 JSX 中必须写 <code>className</code>。
+</div>
+</div>
+
+<hr>
+
+<!-- ========== 20.3 ========== -->
+<h2 id="s20-3">20.3 常用工具类速查</h2>
+
+<div class="section">
+<h3>20.3.1 文字相关</h3>
+
+<div class="table-wrap"><table>
+<thead><tr><th>作用</th><th>类名</th><th>等价 CSS</th></tr></thead>
+<tbody>
+<tr><td>字号</td><td><code>text-sm</code></td><td>font-size: 0.875rem</td></tr>
+<tr><td>字号</td><td><code>text-base</code></td><td>font-size: 1rem</td></tr>
+<tr><td>字号</td><td><code>text-lg</code></td><td>font-size: 1.125rem</td></tr>
+<tr><td>字号</td><td><code>text-xl</code></td><td>font-size: 1.25rem</td></tr>
+<tr><td>字号</td><td><code>text-2xl</code></td><td>font-size: 1.5rem</td></tr>
+<tr><td>字号</td><td><code>text-3xl</code></td><td>font-size: 1.875rem</td></tr>
+<tr><td>字重</td><td><code>font-normal</code></td><td>font-weight: 400</td></tr>
+<tr><td>字重</td><td><code>font-bold</code></td><td>font-weight: 700</td></tr>
+<tr><td>颜色</td><td><code>text-red-500</code></td><td>color: #ef4444</td></tr>
+<tr><td>颜色</td><td><code>text-gray-600</code></td><td>color: #4b5563</td></tr>
+<tr><td>对齐</td><td><code>text-center</code></td><td>text-align: center</td></tr>
+</tbody>
+</table></div>
+
+<h3>20.3.2 背景相关</h3>
+
+<div class="table-wrap"><table>
+<thead><tr><th>作用</th><th>类名</th><th>等价 CSS</th></tr></thead>
+<tbody>
+<tr><td>背景色</td><td><code>bg-white</code></td><td>background: #fff</td></tr>
+<tr><td>背景色</td><td><code>bg-blue-500</code></td><td>background: #3b82f6</td></tr>
+<tr><td>背景色</td><td><code>bg-gray-100</code></td><td>background: #f3f4f6</td></tr>
+<tr><td>渐变</td><td><code>bg-gradient-to-r</code></td><td>向右渐变</td></tr>
+</tbody>
+</table></div>
+
+<h3>20.3.3 间距（padding / margin）</h3>
+
+<p>Tailwind 的间距用数字表示，<strong>1 = 0.25rem = 4px</strong>。</p>
+
+<div class="table-wrap"><table>
+<thead><tr><th>类名</th><th>等价 CSS</th><th>实际像素</th></tr></thead>
+<tbody>
+<tr><td><code>p-1</code></td><td>padding: 0.25rem</td><td>4px</td></tr>
+<tr><td><code>p-2</code></td><td>padding: 0.5rem</td><td>8px</td></tr>
+<tr><td><code>p-4</code></td><td>padding: 1rem</td><td>16px</td></tr>
+<tr><td><code>p-8</code></td><td>padding: 2rem</td><td>32px</td></tr>
+<tr><td><code>m-4</code></td><td>margin: 1rem</td><td>16px</td></tr>
+<tr><td><code>mx-auto</code></td><td>margin: 0 auto</td><td>水平居中</td></tr>
+<tr><td><code>mt-4</code></td><td>margin-top: 1rem</td><td>16px</td></tr>
+<tr><td><code>gap-4</code></td><td>gap: 1rem</td><td>16px（flex/grid）</td></tr>
+</tbody>
+</table></div>
+
+<p><strong>方向前缀</strong>：<code>t</code>(top)、<code>b</code>(bottom)、<code>l</code>(left)、<code>r</code>(right)、<code>x</code>(左右)、<code>y</code>(上下)</p>
+
+<h3>20.3.4 圆角与阴影</h3>
+
+<div class="table-wrap"><table>
+<thead><tr><th>作用</th><th>类名</th><th>等价 CSS</th></tr></thead>
+<tbody>
+<tr><td>小圆角</td><td><code>rounded</code></td><td>border-radius: 0.25rem</td></tr>
+<tr><td>中圆角</td><td><code>rounded-lg</code></td><td>border-radius: 0.5rem</td></tr>
+<tr><td>大圆角</td><td><code>rounded-xl</code></td><td>border-radius: 0.75rem</td></tr>
+<tr><td>全圆角</td><td><code>rounded-full</code></td><td>border-radius: 9999px</td></tr>
+<tr><td>阴影</td><td><code>shadow-sm</code></td><td>小阴影</td></tr>
+<tr><td>阴影</td><td><code>shadow-md</code></td><td>中阴影</td></tr>
+<tr><td>阴影</td><td><code>shadow-lg</code></td><td>大阴影</td></tr>
+</tbody>
+</table></div>
+
+<h3>完整示例：一个简单卡片</h3>
+
+<div class="code-block"><span class="code-label">JSX</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>export default function Card() {
+  return (
+    &lt;div className="p-6 bg-white rounded-xl shadow-md"&gt;
+      &lt;h2 className="text-xl font-bold text-gray-800"&gt;
+        卡片标题
+      &lt;/h2&gt;
+      &lt;p className="mt-2 text-gray-600"&gt;
+        这是卡片内容，用了 Tailwind 工具类来设置样式。
+      &lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre></div>
+
+<h3>逐行讲解</h3>
+
+<div class="table-wrap"><table>
+<thead><tr><th>行</th><th>类名</th><th>作用</th></tr></thead>
+<tbody>
+<tr><td>容器</td><td><code>p-6 bg-white rounded-xl shadow-md</code></td><td>内边距24px、白色背景、大圆角、中阴影</td></tr>
+<tr><td>标题</td><td><code>text-xl font-bold text-gray-800</code></td><td>大字号、加粗、深灰色</td></tr>
+<tr><td>正文</td><td><code>mt-2 text-gray-600</code></td><td>上间距8px、浅灰色</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn">
+<strong>⚠️ 间距单位记混</strong>：<code>p-4</code> 是 16px，不是 4px。记住 <strong>数字 × 4 = 像素值</strong>。<br>
+<strong>⚠️ 颜色格式</strong>：Tailwind 用 <code>颜色名-色阶</code> 格式，如 <code>blue-500</code>，色阶从 50（最浅）到 950（最深）。
+</div>
+</div>
+
+<hr>
+
+<!-- ========== 20.4 ========== -->
+<h2 id="s20-4">20.4 响应式设计（sm:/md:/lg:）</h2>
+
+<div class="section">
+<h3>概念解释</h3>
+
+<p>Tailwind 的响应式设计用<strong>前缀</strong>来控制不同屏幕宽度下的样式，默认断点：</p>
+
+<div class="table-wrap"><table>
+<thead><tr><th>前缀</th><th>最小宽度</th><th>常见设备</th></tr></thead>
+<tbody>
+<tr><td>（无前缀）</td><td>0px</td><td>手机（默认样式）</td></tr>
+<tr><td><code>sm:</code></td><td>640px</td><td>大手机/小平板</td></tr>
+<tr><td><code>md:</code></td><td>768px</td><td>平板</td></tr>
+<tr><td><code>lg:</code></td><td>1024px</td><td>笔记本</td></tr>
+<tr><td><code>xl:</code></td><td>1280px</td><td>桌面显示器</td></tr>
+</tbody>
+</table></div>
+
+<h3>语法</h3>
+
+<div class="code-block"><pre><code>className="默认样式 sm:小屏样式 md:中屏样式 lg:大屏样式"</code></pre></div>
+
+<p><strong>先写默认（手机优先），再逐级覆盖。</strong></p>
+
+<h3>完整示例：响应式网格</h3>
+
+<div class="code-block"><span class="code-label">JSX</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>export default function ResponsiveGrid() {
+  return (
+    &lt;div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4"&gt;
+      &lt;div className="bg-blue-200 p-4 rounded-lg"&gt;卡片 1&lt;/div&gt;
+      &lt;div className="bg-blue-300 p-4 rounded-lg"&gt;卡片 2&lt;/div&gt;
+      &lt;div className="bg-blue-400 p-4 rounded-lg"&gt;卡片 3&lt;/div&gt;
+      &lt;div className="bg-blue-500 p-4 rounded-lg text-white"&gt;卡片 4&lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre></div>
+
+<h3>逐行讲解</h3>
+
+<div class="table-wrap"><table>
+<thead><tr><th>类名</th><th>作用</th></tr></thead>
+<tbody>
+<tr><td><code>grid</code></td><td>启用网格布局</td></tr>
+<tr><td><code>grid-cols-1</code></td><td>默认手机：1 列</td></tr>
+<tr><td><code>sm:grid-cols-2</code></td><td>640px+：2 列</td></tr>
+<tr><td><code>md:grid-cols-3</code></td><td>768px+：3 列</td></tr>
+<tr><td><code>lg:grid-cols-4</code></td><td>1024px+：4 列</td></tr>
+<tr><td><code>gap-4</code></td><td>卡片间距 16px</td></tr>
+<tr><td><code>p-4</code></td><td>整体内边距 16px</td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn">
+<strong>⚠️ 顺序写反</strong>：Tailwind 断点是 <strong>min-width</strong>，所以默认样式放前面，大屏覆盖放后面。如果写 <code>lg:text-sm text-xl</code>，在大屏上会是 <code>text-xl</code>（因为后面的无前缀类覆盖了前面的）。<br><br>
+正确写法：<code>text-xl lg:text-3xl</code>（手机大字，电脑更大）
+</div>
+</div>
+
+<hr>
+
+<!-- ========== 20.5 ========== -->
+<h2 id="s20-5">20.5 暗色模式（dark:）</h2>
+
+<div class="section">
+<h3>概念解释</h3>
+
+<p>Tailwind 内置暗色模式支持，用 <code>dark:</code> 前缀定义暗色主题下的样式。</p>
+
+<h3>配置方式</h3>
+
+<p>在 <code>tailwind.config.js</code> 中设置策略：</p>
+
+<div class="code-block"><span class="code-label">JS</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>// tailwind.config.js（Tailwind v4 可通过 CSS 变量配置）
+// 这里演示 v3 的配置方式
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  darkMode: "class", // 用 class 切换暗色模式
+  content: ["./app/**/*.{js,ts,jsx,tsx}"],
+  theme: { extend: {} },
+  plugins: [],
+};</code></pre></div>
+
+<blockquote><code>darkMode: "class"</code> 表示在 <code>&lt;html&gt;</code> 标签上加 <code>dark</code> 类来激活暗色模式。</blockquote>
+
+<h3>语法</h3>
+
+<div class="code-block"><pre><code>className="亮色样式 dark:暗色样式"</code></pre></div>
+
+<h3>完整示例：支持暗色模式的卡片</h3>
+
+<div class="code-block"><span class="code-label">JSX</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>export default function DarkCard() {
+  return (
+    &lt;div className="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md"&gt;
+      &lt;h2 className="text-xl font-bold text-gray-800 dark:text-white"&gt;
+        标题
+      &lt;/h2&gt;
+      &lt;p className="mt-2 text-gray-600 dark:text-gray-300"&gt;
+        内容
+      &lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre></div>
+
+<h3>逐行讲解</h3>
+
+<div class="table-wrap"><table>
+<thead><tr><th>类名</th><th>亮色效果</th><th>暗色效果</th></tr></thead>
+<tbody>
+<tr><td><code>bg-white dark:bg-gray-800</code></td><td>白色背景</td><td>深灰背景</td></tr>
+<tr><td><code>text-gray-800 dark:text-white</code></td><td>深灰文字</td><td>白色文字</td></tr>
+<tr><td><code>text-gray-600 dark:text-gray-300</code></td><td>灰色文字</td><td>浅灰文字</td></tr>
+</tbody>
+</table></div>
+
+<h3>切换暗色模式的 JS 代码</h3>
+
+<div class="code-block"><span class="code-label">JSX</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>// 一个简单的切换按钮组件
+"use client";
+import { useState, useEffect } from "react";
+
+export default function ThemeToggle() {
+  const [dark, setDark] = useState(false);
+
+  useEffect(() =&gt; {
+    document.documentElement.classList.toggle("dark", dark);
+  }, [dark]);
+
+  return (
+    &lt;button
+      onClick={() =&gt; setDark(!dark)}
+      className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700
+                 text-gray-800 dark:text-white"
+    &gt;
+      {dark ? "☀️ 亮色模式" : "🌙 暗色模式"}
+    &lt;/button&gt;
+  );
+}</code></pre></div>
+
+<div class="callout warn">
+<strong>⚠️ 忘记配置 darkMode</strong>：不配置的话 <code>dark:</code> 前缀不生效。<br>
+<strong>⚠️ 暗色样式和亮色样式冲突</strong>：不要同时写 <code>bg-white bg-gray-800</code>，必须用 <code>dark:</code> 前缀区分。
+</div>
+</div>
+
+<hr>
+
+<!-- ========== 20.6 ========== -->
+<h2 id="s20-6">20.6 自定义主题</h2>
+
+<div class="section">
+<h3>概念解释</h3>
+
+<p>当默认颜色、间距不够用时，可以在配置中扩展主题。</p>
+
+<h3>方式一：tailwind.config.js 扩展（v3）</h3>
+
+<div class="code-block"><span class="code-label">JS</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>// tailwind.config.js
+module.exports = {
+  content: ["./app/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    extend: {
+      colors: {
+        brand: "#6366f1",       // 自定义品牌色
+        "brand-light": "#818cf8",
+      },
+      spacing: {
+        "128": "32rem",         // 自定义间距
+      },
+      fontFamily: {
+        custom: ["Noto Sans SC", "sans-serif"],
+      },
+    },
+  },
+};</code></pre></div>
+
+<p>使用方式：</p>
+
+<div class="code-block"><span class="code-label">JSX</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>&lt;div className="bg-brand text-brand-light font-custom p-128"&gt;
+  自定义主题
+&lt;/div&gt;</code></pre></div>
+
+<h3>方式二：CSS 变量（v4 推荐）</h3>
+
+<div class="code-block"><span class="code-label">CSS</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>/* globals.css */
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #6366f1;
+  --color-brand-light: #818cf8;
+  --font-family-custom: "Noto Sans SC", sans-serif;
+}</code></pre></div>
+
+<p>使用方式和上面一样：<code>bg-brand</code>、<code>font-custom</code>。</p>
+
+<h3>常用自定义项</h3>
+
+<div class="table-wrap"><table>
+<thead><tr><th>要自定义的</th><th>配置 key</th><th>使用类名</th></tr></thead>
+<tbody>
+<tr><td>颜色</td><td><code>colors.brand</code></td><td><code>bg-brand</code>, <code>text-brand</code></td></tr>
+<tr><td>字体</td><td><code>fontFamily.custom</code></td><td><code>font-custom</code></td></tr>
+<tr><td>间距</td><td><code>spacing.128</code></td><td><code>p-128</code>, <code>m-128</code></td></tr>
+<tr><td>圆角</td><td><code>borderRadius.2xl</code></td><td><code>rounded-2xl</code></td></tr>
+</tbody>
+</table></div>
+
+<div class="callout warn">
+<strong>⚠️ v3 和 v4 配置方式不同</strong>：v3 用 <code>tailwind.config.js</code>，v4 推荐用 CSS <code>@theme</code>。<br>
+<strong>⚠️ 修改配置后需要重启开发服务器</strong>：否则新主题不生效。
+</div>
+</div>
+
+<hr>
+
+<!-- ========== 20.7 ========== -->
+<h2 id="s20-7">20.7 实战：重写导航栏和文章卡片</h2>
+
+<div class="section">
+<h3>20.7.1 用 Tailwind 写导航栏</h3>
+
+<div class="code-block"><span class="code-label">TSX</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>// components/Navbar.tsx
+"use client";
+import Link from "next/link";
+
+export default function Navbar() {
+  return (
+    &lt;nav className="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50"&gt;
+      &lt;div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between"&gt;
+        {/* Logo */}
+        &lt;Link href="/./" className="text-xl font-bold text-blue-600 dark:text-blue-400"&gt;
+          MyBlog
+        &lt;/Link&gt;
+
+        {/* 导航链接 */}
+        &lt;div className="flex gap-6"&gt;
+          &lt;Link href="/./" className="text-gray-700 dark:text-gray-300 hover:text-blue-500 transition"&gt;
+            首页
+          &lt;/Link&gt;
+          &lt;Link href="/about" className="text-gray-700 dark:text-gray-300 hover:text-blue-500 transition"&gt;
+            关于
+          &lt;/Link&gt;
+          &lt;Link href="/blog" className="text-gray-700 dark:text-gray-300 hover:text-blue-500 transition"&gt;
+            博客
+          &lt;/Link&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+  );
+}</code></pre></div>
+
+<h3>逐行讲解</h3>
+
+<div class="table-wrap"><table>
+<thead><tr><th>类名</th><th>作用</th></tr></thead>
+<tbody>
+<tr><td><code>bg-white dark:bg-gray-900</code></td><td>亮色白底，暗色深灰底</td></tr>
+<tr><td><code>shadow-md</code></td><td>底部阴影</td></tr>
+<tr><td><code>sticky top-0</code></td><td>固定在页面顶部</td></tr>
+<tr><td><code>z-50</code></td><td>层级最高，不被遮挡</td></tr>
+<tr><td><code>max-w-6xl mx-auto</code></td><td>最大宽度 1152px，水平居中</td></tr>
+<tr><td><code>px-4 py-3</code></td><td>左右 padding 16px，上下 12px</td></tr>
+<tr><td><code>flex items-center justify-between</code></td><td>弹性布局，垂直居中，两端对齐</td></tr>
+<tr><td><code>gap-6</code></td><td>链接间距 24px</td></tr>
+<tr><td><code>hover:text-blue-500</code></td><td>悬停变蓝</td></tr>
+<tr><td><code>transition</code></td><td>颜色过渡动画</td></tr>
+</tbody>
+</table></div>
+
+<h3>20.7.2 用 Tailwind 写文章卡片</h3>
+
+<div class="code-block"><span class="code-label">TSX</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>// components/ArticleCard.tsx
+interface ArticleCardProps {
+  title: string;
+  summary: string;
+  date: string;
+  tag: string;
+}
+
+export default function ArticleCard({ title, summary, date, tag }: ArticleCardProps) {
+  return (
+    &lt;article className="bg-white dark:bg-gray-800 rounded-xl shadow-md
+                        hover:shadow-lg transition-shadow duration-300 overflow-hidden"&gt;
+      {/* 标签和日期 */}
+      &lt;div className="px-6 pt-5 flex items-center justify-between"&gt;
+        &lt;span className="text-xs font-medium px-3 py-1 rounded-full
+                         bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300"&gt;
+          {tag}
+        &lt;/span&gt;
+        &lt;time className="text-sm text-gray-400"&gt;{date}&lt;/time&gt;
+      &lt;/div&gt;
+
+      {/* 标题和摘要 */}
+      &lt;div className="px-6 py-4"&gt;
+        &lt;h3 className="text-lg font-bold text-gray-800 dark:text-white
+                       hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer"&gt;
+          {title}
+        &lt;/h3&gt;
+        &lt;p className="mt-2 text-sm text-gray-500 dark:text-gray-400 line-clamp-2"&gt;
+          {summary}
+        &lt;/p&gt;
+      &lt;/div&gt;
+
+      {/* 底部按钮 */}
+      &lt;div className="px-6 pb-5"&gt;
+        &lt;button className="text-sm text-blue-600 dark:text-blue-400
+                           hover:underline font-medium"&gt;
+          阅读全文 →
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  );
+}</code></pre></div>
+
+<h3>使用示例</h3>
+
+<div class="code-block"><span class="code-label">TSX</span><button class="copy-btn" onclick="copyCode(this)">复制</button><pre><code>// app/page.tsx
+import Navbar from "@/components/Navbar";
+import ArticleCard from "@/components/ArticleCard";
+
+export default function Home() {
+  return (
+    &lt;div className="min-h-screen bg-gray-50 dark:bg-gray-900"&gt;
+      &lt;Navbar /&gt;
+
+      &lt;main className="max-w-6xl mx-auto px-4 py-8"&gt;
+        &lt;h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-8"&gt;
+          最新文章
+        &lt;/h1&gt;
+
+        &lt;div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"&gt;
+          &lt;ArticleCard
+            title="Next.js 入门教程"
+            summary="从零开始学习 Next.js，了解 App Router、数据获取和部署。"
+            date="2026-06-12"
+            tag="Next.js"
+          /&gt;
+          &lt;ArticleCard
+            title="Tailwind CSS 实用指南"
+            summary="掌握原子化 CSS 的核心概念和常用工具类。"
+            date="2026-06-12"
+            tag="CSS"
+          /&gt;
+          &lt;ArticleCard
+            title="React Hooks 深入理解"
+            summary="useState、useEffect、useRef 等核心 Hooks 的原理和用法。"
+            date="2026-06-10"
+            tag="React"
+          /&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  );
+}</code></pre></div>
+
+<div class="callout warn">
+<strong>⚠️ <code>line-clamp-2</code> 不生效</strong>：需要确认 Tailwind 版本支持，或手动添加 CSS。<br>
+<strong>⚠️ <code>overflow-hidden</code> 别忘了</strong>：卡片圆角 + 阴影时，不加这个可能导致内容溢出圆角。
+</div>
+</div>
+
+<hr>
+
+<!-- ========== 20.8 ========== -->
+<h2 id="s20-8">20.8 本章复盘</h2>
+
+<div class="section">
+<h3>核心知识点总结</h3>
+
+<div class="table-wrap"><table>
+<thead><tr><th>知识点</th><th>关键内容</th><th>一句话记忆</th></tr></thead>
+<tbody>
+<tr><td>原子化 CSS</td><td>用最小粒度的类名组合样式</td><td>不写 CSS 文件，样式写在 class 里</td></tr>
+<tr><td>安装配置</td><td><code>npm install tailwindcss</code> + <code>@import "tailwindcss"</code></td><td>装包 → 配置 → 引入全局 CSS</td></tr>
+<tr><td>文字类</td><td><code>text-xl</code>, <code>font-bold</code>, <code>text-gray-600</code></td><td>text-大小 font-粗细 text-颜色</td></tr>
+<tr><td>背景类</td><td><code>bg-white</code>, <code>bg-blue-500</code></td><td>bg-颜色名-色阶</td></tr>
+<tr><td>间距类</td><td><code>p-4</code>, <code>m-2</code>, <code>gap-4</code></td><td>数字×4=像素</td></tr>
+<tr><td>圆角阴影</td><td><code>rounded-lg</code>, <code>shadow-md</code></td><td>rounded-大小, shadow-大小</td></tr>
+<tr><td>响应式</td><td><code>sm:</code>, <code>md:</code>, <code>lg:</code></td><td>手机优先，前缀覆盖大屏</td></tr>
+<tr><td>暗色模式</td><td><code>dark:bg-gray-800</code></td><td>dark: 前缀 + class 模式</td></tr>
+<tr><td>自定义主题</td><td><code>@theme</code> 或 <code>tailwind.config.js</code></td><td>extend 里加自定义颜色/字体</td></tr>
+</tbody>
+</table></div>
+
+<h3>新手速记口诀</h3>
+
+<div class="code-block"><pre><code>间距数字乘以四，颜色名字带色阶
+响应前缀 sm/md/lg，暗色 dark 冒号写前面
+手机优先写默认，大屏覆盖写后面</code></pre></div>
+
+<h3>常见错误速查</h3>
+
+<div class="table-wrap"><table>
+<thead><tr><th>错误现象</th><th>原因</th><th>解决方案</th></tr></thead>
+<tbody>
+<tr><td>样式完全不生效</td><td>忘记引入 globals.css</td><td>检查 <code>@import "tailwindcss"</code></td></tr>
+<tr><td>JSX 中 class 报错</td><td>应该用 className</td><td><code>class</code> → <code>className</code></td></tr>
+<tr><td>响应式不生效</td><td>断点顺序写反</td><td>默认样式在前，大屏覆盖在后</td></tr>
+<tr><td>暗色模式不生效</td><td>没配置 darkMode</td><td>配置 <code>darkMode: "class"</code></td></tr>
+<tr><td>自定义颜色无效</td><td>修改配置后没重启</td><td>重启 <code>npm run dev</code></td></tr>
+<tr><td>间距值不对</td><td>记错换算关系</td><td><code>p-4</code> = 16px，不是 4px</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<!-- 底部区域 -->
+<div class="section" style="margin-top:48px">
+
+<!-- 复盘 -->
+<h2 id="review">本章复盘——Tailwind CSS 核心要点</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>要点</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><strong>原子化 CSS</strong></td><td>每个类名只做一件事，组合使用</td></tr>
+<tr><td><strong>响应式</strong></td><td>sm/md/lg 前缀，手机优先设计</td></tr>
+<tr><td><strong>暗色模式</strong></td><td>dark: 前缀，class 或 media 策略</td></tr>
+<tr><td><strong>自定义主题</strong></td><td>tailwind.config.js 扩展颜色/字体</td></tr>
+</tbody>
+</table>
+</div>
+
+<hr style="margin:32px 0;border-color:#334155">
+
+<!-- 下一章预告 -->
+<blockquote>
+<strong>下一章预告（第21章）</strong>：我们将学习<strong>使用第三方 React 组件</strong>——站在巨人的肩膀上，用 npm 安装现成的轮子（Markdown 渲染器、音视频播放器等），快速给博客添加强大功能。
+</blockquote>
+
+<!-- 上下章导航 -->
+<div class="nav-links" style="margin-top:24px">
+<a href="4-nextjs-19部署与环境变量.html">⬅️ 上一章：部署与环境变量</a>
+<a href="5-ecosystem-21使用第三方React组件.html">下一章：使用第三方 React 组件 ➡️</a>
+</div>
+
+<p style="text-align:center;color:var(--text-muted);font-size:.82rem;margin-top:32px">本文档由 zyyc-0336 编写，最后更新：2026-06-14</p>
+
+</div>
+
+
+</div>
+
+
+
+<script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('back-top').classList.toggle('show', h.scrollTop > 300);
+});
+
+// Copy code
+function copyCode(btn) {
+  const code = btn.parentElement.querySelector('code');
+  navigator.clipboard.writeText(code.innerText).then(() => {
+    btn.textContent = '已复制 ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+
+<button id="back-top" onclick="window.scrollTo({top:0})" title="回到顶部">↑</button>
+</body>
+</html>

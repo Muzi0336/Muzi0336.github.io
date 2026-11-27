@@ -1,0 +1,501 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一章 算法基础 · 算法竞赛教程</title>
+<meta name="description" content="第一章 算法基础 — 复杂度、枚举、模拟、贪心、递归与分治是地基，前缀和、差分、二分与倍增是后面每一章都会回来用的工具。">
+<meta name="theme-color" content="#f4f1e9">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/detail.css">
+<link rel="stylesheet" href="../../assets/css/tutorial.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../../index.html#contest" class="contest-link">计挑赛</a>
+            <a href="../../蓝桥杯真题/exam/index.html">蓝桥真题</a>
+    <a href="../../problems/algorithm/index.html">算法题库</a>
+    <a href="../../problems/algorithm/paths.html">学习路径</a>
+    <a href="../../problems/algorithm/learn.html">算法学习</a>
+    <a href="../../problems/algorithm/lab.html">动画实验室</a>
+    <a href="../data-structures/index.html">数据结构</a>
+    <a href="index.html" class="active">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../fullstack/index.html">全栈笔记</a>
+    <a href="../../tools/mistakes.html">错题本</a>
+  </nav>
+</div>
+
+<div class="docwrap">
+  <aside class="docnav">
+    <a class="back" href="index.html">← 教程目录</a>
+    <nav class="docnav-list">
+      <a href="ch01.html" class="on"><span class="n">01</span><span class="t">算法基础</span></a>
+      <a href="ch02.html"><span class="n">02</span><span class="t">搜索算法</span></a>
+      <a href="ch03.html"><span class="n">03</span><span class="t">排序算法</span></a>
+      <a href="ch04.html"><span class="n">04</span><span class="t">字符串相关</span></a>
+      <a href="ch05.html"><span class="n">05</span><span class="t">数学相关</span></a>
+      <a href="ch06.html"><span class="n">06</span><span class="t">动态规划</span></a>
+      <a href="ch07.html"><span class="n">07</span><span class="t">数据结构</span></a>
+      <a href="ch08.html"><span class="n">08</span><span class="t">图论</span></a>
+      <a href="ch09.html"><span class="n">09</span><span class="t">计算几何</span></a>
+      <a href="ch10.html"><span class="n">10</span><span class="t">其他算法</span></a>
+    </nav>
+    <div class="navstat">10 章 · 172 节<br>964 张图</div>
+  </aside>
+
+  <main class="docmain">
+    <div class="doc-eyebrow">— ALGORITHM CONTEST / 01</div>
+    <h1 class="doc-title">第一章 算法基础</h1>
+    <p class="doc-lead">复杂度、枚举、模拟、贪心、递归与分治是地基，前缀和、差分、二分与倍增是后面每一章都会回来用的工具。</p>
+    <div class="doc-meta">
+      <span class="chip">14 节</span>
+      <span class="chip">23 图</span>
+    </div>
+    <div class="rule"></div>
+<section class="dsec" id="s1">
+  <div class="sec-no">01 / SECTION</div>
+  <h2>算法是什么？</h2>
+<ul class="pts">
+<li><strong>一句话定义</strong>：算法是解决某一类问题的<strong>清晰指令序列</strong>——给定输入，在有限时间内产生确定的输出。</li>
+<li>三种等价表述：</li>
+<li class="sub">定义良好的计算过程，取一组值为输入、产生一组值为输出；</li>
+<li class="sub">对一定规范的输入，在有限时间内获得所要求的输出；</li>
+<li class="sub">解决一个问题的具体方法和步骤。</li>
+<li><strong>程序 = 算法 + 数据结构</strong>，算法决定“怎么算”，数据结构决定“数据怎么放”。</li>
+<li><strong>五大特征</strong>：</li>
+<li class="sub">可行性：每一步都能分解为基本可执行操作，且能在有限时间完成。</li>
+<li class="sub">确定性：每一步含义唯一、无二义（“把 x 增大”就不可执行）。</li>
+<li class="sub">有穷性：必须在有限步骤后终止，且步数不能大到超出时间限制。</li>
+<li class="sub">输入：0 个或多个（0 个表示初始条件已给定）。</li>
+<li class="sub">输出：1 个或多个；没有输出的算法没有意义。</li>
+<li><strong>好算法的三个目标</strong>：正确性、可读性、健壮性（非法输入也要有合理反应，而不是乱输出）。</li>
+<li><strong>复杂度分级表</strong>（增长由慢到快）：</li>
+</ul>
+<table class="dtable"><thead><tr><th>记号</th><th>含义</th></tr></thead><tbody><tr><td>O(1)</td><td>操作数与规模无关</td></tr><tr><td>O(log₂n)</td><td>与规模成对数关系</td></tr><tr><td>O(n)</td><td>与规模成正比</td></tr><tr><td>O(n²) / O(n³)</td><td>平方 / 立方增长</td></tr><tr><td>O(2ⁿ)、O(kⁿ)、O(n!)</td><td>指数级、阶乘级，竞赛中尽量避免</td></tr></tbody></table>
+
+<ul class="pts">
+<li>同规模下取增长最慢的一档；空间复杂度一般不作首要考虑，优先优化时间。</li>
+</ul>
+</section>
+<section class="dsec" id="s2">
+  <div class="sec-no">02 / SECTION</div>
+  <h2>深入分析算法的复杂度</h2>
+<ul class="pts">
+<li><strong>定义</strong>：语句总执行次数 T(n) 是问题规模 n 的函数，若 T(n) 与 f(n) 增长率相同，记作 <code>T(n) = O(f(n))</code>，即<strong>渐进时间复杂度</strong>。</li>
+<li><strong>常见量级排序</strong>：<code>O(1) &lt; O(log₂n) &lt; O(n) &lt; O(nlog₂n) &lt; O(n²) &lt; O(n³) &lt; … &lt; O(2ⁿ) &lt; O(n!)</code>。</li>
+<li><strong>化简三原则</strong>：</li>
+<li class="sub">加法常数用 1 取代；</li>
+<li class="sub">只保留最高阶项；</li>
+<li class="sub">最高阶项系数去掉。</li>
+<li><strong>求复杂度的三步</strong>：</li>
+</ul>
+<p class="doc-lead">1. 找出<strong>基本语句</strong>（执行次数最多的一条，通常是最内层循环体）； 2. 只算它的执行次数数量级，忽略低次幂与系数； 3. 把数量级写进大 O。</p>
+<ul class="pts">
+<li>并列循环用<strong>求和法则</strong> <code>T1+T2 = O(max(f,g))</code>；嵌套循环用<strong>乘法法则</strong> <code>T1×T2 = O(f×g)</code>。</li>
+<li>另两条性质：<code>g(n)=O(f(n)) ⇒ O(f)+O(g)=O(f)</code>；<code>O(C·f(n))=O(f(n))</code>（C 为正常数）。</li>
+<li>选择结构 <code>if</code> 的时间 = 执行分支时间 + 判条件 O(1)。</li>
+<li><strong>空间复杂度 S(n)=O(f(n))</strong>，四类常见情形：</li>
+<li class="sub">常量空间 O(1)：固定几个变量；</li>
+<li class="sub">线性空间 O(n)：一维数组/列表，长度随 n 增长；</li>
+<li class="sub">二维空间 O(nm)：二维表；</li>
+<li class="sub">递归空间 O(深度)：递归即不断入栈，深度 n ⇒ O(n)。</li>
+<li>结论：衡量算法优劣就是<strong>时间 + 空间</strong>两个维度，实际取舍看题目给的数据范围。</li>
+</ul>
+</section>
+<section class="dsec" id="s3">
+  <div class="sec-no">03 / SECTION</div>
+  <h2>枚举算法的思想与实例讲解</h2>
+<ul class="pts">
+<li><strong>定义</strong>：按问题性质一一列举所有可能解，逐个检验，保留合法解、丢弃非法解；列举过程<strong>不遗漏、不重复</strong>。</li>
+<li><strong>解题三步</strong>：</li>
+</ul>
+<p class="doc-lead">1. 确定枚举对象、枚举范围、判定条件； 2. 逐一枚举并验证； 3. 尽量缩小可能解范围以提高效率。</p>
+<ul class="pts">
+<li>枚举范围是核心：范围划小了会漏解，划大了会超时。</li>
+<li><strong>例题</strong>：数组元素互不相同，求和为 0 的数对个数。</li>
+<li class="sub">原始双层枚举 O(n²)：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>for (int i = 0; i &lt; n; ++i)
+    for (int j = 0; j &lt; n; ++j)
+        if (a[i] + a[j] == 0) ++ans;</code></pre></div>
+
+<ul class="pts">
+<li>优化一（去对称）：题目不要求有序，<code>(a,b)</code> 与 <code>(b,a)</code> 重复计数，令 <code>j &lt; i</code>，最后答案乘 2 即可。</li>
+<li>优化二（桶记录）：枚举一个数后，另一个数的大小已被条件确定，只需判断它<strong>是否存在</strong>。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>bool met[MAXN * 2];
+for (int i = 0; i &lt; n; ++i) {
+    if (met[MAXN - a[i]]) ++ans;   // 之前出现过它的相反数
+    met[MAXN + a[i]] = true;       // 下标偏移避免负数
+}</code></pre></div>
+
+<ul class="pts">
+<li>复杂度从 O(n²) 降到 O(n)，代价是多一个 O(n) 的标记数组——典型的“<strong>空间换时间</strong>”。</li>
+<li>枚举在蓝桥杯等比赛中出现频率极高，属于必须练熟的基础功。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/d652c2b42990f392.webp" width="688" height="678" data-full="assets/d652c2b42990f392.png" loading="lazy" decoding="async" alt="图1 枚举算法的流程图" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s4">
+  <div class="sec-no">04 / SECTION</div>
+  <h2>模拟算法实例讲解</h2>
+<ul class="pts">
+<li><strong>定义</strong>：让计算机按题目描述的流程一步步执行，最终输出结果；本质是“<strong>照题意写流程</strong>”。</li>
+<li>特点：码量大、操作多、思路繁复，写错很难查，考试中尤其浪费时间。</li>
+<li><strong>六条实用技巧</strong>：</li>
+<li class="sub">动手前先在纸上写清流程；</li>
+<li class="sub">把各步骤<strong>模块化</strong>成函数 / 结构体 / 类；</li>
+<li class="sub">统一量纲（如把“YY-MM-DD 时:分”折算成秒数）避免概念混淆；</li>
+<li class="sub">分块调试，哪个模块出问题单独调；</li>
+<li class="sub">严格按纸上步骤写，不想到哪写到哪；</li>
+<li class="sub">上述习惯对其它题型同样适用。</li>
+<li><strong>例题一</strong>：输入 A、B 输出 A+B——题目让你算，你就算，这就是最简单的模拟。</li>
+<li><strong>例题二（骑士金币）</strong>：第 1 天 1 枚；随后 2 天每天 2 枚；随后 3 天每天 3 枚……求前 k 天总额。</li>
+<li class="sub">维护“当前面值 v”和“已发放天数 n”，按 <code>1+2+3+…</code> 的块状结构累加，块内天数不足则只补剩余天数。</li>
+<li><strong>例题三（蠕虫爬井）</strong>：每次先爬 u 英寸，未出井则休息时下滑 d 英寸；求次数。</li>
+<li class="sub">关键：<strong>先爬后判</strong>，出井那一次不再下滑；若把“下滑”写在判断之前就会多算一步。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>int time = 0, dist = 0;
+while (true) {
+    dist += u; time++;
+    if (dist &gt;= n) break;   // 出井即结束，不再下滑
+    dist -= d;
+}</code></pre></div>
+
+</section>
+<section class="dsec" id="s5">
+  <div class="sec-no">05 / SECTION</div>
+  <h2>贪心算法的基本思想与实例讲解</h2>
+<ul class="pts">
+<li><strong>定义</strong>：每一步都按某种指标选取<strong>当前最优</strong>的操作，不回溯、不考虑后续影响；得到的是<strong>局部最优</strong>，不一定全局最优。</li>
+<li><strong>两个前提</strong>：问题要满足<strong>无后效性</strong>（当前决策不改变后续可选集合），且能（或经验上能）保证局部最优推出全局最优。</li>
+<li>典型可保证最优的问题：最小生成树、单源最短路（Dijkstra）。</li>
+<li><strong>标准求解过程</strong>：分析业务 → 找出若干贪心策略 → 举出反例的直接淘汰 → 无（或不易）反例的要给出证明。</li>
+<li><strong>竞赛套路（不纠结证明）</strong>：</li>
+</ul>
+<p class="doc-lead">1. 先写一个不依赖贪心策略的暴力解法 X； 2. 脑补策略 A、B、C； 3. 用 X + 随机对拍检验哪个策略正确。</p>
+<ul class="pts">
+<li><strong>两类常见题型</strong>：</li>
+<li class="sub">“按某关键字排序，再按顺序选择”——离线，先处理再选；</li>
+<li class="sub">“每次取当前最大/最小并更新”——在线，边处理边选，常用优先队列维护。</li>
+<li><strong>后悔解法</strong>：先无条件接受，发现更优就反悔换掉（如可反悔的堆）。</li>
+<li><strong>与 DP 的区别</strong>：贪心每个子问题只做一次选择、<strong>不能回退</strong>；DP 保存历史结果，可以回头比较选择。</li>
+<li><strong>例题</strong>：</li>
+<li class="sub">路灯（<code>X</code> 为墙、<code>.</code> 为居民点，灯照 i-1/i/i+1）：从左到右贪心，遇到 <code>.</code> 就在 <code>i+1</code> 处放灯并跳过三格；<code>X…X…X…X.</code> 需 5 盏。</li>
+<li class="sub">金条分割（每次花费等于被切长度，求最小总代价）：等价于<strong>哈夫曼合并</strong>，用小根堆每次取两个最小相加。</li>
+<li class="sub">IPO（最多做 K 个项目、初始资金 M）：小根堆按花费、大根堆按利润，能做的项目不断“解锁”进利润堆。</li>
+<li class="sub">会议室安排（场次最多）：按<strong>结束时间</strong>升序贪心，能接上就选——三种策略里唯一正确的是“谁先结束选谁”。</li>
+</ul>
+</section>
+<section class="dsec" id="s6">
+  <div class="sec-no">06 / SECTION</div>
+  <h2>递归算法概念与实例讲解</h2>
+<ul class="pts">
+<li><strong>概念</strong>：直接或间接调用自身来求解问题。</li>
+<li><strong>实质</strong>：把原问题分解为<strong>规模缩小、形式相同</strong>的子问题。</li>
+<li><strong>两个阶段</strong>：</li>
+<li class="sub">递去：不断缩小规模，向下去；</li>
+<li class="sub">归来：遇到<strong>递归出口</strong>后逐层返回，合并结果。</li>
+<li><strong>设计三要素</strong>：</li>
+</ul>
+<p class="doc-lead">1. 明确的终止条件（递归出口）； 2. 可提取的重复逻辑，能把规模缩小； 3. 出口处的处理办法。</p>
+<ul class="pts">
+<li>递归是从上往下的思维方式，代码短但调用有开销，深度过大会爆栈。</li>
+<li><strong>经典实例</strong>：</li>
+<li class="sub">阶乘：<code>f(n) = n * f(n-1)</code>，出口 <code>f(0)=1</code>；</li>
+<li class="sub">汉诺塔：<code>f(n) = 2f(n-1) + 1</code>，出口 <code>f(1)=1</code>；</li>
+<li class="sub">全排列：固定第 k 位、交换后递归 k+1，<code>k == m-1</code> 时输出；</li>
+<li class="sub">斐波那契：<code>f(n)=f(n-1)+f(n-2)</code>，出口 <code>f(0)=0, f(1)=1</code>；该写法指数级，实用时应记忆化或递推。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>long long Fib(int n) {
+    if (n == 0) return 0;
+    if (n == 1) return 1;
+    return Fib(n - 1) + Fib(n - 2);
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/05cca54e32ee94f9.webp" width="642" height="785" data-full="assets/05cca54e32ee94f9.jpg" loading="lazy" decoding="async" alt="图1 递归的图解分析" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/29b1286efe43683d.webp" width="323" height="226" data-full="assets/29b1286efe43683d.png" loading="lazy" decoding="async" alt="图2 河内塔问题" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7718ee4c436818fa.webp" width="234" height="116" data-full="assets/7718ee4c436818fa.png" loading="lazy" decoding="async" alt="图3 斐波那契数列" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s7">
+  <div class="sec-no">07 / SECTION</div>
+  <h2>分治算法概念与实例讲解</h2>
+<ul class="pts">
+<li><strong>定义</strong>：“分而治之”——把大问题拆成若干<strong>相互独立、形式相同</strong>的小问题，分别求解后合并。</li>
+<li>是很多高效算法的基础：快速排序、归并排序、FFT、二分查找。</li>
+<li><strong>通用三步</strong>：</li>
+</ul>
+<p class="doc-lead">1. 分解：拆成规模更小的同类子问题； 2. 解决：子问题足够小就直接求解，否则继续分解； 3. 合并：把小解逐级合成为原问题的解。</p>
+<ul class="pts">
+<li><strong>四个适用条件</strong>：</li>
+<li class="sub">子问题与原问题模式相同；</li>
+<li class="sub">子问题<strong>彼此独立</strong>（这正是不用 DP 的分界：有重叠子问题就该 DP）；</li>
+<li class="sub">有分解终止条件（足够小可直接解）；</li>
+<li class="sub">合并代价不能太高，否则失去意义。</li>
+<li>子问题独立是分治与动态规划最本质的区别。</li>
+<li><strong>汉诺塔</strong>：n 个盘从 A 经 B 到 C = 移走上面 n-1 个到 B → 移动最大盘到 C → 把 B 上 n-1 个移到 C。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void hanoi(int n, char from, char tmp, char to) {
+    if (n == 0) return;
+    hanoi(n - 1, from, to, tmp);
+    printf("盘子%d: %c -&gt; %c\n", n, from, to);
+    hanoi(n - 1, tmp, from, to);
+}</code></pre></div>
+
+<ul class="pts">
+<li>递归树每层分两支，故移动次数 <code>2ⁿ - 1</code>：64 片需约 5.8×10¹¹ 秒，远超太阳系寿命。</li>
+</ul>
+</section>
+<section class="dsec" id="s8">
+  <div class="sec-no">08 / SECTION</div>
+  <h2>前缀和理解与应用</h2>
+<ul class="pts">
+<li><strong>定义</strong>：前缀和数组的第 n 项 = 原序列前 n 项之和，是“<strong>区间求和</strong>”的预处理工具；差分是它的逆运算。</li>
+<li>记 <code>s[i] = s[i-1] + a[i]</code>（<code>s[0]=0</code>），则区间和 <code>sum(l,r) = s[r] - s[l-1]</code>，单次询问 O(1)。</li>
+<li><strong>一维构造</strong>：遍历一遍累加即可，注意数组下标从 1 开始，避免 <code>l-1</code> 越界。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>for (int i = 1; i &lt;= n; ++i) {
+    cin &gt;&gt; a[i];
+    s[i] = s[i - 1] + a[i];
+}</code></pre></div>
+
+<ul class="pts">
+<li><strong>二维前缀和</strong>：<code>p[i][j]</code> 表示以 <code>(0,0)</code> 为左上角、<code>(i,j)</code> 为右下角的矩形内元素和。</li>
+<li>四种情况：</li>
+<li class="sub"><code>i==0 &amp;&amp; j==0</code>：直接 <code>p[0][0] = a[0][0]</code>；</li>
+<li class="sub">第一行：<code>p[0][j] = p[0][j-1] + a[0][j]</code>；</li>
+<li class="sub">第一列：<code>p[i][0] = p[i-1][0] + a[i][0]</code>；</li>
+<li class="sub">一般位置：<code>p[i][j] = p[i-1][j] + p[i][j-1] - p[i-1][j-1] + a[i][j]</code>。</li>
+<li>减 <code>p[i-1][j-1]</code> 的原因是左上那块被加了两次，也就是容斥原理。</li>
+<li>子矩阵和 <code>(x1,y1)-(x2,y2)</code>：<code>p[x2][y2] - p[x1-1][y2] - p[x2][y1-1] + p[x1-1][y1-1]</code>。</li>
+<li>复杂度：预处理 O(nm)，每次查询 O(1)——把“多次区间询问”从 O(n·m·q) 降到 O(nm+q)。</li>
+<li>例题（区间求和）：n 个数、m 次询问 <code>[L,R]</code>，用 <code>sum[R]-sum[L-1]</code> 直接输出，注意开 <code>long long</code>。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/80c20624927426ad.webp" width="755" height="428" data-full="assets/80c20624927426ad.png" loading="lazy" decoding="async" alt="图1 二维前缀和" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/fa36b70b9ec59e24.webp" width="803" height="413" data-full="assets/fa36b70b9ec59e24.png" loading="lazy" decoding="async" alt="图2 二维前缀和" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s9">
+  <div class="sec-no">09 / SECTION</div>
+  <h2>差分的理解与应用</h2>
+<ul class="pts">
+<li><strong>定义</strong>：构造 b 使 a 是 b 的前缀和，则 <code>b[i] = a[i] - a[i-1]</code>；差分是前缀和的逆运算，相当于离散版的“求导/积分”。</li>
+<li>核心价值：把<strong>区间整体加 c</strong> 从 O(n) 降到 O(1)，最后再前缀和还原。</li>
+<li><strong>一维区间加</strong>：<code>b[l] += c; b[r+1] -= c;</code>，做完所有操作后对 b 求前缀和即得结果。</li>
+<li class="sub">直觉：给 <code>b[l]</code> 加 c 会让 l 之后全部 +c，所以在 <code>r+1</code> 处再减 c 把它们“抵消”。</li>
+<li>二维差分（子矩阵加 c）四个点：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void insert(int x1, int y1, int x2, int y2, int c) {
+    b[x1][y1] += c;
+    b[x2 + 1][y1] -= c;
+    b[x1][y2 + 1] -= c;
+    b[x2 + 1][y2 + 1] += c;
+}</code></pre></div>
+
+<ul class="pts">
+<li>下标统一从 1 开始，<code>r+1</code>、<code>x2+1</code> 处要留出空位（数组多开几格）。</li>
+<li>模板题流程：读入 n、m → 读序列 → m 次 <code>l r c</code> 打差分标记 → 前缀和还原输出。</li>
+<li>常见组合技：差分 + 前缀和 = “区间修改、区间查询”；树状数组/线段树可在此基础上支持在线查询。</li>
+</ul>
+</section>
+<section class="dsec" id="s10">
+  <div class="sec-no">10 / SECTION</div>
+  <h2>二分查找（折半查找）实例讲解</h2>
+<ul class="pts">
+<li><strong>定义</strong>：在<strong>有序</strong>序列中查找目标元素，每次比较中间元素并砍掉一半区间。</li>
+<li>硬前提：序列必须有序（升序或降序），无序数据要先排序。</li>
+<li><strong>复杂度</strong>：最优 O(1)（一次命中）；平均与最坏 O(log n)；迭代版空间 O(1)，递归版 O(log n)。</li>
+<li><strong>流程</strong>：区间为空返回 -1 → 取中点比较 → 相等即返回 → 中点偏大去左半、偏小去右半 → 重复。</li>
+<li>中点公式（防溢出）：<code>mid = p + (q - p) / 2</code>，等价于 <code>⌊(p+q)/2⌋</code> 但不会在 p、q 都接近 int 上限时溢出。</li>
+<li>实例：<code>{10,14,19,26,27,31,33,35,42,44}</code> 查 31 → 中点 27 → 右半 [5,9] → 中点 35 → 左半 [5,6] → 命中下标 5。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>int binary_search(int *arr, int p, int q, int ele) {
+    while (p &lt;= q) {
+        int mid = p + (q - p) / 2;
+        if (arr[mid] == ele) return mid;
+        if (arr[mid] &lt; ele) p = mid + 1;
+        else q = mid - 1;
+    }
+    return -1;
+}</code></pre></div>
+
+<ul class="pts">
+<li>边界写法二选一，务必全程统一：闭区间 <code>[l,r]</code> 配 <code>while(l&lt;=r)</code>、<code>mid±1</code>；或左闭右开 <code>[l,r)</code> 配 <code>while(l&lt;r)</code>、<code>r=mid</code>。</li>
+<li>二分不只用于“找元素”，也用于“找第一个满足条件的位置”（<code>lower_bound</code> / <code>upper_bound</code>）。</li>
+</ul>
+<figure class="figure"><img src="assets/ec1d80201a382d6d.gif" width="483" height="68" data-full="assets/ec1d80201a382d6d.gif" loading="lazy" decoding="async" alt="图1 二分查找实例" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/7b44c34dfe862e81.gif" width="483" height="99" data-full="assets/7b44c34dfe862e81.gif" loading="lazy" decoding="async" alt="图2 二分查找实例" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/ee45817e9934fea4.gif" width="479" height="66" data-full="assets/ee45817e9934fea4.gif" loading="lazy" decoding="async" alt="图3 二分查找实例" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/3b3f99f71352ba69.gif" width="483" height="97" data-full="assets/3b3f99f71352ba69.gif" loading="lazy" decoding="async" alt="图4 二分查找实例" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/6cadd1b85d928642.gif" width="480" height="66" data-full="assets/6cadd1b85d928642.gif" loading="lazy" decoding="async" alt="图5 二分查找实例" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s11">
+  <div class="sec-no">11 / SECTION</div>
+  <h2>二分答案算法实例讲解</h2>
+<ul class="pts">
+<li><strong>定义</strong>：把“求最优解”转成“判定某个值是否可行”，在答案的<strong>单调区间</strong>上二分。</li>
+<li><strong>适用前提</strong>：答案具有单调性——若 <code>mid</code> 可行，则所有比它更“宽松”的值都可行；反之亦然。常见信号词是“<strong>最大值最小</strong>”“<strong>最小值最大</strong>”。</li>
+<li><strong>三步</strong>：确认单调性 → 二分答案 → 写 <code>check(mid)</code> 验证可行性。</li>
+<li><strong>例题一（最大化最小间距）</strong>：n 个点选 c 个，使相邻点最小距离最大。</li>
+<li class="sub">二分距离 mid，<code>check</code> 用贪心：从第一个点起，能放就放，计数是否 ≥ c。</li>
+<li class="sub">若能放下 c 个，说明 mid 可行，可以继续放大。</li>
+<li><strong>例题二（最小化最大票数）</strong>：B 个箱子分到 n 个城市，使最大票数最小。</li>
+<li class="sub">每个城市至少 1 个箱子，<code>check(mid)</code> 累加 <code>Σ⌈a[i]/mid⌉</code> 与 B 比较。</li>
+<li><strong>例题三（馅饼分割）</strong>：n 个馅饼分给 f+1 人（含自己），每人一整块且一样大，求最大单块面积。</li>
+<li class="sub">二分半径或面积，<code>check</code> 统计 <code>Σ⌊V[i]/mid⌋ ≥ f+1</code>；浮点二分注意精度。</li>
+<li><strong>浮点二分的写法</strong>：<code>while (r - l &gt; eps)</code>，<code>l = mid</code> 而不是 <code>mid+1</code>；<code>eps</code> 取 1e-10 一类，循环次数也可直接固定 60~100 次。</li>
+<li><strong>五步总结</strong>：判单调 → 定区间与条件 → 判 mid → 更新区间（可行往“更优方向”收）→ 浮点控精度。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>int l = 0, r = maxv, ans = -1;
+while (l &lt;= r) {
+    int mid = l + (r - l) / 2;
+    if (check(mid)) { ans = mid; l = mid + 1; }   // 求最大可行值
+    else r = mid - 1;
+}</code></pre></div>
+
+</section>
+<section class="dsec" id="s12">
+  <div class="sec-no">12 / SECTION</div>
+  <h2>倍增算法实例讲解</h2>
+<ul class="pts">
+<li><strong>定义</strong>：按 <strong>2 的整数次幂</strong> 成倍扩展区间/跳跃，把线性处理降到对数级；依托“任意整数可拆成若干 2 的幂之和”。</li>
+<li>要求问题的状态空间<strong>可按 2 的幂划分</strong>，各段信息能合并。</li>
+<li>三大典型应用：快速幂、RMQ 的 ST 表、LCA（树上倍增）。</li>
+<li><strong>序列上查找</strong>（在 <code>{2,5,7,11,19}</code> 中找最大的小于 12 的数）：</li>
+<li class="sub">朴素：逐个枚举 O(n)；</li>
+<li class="sub">二分：折半 O(log n)，但要求整体有序；</li>
+<li class="sub">倍增：维护已确定长度 <code>l</code> 与试探步长 <code>p</code>，试 <code>a[l+p]</code> 是否仍满足条件，满足则 <code>l += p, p *= 2</code>，否则 <code>p /= 2</code>，直到 p 归零。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>int l = 0, p = 1;
+while (p) {
+    if (l + p &lt;= n &amp;&amp; a[l + p] &lt; 12) l += p, p &lt;&lt;= 1;
+    else p &gt;&gt;= 1;
+}</code></pre></div>
+
+<ul class="pts">
+<li><strong>ST 表</strong>：<code>f[i][k]</code> 表示从 i 起长度 <code>2^k</code> 的区间最值，<code>f[i][k] = max(f[i][k-1], f[i+2^(k-1)][k-1])</code>；查询 <code>[l,r]</code> 取两段覆盖，O(1)。</li>
+<li><strong>树上倍增求 LCA</strong>：<code>fa[v][k]</code> 表示 v 向上 2^k 级祖先；先把深的一方跳到同深度，再一起从大到小往上跳，直到二者父节点相同。</li>
+<li>预处理 O(n log n)，单次查询 O(log n)。</li>
+</ul>
+</section>
+<section class="dsec" id="s13">
+  <div class="sec-no">13 / SECTION</div>
+  <h2>结合实例浅析构造题型</h2>
+<ul class="pts">
+<li><strong>定义</strong>：不要求输出某个计算值，而是<strong>给出一组合法方案</strong>，满足题目的限制条件。</li>
+<li><strong>两大特点</strong>：</li>
+<li class="sub">高自由度：答案往往有很多组，通常存在一种简单构造；反过来说，自由度太高也容易无从下手；</li>
+<li class="sub">形式灵活：没有通用套路，很难提炼共性解法。</li>
+<li><strong>常用手段</strong>：二分、分治、排序、图论（网络流、2-SAT、最短路），以及数学推导直接给出公式。</li>
+<li>思考顺序：<strong>先看小情况</strong>，再从 n 推到 n+1 找规律；必要时自己加限制把问题化窄。</li>
+<li>例题一：构造三个数使某关系成立——<code>n, n+1, n(n+1)</code> 即为一组解；<code>n=1</code> 时无解（此时后两项相等），特判输出 -1。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>if (n == 1) printf("-1\n");
+else printf("%d %d %d\n", n, n + 1, n * (n + 1));</code></pre></div>
+
+<ul class="pts">
+<li>例题二（回忆 01 背包样例）：n、v、w、P、k 全都要自己造。</li>
+<li class="sub">关键观察：<strong>模数 P 是假的</strong>——方案数只要不超过 P，取模就不起作用，于是可以自由拼数据。</li>
+<li class="sub">做法：用 DP 预处理“用前 i 个物品凑出体积 j 的方案数”，倒推出体积序列。</li>
+<li>构造题的经验来源是“多看题 + 多记经典构造”，考场上常靠小数据试错。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/81591b6243a92063.webp" width="60" height="28" data-full="assets/81591b6243a92063.png" loading="lazy" decoding="async" alt="图1 构造题型" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0ab344133f5df7c9.webp" width="125" height="47" data-full="assets/0ab344133f5df7c9.png" loading="lazy" decoding="async" alt="图2 构造题型" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s14">
+  <div class="sec-no">14 / SECTION</div>
+  <h2>用C语言解答汉诺塔问题</h2>
+<ul class="pts">
+<li>规则：三根柱 A（起始）、B（中转）、C（目标），大盘不能压小盘，每次只能移一个盘。</li>
+<li>3 个盘的 7 步过程：1→C、2→B、1→B、3→C、1→A、2→C、1→C；可以看出 B 始终是“暂存区”。</li>
+<li><strong>递归拆解</strong>（n 个盘）：</li>
+</ul>
+<p class="doc-lead">1. 把上面 n-1 个盘从 A 经 C 移到 B； 2. 把第 n 个（最大）盘从 A 移到 C； 3. 把 B 上 n-1 个盘经 A 移到 C。</p>
+<ul class="pts">
+<li>移动次数：<code>f(1)=1, f(2)=3, f(3)=7 ⇒ f(n)=2f(n-1)+1 = 2ⁿ-1</code>。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void hanoi(int n, char from, char mid, char to) {
+    if (n == 1) { printf("盘子%d: %c -&gt; %c\n", n, from, to); return; }
+    hanoi(n - 1, from, to, mid);
+    printf("盘子%d: %c -&gt; %c\n", n, from, to);
+    hanoi(n - 1, mid, from, to);
+}</code></pre></div>
+
+<ul class="pts">
+<li>输出即完整操作序列；这题是理解“递归出口 + 子问题同构”的最小范例。</li>
+</ul>
+<figure class="figure"><img src="assets/1f810f7dd3534022.gif" width="600" height="300" data-full="assets/1f810f7dd3534022.gif" loading="lazy" decoding="async" alt="图1 汉诺塔问题" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d2812ae9b4b33112.webp" width="686" height="197" data-full="assets/d2812ae9b4b33112.png" loading="lazy" decoding="async" alt="图2 汉诺塔问题" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/1cfbc169cf6300df.webp" width="681" height="192" data-full="assets/1cfbc169cf6300df.png" loading="lazy" decoding="async" alt="图3 汉诺塔问题" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/85396dd21ad1887d.webp" width="705" height="189" data-full="assets/85396dd21ad1887d.png" loading="lazy" decoding="async" alt="图4 汉诺塔问题" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a4c1efd236cd7d46.webp" width="702" height="185" data-full="assets/a4c1efd236cd7d46.png" loading="lazy" decoding="async" alt="图5 汉诺塔问题" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d8b8cc82a4d09018.webp" width="722" height="178" data-full="assets/d8b8cc82a4d09018.png" loading="lazy" decoding="async" alt="图6 汉诺塔问题" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/477cd3752f4e9084.webp" width="716" height="187" data-full="assets/477cd3752f4e9084.png" loading="lazy" decoding="async" alt="图7 汉诺塔问题" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/eb09f8af96ee0113.webp" width="722" height="189" data-full="assets/eb09f8af96ee0113.png" loading="lazy" decoding="async" alt="图8 汉诺塔问题" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7d0f88e77c511ffe.webp" width="724" height="191" data-full="assets/7d0f88e77c511ffe.png" loading="lazy" decoding="async" alt="图9 汉诺塔问题" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/c1fa619cdb6fad60.gif" width="2016" height="1512" data-full="assets/c1fa619cdb6fad60.gif" loading="lazy" decoding="async" alt="图10 0b795385c68d43a88fd535038da4b29a.gif" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+    <div class="qnav">
+        <a class="prev disabled"><span class="k">PREV</span><span class="t">已是第一章</span></a>
+        <a class="next" href="ch02.html"><span class="k">NEXT / 02</span><span class="t">搜索算法</span></a>
+    </div>
+  </main>
+
+  <aside class="docside">
+    <div class="k">ON THIS PAGE</div>
+    <ol>
+      <li><a href="#s1">算法是什么？</a></li>
+      <li><a href="#s2">深入分析算法的复杂度</a></li>
+      <li><a href="#s3">枚举算法的思想与实例讲解</a></li>
+      <li><a href="#s4">模拟算法实例讲解</a></li>
+      <li><a href="#s5">贪心算法的基本思想与实例讲解</a></li>
+      <li><a href="#s6">递归算法概念与实例讲解</a></li>
+      <li><a href="#s7">分治算法概念与实例讲解</a></li>
+      <li><a href="#s8">前缀和理解与应用</a></li>
+      <li><a href="#s9">差分的理解与应用</a></li>
+      <li><a href="#s10">二分查找（折半查找）实例讲解</a></li>
+      <li><a href="#s11">二分答案算法实例讲解</a></li>
+      <li><a href="#s12">倍增算法实例讲解</a></li>
+      <li><a href="#s13">结合实例浅析构造题型</a></li>
+      <li><a href="#s14">用C语言解答汉诺塔问题</a></li>
+    </ol>
+  </aside>
+</div>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>算法竞赛教程笔记，整理自 dotcpp 教程（C 语言中文网）。原文 172 篇长页面重排为 10 章「章 → 节 → 要点」，代码分块、配图外挂存储（webp 懒加载）。个别表述按原文口径订正，仍以原文为准。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="index.html">算法竞赛教程</a>
+        <a href="../data-structures/index.html">数据结构教程</a>
+        <a href="../../problems/algorithm/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../../tools/mistakes.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/tutorial.js" defer></script>
+</body>
+</html>

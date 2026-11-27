@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第22章 Next.js + MongoDB 入门</title>
+<link rel="stylesheet" href="assets/book.css">
+
+<div id="progress"></div>
+
+<nav>
+  <a href="index.html" class="back-link">← 返回</a>
+  <span class="nav-title">Next.js + MongoDB 入门</span>
+  <div class="nav-links">
+
+    <a href="#s22-1">22.1 数据库</a>
+    <a href="#s22-2">22.2 Atlas</a>
+    <a href="#s22-3">22.3 mongoose</a>
+    <a href="#s22-4">22.4 Schema</a>
+    <a href="#s22-5">22.5 API Route</a>
+    <a href="#s22-6">22.6 前端展示</a>
+    <a href="#s22-7">22.7 实战</a>
+    <a href="#s22-8">22.8 复盘</a>
+  
+  </div>
+</nav>
+
+<div class="content">
+
+<!-- Header -->
+<h1>第22章 Next.js + MongoDB 入门</h1>
+<p style="color:#94a3b8;margin-bottom:6px">学会用 MongoDB 做后端数据库，用 Next.js API Route 读写数据</p>
+<p style="font-size:.9em;color:#64748b">作者：zyyc-0336 &nbsp;|&nbsp; 日期：2026-06-12</p>
+
+<!-- 学习路径 -->
+<details open>
+  <summary>📋 学习路径建议</summary>
+  <div class="details-body">
+    <ol>
+      <li>了解数据库是什么</li>
+      <li>注册 MongoDB Atlas（免费云数据库）</li>
+      <li>安装 mongoose，学会连接数据库</li>
+      <li>定义数据模型（Schema & Model）</li>
+      <li>在 API Route 中读写 MongoDB</li>
+      <li>前端页面调用 API 展示数据</li>
+    </ol>
+  </div>
+</details>
+
+<details>
+  <summary>⚠️ 常见错误提示</summary>
+  <div class="details-body">
+    <div class="table-wrap">
+      <table>
+        <tr><th>错误现象</th><th>原因</th><th>解决方案</th></tr>
+        <tr><td><code>MongooseError: buffering timed out</code></td><td>连接字符串写错或网络不通</td><td>检查 <code>.env.local</code> 中的 <code>MONGODB_URI</code>，确认 IP 白名单</td></tr>
+        <tr><td><code>MongoServerError: bad auth</code></td><td>用户名或密码错误</td><td>在 Atlas 面板重新设置数据库用户密码</td></tr>
+        <tr><td><code>ECONNREFUSED</code></td><td>忘记启动 MongoDB 或连接地址错误</td><td>Atlas 用户不需要本地启动，检查连接字符串</td></tr>
+        <tr><td><code>ValidationError: Path 'xxx' is required</code></td><td>保存数据时缺少必填字段</td><td>检查 Schema 中的 <code>required</code> 设置</td></tr>
+        <tr><td>数据查出来是空数组 <code>[]</code></td><td>数据库中确实没有数据</td><td>先用代码插入几条测试数据</td></tr>
+        <tr><td><code>.env.local</code> 不生效</td><td>文件名写错或忘记重启</td><td>确认文件名是 <code>.env.local</code>，修改后重启 <code>npm run dev</code></td></tr>
+      </table>
+    </div>
+  </div>
+</details>
+
+<!-- 22.1 -->
+<h2 id="s22-1">22.1 数据库是什么？为什么需要它？</h2>
+
+<h3>22.1.1 大白话解释</h3>
+<p>想象你开了一家奶茶店：</p>
+
+<div class="table-wrap">
+  <table>
+    <tr><th>类比</th><th>对应技术</th><th>说明</th></tr>
+    <tr><td>奶茶店的账本</td><td><strong>数据库</strong></td><td>存放所有数据的地方</td></tr>
+    <tr><td>账本里的一页纸</td><td><strong>集合（Collection）</strong></td><td>一组同类数据，比如「订单」</td></tr>
+    <tr><td>账本上的一行记录</td><td><strong>文档（Document）</strong></td><td>一条具体数据，比如「张三点了一杯珍珠奶茶」</td></tr>
+    <tr><td>写账本的人</td><td><strong>后端代码（API Route）</strong></td><td>负责读写数据库</td></tr>
+  </table>
+</div>
+
+<p><strong>没有数据库会怎样？</strong></p>
+<div class="flow-diagram">每次重启服务器 → 所有数据丢失！
+用户A写的数据 → 用户B看不到！
+数据存在代码里 → 一改代码数据就没了！</div>
+
+<p><strong>有了数据库：</strong></p>
+<div class="flow-diagram">数据永久保存在云端 → 重启也不丢
+所有用户共享数据 → 你写我能看
+数据和代码分离 → 改代码不影响数据</div>
+
+<h3>22.1.2 为什么选 MongoDB？</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>对比项</th><th>MongoDB</th><th>MySQL</th></tr>
+    <tr><td>数据格式</td><td>JSON 风格（灵活）</td><td>表格（固定列）</td></tr>
+    <tr><td>学习难度</td><td>⭐ 简单</td><td>⭐⭐ 中等</td></tr>
+    <tr><td>免费方案</td><td>Atlas 免费 512MB</td><td>需自建或购买</td></tr>
+    <tr><td>和 Next.js 配合</td><td>天然契合（都是 JSON）</td><td>需要额外转换</td></tr>
+    <tr><td>适合场景</td><td>快速开发、原型、中小型项目</td><td>大型企业、复杂关系</td></tr>
+  </table>
+</div>
+
+<div class="callout tip">💡 <strong>结论</strong>：零基础学 MongoDB 最省心，数据格式就是 JSON，和前端无缝对接。</div>
+
+<h3>22.1.3 MongoDB 核心概念</h3>
+<div class="flow-diagram">MongoDB 数据库
+├── 数据库（Database）        ← 一个项目一个库
+│   ├── 集合（Collection）    ← 一组同类数据，类似"表"
+│   │   ├── 文档（Document）  ← 一条数据，就是 JSON 对象
+│   │   ├── 文档（Document）
+│   │   └── ...
+│   └── 集合（Collection）
+└── ...</div>
+
+<p>一条文档长这样：</p>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>{
+  "_id": "6651a2b3c4d5e6f7a8b9c0d1",
+  "title": "我的第一篇文章",
+  "content": "Hello MongoDB！",
+  "author": "zyyc",
+  "createdAt": "2026-06-12T08:00:00.000Z"
+}</code></pre>
+</div>
+
+<!-- 22.2 -->
+<h2 id="s22-2">22.2 注册 MongoDB Atlas 免费云数据库</h2>
+
+<h3>22.2.1 什么是 MongoDB Atlas？</h3>
+<p>MongoDB Atlas 是 MongoDB 官方提供的<strong>免费云数据库</strong>，不用在自己电脑上安装任何东西，注册就能用。</p>
+
+<div class="table-wrap">
+  <table>
+    <tr><th>项目</th><th>说明</th></tr>
+    <tr><td>官网</td><td>https://www.mongodb.com/atlas</td></tr>
+    <tr><td>免费额度</td><td>512MB 存储，足够学习和小项目</td></tr>
+    <tr><td>注册方式</td><td>邮箱注册 / Google 账号一键登录</td></tr>
+    <tr><td>需要信用卡？</td><td>❌ 不需要</td></tr>
+  </table>
+</div>
+
+<h3>22.2.2 注册步骤</h3>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>第1步：打开 https://www.mongodb.com/atlas
+第2步：点击 "Try Free" → 用邮箱注册
+第3步：创建组织（Organization）→ 随便填名字
+第4步：创建项目（Project）→ 随便填名字
+第5步：创建集群（Cluster）→ 选 M0 FREE（免费的那个）
+第6步：选择云服务商和地区 → 选 AWS + 新加坡（离中国近）
+第7步：点击 "Create Cluster" → 等待 1-3 分钟创建完成</code></pre>
+</div>
+
+<h3>22.2.3 设置数据库访问账号</h3>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>第1步：左侧菜单 → Security → Database Access
+第2步：点击 "Add New Database User"
+第3步：用户名和密码自己定（记住！后面要用）
+第4步：权限选 "Read and write to any database"
+第5步：点击 "Add User"</code></pre>
+</div>
+
+<div class="callout warn">⚠️ <strong>新手易错</strong>：密码不要包含 <code>@</code>、<code>#</code>、<code>%</code> 等特殊字符，否则连接字符串容易出错。建议用纯字母+数字。</div>
+
+<h3>22.2.4 设置网络白名单</h3>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>第1步：左侧菜单 → Security → Network Access
+第2步：点击 "Add IP Address"
+第3步：点击 "Allow Access from Anywhere"（会自动填 0.0.0.0/0）
+第4步：点击 "Confirm"</code></pre>
+</div>
+
+<div class="callout tip">💡 学习阶段允许所有 IP 访问。上线后要限制为服务器 IP。</div>
+
+<h3>22.2.5 获取连接字符串</h3>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>第1步：回到 Clusters 页面
+第2步：点击 "Connect" 按钮
+第3步：选 "Drivers" → 选 "Node.js"
+第4步：复制连接字符串，格式如下：</code></pre>
+</div>
+
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>mongodb+srv://&lt;用户名&gt;:***@cluster0.xxxxx.mongodb.net/?retryWrites=true&amp;w=majority</code></pre>
+</div>
+
+<p><strong>实际替换后：</strong></p>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>mongodb+srv://zyyc:***@cluster0.abc123.mongodb.net/?retryWrites=true&amp;w=majority</code></pre>
+</div>
+
+<div class="callout warn">⚠️ <strong>新手易错</strong>：<br>
+• <code>&lt;用户名&gt;</code> 和 <code>&lt;密码&gt;</code> 要替换成你自己设置的，不要带 <code>&lt;</code> <code>&gt;</code><br>
+• 密码中的特殊字符要 URL 编码（比如 <code>@</code> → <code>%40</code>）<br>
+• 后面可以加数据库名：<code>...mongodb.net/myblog?retryWrites=true&w=majority</code></div>
+
+<!-- 22.3 -->
+<h2 id="s22-3">22.3 安装 mongoose 并连接数据库</h2>
+
+<h3>22.3.1 mongoose 是什么？</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>概念</th><th>说明</th></tr>
+    <tr><td>MongoDB 驱动</td><td>底层库，直接操作数据库</td></tr>
+    <tr><td>mongoose</td><td>基于驱动的<strong>高级库</strong>，提供模型、验证等功能</td></tr>
+    <tr><td>类比</td><td>MongoDB 驱动 = 手动挡，mongoose = 自动挡</td></tr>
+  </table>
+</div>
+
+<div class="callout tip">💡 <strong>结论</strong>：零基础直接用 mongoose，简单好用。</div>
+
+<h3>22.3.2 安装 mongoose</h3>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>npm install mongoose</code></pre>
+</div>
+
+<h3>22.3.3 配置环境变量</h3>
+<p>在项目根目录创建 <code>.env.local</code> 文件：</p>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>MONGODB_URI=mongodb+srv://zyyc:***@cluster0.abc123.mongodb.net/myblog?retryWrites=true&amp;w=majority</code></pre>
+</div>
+
+<div class="callout warn">⚠️ <strong>新手易错</strong>：<br>
+• 文件名是 <code>.env.local</code>，不是 <code>.env</code>，不是 <code>.env.local.txt</code><br>
+• 等号两边不要有空格<br>
+• 修改 <code>.env.local</code> 后必须重启 <code>npm run dev</code><br>
+• <code>.env.local</code> 已在 <code>.gitignore</code> 中，不会被提交到 Git</div>
+
+<h3>22.3.4 创建数据库连接文件</h3>
+<p>创建 <code>lib/mongodb.js</code>：</p>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>// lib/mongodb.js
+import mongoose from 'mongoose'
+
+const MONGODB_URI = process.env.MONGODB_URI
+
+if (!MONGODB_URI) {
+  throw new Error('请在 .env.local 文件中设置 MONGODB_URI 环境变量')
+}
+
+// 用一个全局变量缓存连接，避免热重载时重复连接
+let cached = global.mongoose
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null }
+}
+
+async function dbConnect() {
+  // 如果已经连接过了，直接返回
+  if (cached.conn) {
+    return cached.conn
+  }
+
+  // 如果正在连接中，等待它完成
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => {
+      return mongoose
+    })
+  }
+
+  cached.conn = await cached.promise
+  return cached.conn
+}
+
+export default dbConnect</code></pre>
+</div>
+
+<div class="callout tip">💡 <strong>为什么要缓存连接？</strong><br>Next.js 开发模式下每次保存文件会热重载，如果不缓存，每次请求都会新建一个数据库连接，很快就会超出 Atlas 的连接数限制。</div>
+
+<!-- 22.4 -->
+<h2 id="s22-4">22.4 定义数据模型（Schema &amp; Model）</h2>
+
+<h3>22.4.1 核心概念</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>概念</th><th>类比</th><th>作用</th></tr>
+    <tr><td>Schema（模式）</td><td>表格的列定义</td><td>描述数据长什么样</td></tr>
+    <tr><td>Model（模型）</td><td>表格本身</td><td>用来增删改查</td></tr>
+    <tr><td>Document（文档）</td><td>表格的一行</td><td>一条具体数据</td></tr>
+  </table>
+</div>
+
+<p><strong>关系：</strong><code>Schema 定义结构 → Model 基于 Schema 创建 → Document 是 Model 的实例</code></p>
+
+<h3>22.4.2 创建文章模型</h3>
+<p>创建 <code>models/Post.js</code>：</p>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>// models/Post.js
+import mongoose from 'mongoose'
+
+// 定义 Schema：文章的数据结构
+const PostSchema = new mongoose.Schema({
+  title: {
+    type: String,        // 标题是字符串
+    required: [true, '标题不能为空'],  // 必填
+  },
+  content: {
+    type: String,        // 内容是字符串
+    required: [true, '内容不能为空'],
+  },
+  author: {
+    type: String,        // 作者是字符串
+    default: '匿名',     // 默认值
+  },
+  createdAt: {
+    type: Date,          // 创建时间是日期
+    default: Date.now,   // 默认当前时间
+  },
+})
+
+// 创建 Model 并导出
+// mongoose.models.Post 防止热重载时重复创建模型
+export default mongoose.models.Post || mongoose.model('Post', PostSchema)</code></pre>
+</div>
+
+<h4>Schema 类型对照表</h4>
+<div class="table-wrap">
+  <table>
+    <tr><th>Mongoose 类型</th><th>说明</th><th>示例值</th></tr>
+    <tr><td><code>String</code></td><td>字符串</td><td><code>"Hello"</code></td></tr>
+    <tr><td><code>Number</code></td><td>数字</td><td><code>42</code></td></tr>
+    <tr><td><code>Boolean</code></td><td>布尔值</td><td><code>true</code></td></tr>
+    <tr><td><code>Date</code></td><td>日期</td><td><code>new Date()</code></td></tr>
+    <tr><td><code>Array</code></td><td>数组</td><td><code>[1, 2, 3]</code></td></tr>
+    <tr><td><code>ObjectId</code></td><td>MongoDB 特殊 ID</td><td><code>"6651a2b3..."</code></td></tr>
+  </table>
+</div>
+
+<div class="callout warn">⚠️ <strong>新手易错</strong>：<code>mongoose.models.Post || mongoose.model('Post', PostSchema)</code> 这行代码必须有！否则 Next.js 热重载时会报 <code>OverwriteModelError</code>。</div>
+
+<!-- 22.5 -->
+<h2 id="s22-5">22.5 API Route 中读写 MongoDB</h2>
+
+<h3>22.5.1 CRUD 操作速查表</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>操作</th><th>方法</th><th>mongoose 语法</th><th>说明</th></tr>
+    <tr><td>创建</td><td>POST</td><td><code>Model.create(data)</code></td><td>插入一条数据</td></tr>
+    <tr><td>读取</td><td>GET</td><td><code>Model.find(filter)</code></td><td>查询数据</td></tr>
+    <tr><td>更新</td><td>PUT</td><td><code>Model.updateOne(filter, data)</code></td><td>修改数据</td></tr>
+    <tr><td>删除</td><td>DELETE</td><td><code>Model.deleteOne(filter)</code></td><td>删除数据</td></tr>
+  </table>
+</div>
+
+<h3>22.5.2 创建文章列表接口 GET</h3>
+<p>创建 <code>app/api/posts/route.js</code>：</p>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>// app/api/posts/route.js
+import { NextResponse } from 'next/server'
+import dbConnect from '@/lib/mongodb'
+import Post from '@/models/Post'
+
+// GET /api/posts → 获取所有文章
+export async function GET() {
+  try {
+    // 1. 连接数据库
+    await dbConnect()
+
+    // 2. 查询所有文章，按创建时间倒序排列
+    const posts = await Post.find({}).sort({ createdAt: -1 })
+
+    // 3. 返回数据
+    return NextResponse.json(posts)
+  } catch (error) {
+    return NextResponse.json(
+      { error: '获取文章失败：' + error.message },
+      { status: 500 }
+    )
+  }
+}</code></pre>
+</div>
+
+<h3>22.5.3 创建新增文章接口 POST</h3>
+<p>在同一个 <code>app/api/posts/route.js</code> 中添加：</p>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>// POST /api/posts → 创建新文章
+export async function POST(request) {
+  try {
+    // 1. 连接数据库
+    await dbConnect()
+
+    // 2. 从请求体获取数据
+    const body = await request.json()
+
+    // 3. 创建文章
+    const post = await Post.create({
+      title: body.title,
+      content: body.content,
+      author: body.author,
+    })
+
+    // 4. 返回创建的文章（状态码 201 = 创建成功）
+    return NextResponse.json(post, { status: 201 })
+  } catch (error) {
+    return NextResponse.json(
+      { error: '创建文章失败：' + error.message },
+      { status: 500 }
+    )
+  }
+}</code></pre>
+</div>
+
+<h3>22.5.4 常用查询方法速查</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>方法</th><th>用途</th><th>示例</th></tr>
+    <tr><td><code>find({})</code></td><td>查所有</td><td><code>Post.find({})</code></td></tr>
+    <tr><td><code>find({ author: 'zyyc' })</code></td><td>按条件查</td><td><code>Post.find({ author: 'zyyc' })</code></td></tr>
+    <tr><td><code>findById(id)</code></td><td>按 ID 查一条</td><td><code>Post.findById('6651a2b3...')</code></td></tr>
+    <tr><td><code>findOne({ title: 'xxx' })</code></td><td>查第一条匹配的</td><td><code>Post.findOne({ title: '标题' })</code></td></tr>
+    <tr><td><code>countDocuments({})</code></td><td>统计数量</td><td><code>Post.countDocuments({})</code></td></tr>
+    <tr><td><code>limit(10)</code></td><td>限制返回条数</td><td><code>Post.find({}).limit(10)</code></td></tr>
+    <tr><td><code>skip(5)</code></td><td>跳过前 N 条（分页用）</td><td><code>Post.find({}).skip(5).limit(10)</code></td></tr>
+  </table>
+</div>
+
+<!-- 22.6 -->
+<h2 id="s22-6">22.6 前端页面展示数据库数据</h2>
+
+<h3>22.6.1 在页面中调用 API</h3>
+<p>创建 <code>app/posts/page.js</code>：</p>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>// app/posts/page.js
+'use client'
+
+import { useState, useEffect } from 'react'
+
+export default function PostsPage() {
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  // 页面加载时从 API 获取文章
+  useEffect(() => {
+    fetch('/api/posts')
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data)
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.error('获取文章失败：', err)
+        setLoading(false)
+      })
+  }, [])
+
+  if (loading) {
+    return <p>加载中...</p>
+  }
+
+  return (
+    <div style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}>
+      <h1>📚 文章列表（来自 MongoDB）</h1>
+
+      {posts.length === 0 ? (
+        <p>暂无文章，快去 /api/posts 接口用 POST 创建一篇吧！</p>
+      ) : (
+        posts.map((post) => (
+          <article
+            key={post._id}
+            style={{
+              border: '1px solid #ddd',
+              borderRadius: 8,
+              padding: 16,
+              marginBottom: 16,
+            }}
+          >
+            <h2>{post.title}</h2>
+            <p>{post.content}</p>
+            <small>
+              作者：{post.author} | 发布于：
+              {new Date(post.createdAt).toLocaleDateString('zh-CN')}
+            </small>
+          </article>
+        ))
+      )}
+    </div>
+  )
+}</code></pre>
+</div>
+
+<div class="callout warn">⚠️ <strong>新手易错</strong>：MongoDB 的 ID 字段叫 <code>_id</code>（带下划线），不是 <code>id</code>！用 <code>post.id</code> 会得到 <code>undefined</code>。</div>
+
+<!-- 22.7 -->
+<h2 id="s22-7">22.7 完整项目实战：文章列表从数据库读取</h2>
+
+<h3>22.7.1 最终项目结构</h3>
+<div class="flow-diagram">my-blog/
+├── .env.local                  ← 环境变量（连接字符串）
+├── lib/
+│   └── mongodb.js              ← 数据库连接
+├── models/
+│   └── Post.js                 ← 文章模型
+├── app/
+│   ├── layout.js               ← 布局
+│   ├── page.js                 ← 首页
+│   ├── posts/
+│   │   └── page.js             ← 文章列表页
+│   └── api/
+│       └── posts/
+│           └── route.js        ← 文章 API
+└── package.json</div>
+
+<h3>22.7.2 从零搭建步骤</h3>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code># 第1步：创建项目
+npx create-next-app@latest my-blog
+cd my-blog
+
+# 第2步：安装 mongoose
+npm install mongoose
+
+# 第3步：创建 .env.local
+# 在项目根目录新建 .env.local，写入连接字符串
+
+# 第4步：创建文件
+# lib/mongodb.js     → 数据库连接
+# models/Post.js     → 文章模型
+# app/api/posts/route.js → API 接口
+# app/posts/page.js  → 前端页面
+
+# 第5步：启动项目
+npm run dev
+
+# 第6步：测试
+# 1) 访问 http://localhost:3000/posts → 应该显示空列表
+# 2) 用 POST 请求创建文章
+# 3) 刷新页面 → 应该显示文章了</code></pre>
+</div>
+
+<h3>22.7.3 测试 API（用 curl 或 Postman）</h3>
+<p><strong>创建文章：</strong></p>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>curl -X POST http://localhost:3000/api/posts \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Hello MongoDB","content":"这是我的第一篇数据库文章！","author":"zyyc"}'</code></pre>
+</div>
+
+<p><strong>查看文章：</strong></p>
+<div class="code-block">
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>curl http://localhost:3000/api/posts</code></pre>
+</div>
+
+<h3>22.7.4 调试技巧</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>场景</th><th>方法</th></tr>
+    <tr><td>查看数据库里有什么数据</td><td>Atlas 面板 → Clusters → Browse Collections</td></tr>
+    <tr><td>测试 API 接口</td><td>浏览器直接访问 <code>localhost:3000/api/posts</code>（GET）</td></tr>
+    <tr><td>发送 POST 请求</td><td>用 curl / Postman / Thunder Client（VS Code 插件）</td></tr>
+    <tr><td>查看服务器日志</td><td>终端里 <code>npm run dev</code> 的输出</td></tr>
+    <tr><td>连接失败排查</td><td>检查 IP 白名单 → 检查用户名密码 → 检查连接字符串格式</td></tr>
+  </table>
+</div>
+
+<!-- 22.8 -->
+<h2 id="s22-8">22.8 本章复盘</h2>
+
+<h3>核心知识点总结</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>知识点</th><th>说明</th></tr>
+    <tr><td>MongoDB Atlas</td><td>免费云数据库，注册即用</td></tr>
+    <tr><td>连接字符串</td><td><code>mongodb+srv://user:***@host/db</code></td></tr>
+    <tr><td><code>.env.local</code></td><td>存放敏感配置，不提交到 Git</td></tr>
+    <tr><td>mongoose</td><td>MongoDB 的 Node.js 驱动库</td></tr>
+    <tr><td>Schema</td><td>定义数据结构（字段、类型、校验）</td></tr>
+    <tr><td>Model</td><td>基于 Schema 创建，用于增删改查</td></tr>
+    <tr><td><code>dbConnect()</code></td><td>连接数据库（带缓存优化）</td></tr>
+    <tr><td><code>Model.find()</code></td><td>查询数据</td></tr>
+    <tr><td><code>Model.create()</code></td><td>创建数据</td></tr>
+    <tr><td>API Route 调用数据库</td><td>在 <code>route.js</code> 中连接数据库、执行操作</td></tr>
+    <tr><td>前端 fetch 调用 API</td><td>用 <code>fetch('/api/posts')</code> 获取数据</td></tr>
+  </table>
+</div>
+
+<h3>新手最容易犯的 5 个错误</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>#</th><th>错误</th><th>正确做法</th></tr>
+    <tr><td>1</td><td><code>.env.local</code> 文件名写错</td><td>必须是 <code>.env.local</code>，注意有个点</td></tr>
+    <tr><td>2</td><td>连接字符串中 <code>&lt;密码&gt;</code> 没替换</td><td>把 <code>&lt;&gt;</code> 和里面的内容都换成真实值</td></tr>
+    <tr><td>3</td><td>忘记 <code>dbConnect()</code></td><td>每个 API Route 都要先调用 <code>await dbConnect()</code></td></tr>
+    <tr><td>4</td><td>用 <code>post.id</code> 取 ID</td><td>MongoDB 的 ID 叫 <code>_id</code>（带下划线）</td></tr>
+    <tr><td>5</td><td>忘记加 <code>mongoose.models.Post ||</code></td><td>热重载会报错，必须防重复创建模型</td></tr>
+  </table>
+</div>
+
+<blockquote>
+<strong>下一章预告（第23章）</strong>：我们将学习<strong>博客评论功能实现</strong>——从数据结构设计到前后端完整联调，给每篇文章加上评论区，让读者可以互动交流。
+</blockquote>
+
+<!-- 上下章导航 -->
+<div class="nav-links">
+  <a href="5-ecosystem-21使用第三方React组件.html">⬅️ 上一章：使用第三方 React 组件</a>
+  <a href="5-ecosystem-23博客评论功能实现.html">下一章：博客评论功能实现 ➡️</a>
+</div>
+
+<p style="text-align:center;color:var(--text-muted);font-size:.82rem;margin-top:3rem">本文档由 zyyc-0336 编写，最后更新：2026-06-14</p>
+
+</div>
+
+
+<script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('back-top').classList.toggle('show', h.scrollTop > 300);
+});
+
+// Copy code
+function copyCode(btn) {
+  const code = btn.parentElement.querySelector('code');
+  navigator.clipboard.writeText(code.innerText).then(() => {
+    btn.textContent = '已复制 ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到顶部">↑</button>
+
+</body><!-- 底部区域 -->
+<div class="section" style="margin-top:48px">
+
+<!-- 复盘 -->
+<h2 id="s22-8">22.8 本章复盘</h2>
+
+<h3>核心知识点总结</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>知识点</th><th>说明</th></tr>
+    <tr><td>MongoDB Atlas</td><td>免费云数据库，注册即用</td></tr>
+    <tr><td>连接字符串</td><td><code>mongodb+srv://user:***@host/db</code></td></tr>
+    <tr><td><code>.env.local</code></td><td>存放敏感配置，不提交到 Git</td></tr>
+    <tr><td>mongoose</td><td>MongoDB 的 Node.js 驱动库</td></tr>
+    <tr><td>Schema</td><td>定义数据结构（字段、类型、校验）</td></tr>
+    <tr><td>Model</td><td>基于 Schema 创建，用于增删改查</td></tr>
+    <tr><td><code>dbConnect()</code></td><td>连接数据库（带缓存优化）</td></tr>
+    <tr><td><code>Model.find()</code></td><td>查询数据</td></tr>
+    <tr><td><code>Model.create()</code></td><td>创建数据</td></tr>
+    <tr><td>API Route 调用数据库</td><td>在 <code>route.js</code> 中连接数据库、执行操作</td></tr>
+    <tr><td>前端 fetch 调用 API</td><td>用 <code>fetch('/api/posts')</code> 获取数据</td></tr>
+  </table>
+</div>
+
+<hr style="margin:32px 0;border-color:#334155">
+
+<!-- 下一章预告 -->
+<blockquote>
+<strong>下一章预告（第23章）</strong>：我们将学习<strong>博客评论功能实现</strong>——从数据结构设计到前后端完整联调，给每篇文章加上评论区，让读者可以互动交流。
+</blockquote>
+
+<!-- 上下章导航 -->
+<div class="nav-links" style="margin-top:24px">
+<a href="5-ecosystem-21使用第三方React组件.html">⬅️ 上一章：使用第三方 React 组件</a>
+<a href="5-ecosystem-23博客评论功能实现.html">下一章：博客评论功能实现 ➡️</a>
+</div>
+
+<p style="text-align:center;color:var(--text-muted);font-size:.82rem;margin-top:32px">本文档由 zyyc-0336 编写，最后更新：2026-06-14</p>
+
+</div>
+
+
+</div>
+
+
+<script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('back-top').classList.toggle('show', h.scrollTop > 300);
+});
+
+// Copy code
+function copyCode(btn) {
+  const code = btn.parentElement.querySelector('code');
+  navigator.clipboard.writeText(code.innerText).then(() => {
+    btn.textContent = '已复制 ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到顶部">↑</button>
+
+</body>
+</html>

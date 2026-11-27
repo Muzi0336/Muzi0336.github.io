@@ -1,95 +1,100 @@
 # 朝云暮辞 · 学习档案
 
-个人学习站点：前端教程、全栈笔记、C 语言真题、算法题库和一个统一错题本。
+静态学习站点，按“文章 / 真题 / 学习工具”三类组织内容。根目录只保留入口页、共享资源和站点技术文件，具体内容全部进入分类目录。
 
 ## 目录结构
 
-```
+```text
 /
-├── index.html                 # 站点首页（GitHub Pages 入口）
-├── CNAME                      # 自定义域名 git.zyyc.cc
-├── _config.yml                # GitHub Pages 配置
+├── index.html                     # 站点首页
+├── 404.html                       # 旧地址跳转 + 新入口
+├── CNAME                          # 自定义域名 git.zyyc.cc
+├── _config.yml                    # GitHub Pages 配置
 ├── README.md
 ├── LICENSE
 ├── .gitignore
-├── dcfe...txt                 # 站点验证文件
+├── dcfe...txt                     # 站点验证文件
 │
-├── frontend/                  # 前端教程
-│   ├── index.html             # 教程首页
-│   ├── bg.jpg                 # 教程首页背景
-│   ├── HTML/                  # HTML 示例（15 个）
-│   ├── CSS/                   # CSS 示例（10 个 + style.css）
-│   └── JS/                    # JavaScript 示例（9 个）
+├── articles/                      # 文章：教程、笔记、课程正文
+│   ├── frontend/                  # HTML / CSS / JS 教程
+│   ├── fullstack/                 # Git / React / Next.js 全栈笔记
+│   ├── data-structures/           # 数据结构教程（12 章）
+│   └── algorithm-competition/     # 算法竞赛教程（10 章）
 │
-├── boke/                      # 全栈笔记
-│   ├── index.html             # 笔记目录
-│   ├── book.html              # 合集阅读页
-│   └── *.html                 # Git / React / Next.js / 生态笔记
+├── problems/                      # 真题：题库、卷面、题目详情
+│   ├── contest/                   # 计挑赛 C / C++ / Java / Python
+│   └── algorithm/                 # 算法题库、学习路径、课程、动画实验室
 │
-├── C语言/                     # C 语言真题
-│   ├── index.html             # 真题列表与筛选
-│   ├── q.html                 # 题目详情
-│   └── data.js                # 题库数据
+├── tools/                         # 学习工具
+│   └── mistakes.html              # 错题本
 │
-├── 算法/                      # 算法题库
-│   ├── index.html             # 题库列表
-│   ├── q.html                 # 题目详情
-│   ├── paths.html             # 学习路径
-│   ├── learn.html             # 课程目录
-│   ├── lesson.html            # 课程正文
-│   ├── lab.html               # 动画实验室
-│   └── assets/                # 拆分后的数据、样式、动画脚本
+├── assets/                        # 全站共享资源
+│   ├── css/
+│   │   ├── site.css               # 全站顶栏、排版、卡片
+│   │   ├── detail.css             # 题目/详情页通用组件
+│   │   └── tutorial.css           # 两套教程共用的阅读版式
+│   └── js/
+│       ├── tutorial.js            # 教程阅读器：目录、代码复制、图片放大
+│       └── quiz-ai.js             # 计挑赛 AI 助教与核对模块
 │
-└── 学习工具/                  # 独立学习工具
-    └── 错题本.html            # 一个页面查看总题数、已写数与分类错题
+└── 蓝桥杯真题/                    # 例外：当前保持原目录，不参与本次迁移
 ```
+
+## 分类规则
+
+- **articles/**：以“读”为主的内容，包括教程、课程正文和笔记。每一套内容保留自己的 `index.html` 作为栏目入口。
+- **problems/**：以“做题”为主的内容，包括真题列表、卷面、题目详情和题库数据。公共题目页样式进入 `assets/css`，题库数据留在各自的 `assets/`。
+- **tools/**：不依附于某套题或某篇文章的独立工具页。
+- **assets/**：至少被两个栏目共用的样式和脚本。只被单个栏目使用的资源，继续放在该栏目的 `assets/` 内，避免把专属资源堆到根目录。
+- **根目录页面文件**：只允许首页、404 等站点级入口；栏目页和正文页一律进入对应分类目录。
+- **命名**：根目录及分类目录使用英文；历史文章文件名保持不变，避免破坏已有引用。新增文件优先使用小写英文和连字符。
+
+## 路径迁移对照
+
+| 旧路径 | 新路径 |
+| --- | --- |
+| `/计挑赛/` | `/problems/contest/` |
+| `/算法/` | `/problems/algorithm/` |
+| `/数据结构教程/` | `/articles/data-structures/` |
+| `/算法竞赛教程/` | `/articles/algorithm-competition/` |
+| `/frontend/` | `/articles/frontend/` |
+| `/boke/` | `/articles/fullstack/` |
+| `/学习工具/错题本.html` | `/tools/mistakes.html` |
+| `/计挑赛/assets/style.css` | `/assets/css/site.css` |
+| `/计挑赛/assets/detail.css` | `/assets/css/detail.css` |
+| `/计挑赛/assets/quiz-ai.js` | `/assets/js/quiz-ai.js` |
+| 两套教程各自的 `assets/reader.css` | `/assets/css/tutorial.css` |
+| 两套教程各自的 `assets/reader.js` | `/assets/js/tutorial.js` |
+
+旧地址由根目录 `404.html` 做客户端跳转；站内链接已全部改为新路径。
+
+## 复用约定
+
+- 顶栏、按钮、卡片等全站外观统一使用 `assets/css/site.css`，详情页组件使用 `assets/css/detail.css`。
+- 数据结构教程和算法竞赛教程共用 `assets/css/tutorial.css` 与 `assets/js/tutorial.js`；新增教程页直接引用这两个文件，不再复制 `reader.css` / `reader.js`。
+- 全栈笔记的 18 篇正文共用 `articles/fullstack/assets/book.css`，页面只保留 `<link>`，不再逐页内联同一份主题样式。
+- 计挑赛 AI 模块统一放在 `assets/js/quiz-ai.js`；其他题库如需接入，复用该模块并在页面初始化时传入自己的题目上下文。
 
 ## 页面说明
 
-### 前端教程（`frontend/`）
+### 计挑赛（`problems/contest/`）
 
-- `frontend/index.html` — HTML / CSS / JS 学习导航
-- `frontend/HTML/` — HTML 基础、进阶、表单、媒体、语义化等示例
-- `frontend/CSS/` — CSS 导入、选择器、单位、盒模型、Flex、Grid、动效等示例
-- `frontend/JS/` — JS 基础、ES6、DOM、异步、模块化等示例
+C、C++、Java、Python 四套题库，按语言和题型归档。单选题可作答、判分与查看解析；编程题附参考代码、解析、AI 核对和本地代码练习区。
 
-### 全栈笔记（`boke/`）
+### 算法题库（`problems/algorithm/`）
 
-- `boke/index.html` — 笔记目录，按 Git / Node.js / React / Next.js / 生态分组
-- `boke/book.html` — 合集阅读页
-- `boke/*.html` — 20 篇独立笔记
+145 道题、7 个分类、6 条学习路径、21 篇课程、17 个代码动画。题目页只加载当前题的数据文件，课程页只加载当前课。
 
-### C 语言真题（`C语言/`）
+### 教程与笔记（`articles/`）
 
-2019–2025 年 C 语言客观题，共 236 题（2023 年缺失）。
+- `articles/frontend/` — HTML / CSS / JavaScript 教程与示例
+- `articles/fullstack/` — Git / React / Next.js 笔记与合集阅读页
+- `articles/data-structures/` — 12 章数据结构教程
+- `articles/algorithm-competition/` — 10 章算法竞赛教程
 
-- `C语言/index.html` — 关键词搜索、年份 / 类型 / 状态筛选，重复题默认折叠
-- `C语言/q.html` — 单选题判分与解析、上下题导航、可折叠参考答案、带补全的本地代码编辑器
-- `C语言/data.js` — 题干、选项、答案、解析与来源文件哈希
+### 错题本（`tools/mistakes.html`）
 
-### 算法题库（`算法/`）
-
-ARENA LAB 静态版，145 题、7 个分类、6 条学习路径、21 篇课程、17 个代码动画。全部动画由 HTML/SVG/JS 实时绘制，无截图帧。
-
-- `算法/index.html` — 搜索、分类 / 难度 / 状态筛选、只看收藏
-- `算法/q.html` — 题干、样例、推导、复杂度、多语言参考代码、草稿编辑器、自测与动画
-- `算法/paths.html` — 学习路径与进度
-- `算法/learn.html`、`算法/lesson.html` — 课程目录与正文
-- `算法/lab.html` — 动画实验室
-- `算法/assets/app_data.js` — 公共题库 / 路径 / 课程索引
-- `算法/assets/search_data.js` — 搜索索引，按需加载
-- `算法/assets/problems/<id>.js` — 单题文件，题目页只加载当前题
-- `算法/assets/lessons/<slug>.js` — 单课文件，课程页只加载当前课
-
-### 错题本（`学习工具/错题本.html`）
-
-单页展示：
-
-- 总题数、已写题数、错题总数
-- C 语言真题与算法题库两个分类，各显示已写 / 总数与错题数
-- 点击分类在当前页展开错题，可直接打开题目、清除 C 语言记录或移出算法错题
-
-做题记录与错题只保存在当前浏览器的 `localStorage`，不跨设备同步。
+汇总计挑赛与算法题库的做题记录，按分类展示错题；记录只保存在当前浏览器的 `localStorage`。
 
 ## License
 

@@ -1,0 +1,286 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第八章 图 · 数据结构教程</title>
+<meta name="description" content="第八章 图 — 邻接矩阵与邻接表两种存法，配上 DFS / BFS、最小生成树与最短路径这几套经典算法。">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/detail.css">
+<link rel="stylesheet" href="../../assets/css/tutorial.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../../index.html#contest" class="contest-link">计挑赛</a>
+            <a href="../../蓝桥杯真题/exam/index.html">蓝桥真题</a>
+    <a href="../../problems/algorithm/index.html">算法题库</a>
+    <a href="../../problems/algorithm/paths.html">学习路径</a>
+    <a href="../../problems/algorithm/learn.html">算法学习</a>
+    <a href="../../problems/algorithm/lab.html">动画实验室</a>
+    <a href="index.html" class="active">数据结构</a>
+    <a href="../algorithm-competition/index.html">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../fullstack/index.html">全栈笔记</a>
+    <a href="../../tools/mistakes.html">错题本</a>
+  </nav>
+</div>
+
+<div class="docwrap">
+  <aside class="docnav">
+    <a class="back" href="index.html">← 教程目录</a>
+    <nav class="docnav-list">
+      <a href="ch01.html"><span class="n">01</span><span class="t">数据结构入门</span></a>
+      <a href="ch02.html"><span class="n">02</span><span class="t">链表</span></a>
+      <a href="ch03.html"><span class="n">03</span><span class="t">栈</span></a>
+      <a href="ch04.html"><span class="n">04</span><span class="t">队列</span></a>
+      <a href="ch05.html"><span class="n">05</span><span class="t">C++ STL 库教程（附带题库）</span></a>
+      <a href="ch06.html"><span class="n">06</span><span class="t">串、数组、矩阵和广义表</span></a>
+      <a href="ch07.html"><span class="n">07</span><span class="t">树</span></a>
+      <a href="ch08.html" class="on"><span class="n">08</span><span class="t">图</span></a>
+      <a href="ch09.html"><span class="n">09</span><span class="t">查找算法</span></a>
+      <a href="ch10.html"><span class="n">10</span><span class="t">排序算法</span></a>
+      <a href="ch11.html"><span class="n">11</span><span class="t">算法和竞赛</span></a>
+      <a href="ch12.html"><span class="n">12</span><span class="t">后记</span></a>
+    </nav>
+    <div class="navstat">12 章 · 87 节<br>114 张图</div>
+  </aside>
+
+  <main class="docmain">
+    <div class="doc-eyebrow">— DATA STRUCTURE / 08</div>
+    <h1 class="doc-title">第八章 图</h1>
+    <p class="doc-lead">邻接矩阵与邻接表两种存法，配上 DFS / BFS、最小生成树与最短路径这几套经典算法。</p>
+    <div class="doc-meta">
+      <span class="chip">9 节</span>
+      <span class="chip">10 图</span>
+    </div>
+    <div class="rule"></div>
+<section class="dsec" id="s1">
+  <div class="sec-no">01 / SECTION</div>
+  <h2>图的存储-邻接矩阵及C/++代码实现</h2>
+<ul class="pts">
+<li>图论起源于欧拉 1736 年解决的柯尼斯堡七桥问题，是数学的一个分支，也是图算法的理论基础。</li>
+<li><strong>定义</strong>：图 G 是二元组 <code>&lt;V, E&gt;</code>，V 为有限非空顶点集，E 为边集，边 eᵢ 对应 V 中的结点。</li>
+<li><strong>基本概念</strong>：</li>
+<li class="sub">无向图 / 有向图 / 混合图（部分边有向、部分无向）。</li>
+<li class="sub">有限图（点集、边集都有穷）、零图（边集为空）、平凡图（只有一个结点、无边）。</li>
+<li class="sub">关联：边 e=(u,v) 关联 u 与 v；孤立点：无边关联的点；自环：边的两端点是同一结点。</li>
+<li class="sub">邻接：同一条边的两个点是邻接的；同一个点的两条边也是邻接的。</li>
+<li><strong>两条定理</strong>：任意图中所有顶点度数之和 = 2×边数；有向图中所有点入度之和 = 出度之和（“上坡与下坡一样多”）。</li>
+<li>推论：任意图中<strong>度数为奇数的顶点必有偶数个</strong>。</li>
+<li>树与森林都是特殊的图（连通且无环）。</li>
+<li><strong>邻接矩阵</strong>：<code>bool adj[n][n]</code>（或 <code>int adj[n][n]</code> 直接存边权），<code>adj[i][j]</code> 表示 i 与 j 之间是否有边。</li>
+<li class="sub">优点：O(1) 判断两点是否相邻、O(1) 取边权。</li>
+<li class="sub">缺点：空间 O(n²)，稀疏图浪费严重。</li>
+<li>无向图赋值要<strong>双向</strong>写：<code>adj[x-1][y-1] = 1; adj[y-1][x-1] = 1;</code>（下标从 0 开始，输入从 1 开始时记得减 1）。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/975ed45f2918a90f.webp" width="265" height="57" data-full="assets/975ed45f2918a90f.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6fd506a19c8c8fff.webp" width="393" height="60" data-full="assets/6fd506a19c8c8fff.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s2">
+  <div class="sec-no">02 / SECTION</div>
+  <h2>邻接表的定义及C/C++代码实现</h2>
+<ul class="pts">
+<li><strong>邻接表</strong>：用链表（或数组模拟链表）表示邻接关系，采用“顺序分配 + 链式分配”结合的方式，类似树的孩子链表表示法。</li>
+<li>结构：n 个表头结点（存该顶点与第一条边指针），每个表头挂一条单向链表，链上依次存放它的所有邻接顶点。</li>
+<li>链表末尾要留空或特殊标记表示结束；双向图中同一条边要在两端各出现一次。</li>
+<li>结论：n 个顶点、e 条边的无向图，邻接表有 n 个顶点表结点、<strong>2e 个边表结点</strong>。</li>
+<li><strong>与邻接矩阵对比</strong>（矩阵的缺点）：</li>
+<li class="sub">浪费空间：存稀疏图有大量无效 0；</li>
+<li class="sub">浪费时间：统计边数要扫全矩阵。</li>
+<li>复杂度：邻接表 O(n + e)，邻接矩阵 O(n²)；稀疏图（点多边少、弱连接）必须用邻接表。</li>
+<li><strong>指针实现的关键结构</strong>：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>typedef struct ArcNode { int adjvex; struct ArcNode *nextarc; } ArcNode;   // 边结点
+typedef struct { int data; ArcNode *firstarc; } Vnode;                    // 顶点结点
+typedef struct { Vnode adjlist[maxSize]; int n, e; } AGraph;</code></pre></div>
+
+<ul class="pts">
+<li>建表流程：初始化所有 <code>firstarc = NULL</code> → 逐条读边 (u,v) → 申请边结点并写入 adjvex → 若首边为空直接挂上，否则遍历到链尾再插入（<code>insertNode</code>）。</li>
+<li>遍历输出：对每个顶点，沿 <code>firstarc</code> 走链表输出 adjvex。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/26466f184db4c65c.webp" width="644" height="398" data-full="assets/26466f184db4c65c.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b5214fd2dc20412d.webp" width="841" height="377" data-full="assets/b5214fd2dc20412d.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/477a9547a3db3550.webp" width="900" height="340" data-full="assets/477a9547a3db3550.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s3">
+  <div class="sec-no">03 / SECTION</div>
+  <h2>图的存储：链式向前星</h2>
+<ul class="pts">
+<li><strong>前向星</strong>：把边集数组按“起点升序、起点相同则终点升序”排序，并记录每个起点的边在数组中的起始位置与长度。</li>
+<li>排序代价 O(e log e)，链式向前星就是为省掉这次排序而做的优化。</li>
+<li><strong>本质</strong>：用链表思想把同起点的边串起来，无需排序即可直接定位到目标边。</li>
+<li><strong>结构设计</strong>：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>struct Edge { int w; int to; int next; } edge[10005];   // 边：权、指向、下一条边序号
+int cnt = 0;      // 边计数
+int head[10005];  // head[x] 记录以 x 为起点的第一条边序号</code></pre></div>
+
+<ul class="pts">
+<li><strong>加边（头插）</strong>：<code>edge[cnt].to = to; edge[cnt].w = w; edge[cnt].next = head[from]; head[from] = cnt++;</code></li>
+<li>遍历某点 u 的所有出边：<code>for(int i = head[u]; i != -1; i = edge[i].next)</code>。</li>
+<li>初始化要点：<code>head[]</code> 全部赋 <strong>-1</strong>（或任意负数）作为边界判定，方便查错。</li>
+<li>优点：构建与遍历都极快，是算法竞赛与高效图论算法的首选；缺点：理解门槛高、构造麻烦。</li>
+<li>对比记忆：矩阵 O(1) 判边、O(n²) 空间；邻接表 O(n+e)；链式向前星同为 O(n+e) 且常数最小。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/6ce0175c3820f1e9.webp" width="644" height="398" data-full="assets/6ce0175c3820f1e9.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s4">
+  <div class="sec-no">04 / SECTION</div>
+  <h2>图的遍历DFS深搜优先搜索及C语言代码实现</h2>
+<ul class="pts">
+<li><strong>遍历</strong>：从某点出发，把图中每个点访问且只访问一遍。</li>
+<li><strong>DFS 过程</strong>：沿一条路一直往深处走，走不动就回退一步，再换分支；直到找到解或走完全部点。</li>
+<li>与<strong>栈</strong>思想一致，因此两种实现：显式栈 或 递归（递归自动借用系统栈）。</li>
+<li><strong>三步法</strong>：</li>
+<li class="sub">访问指定起点；</li>
+<li class="sub">若当前点有未访问的邻接点，任选一个访问；没有就回退到最近访问过的点，直到所有与起点连通的点都被遍历；</li>
+<li class="sub">若还有未访问点，说明图不连通，取一个作新起点重复上述过程。</li>
+<li>示例图从 1 出发的 DFS 序（不唯一）：<strong>1-2-4-5-3</strong>。</li>
+<li><strong>通用模板</strong>：边界判断（到达终点/越界/不合法则 return）→ 剪枝判断 → 枚举扩展方式，合法则修改、标记、递归、（可选）还原标记。</li>
+<li><strong>图论版核心</strong>：<code>visited[pos] = 1;</code> 打印；沿 <code>firstarc</code> 遍历邻接点，未访问则递归，指针后移。</li>
+<li>笔记：加不加“还原标记”决定了是 DFS 还是回溯法——纯遍历不必还原，求所有方案时必须还原。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/a9446a3f3c5c6362.webp" width="644" height="398" data-full="assets/a9446a3f3c5c6362.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s5">
+  <div class="sec-no">05 / SECTION</div>
+  <h2>图的遍历BFS广度优先搜索</h2>
+<ul class="pts">
+<li><strong>BFS</strong>：不“死磕”一条路，而是按层推进——先把当前点的全部邻接点走完，再走下一层，类似树的层序遍历。</li>
+<li><strong>队列实现四步</strong>：</li>
+<li class="sub">访问起点；</li>
+<li class="sub">把起点所有未访问的邻接点入队；</li>
+<li class="sub">队首出队，访问其邻接点并入队，直到队列为空；</li>
+<li class="sub">若仍有未访问点（非连通图），另选起点重复。</li>
+<li>示例图从 1 出发的 BFS 序：<strong>1-2-3-4-5</strong>（先把 2、3 一层走完，再走 4、5）。</li>
+<li><strong>模板要点</strong>：队列存“状态”，<code>step</code> 记录当前层数；每轮先取 <code>size = queue.size()</code> 做分层遍历，命中 target 返回 <code>step-1</code>；扩展邻居常借助方向数组。</li>
+<li><strong>图论版实现</strong>：用数组模拟队列（<code>head</code>、<code>tail</code> 指针），起点入队并标记 → <code>while(head != tail)</code> 出队打印 → 扫邻接点，未访问则入队并标记。</li>
+<li>BFS 效率通常优于 DFS（不需要回溯），适合求<strong>最短步数/最短路径（边权为 1）</strong>。</li>
+<li>应用：地图搜索、迷宫寻路、GPS 导航、游戏 AI（A*、双向广搜等由其改进而来）。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/4d66d2c24700a1ea.webp" width="644" height="398" data-full="assets/4d66d2c24700a1ea.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s6">
+  <div class="sec-no">06 / SECTION</div>
+  <h2>最小生成树，普利姆（Prim）算法及C/C++代码实现</h2>
+<ul class="pts">
+<li><strong>最小生成树（最小权重生成树）</strong>：把 n 个点连通且边权总和最小的子图；必然是 n 个点、<strong>n−1 条边</strong>的树形结构。</li>
+<li>典型问题：n 个村庄之间修路，使任意两村可达且总造价最低。</li>
+<li><strong>Prim 思路（“加点法”）</strong>：</li>
+<li class="sub">任取起点 u 放入集合 U，标记 visited；</li>
+<li class="sub">在“U 内点 ↔ U 外点”的所有边中找权值最小且不成环的一条，把对应外部点并入 U，边记入结果；</li>
+<li class="sub">重复直到 U == V，此时得到 n−1 条边。</li>
+<li>本质是贪心扩张，适合<strong>稠密图</strong>；朴素实现 O(n²)，配优先队列可优化到 O((n+e) log n)。</li>
+<li>实现要点：邻接矩阵中对角线置 0、其余置一个极大值（如 10000）表示不通；读边时<strong>双向</strong>赋值。</li>
+<li>数组实现技巧：用边集 T 记录“当前每个外部点到 U 的最短边”，每轮选出最小者交换到第 k 位，再用新并入的点 j 更新其余各点的候选边权（<code>if(GA[j][u] &lt; T[i].weight)</code> 则替换）。</li>
+<li>复杂度与选择：稠密图（边多）优先考虑 Prim。</li>
+</ul>
+</section>
+<section class="dsec" id="s7">
+  <div class="sec-no">07 / SECTION</div>
+  <h2>最小生成树，克鲁斯卡尔（Kruskal）算法及C/C++代码实现</h2>
+<ul class="pts">
+<li><strong>Kruskal 思路（“加边法”）</strong>：</li>
+<li class="sub">先只保留所有顶点，去掉全部边；</li>
+<li class="sub">从边集中取权值最小的边，连接它的两个顶点；</li>
+<li class="sub">继续取次小边，若会构成回路就放弃，取下一条；</li>
+<li class="sub">直到所有顶点连通且无环，得到最小生成树。</li>
+<li><strong>两个核心问题</strong>：</li>
+<li class="sub">边按权值排序 → 直接排序算法即可（O(e log e)）。</li>
+<li class="sub">如何判环 → 用<strong>并查集</strong>：记录每个顶点的“终点”，加边前比较两端点的终点，相同则成环，放弃。</li>
+<li><strong>并查集代码要点</strong>：<code>parent[]</code> 全置 0；<code>Find(parent, f)</code> 沿 <code>parent[f]</code> 一路向上找到根；<code>if(Find(u) != Find(v)) parent[n] = m;</code> 则合并并采纳该边。</li>
+<li>复杂度由排序主导 O(e log e)，适合<strong>稀疏图</strong>；Prim 与 Kruskal 的选择本质就是看图的稠密程度。</li>
+</ul>
+</section>
+<section class="dsec" id="s8">
+  <div class="sec-no">08 / SECTION</div>
+  <h2>最短路径，迪杰斯特拉（Dijkstra）算法及C/C++代码实现</h2>
+<ul class="pts">
+<li><strong>最短路径问题四类</strong>：定起点、定终点、定起点+终点、全局（所有点对）。</li>
+<li>无向图中“定终点”等价于“定起点”；有向图中则相当于把所有边反向后的定起点问题。</li>
+<li><strong>Dijkstra 核心（两个集合 S / U）</strong>：</li>
+<li class="sub">S 存已确定最短路的点及其距离，U 存未确定的点及当前“暂定距离”（无直接边时为 ∞）；</li>
+<li class="sub">初始化：S 只含起点，<code>dist[起点] = 0</code>；U 中填起点到各点的直接边权；</li>
+<li class="sub">每轮从 U 中取距离最小的点并入 S；</li>
+<li class="sub">用它去<strong>松弛</strong> U 中其余点：若 <code>dist[v] + w(v,u) &lt; dist[u]</code> 则更新；</li>
+<li class="sub">重复直到 U 为空。</li>
+<li>示例：A→B=4、A→D=2，A→C/E=∞；先取 D，再经 D 松弛 B、C、E，逐轮得到 A 到所有点的最短路。</li>
+<li>实现要点：<code>final[]</code> 标记是否已入 S；<code>D[]</code> 存最短距离；<code>p[][]</code> 存路径（<code>-1</code> 表示无路径，<code>p[v][0]=v0</code>、<code>p[v][1]=v</code> 记录路径顶点）；每轮找 <code>!final[w] &amp;&amp; D[w] &lt; min</code> 的 w。</li>
+<li>朴素 O(n²)，堆优化 O((n+e) log n)；<strong>不能处理负权边</strong>（负权要用 Bellman-Ford / SPFA）。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/c9904691e80acf4b.webp" width="586" height="316" data-full="assets/c9904691e80acf4b.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s9">
+  <div class="sec-no">09 / SECTION</div>
+  <h2>最短路径，弗洛伊德（Floyd）算法及C/C++代码实现</h2>
+<ul class="pts">
+<li><strong>Floyd 思路</strong>：从带权邻接矩阵 A = D(0) 出发，依次以每个点 k 作为“中转点”更新全矩阵，迭代 n 次得 D(n)，即任意两点间的最短距离矩阵。</li>
+<li><strong>状态转移方程</strong>：<code>map[i][j] = min(map[i][k] + map[k][j], map[i][j])</code>，k 穷举 i、j 之间的断点。</li>
+<li>实现就是三重循环：外层 k（中转点）、中层 i、内层 j ——<strong>k 必须在最外层</strong>，否则结果错误。</li>
+<li>初始条件：<code>map[n][n]</code> 初值取 0（自身到自身），不可达取一个极大值（如 65535）。</li>
+<li>附带 <code>path</code> 矩阵记录前驱/后继，可还原具体路径。</li>
+<li>采用<strong>松弛技术</strong>，时间复杂度 O(n³)、空间 O(n²)；优点是代码极短、可求全源最短路、支持负权（不能有负权环）。</li>
+<li>选择口诀：单源稠密用 Dijkstra，单源稀疏（含负权）用 SPFA/Bellman-Ford，<strong>多源（n 较小，≤ 几百）用 Floyd</strong>。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/6833a023aef4cbdc.webp" width="586" height="316" data-full="assets/6833a023aef4cbdc.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+    <div class="qnav">
+        <a class="prev" href="ch07.html"><span class="k">PREV / 07</span><span class="t">树</span></a>
+        <a class="next" href="ch09.html"><span class="k">NEXT / 09</span><span class="t">查找算法</span></a>
+    </div>
+  </main>
+
+  <aside class="docside">
+    <div class="k">ON THIS PAGE</div>
+    <ol>
+      <li><a href="#s1">图的存储-邻接矩阵及C/++代码实现</a></li>
+      <li><a href="#s2">邻接表的定义及C/C++代码实现</a></li>
+      <li><a href="#s3">图的存储：链式向前星</a></li>
+      <li><a href="#s4">图的遍历DFS深搜优先搜索及C语言代码实现</a></li>
+      <li><a href="#s5">图的遍历BFS广度优先搜索</a></li>
+      <li><a href="#s6">最小生成树，普利姆（Prim）算法及C/C++代码实现</a></li>
+      <li><a href="#s7">最小生成树，克鲁斯卡尔（Kruskal）算法及C/C++代码实现</a></li>
+      <li><a href="#s8">最短路径，迪杰斯特拉（Dijkstra）算法及C/C++代码实现</a></li>
+      <li><a href="#s9">最短路径，弗洛伊德（Floyd）算法及C/C++代码实现</a></li>
+    </ol>
+  </aside>
+</div>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>数据结构与算法教程笔记，整理自 dotcpp 教程（C 语言中文网），按 12 章重写为「章 → 节 → 要点」的形式，图片外挂存储。原文如有笔误，已在对应要点标注订正。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="index.html">数据结构教程</a>
+        <a href="../../problems/algorithm/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../fullstack/index.html">全栈笔记</a>
+        <a href="../../tools/mistakes.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/tutorial.js" defer></script>
+</body>
+</html>

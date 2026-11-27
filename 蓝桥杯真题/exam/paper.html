@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卷面 · 蓝桥真题｜朝云暮辞</title>
+    <meta name="description" content="蓝桥杯历年真题卷面：卷头、题序、进度格与逐题入口。">
+    <link rel="stylesheet" href="../../assets/css/site.css">
+    <link rel="stylesheet" href="../../assets/css/detail.css">
+    <link rel="stylesheet" href="assets/exam.css">
+</head>
+
+<body>
+    <div class="topbar">
+        <a class="brand" href="../../index.html" title="朝云暮辞 · 学习档案">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+            </svg>
+            <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+        </a>
+        <nav class="nav">
+            <a href="../../problems/contest/index.html">计挑赛</a>
+            <a href="index.html" class="active">蓝桥真题</a>
+            <a href="../../problems/algorithm/index.html">算法题库</a>
+            <a href="../../problems/algorithm/paths.html">学习路径</a>
+            <a href="../../problems/algorithm/learn.html">算法学习</a>
+            <a href="../../problems/algorithm/lab.html">动画实验室</a>
+            <a href="../../articles/data-structures/index.html">数据结构</a>
+            <a href="../../articles/algorithm-competition/index.html">算法竞赛</a>
+            <a href="../../articles/frontend/index.html">前端教程</a>
+            <a href="../../articles/fullstack/index.html">全栈笔记</a>
+            <a href="../../tools/mistakes.html">错题本</a>
+        </nav>
+    </div>
+
+    <main class="wrap">
+        <div class="breadcrumb">
+            <a href="index.html">蓝桥真题</a><span>/</span>
+            <a id="bcYear" href="index.html">—</a><span>/</span>
+            <span id="bcPaper">卷面</span>
+        </div>
+
+        <section class="sheet-head">
+            <div class="sh-eyebrow" id="shEyebrow">— Lanqiao sheet</div>
+            <h1 id="shTitle">加载中…</h1>
+            <div class="sheet-meta" id="shMeta"></div>
+        </section>
+
+        <div class="sec-title"><span>Seat</span><b>题序与进度</b><span class="sp"></span><em id="gridHint"></em></div>
+        <div class="pgrid" id="pgrid"></div>
+        <p style="font-size:12px;color:var(--muted);margin:0 0 6px">方格里的题号可直接跳题；点开过的题会留下「已读」痕，只记在本机。</p>
+
+        <div class="sec-title"><span>Index</span><b>本卷题目</b><span class="sp"></span><em id="idxCount"></em></div>
+        <section class="list" id="rows"></section>
+
+        <div class="nav-pair" id="navPair"></div>
+
+        <div class="foot">
+            <div>本卷题面与样例整理自 Dotcpp / 洛谷，通过率为站点口径。</div>
+            <div>不做判题与提交，手敲代码只保存在本机浏览器。</div>
+        </div>
+    </main>
+
+    <footer class="site-foot">
+        <div class="sf-inner">
+            <div class="sf-top">
+                <div class="sf-brand">
+                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" style="flex:none">
+                        <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                        <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+                    </svg>
+                    <div>
+                        <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+                        <p>蓝桥真题档案。2012–2026 年省赛、国赛真题按年份整理，题面与样例整理自 Dotcpp 与洛谷，仅供练习参考。</p>
+                    </div>
+                </div>
+                <nav class="sf-links">
+                    <a href="index.html">蓝桥真题</a>
+                    <a href="../../problems/contest/index.html">计挑赛</a>
+                    <a href="../../problems/algorithm/index.html">算法题库</a>
+                    <a href="../../articles/data-structures/index.html">数据结构教程</a>
+                    <a href="../../articles/algorithm-competition/index.html">算法竞赛教程</a>
+                    <a href="../../index.html">返回导航</a>
+                </nav>
+            </div>
+            <div class="sf-bottom">
+                <span>© 2026 朝云暮辞</span>
+                <span>题目版权归命题方所有，本页仅作学习归档。</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="data/catalog.js"></script>
+    <script src="assets/exam.js"></script>
+    <script>
+        (function () {
+            var $ = function (s) { return document.querySelector(s); };
+            var CAT = LQ.catalog();
+            var pid = LQ.qs('p');
+            var paper = LQ.paper(pid);
+            var seen = LQ.STORE.get('lq.seen', {}) || {};
+
+            if (!paper) {
+                $('#shTitle').textContent = '没有这张卷';
+                $('#rows').innerHTML = '<div class="empty" style="display:block"><b>卷号为 ' + LQ.esc(pid || '空') + '</b>回大厅重新选一张卷。</div>';
+                return;
+            }
+
+            document.title = paper.title + ' · 蓝桥真题｜朝云暮辞';
+
+            var items = CAT.problems.filter(function (p) {
+                return (p.papers || []).indexOf(paper.id) >= 0;
+            }).sort(function (a, b) {
+                return (a.src === b.src ? 0 : a.src === 'dotcpp' ? -1 : 1) ||
+                    String(a.id).replace(/\D/g, '').padStart(6, '0').localeCompare(String(b.id).replace(/\D/g, '').padStart(6, '0'));
+            });
+
+            $('#bcYear').textContent = paper.year;
+            $('#bcYear').href = 'index.html?y=' + encodeURIComponent(paper.year);
+            $('#bcPaper').textContent = paper.luogu ? '洛谷题单' : '卷面';
+            $('#shEyebrow').textContent = '— ' + (paper.luogu ? 'Luogu list' : 'Contest sheet') + ' / ' + paper.year;
+            $('#shTitle').textContent = paper.title;
+
+            var diffCount = {};
+            items.forEach(function (p) { diffCount[p.diff] = (diffCount[p.diff] || 0) + 1; });
+            var diffText = ['入门', '简单', '中等', '困难', '未评定']
+                .filter(function (d) { return diffCount[d]; })
+                .map(function (d) { return d + ' ' + diffCount[d]; }).join(' · ') || '—';
+
+            $('#shMeta').innerHTML = [
+                ['年份', paper.year],
+                ['赛段', paper.stage],
+                ['科目', paper.lang],
+                ['组别', paper.group],
+                ['题数', items.length + ' 题'],
+                ['难度', diffText]
+            ].map(function (x) {
+                return '<div><span class="k">' + LQ.esc(x[0]) + '</span><span class="v">' + LQ.esc(x[1]) + '</span></div>';
+            }).join('') + '<div><span class="k">原卷</span><span class="v"><a href="' + LQ.esc(paper.url) + '" target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:3px">' + (paper.luogu ? '洛谷题单' : 'Dotcpp') + ' ↗</a></span></div>';
+
+            $('#idxCount').textContent = items.length + ' 道';
+            $('#gridHint').textContent = '已读 ' + items.filter(function (p) { return seen[p.id]; }).length + ' / ' + items.length;
+
+            $('#pgrid').innerHTML = items.map(function (p, i) {
+                return '<a href="problem.html?id=' + encodeURIComponent(p.id) + '&p=' + encodeURIComponent(paper.id) + '"' +
+                    (seen[p.id] ? ' class="done"' : '') + '>' + (i + 1) + '</a>';
+            }).join('');
+
+            $('#rows').innerHTML = items.map(function (p, i) {
+                return '<a class="q-row" href="problem.html?id=' + encodeURIComponent(p.id) + '&p=' + encodeURIComponent(paper.id) + '">' +
+                    '<div class="q-no">' + String(i + 1).padStart(2, '0') + ' <span style="color:var(--muted)">' + LQ.esc(p.src === 'luogu' ? p.id : '#' + p.id) + '</span></div>' +
+                    '<div><div class="q-title">' + LQ.esc(p.title) + '</div>' +
+                    '<div class="q-top">' + LQ.esc(LQ.groupText(p.tracks)) + ' · ' + LQ.esc(p.stages.join(' / ')) + '</div></div>' +
+                    '<div class="q-pct">' + LQ.pct(p.pct) + '</div>' +
+                    '<div class="q-tag">' + LQ.labels.src(p.src) + '</div>' +
+                    '<div class="q-diff">' + LQ.labels.diff(p.diff) + '</div></a>';
+            }).join('');
+
+            // 上一卷 / 下一卷
+            var all = CAT.papers;
+            var idx = all.indexOf(paper);
+            var prev = all[idx - 1], next = all[idx + 1];
+            $('#navPair').innerHTML =
+                (prev ? '<a href="paper.html?p=' + encodeURIComponent(prev.id) + '"><span class="k">← 上一卷</span><span class="t">' + LQ.esc(prev.title) + '</span></a>'
+                    : '<a class="ph"><span class="k">← 上一卷</span><span class="t">已是第一张</span></a>') +
+                (next ? '<a class="next" href="paper.html?p=' + encodeURIComponent(next.id) + '"><span class="k">下一卷 →</span><span class="t">' + LQ.esc(next.title) + '</span></a>'
+                    : '<a class="ph next"><span class="k">下一卷 →</span><span class="t">已是最后一张</span></a>');
+        })();
+    </script>
+</body>
+
+</html>

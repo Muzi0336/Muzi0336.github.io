@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第24章 昼夜模式与毛玻璃效果</title>
+<link rel="stylesheet" href="assets/book.css">
+
+<div id="progress"></div>
+
+<nav>
+  <a href="index.html" class="back-link">← 返回</a>
+  <span class="nav-title">昼夜模式与毛玻璃效果</span>
+  <div class="nav-links">
+
+  </div>
+</nav>
+
+<div class="content">
+
+<!-- Header -->
+<h1>第24章 昼夜模式与毛玻璃效果</h1>
+<p style="color:#94a3b8;margin-bottom:6px">现代 UI 特效实现</p>
+<p style="font-size:.9em;color:#64748b">作者：zyyc-0336 &nbsp;|&nbsp; 日期：2026-06-12</p>
+
+<div class="card">
+  <p><strong>作者</strong>：zyyc-0336 &nbsp;|&nbsp; <strong>日期</strong>：2026-06-12</p>
+  <p><strong>内容标签</strong>：<code>#CSS</code> <code>#昼夜模式</code> <code>#毛玻璃</code> <code>#前端</code></p>
+</div>
+
+<blockquote>
+  <p><strong>本文是前端学习路径第24章</strong>（阶段五：外围生态）</p>
+</blockquote>
+
+<div class="card">
+  <p><strong>一句话总结</strong>：用 CSS 变量 + JS 切换主题实现昼夜模式，用 <code>backdrop-filter: blur()</code> 实现毛玻璃效果，两者结合就是现代网站的"高级感"密码。</p>
+</div>
+
+<hr>
+
+<details open>
+<summary>学习路径建议</summary>
+<div class="details-body">
+<pre><div class="code-header"><span class="lang">路径</span></div><code>CSS 变量（自定义属性）基础
+  ↓
+昼夜模式原理：亮色 / 暗色两套变量
+  ↓
+手动实现主题切换按钮
+  ↓
+next-themes 库（偷懒神器）
+  ↓
+backdrop-filter 毛玻璃效果
+  ↓
+实战：导航栏毛玻璃 + 主题切换</code></pre>
+</div>
+</details>
+
+<hr>
+
+<h2>常见错误提示</h2>
+<div class="callout warn">
+  <p><strong>忘加 <code>transition</code></strong>：切换主题时颜色突变很刺眼，记得加过渡动画</p>
+  <p><strong><code>backdrop-filter</code> 不生效</strong>：元素必须有半透明背景（如 <code>rgba</code>），否则看不出效果</p>
+  <p><strong>SSR 闪烁</strong>：服务端渲染时还没读到主题，会先闪一下亮色再变暗色，用 <code>next-themes</code> 解决</p>
+  <p><strong><code>prefers-color-scheme</code> 搞混</strong>：这是系统设置，不是你的主题设置，别忘了让用户手动选</p>
+</div>
+
+<hr>
+
+<h2>目录</h2>
+<ul>
+  <li><a href="#s24-1">24.1 什么是昼夜模式</a></li>
+  <li><a href="#s24-2">24.2 CSS 变量实现主题切换</a></li>
+  <li><a href="#s24-3">24.3 手动实现主题切换按钮</a></li>
+  <li><a href="#s24-4">24.4 用 next-themes 偷懒</a></li>
+  <li><a href="#s24-5">24.5 backdrop-filter 毛玻璃效果</a></li>
+  <li><a href="#s24-6">24.6 实战：导航栏毛玻璃 + 主题切换</a></li>
+  <li><a href="#s24-7">24.7 本章复盘</a></li>
+</ul>
+
+<hr>
+
+<!-- ========== 24.1 ========== -->
+<h1 id="s24-1">24.1 什么是昼夜模式</h1>
+
+<h3>概念解释</h3>
+<p><strong>昼夜模式</strong>就是网站有"亮色主题"和"暗色主题"两套配色方案，用户可以一键切换。你天天用的微信、手机设置、VS Code 都有这个功能。</p>
+
+<h3>为什么需要？</h3>
+<ul>
+  <li>晚上看亮屏刺眼，暗色模式保护眼睛</li>
+  <li>现代网站标配，显得专业</li>
+  <li>系统级暗色模式已经普及，网站应该跟着适配</li>
+</ul>
+
+<h3>实现原理</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>步骤</th><th>做什么</th><th>用什么</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>定义两套颜色变量</td><td>CSS 变量（<code>--bg-color</code> 等）</td></tr>
+    <tr><td>2</td><td>根据主题切换变量值</td><td>给 <code>html</code> 加 <code>data-theme="dark"</code> 类名</td></tr>
+    <tr><td>3</td><td>提供切换按钮</td><td>JS 监听点击，切换类名</td></tr>
+    <tr><td>4</td><td>记住用户选择</td><td><code>localStorage</code></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout warn">
+  <p><strong>"我直接写两套 CSS 文件不行吗？"</strong> 可以，但维护两套文件太痛苦。用 CSS 变量只需要改变量值，样式代码只写一份。</p>
+</div>
+
+<hr>
+
+<!-- ========== 24.2 ========== -->
+<h1 id="s24-2">24.2 CSS 变量实现主题切换</h1>
+
+<h3>概念解释</h3>
+<p>CSS 变量（也叫"自定义属性"）就是你可以自己定义的"颜色名字"，然后在整个网站里引用它。切换主题时只需要改这个"名字"对应的值。</p>
+
+<h3>语法表格</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>语法</th><th>说明</th><th>示例</th></tr></thead>
+  <tbody>
+    <tr><td><code>--变量名: 值;</code></td><td>定义变量</td><td><code>--bg-color: #ffffff;</code></td></tr>
+    <tr><td><code>var(--变量名)</code></td><td>使用变量</td><td><code>background: var(--bg-color);</code></td></tr>
+    <tr><td><code>:root { }</code></td><td>全局定义（相当于 html）</td><td>变量放这里，全站可用</td></tr>
+    <tr><td><code>[data-theme="dark"]</code></td><td>属性选择器选中暗色主题</td><td>暗色变量放这里</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>完整可运行代码</h3>
+<pre><div class="code-header"><span class="lang">css</span><button class="copy-btn" onclick="copyCode(this)">复制</button></div><code><span class="cm">/* styles/theme.css */</span>
+
+<span class="cm">/* ========== 亮色主题（默认） ========== */</span>
+<span class="kw">:root</span> {
+  <span class="attr">--bg-color</span>: <span class="str">#ffffff</span>;
+  <span class="attr">--text-color</span>: <span class="str">#1a1a1a</span>;
+  <span class="attr">--card-bg</span>: <span class="str">#f5f5f5</span>;
+  <span class="attr">--border-color</span>: <span class="str">#e0e0e0</span>;
+  <span class="attr">--primary-color</span>: <span class="str">#3b82f6</span>;
+  <span class="attr">--shadow-color</span>: <span class="str">rgba(0, 0, 0, 0.1)</span>;
+}
+
+<span class="cm">/* ========== 暗色主题 ========== */</span>
+<span class="kw">[data-theme="dark"]</span> {
+  <span class="attr">--bg-color</span>: <span class="str">#1a1a2e</span>;
+  <span class="attr">--text-color</span>: <span class="str">#e0e0e0</span>;
+  <span class="attr">--card-bg</span>: <span class="str">#16213e</span>;
+  <span class="attr">--border-color</span>: <span class="str">#2a2a4a</span>;
+  <span class="attr">--primary-color</span>: <span class="str">#60a5fa</span>;
+  <span class="attr">--shadow-color</span>: <span class="str">rgba(0, 0, 0, 0.3)</span>;
+}
+
+<span class="cm">/* ========== 应用变量 ========== */</span>
+<span class="kw">body</span> {
+  <span class="attr">background-color</span>: <span class="fn">var</span>(<span class="attr">--bg-color</span>);
+  <span class="attr">color</span>: <span class="fn">var</span>(<span class="attr">--text-color</span>);
+  <span class="attr">transition</span>: background-color <span class="num">0.3s</span> ease, color <span class="num">0.3s</span> ease;
+}
+
+<span class="kw">.card</span> {
+  <span class="attr">background</span>: <span class="fn">var</span>(<span class="attr">--card-bg</span>);
+  <span class="attr">border</span>: <span class="num">1px</span> solid <span class="fn">var</span>(<span class="attr">--border-color</span>);
+  <span class="attr">box-shadow</span>: <span class="num">0 2px 8px</span> <span class="fn">var</span>(<span class="attr">--shadow-color</span>);
+}</code></pre>
+
+<h3>逐行讲解</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>行</th><th>代码</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>1-7</td><td><code>:root { --bg-color: #fff... }</code></td><td>亮色主题的颜色定义，<code>:root</code> = 全局</td></tr>
+    <tr><td>10-16</td><td><code>[data-theme="dark"] { ... }</code></td><td>当 html 标签有 <code>data-theme="dark"</code> 时，覆盖这些变量</td></tr>
+    <tr><td>19-22</td><td><code>body { background: var(--bg-color)... }</code></td><td>使用变量，切换主题时自动变色</td></tr>
+    <tr><td>21</td><td><code>transition: ... 0.3s ease</code></td><td>加过渡动画，切换时颜色渐变不突兀</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout warn">
+  <p><strong><code>transition</code> 一定要加！</strong> 不加的话主题切换是"闪"过去的，很丑。加个 0.3 秒的过渡就丝滑了。</p>
+</div>
+
+<hr>
+
+<!-- ========== 24.3 ========== -->
+<h1 id="s24-3">24.3 手动实现主题切换按钮</h1>
+
+<h3>概念解释</h3>
+<p>手动实现就是不用任何库，纯用原生 JS 来切换主题。原理很简单：点击按钮 → 切换 <code>html</code> 的 <code>data-theme</code> 属性 → CSS 变量自动生效。</p>
+
+<h3>完整可运行代码</h3>
+<pre><div class="code-header"><span class="lang">jsx</span><button class="copy-btn" onclick="copyCode(this)">复制</button></div><code><span class="cm">// components/ThemeToggle.jsx</span>
+<span class="str">'use client'</span>
+
+<span class="kw">import</span> { useState, useEffect } <span class="kw">from</span> <span class="str">'react'</span>
+
+<span class="kw">export default function</span> <span class="fn">ThemeToggle</span>() {
+  <span class="kw">const</span> [theme, setTheme] = <span class="fn">useState</span>(<span class="str">'light'</span>)
+
+  <span class="cm">// 页面加载时，读取 localStorage 里保存的主题</span>
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="kw">const</span> saved = localStorage.<span class="fn">getItem</span>(<span class="str">'theme'</span>)
+    <span class="kw">if</span> (saved) {
+      <span class="fn">setTheme</span>(saved)
+      document.documentElement.<span class="fn">setAttribute</span>(<span class="str">'data-theme'</span>, saved)
+    }
+  }, [])
+
+  <span class="cm">// 切换主题</span>
+  <span class="kw">const</span> <span class="fn">toggleTheme</span> = () =&gt; {
+    <span class="kw">const</span> newTheme = theme === <span class="str">'light'</span> ? <span class="str">'dark'</span> : <span class="str">'light'</span>
+    <span class="fn">setTheme</span>(newTheme)
+    document.documentElement.<span class="fn">setAttribute</span>(<span class="str">'data-theme'</span>, newTheme)
+    localStorage.<span class="fn">setItem</span>(<span class="str">'theme'</span>, newTheme)  <span class="cm">// 记住选择</span>
+  }
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">button</span> <span class="attr">onClick</span>={toggleTheme} <span class="attr">className</span>=<span class="str">"theme-toggle"</span>&gt;
+      {theme === <span class="str">'light'</span> ? <span class="str">'🌙 切换暗色'</span> : <span class="str">'☀️ 切换亮色'</span>}
+    &lt;/<span class="tag">button</span>&gt;
+  )
+}</code></pre>
+
+<pre><div class="code-header"><span class="lang">css</span><button class="copy-btn" onclick="copyCode(this)">复制</button></div><code><span class="cm">/* 按钮样式 */</span>
+<span class="kw">.theme-toggle</span> {
+  <span class="attr">padding</span>: <span class="num">8px 16px</span>;
+  <span class="attr">border</span>: <span class="num">2px</span> solid <span class="fn">var</span>(<span class="attr">--border-color</span>);
+  <span class="attr">border-radius</span>: <span class="num">20px</span>;
+  <span class="attr">background</span>: <span class="fn">var</span>(<span class="attr">--card-bg</span>);
+  <span class="attr">color</span>: <span class="fn">var</span>(<span class="attr">--text-color</span>);
+  <span class="attr">cursor</span>: pointer;
+  <span class="attr">font-size</span>: <span class="num">14px</span>;
+  <span class="attr">transition</span>: all <span class="num">0.3s</span> ease;
+}
+
+<span class="kw">.theme-toggle:hover</span> {
+  <span class="attr">border-color</span>: <span class="fn">var</span>(<span class="attr">--primary-color</span>);
+}</code></pre>
+
+<h3>逐行讲解</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>行</th><th>代码</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>5</td><td><code>const [theme, setTheme] = useState('light')</code></td><td>用 state 记录当前主题</td></tr>
+    <tr><td>8-13</td><td><code>useEffect(() =&gt; {...})</code></td><td>页面加载时从 localStorage 读取上次保存的主题</td></tr>
+    <tr><td>10</td><td><code>document.documentElement.setAttribute(...)</code></td><td>给 <code>&lt;html&gt;</code> 标签设置 <code>data-theme</code> 属性</td></tr>
+    <tr><td>17-21</td><td><code>toggleTheme</code> 函数</td><td>亮变暗、暗变亮，同时存到 localStorage</td></tr>
+    <tr><td>25</td><td><code>{theme === 'light' ? '🌙' : '☀️'}</code></td><td>根据主题显示不同图标</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout warn">
+  <p><strong><code>document.documentElement</code> 是什么？</strong> 就是 <code>&lt;html&gt;</code> 标签。不是 <code>document.body</code>！变量是定义在 <code>:root</code>（等于 html）上的，所以要改 html 的属性。</p>
+  <p><strong>忘记 <code>'use client'</code></strong>：这个组件用了 <code>useState</code> 和 <code>useEffect</code>，是客户端组件，必须加这行，Next.js 才不会报错。</p>
+</div>
+
+<hr>
+
+<!-- ========== 24.4 ========== -->
+<h1 id="s24-4">24.4 用 next-themes 偷懒</h1>
+
+<h3>概念解释</h3>
+<p><code>next-themes</code> 是专门为 Next.js 写的主题切换库，帮你处理了：</p>
+<ul>
+  <li>SSR 时的主题闪烁问题</li>
+  <li>localStorage 读写</li>
+  <li>系统主题检测（自动跟随系统暗色模式）</li>
+  <li>初始加载时的 FOUC（无样式内容闪烁）</li>
+</ul>
+
+<div class="card"><p><strong>一句话：5 行代码搞定主题切换，别自己造轮子了。</strong></p></div>
+
+<h3>安装与使用对比</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>对比项</th><th>手动实现</th><th>next-themes</th></tr></thead>
+  <tbody>
+    <tr><td>代码量</td><td>30+ 行</td><td>5 行</td></tr>
+    <tr><td>SSR 闪烁</td><td>需要自己处理</td><td>自动处理</td></tr>
+    <tr><td>系统主题跟随</td><td>要自己写</td><td>内置支持</td></tr>
+    <tr><td>localStorage</td><td>手动读写</td><td>自动</td></tr>
+    <tr><td>学习成本</td><td>低（但坑多）</td><td>极低</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>完整可运行代码</h3>
+
+<pre><div class="code-header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">复制</button></div><code><span class="cm"># 第 1 步：安装</span>
+npm install next-themes</code></pre>
+
+<pre><div class="code-header"><span class="lang">jsx</span><button class="copy-btn" onclick="copyCode(this)">复制</button></div><code><span class="cm">// app/providers.jsx</span>
+<span class="str">'use client'</span>
+
+<span class="kw">import</span> { ThemeProvider } <span class="kw">from</span> <span class="str">'next-themes'</span>
+
+<span class="kw">export default function</span> <span class="fn">Providers</span>({ children }) {
+  <span class="kw">return</span> (
+    &lt;<span class="tag">ThemeProvider</span> <span class="attr">attribute</span>=<span class="str">"data-theme"</span> <span class="attr">defaultTheme</span>=<span class="str">"system"</span>&gt;
+      {children}
+    &lt;/<span class="tag">ThemeProvider</span>&gt;
+  )
+}</code></pre>
+
+<pre><div class="code-header"><span class="lang">jsx</span><button class="copy-btn" onclick="copyCode(this)">复制</button></div><code><span class="cm">// app/layout.jsx</span>
+<span class="kw">import</span> Providers <span class="kw">from</span> <span class="str">'./providers'</span>
+
+<span class="kw">export default function</span> <span class="fn">RootLayout</span>({ children }) {
+  <span class="kw">return</span> (
+    &lt;<span class="tag">html</span> <span class="attr">lang</span>=<span class="str">"zh"</span> <span class="attr">suppressHydrationWarning</span>&gt;
+      &lt;<span class="tag">body</span>&gt;
+        &lt;<span class="tag">Providers</span>&gt;
+          {children}
+        &lt;/<span class="tag">Providers</span>&gt;
+      &lt;/<span class="tag">body</span>&gt;
+    &lt;/<span class="tag">html</span>&gt;
+  )
+}</code></pre>
+
+<pre><div class="code-header"><span class="lang">jsx</span><button class="copy-btn" onclick="copyCode(this)">复制</button></div><code><span class="cm">// components/ThemeToggle.jsx</span>
+<span class="str">'use client'</span>
+
+<span class="kw">import</span> { useTheme } <span class="kw">from</span> <span class="str">'next-themes'</span>
+<span class="kw">import</span> { useEffect, useState } <span class="kw">from</span> <span class="str">'react'</span>
+
+<span class="kw">export default function</span> <span class="fn">ThemeToggle</span>() {
+  <span class="kw">const</span> { theme, setTheme } = <span class="fn">useTheme</span>()
+  <span class="kw">const</span> [mounted, setMounted] = <span class="fn">useState</span>(<span class="num">false</span>)
+
+  <span class="cm">// 避免 SSR 水合不匹配</span>
+  <span class="fn">useEffect</span>(() =&gt; <span class="fn">setMounted</span>(<span class="num">true</span>), [])
+  <span class="kw">if</span> (!mounted) <span class="kw">return null</span>
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">button</span>
+      <span class="attr">onClick</span>={() =&gt; <span class="fn">setTheme</span>(theme === <span class="str">'dark'</span> ? <span class="str">'light'</span> : <span class="str">'dark'</span>)}
+      <span class="attr">className</span>=<span class="str">"theme-toggle"</span>
+    &gt;
+      {theme === <span class="str">'dark'</span> ? <span class="str">'☀️ 亮色模式'</span> : <span class="str">'🌙 暗色模式'</span>}
+    &lt;/<span class="tag">button</span>&gt;
+  )
+}</code></pre>
+
+<h3>逐行讲解</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>文件</th><th>关键代码</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>providers.jsx</td><td><code>&lt;ThemeProvider attribute="data-theme"&gt;</code></td><td>告诉库用 <code>data-theme</code> 属性切换主题</td></tr>
+    <tr><td>providers.jsx</td><td><code>defaultTheme="system"</code></td><td>默认跟随系统设置</td></tr>
+    <tr><td>layout.jsx</td><td><code>suppressHydrationWarning</code></td><td>防止 SSR 水合警告（因为服务端和客户端主题可能不同）</td></tr>
+    <tr><td>ThemeToggle.jsx</td><td><code>const { theme, setTheme } = useTheme()</code></td><td>一行代码获取主题状态和切换函数</td></tr>
+    <tr><td>ThemeToggle.jsx</td><td><code>if (!mounted) return null</code></td><td>服务端不渲染，避免闪烁</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout warn">
+  <p><strong><code>mounted</code> 是干嘛的？</strong> 服务端渲染时不知道用户是什么主题，直接渲染会导致服务端和客户端内容不一致（水合错误）。先返回 <code>null</code>，等客户端挂载后再渲染。</p>
+  <p><strong><code>suppressHydrationWarning</code> 别乱加</strong>：只在 <code>&lt;html&gt;</code> 标签上加，其他地方加了会掩盖真正的错误。</p>
+</div>
+
+<hr>
+
+<!-- ========== 24.5 ========== -->
+<h1 id="s24-5">24.5 backdrop-filter 毛玻璃效果</h1>
+
+<h3>概念解释</h3>
+<p><strong>毛玻璃效果</strong>就是让元素背景变成"磨砂玻璃"——你能透过它看到后面的模糊内容，但又看不清楚。macOS 的 Dock 栏、iOS 的通知中心都是这种效果。</p>
+
+<h3>语法表格</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>属性</th><th>值</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td><code>backdrop-filter: blur(10px)</code></td><td>数值越大越模糊</td><td>核心属性，设置模糊半径</td></tr>
+    <tr><td><code>backdrop-filter: blur() saturate(180%)</code></td><td>多个滤镜组合</td><td>模糊 + 增强饱和度</td></tr>
+    <tr><td><code>background: rgba(255,255,255,0.7)</code></td><td>半透明背景</td><td><strong>必须有</strong>，否则看不出模糊</td></tr>
+    <tr><td><code>-webkit-backdrop-filter</code></td><td>同上</td><td>Safari 浏览器需要加前缀</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>关键：为什么必须有半透明背景？</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>背景设置</th><th>效果</th></tr></thead>
+  <tbody>
+    <tr><td><code>background: white</code></td><td>完全看不到毛玻璃，白色挡住了</td></tr>
+    <tr><td><code>background: rgba(255,255,255,0.7)</code></td><td>✅ 70% 白色 + 透过去的内容模糊</td></tr>
+    <tr><td><code>background: rgba(255,255,255,0)</code></td><td>全透明，模糊效果太强，内容看不清</td></tr>
+    <tr><td>没写 background</td><td>❌ 无效，backdrop-filter 需要背景才能生效</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>完整可运行代码</h3>
+<pre><div class="code-header"><span class="lang">css</span><button class="copy-btn" onclick="copyCode(this)">复制</button></div><code><span class="cm">/* 毛玻璃卡片 */</span>
+<span class="kw">.glass-card</span> {
+  <span class="attr">background</span>: <span class="str">rgba(255, 255, 255, 0.25)</span>;   <span class="cm">/* 半透明背景 */</span>
+  <span class="attr">backdrop-filter</span>: <span class="fn">blur</span>(<span class="num">12px</span>);              <span class="cm">/* 核心：模糊 */</span>
+  <span class="attr">-webkit-backdrop-filter</span>: <span class="fn">blur</span>(<span class="num">12px</span>);      <span class="cm">/* Safari 兼容 */</span>
+  <span class="attr">border</span>: <span class="num">1px</span> solid <span class="str">rgba(255, 255, 255, 0.3)</span>; <span class="cm">/* 半透明边框 */</span>
+  <span class="attr">border-radius</span>: <span class="num">12px</span>;
+  <span class="attr">padding</span>: <span class="num">20px</span>;
+  <span class="attr">box-shadow</span>: <span class="num">0 8px 32px</span> <span class="str">rgba(0, 0, 0, 0.1)</span>;
+}
+
+<span class="cm">/* 暗色模式下的毛玻璃 */</span>
+<span class="kw">[data-theme="dark"] .glass-card</span> {
+  <span class="attr">background</span>: <span class="str">rgba(0, 0, 0, 0.25)</span>;          <span class="cm">/* 暗色半透明 */</span>
+  <span class="attr">border</span>: <span class="num">1px</span> solid <span class="str">rgba(255, 255, 255, 0.1)</span>;
+}</code></pre>
+
+<h3>逐行讲解</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>行</th><th>代码</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>2</td><td><code>background: rgba(255, 255, 255, 0.25)</code></td><td>25% 不透明度的白色，让后面的内容可以"透过来"</td></tr>
+    <tr><td>3</td><td><code>backdrop-filter: blur(12px)</code></td><td>对元素<strong>后面</strong>的内容施加 12px 高斯模糊</td></tr>
+    <tr><td>4</td><td><code>-webkit-backdrop-filter</code></td><td>Safari 浏览器的兼容写法，必须加</td></tr>
+    <tr><td>5</td><td><code>border: 1px solid rgba(255,255,255,0.3)</code></td><td>半透明边框，和毛玻璃风格统一</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout warn">
+  <p><strong>写了 <code>backdrop-filter</code> 没效果？</strong> 99% 是因为没有写 <code>background</code>（或背景完全不透明）。毛玻璃效果的本质是"透过半透明背景看模糊的后面内容"，没有半透明背景就没效果。</p>
+  <p><strong>Safari 没效果？</strong> 忘了加 <code>-webkit-backdrop-filter</code>。苹果系浏览器（Safari、iOS WebView）必须加 <code>-webkit-</code> 前缀。</p>
+  <p><strong><code>filter: blur()</code> ≠ <code>backdrop-filter: blur()</code></strong>：前者模糊的是元素自身内容，后者模糊的是元素后面的内容。导航栏要用 <code>backdrop-filter</code>！</p>
+</div>
+
+<hr>
+
+<!-- ========== 24.6 ========== -->
+<h1 id="s24-6">24.6 实战：导航栏毛玻璃 + 主题切换</h1>
+
+<h3>完整可运行代码</h3>
+<pre><div class="code-header"><span class="lang">jsx</span><button class="copy-btn" onclick="copyCode(this)">复制</button></div><code><span class="cm">// components/Navbar.jsx</span>
+<span class="str">'use client'</span>
+
+<span class="kw">import</span> { useTheme } <span class="kw">from</span> <span class="str">'next-themes'</span>
+<span class="kw">import</span> { useEffect, useState } <span class="kw">from</span> <span class="str">'react'</span>
+
+<span class="kw">export default function</span> <span class="fn">Navbar</span>() {
+  <span class="kw">const</span> { theme, setTheme } = <span class="fn">useTheme</span>()
+  <span class="kw">const</span> [mounted, setMounted] = <span class="fn">useState</span>(<span class="num">false</span>)
+
+  <span class="fn">useEffect</span>(() =&gt; <span class="fn">setMounted</span>(<span class="num">true</span>), [])
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">nav</span> <span class="attr">className</span>=<span class="str">"navbar"</span>&gt;
+      &lt;<span class="tag">div</span> <span class="attr">className</span>=<span class="str">"navbar-inner"</span>&gt;
+        {<span class="cm">/* 左侧 Logo */</span>}
+        &lt;<span class="tag">span</span> <span class="attr">className</span>=<span class="str">"logo"</span>&gt;🌐 MyBlog&lt;/<span class="tag">span</span>&gt;
+
+        {<span class="cm">/* 右侧导航 + 主题切换 */</span>}
+        &lt;<span class="tag">div</span> <span class="attr">className</span>=<span class="str">"nav-right"</span>&gt;
+          &lt;<span class="tag">a</span> <span class="attr">href</span>=<span class="str">"/"</span>&gt;首页&lt;/<span class="tag">a</span>&gt;
+          &lt;<span class="tag">a</span> <span class="attr">href</span>=<span class="str">"/about"</span>&gt;关于&lt;/<span class="tag">a</span>&gt;
+          &lt;<span class="tag">a</span> <span class="attr">href</span>=<span class="str">"/blog"</span>&gt;文章&lt;/<span class="tag">a</span>&gt;
+
+          {mounted &amp;&amp; (
+            &lt;<span class="tag">button</span>
+              <span class="attr">onClick</span>={() =&gt; <span class="fn">setTheme</span>(theme === <span class="str">'dark'</span> ? <span class="str">'light'</span> : <span class="str">'dark'</span>)}
+              <span class="attr">className</span>=<span class="str">"theme-btn"</span>
+            &gt;
+              {theme === <span class="str">'dark'</span> ? <span class="str">'☀️'</span> : <span class="str">'🌙'</span>}
+            &lt;/<span class="tag">button</span>&gt;
+          )}
+        &lt;/<span class="tag">div</span>&gt;
+      &lt;/<span class="tag">div</span>&gt;
+    &lt;/<span class="tag">nav</span>&gt;
+  )
+}</code></pre>
+
+<pre><div class="code-header"><span class="lang">css</span><button class="copy-btn" onclick="copyCode(this)">复制</button></div><code><span class="cm">/* styles/navbar.css */</span>
+
+<span class="cm">/* 导航栏：固定在顶部 + 毛玻璃 */</span>
+<span class="kw">.navbar</span> {
+  <span class="attr">position</span>: fixed;          <span class="cm">/* 固定定位，滚动时跟着走 */</span>
+  <span class="attr">top</span>: <span class="num">0</span>;
+  <span class="attr">left</span>: <span class="num">0</span>;
+  <span class="attr">right</span>: <span class="num">0</span>;
+  <span class="attr">z-index</span>: <span class="num">1000</span>;            <span class="cm">/* 确保在最上层 */</span>
+
+  <span class="cm">/* 毛玻璃三件套 */</span>
+  <span class="attr">background</span>: <span class="str">rgba(255, 255, 255, 0.7)</span>;
+  <span class="attr">backdrop-filter</span>: <span class="fn">blur</span>(<span class="num">16px</span>);
+  <span class="attr">-webkit-backdrop-filter</span>: <span class="fn">blur</span>(<span class="num">16px</span>);
+  <span class="attr">border-bottom</span>: <span class="num">1px</span> solid <span class="str">rgba(0, 0, 0, 0.1)</span>;
+
+  <span class="attr">transition</span>: background <span class="num">0.3s</span> ease;
+}
+
+<span class="cm">/* 暗色模式导航栏 */</span>
+<span class="kw">[data-theme="dark"] .navbar</span> {
+  <span class="attr">background</span>: <span class="str">rgba(26, 26, 46, 0.7)</span>;
+  <span class="attr">border-bottom</span>: <span class="num">1px</span> solid <span class="str">rgba(255, 255, 255, 0.05)</span>;
+}
+
+<span class="cm">/* 导航栏内容居中 */</span>
+<span class="kw">.navbar-inner</span> {
+  <span class="attr">max-width</span>: <span class="num">1200px</span>;
+  <span class="attr">margin</span>: <span class="num">0</span> auto;
+  <span class="attr">padding</span>: <span class="num">12px 24px</span>;
+  <span class="attr">display</span>: flex;
+  <span class="attr">justify-content</span>: space-between;
+  <span class="attr">align-items</span>: center;
+}
+
+<span class="cm">/* Logo */</span>
+<span class="kw">.logo</span> {
+  <span class="attr">font-size</span>: <span class="num">20px</span>;
+  <span class="attr">font-weight</span>: bold;
+  <span class="attr">color</span>: <span class="fn">var</span>(<span class="attr">--text-color</span>);
+}
+
+<span class="cm">/* 右侧导航链接 */</span>
+<span class="kw">.nav-right</span> {
+  <span class="attr">display</span>: flex;
+  <span class="attr">align-items</span>: center;
+  <span class="attr">gap</span>: <span class="num">20px</span>;
+}
+
+<span class="kw">.nav-right a</span> {
+  <span class="attr">color</span>: <span class="fn">var</span>(<span class="attr">--text-color</span>);
+  <span class="attr">text-decoration</span>: none;
+  <span class="attr">font-size</span>: <span class="num">15px</span>;
+  <span class="attr">opacity</span>: <span class="num">0.8</span>;
+  <span class="attr">transition</span>: opacity <span class="num">0.2s</span>;
+}
+
+<span class="kw">.nav-right a:hover</span> {
+  <span class="attr">opacity</span>: <span class="num">1</span>;
+}
+
+<span class="cm">/* 主题切换按钮 */</span>
+<span class="kw">.theme-btn</span> {
+  <span class="attr">padding</span>: <span class="num">6px 10px</span>;
+  <span class="attr">border</span>: <span class="num">1px</span> solid <span class="fn">var</span>(<span class="attr">--border-color</span>);
+  <span class="attr">border-radius</span>: <span class="num">8px</span>;
+  <span class="attr">background</span>: transparent;
+  <span class="attr">cursor</span>: pointer;
+  <span class="attr">font-size</span>: <span class="num">18px</span>;
+  <span class="attr">transition</span>: all <span class="num">0.2s</span>;
+}
+
+<span class="kw">.theme-btn:hover</span> {
+  <span class="attr">background</span>: <span class="fn">var</span>(<span class="attr">--card-bg</span>);
+}</code></pre>
+
+<h3>效果说明</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>特性</th><th>实现方式</th></tr></thead>
+  <tbody>
+    <tr><td>导航栏固定在顶部</td><td><code>position: fixed</code></td></tr>
+    <tr><td>背景模糊（毛玻璃）</td><td><code>backdrop-filter: blur(16px)</code></td></tr>
+    <tr><td>半透明背景</td><td><code>rgba(255,255,255,0.7)</code></td></tr>
+    <tr><td>暗色模式适配</td><td><code>[data-theme="dark"]</code> 选择器覆盖颜色</td></tr>
+    <tr><td>切换主题</td><td><code>next-themes</code> 的 <code>useTheme</code></td></tr>
+    <tr><td>防止闪烁</td><td><code>mounted</code> 状态判断</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout warn">
+  <p><strong><code>position: fixed</code> 后导航栏"消失"了？</strong> 可能被其他元素挡住了，检查 <code>z-index</code> 是否足够大。</p>
+  <p><strong><code>max-width: 1200px</code> 的作用？</strong> 让内容不会在大屏幕上拉得太宽。<code>margin: 0 auto</code> 让它居中。</p>
+</div>
+
+<hr>
+
+<!-- ========== 24.7 ========== -->
+<h1 id="s24-7">24.7 本章复盘</h1>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>知识点</th><th>核心内容</th><th>一句话记忆</th></tr></thead>
+  <tbody>
+    <tr><td>CSS 变量</td><td><code>--变量名</code> 定义，<code>var()</code> 使用</td><td>变量是主题切换的基础</td></tr>
+    <tr><td>主题切换原理</td><td>给 html 加 <code>data-theme</code> 属性，CSS 变量自动切换</td><td>改一个属性，全局颜色跟着变</td></tr>
+    <tr><td>手动实现</td><td>JS 切换 <code>data-theme</code> + localStorage 持久化</td><td>自己造轮子，30 行代码</td></tr>
+    <tr><td>next-themes</td><td><code>ThemeProvider</code> 包裹 + <code>useTheme</code> 使用</td><td>5 行代码，自动处理 SSR 闪烁</td></tr>
+    <tr><td>mounted 防闪烁</td><td><code>useEffect</code> 设置 mounted，未挂载返回 null</td><td>服务端不渲染主题相关内容</td></tr>
+    <tr><td>backdrop-filter</td><td><code>blur(12px)</code> 模糊后面的内容</td><td>必须配合半透明 background</td></tr>
+    <tr><td>-webkit- 前缀</td><td>Safari 浏览器兼容</td><td>苹果浏览器要加前缀</td></tr>
+    <tr><td>filter vs backdrop-filter</td><td><code>filter</code> 模糊自身，<code>backdrop-filter</code> 模糊后面</td><td>导航栏用 backdrop</td></tr>
+    <tr><td>suppressHydrationWarning</td><td>只在 <code>&lt;html&gt;</code> 上加，消除 SSR 警告</td><td>别乱加，只加 html 标签</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>速查卡片</h3>
+<pre><div class="code-header"><span class="lang">速查</span></div><code>🎨 昼夜模式 = CSS 变量 + data-theme 切换
+🧊 毛玻璃 = 半透明背景 + backdrop-filter: blur()
+⚡ next-themes = ThemeProvider + useTheme
+🔒 持久化 = localStorage（库帮你搞定）
+🚫 防闪烁 = mounted 状态 + suppressHydrationWarning</code></pre>
+
+<div class="card">
+  <p>🎉 <strong>恭喜你完成了阶段五（外围生态）的全部学习！</strong> 从 Tailwind CSS 到第三方组件，从 MongoDB 数据库到评论功能，再到昼夜模式与毛玻璃效果——你的前端技能树又点亮了一大片。</p>
+</div>
+
+<hr>
+
+<!-- 下一章预告 -->
+<blockquote>
+<strong>下一章预告</strong>：前端基础学习告一段落！接下来可以探索<strong>TypeScript</strong>、<strong>状态管理</strong>、<strong>测试</strong>等进阶主题。
+</blockquote>
+
+<!-- 上下章导航 -->
+<div class="nav-links">
+  <a href="5-ecosystem-23博客评论功能实现.html">⬅️ 上一章：博客评论功能实现</a>
+  <a href="../frontend/index.html">📚 返回学习导航</a>
+</div>
+
+<p style="text-align:center;color:var(--text-muted);font-size:.82rem;margin-top:3rem">本文档由 zyyc-0336 编写，最后更新：2026-06-14</p>
+
+
+
+<script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('back-top').classList.toggle('show', h.scrollTop > 300);
+});
+
+// Copy code
+function copyCode(btn) {
+  const code = btn.parentElement.querySelector('code');
+  navigator.clipboard.writeText(code.innerText).then(() => {
+    btn.textContent = '已复制 ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+
+<button id="back-top" onclick="window.scrollTo({top:0})" title="回到顶部">↑</button>
+
+</body><!-- 底部区域 -->
+<div class="section" style="margin-top:48px">
+
+<!-- 复盘 -->
+<h1 id="s24-7">24.7 本章复盘</h1>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>知识点</th><th>核心内容</th><th>一句话记忆</th></tr></thead>
+  <tbody>
+    <tr><td>CSS 变量</td><td><code>--变量名</code> 定义，<code>var()</code> 使用</td><td>变量是主题切换的基础</td></tr>
+    <tr><td>主题切换原理</td><td>给 html 加 <code>data-theme</code> 属性，CSS 变量自动切换</td><td>改一个属性，全局颜色跟着变</td></tr>
+    <tr><td>手动实现</td><td>JS 切换 <code>data-theme</code> + localStorage 持久化</td><td>自己造轮子，30 行代码</td></tr>
+    <tr><td>next-themes</td><td><code>ThemeProvider</code> 包裹 + <code>useTheme</code> 使用</td><td>5 行代码，自动处理 SSR 闪烁</td></tr>
+    <tr><td>mounted 防闪烁</td><td><code>useEffect</code> 设置 mounted，未挂载返回 null</td><td>服务端不渲染主题相关内容</td></tr>
+    <tr><td>backdrop-filter</td><td><code>blur(12px)</code> 模糊后面的内容</td><td>必须配合半透明 background</td></tr>
+    <tr><td>-webkit- 前缀</td><td>Safari 浏览器兼容</td><td>苹果浏览器要加前缀</td></tr>
+    <tr><td>filter vs backdrop-filter</td><td><code>filter</code> 模糊自身，<code>backdrop-filter</code> 模糊后面</td><td>导航栏用 backdrop</td></tr>
+    <tr><td>suppressHydrationWarning</td><td>只在 <code>&lt;html&gt;</code> 上加，消除 SSR 警告</td><td>别乱加，只加 html 标签</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr style="margin:32px 0;border-color:#334155">
+
+<!-- 下一章预告 -->
+<blockquote>
+<strong>下一章预告</strong>：前端基础学习告一段落！接下来可以探索<strong>TypeScript</strong>、<strong>状态管理</strong>、<strong>测试</strong>等进阶主题。
+</blockquote>
+
+<!-- 上下章导航 -->
+<div class="nav-links" style="margin-top:24px">
+<a href="5-ecosystem-23博客评论功能实现.html">⬅️ 上一章：博客评论功能实现</a>
+<a href="../frontend/index.html">📚 返回学习导航</a>
+</div>
+
+<p style="text-align:center;color:var(--text-muted);font-size:.82rem;margin-top:32px">本文档由 zyyc-0336 编写，最后更新：2026-06-14</p>
+
+</div>
+
+
+<script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('back-top').classList.toggle('show', h.scrollTop > 300);
+});
+
+// Copy code
+function copyCode(btn) {
+  const code = btn.parentElement.querySelector('code');
+  navigator.clipboard.writeText(code.innerText).then(() => {
+    btn.textContent = '已复制 ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+
+<button id="back-top" onclick="window.scrollTo({top:0})" title="回到顶部">↑</button>
+
+</body>
+</html>

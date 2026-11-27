@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第17章 API Routes</title>
+<link rel="stylesheet" href="assets/book.css">
+
+<div id="progress"></div>
+
+<nav>
+  <a href="index.html" class="back-link">← 返回</a>
+  <span class="nav-title">API Routes</span>
+  <div class="nav-links">
+
+    <a href="#171">17.1 基础</a>
+    <a href="#172">17.2 动态路由</a>
+    <a href="#173">17.3 中间件</a>
+    <a href="#174">17.4 数据库</a>
+  
+  </div>
+</nav>
+
+<div class="content">
+
+<!-- Header -->
+<h1>第17章 API Routes</h1>
+<p style="color:#94a3b8;margin-bottom:6px">Next.js 后端 API 开发入门</p>
+<p style="font-size:.9em;color:#64748b">作者：zyyc-0336 &nbsp;|&nbsp; 日期：2026-06-12</p>
+
+<h2>17.1 前端也能写接口？</h2>
+<div class="info">
+  传统开发中，前端负责页面，后端负责接口（API）。但 Next.js 让你在<strong>同一个项目</strong>里写出接口，不用单独搭一个后端服务器。
+</div>
+
+<h3>API Route 是什么？</h3>
+<p>简单说，它就是一个 URL 地址，当前端访问这个地址时，服务器会执行一段代码并返回数据。</p>
+
+<pre><code><span style="color:#8b949e">前端页面：</span>  /articles/hello     → 返回 HTML 页面
+<span style="color:#8b949e">API Route：</span>/api/comments        → 返回 JSON 数据</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+
+<div class="info">💡 通俗理解：<strong>页面是给用户看的，API 是给程序用的</strong>。API 返回的是纯数据（JSON），不是网页。</div>
+</section>
+
+<!-- 17.2 -->
+<section id="s2">
+<h2>17.2 和传统后端的区别</h2>
+<div class="table-wrap glow-card">
+<table>
+  <thead><tr><th>对比项</th><th>传统后端（Express/Koa）</th><th>Next.js API Route</th></tr></thead>
+  <tbody>
+    <tr><td>需要单独的项目？</td><td>是</td><td>不用，和前端同项目</td></tr>
+    <tr><td>需要配服务器？</td><td>是</td><td>不用，Next.js 自带</td></tr>
+    <tr><td>独立部署？</td><td>是</td><td>和前端一起部署</td></tr>
+    <tr><td>适合场景</td><td>复杂后端逻辑</td><td>简单接口、快速原型</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="info">💡 如果你的接口逻辑很复杂（比如需要连接多种数据库、处理消息队列），建议用独立后端。如果只是简单的 CRUD 操作，API Route 完全够用。</div>
+</section>
+
+<!-- 17.3 -->
+<section id="s3">
+<h2>17.3 文件结构</h2>
+<div class="info">在 Next.js 的 App Router 中，API Route 就是一个放在 <code>app/</code> 目录下的 <code>route.js</code> 文件：</div>
+
+<pre><code>src/app/
+├── page.js                    # 首页
+├── layout.js                  # 布局
+└── api/
+    └── hello/
+        └── route.js           # → 对应 /api/hello</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+
+<div class="callout warn">⚠️ 注意：文件名必须是 <code>route.js</code>（或 <code>route.ts</code>），不能是 <code>index.js</code> 或其他名字。</div>
+</section>
+
+<!-- 17.4 -->
+<section id="s4">
+<h2>17.4 GET 请求示例</h2>
+
+<pre><code><span style="color:#8b949e">// src/app/api/hello/route.js</span>
+<span style="color:#ff7b72">import</span> { NextResponse } <span style="color:#ff7b72">from</span> <span style="color:#a5d6ff">'next/server'</span>
+
+<span style="color:#8b949e">// 处理 GET 请求</span>
+<span style="color:#ff7b72">export async function</span> <span style="color:#d2a8ff">GET</span>() {
+    <span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">json</span>({
+        message: <span style="color:#a5d6ff">'Hello, API!'</span>,
+        time: <span style="color:#ff7b72">new</span> Date().<span style="color:#d2a8ff">toLocaleString</span>()
+    })
+}</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+
+<h3>代码解读</h3>
+<div class="table-wrap glow-card">
+<table>
+  <thead><tr><th>代码</th><th>含义</th></tr></thead>
+  <tbody>
+    <tr><td><code>export async function GET()</code></td><td>导出一个叫 <code>GET</code> 的异步函数，处理 GET 请求</td></tr>
+    <tr><td><code>NextResponse.json({...})</code></td><td>返回一个 JSON 格式的响应</td></tr>
+    <tr><td><code>new Date().toLocaleString()</code></td><td>获取当前时间</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="info">💡 <code>GET</code> 函数名必须<strong>全大写</strong>，它对应 HTTP 的 GET 方法。Next.js 会根据文件路径自动映射 URL。</div>
+</section>
+
+<!-- 17.5 -->
+<section id="s5">
+<h2>17.5 测试接口</h2>
+<p>启动开发服务器后，打开浏览器访问：</p>
+<pre><code>http://localhost:3000/api/hello</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+<p>你应该看到：</p>
+<pre><code>{
+  "message": "Hello, API!",
+  "time": "2026/6/12 14:30:00"
+}</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+<div class="info">💡 测试 API 也可以用 <code>curl</code> 命令：<code>curl http://localhost:3000/api/hello</code></div>
+</section>
+
+<!-- 17.6 -->
+<section id="s6">
+<h2>17.6 接收 JSON 数据</h2>
+<div class="info">当前端用 POST 方法提交 JSON 数据时，需要用 <code>await request.json()</code> 来获取：</div>
+
+<pre><code><span style="color:#ff7b72">export async function</span> <span style="color:#d2a8ff">POST</span>(request) {
+    <span style="color:#8b949e">// 注意：json() 是异步的，必须加 await</span>
+    <span style="color:#ff7b72">const</span> body = <span style="color:#ff7b72">await</span> request.<span style="color:#d2a8ff">json</span>()
+
+    console.<span style="color:#d2a8ff">log</span>(<span style="color:#a5d6ff">'收到的数据：'</span>, body)
+
+    <span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">json</span>({
+        success: <span style="color:#79c0ff">true</span>,
+        received: body
+    })
+}</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+
+<div class="callout warn">⚠️ <code>request.json()</code> 返回的是 Promise，<strong>必须加 <code>await</code></strong>，否则你拿到的是一个 Promise 对象，不是实际数据。</div>
+</section>
+
+<!-- 17.7 -->
+<section id="s7">
+<h2>17.7 完整示例：评论接口</h2>
+
+<pre><code><span style="color:#8b949e">// src/app/api/comments/route.js</span>
+<span style="color:#ff7b72">import</span> { NextResponse } <span style="color:#ff7b72">from</span> <span style="color:#a5d6ff">'next/server'</span>
+
+<span style="color:#8b949e">// 模拟数据库（用数组存储）</span>
+<span style="color:#ff7b72">const</span> comments = [
+    { id: <span style="color:#79c0ff">1</span>, user: <span style="color:#a5d6ff">'小明'</span>, content: <span style="color:#a5d6ff">'写得不错！'</span>, time: <span style="color:#a5d6ff">'2026-06-10'</span> },
+    { id: <span style="color:#79c0ff">2</span>, user: <span style="color:#a5d6ff">'小红'</span>, content: <span style="color:#a5d6ff">'学到了！'</span>, time: <span style="color:#a5d6ff">'2026-06-11'</span> }
+]
+
+<span style="color:#8b949e">// GET：获取所有评论</span>
+<span style="color:#ff7b72">export async function</span> <span style="color:#d2a8ff">GET</span>() {
+    <span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">json</span>({
+        success: <span style="color:#79c0ff">true</span>,
+        data: comments
+    })
+}
+
+<span style="color:#8b949e">// POST：添加新评论</span>
+<span style="color:#ff7b72">export async function</span> <span style="color:#d2a8ff">POST</span>(request) {
+    <span style="color:#ff7b72">const</span> body = <span style="color:#ff7b72">await</span> request.<span style="color:#d2a8ff">json</span>()
+
+    <span style="color:#8b949e">// 简单验证</span>
+    <span style="color:#ff7b72">if</span> (!body.user || !body.content) {
+        <span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">json</span>(
+            { success: <span style="color:#79c0ff">false</span>, message: <span style="color:#a5d6ff">'用户名和评论内容不能为空'</span> },
+            { status: <span style="color:#79c0ff">400</span> }
+        )
+    }
+
+    <span style="color:#8b949e">// 创建新评论</span>
+    <span style="color:#ff7b72">const</span> newComment = {
+        id: comments.length + <span style="color:#79c0ff">1</span>,
+        user: body.user,
+        content: body.content,
+        time: <span style="color:#ff7b72">new</span> Date().<span style="color:#d2a8ff">toISOString</span>().<span style="color:#d2a8ff">split</span>(<span style="color:#a5d6ff">'T'</span>)[<span style="color:#79c0ff">0</span>]
+    }
+
+    comments.<span style="color:#d2a8ff">push</span>(newComment)
+
+    <span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">json</span>({
+        success: <span style="color:#79c0ff">true</span>,
+        data: newComment,
+        message: <span style="color:#a5d6ff">'评论成功！'</span>
+    }, { status: <span style="color:#79c0ff">201</span> })
+}</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+
+<h3>代码解读</h3>
+<div class="table-wrap glow-card">
+<table>
+  <thead><tr><th>部分</th><th>含义</th></tr></thead>
+  <tbody>
+    <tr><td><code>const comments = [...]</code></td><td>模拟数据库，实际项目会用数据库</td></tr>
+    <tr><td><code>if (!body.user || !body.content)</code></td><td>验证必填字段</td></tr>
+    <tr><td><code>NextResponse.json({...}, { status: 400 })</code></td><td>返回错误状态码</td></tr>
+    <tr><td><code>{ status: 201 }</code></td><td>201 表示"已创建"，是 POST 成功的标准状态码</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- 17.8 -->
+<section id="s8">
+<h2>17.8 NextRequest 的常用方法</h2>
+<div class="info"><code>request</code> 参数是一个 <code>NextRequest</code> 对象，它比原生的 <code>Request</code> 多了很多实用方法：</div>
+
+<pre><code><span style="color:#ff7b72">export async function</span> <span style="color:#d2a8ff">GET</span>(request) {
+    <span style="color:#8b949e">// 获取 URL 查询参数</span>
+    <span style="color:#ff7b72">const</span> name = request.nextUrl.searchParams.<span style="color:#d2a8ff">get</span>(<span style="color:#a5d6ff">'name'</span>)
+
+    <span style="color:#8b949e">// 获取请求头</span>
+    <span style="color:#ff7b72">const</span> userAgent = request.headers.<span style="color:#d2a8ff">get</span>(<span style="color:#a5d6ff">'user-agent'</span>)
+
+    <span style="color:#8b949e">// 获取 cookies</span>
+    <span style="color:#ff7b72">const</span> token = request.cookies.<span style="color:#d2a8ff">get</span>(<span style="color:#a5d6ff">'token'</span>)
+
+    <span style="color:#8b949e">// 获取完整 URL</span>
+    <span style="color:#ff7b72">const</span> url = request.nextUrl.href
+
+    <span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">json</span>({ name, userAgent, url })
+}</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+
+<h3>常用属性/方法速查</h3>
+<div class="table-wrap glow-card">
+<table>
+  <thead><tr><th>方法</th><th>作用</th><th>示例</th></tr></thead>
+  <tbody>
+    <tr><td><code>request.nextUrl.searchParams</code></td><td>获取 URL 查询参数</td><td><code>/api/hello?name=小明</code> → <code>get('name')</code> = <code>'小明'</code></td></tr>
+    <tr><td><code>request.headers</code></td><td>获取请求头</td><td><code>headers.get('content-type')</code></td></tr>
+    <tr><td><code>request.cookies</code></td><td>获取 Cookie</td><td><code>cookies.get('token')</code></td></tr>
+    <tr><td><code>request.json()</code></td><td>获取 POST 的 JSON 数据</td><td><code>await request.json()</code></td></tr>
+    <tr><td><code>request.method</code></td><td>获取请求方法</td><td><code>'GET'</code>、<code>'POST'</code></td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- 17.9 -->
+<section id="s9">
+<h2>17.9 NextResponse 的常用方法</h2>
+
+<pre><code><span style="color:#8b949e">// 返回 JSON</span>
+<span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">json</span>({ data: <span style="color:#a5d6ff">'hello'</span> })
+
+<span style="color:#8b949e">// 返回 JSON 并设置状态码</span>
+<span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">json</span>({ error: <span style="color:#a5d6ff">'未找到'</span> }, { status: <span style="color:#79c0ff">404</span> })
+
+<span style="color:#8b949e">// 重定向</span>
+<span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">redirect</span>(<span style="color:#ff7b72">new</span> URL(<span style="color:#a5d6ff">'/login'</span>, request.url))
+
+<span style="color:#8b949e">// 设置响应头</span>
+<span style="color:#ff7b72">const</span> response = NextResponse.<span style="color:#d2a8ff">json</span>({ data: <span style="color:#a5d6ff">'hello'</span> })
+response.headers.<span style="color:#d2a8ff">set</span>(<span style="color:#a5d6ff">'X-Custom-Header'</span>, <span style="color:#a5d6ff">'my-value'</span>)
+<span style="color:#ff7b72">return</span> response
+
+<span style="color:#8b949e">// 设置 Cookie</span>
+<span style="color:#ff7b72">const</span> response = NextResponse.<span style="color:#d2a8ff">json</span>({ success: <span style="color:#79c0ff">true</span> })
+response.cookies.<span style="color:#d2a8ff">set</span>(<span style="color:#a5d6ff">'token'</span>, <span style="color:#a5d6ff">'abc123'</span>, { httpOnly: <span style="color:#79c0ff">true</span> })
+<span style="color:#ff7b72">return</span> response</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+</section>
+
+<!-- 17.10 -->
+<section id="s10">
+<h2>17.10 获取 URL 参数</h2>
+
+<h3>查询参数（<code>?key=value</code>）</h3>
+<pre><code><span style="color:#8b949e">// 访问：/api/articles?page=2&limit=10</span>
+<span style="color:#ff7b72">export async function</span> <span style="color:#d2a8ff">GET</span>(request) {
+    <span style="color:#ff7b72">const</span> page = request.nextUrl.searchParams.<span style="color:#d2a8ff">get</span>(<span style="color:#a5d6ff">'page'</span>)   <span style="color:#8b949e">// '2'</span>
+    <span style="color:#ff7b72">const</span> limit = request.nextUrl.searchParams.<span style="color:#d2a8ff">get</span>(<span style="color:#a5d6ff">'limit'</span>)  <span style="color:#8b949e">// '10'</span>
+
+    <span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">json</span>({ page, limit })
+}</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+
+<h3>动态路由参数（放在文件夹名里）</h3>
+<pre><code>src/app/api/articles/[id]/route.js  →  /api/articles/123</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+
+<pre><code><span style="color:#8b949e">// src/app/api/articles/[id]/route.js</span>
+<span style="color:#ff7b72">export async function</span> <span style="color:#d2a8ff">GET</span>(request, { params }) {
+    <span style="color:#ff7b72">const</span> { id } = <span style="color:#ff7b72">await</span> params  <span style="color:#8b949e">// 注意：params 是异步的，需要 await</span>
+    <span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">json</span>({ articleId: id })
+}</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+
+<div class="callout warn">⚠️ 在 Next.js 15+ 中，<code>params</code> 是一个 Promise，必须用 <code>await</code> 获取。</div>
+</section>
+
+<!-- 17.11 -->
+<section id="s11">
+<h2>17.11 接口设计</h2>
+<div class="table-wrap glow-card">
+<table>
+  <thead><tr><th>接口</th><th>方法</th><th>说明</th><th>请求体</th></tr></thead>
+  <tbody>
+    <tr><td><code>/api/comments</code></td><td>GET</td><td>获取文章的所有评论</td><td>无</td></tr>
+    <tr><td><code>/api/comments</code></td><td>POST</td><td>提交新评论</td><td><code>{ user, content, articleId }</code></td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- 17.12 -->
+<section id="s12">
+<h2>17.12 完整代码</h2>
+<details class="glow-card">
+  <summary>📄 查看完整 comments/route.js 代码</summary>
+  <div class="details-body">
+<pre><code><span style="color:#8b949e">// src/app/api/comments/route.js</span>
+<span style="color:#ff7b72">import</span> { NextResponse } <span style="color:#ff7b72">from</span> <span style="color:#a5d6ff">'next/server'</span>
+
+<span style="color:#8b949e">// 模拟数据库</span>
+<span style="color:#ff7b72">let</span> comments = [
+    { id: <span style="color:#79c0ff">1</span>, articleId: <span style="color:#a5d6ff">'hello-world'</span>, user: <span style="color:#a5d6ff">'小明'</span>, content: <span style="color:#a5d6ff">'写得不错！'</span>, time: <span style="color:#a5d6ff">'2026-06-10'</span> },
+    { id: <span style="color:#79c0ff">2</span>, articleId: <span style="color:#a5d6ff">'hello-world'</span>, user: <span style="color:#a5d6ff">'小红'</span>, content: <span style="color:#a5d6ff">'学到了！'</span>, time: <span style="color:#a5d6ff">'2026-06-11'</span> },
+    { id: <span style="color:#79c0ff">3</span>, articleId: <span style="color:#a5d6ff">'react-basics'</span>, user: <span style="color:#a5d6ff">'小刚'</span>, content: <span style="color:#a5d6ff">'感谢分享'</span>, time: <span style="color:#a5d6ff">'2026-06-11'</span> }
+]
+
+<span style="color:#8b949e">// GET：获取评论（支持按文章筛选）</span>
+<span style="color:#ff7b72">export async function</span> <span style="color:#d2a8ff">GET</span>(request) {
+    <span style="color:#ff7b72">const</span> articleId = request.nextUrl.searchParams.<span style="color:#d2a8ff">get</span>(<span style="color:#a5d6ff">'articleId'</span>)
+
+    <span style="color:#ff7b72">let</span> result = comments
+    <span style="color:#ff7b72">if</span> (articleId) {
+        result = comments.<span style="color:#d2a8ff">filter</span>(c => c.articleId === articleId)
+    }
+
+    <span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">json</span>({
+        success: <span style="color:#79c0ff">true</span>,
+        total: result.length,
+        data: result
+    })
+}
+
+<span style="color:#8b949e">// POST：添加评论</span>
+<span style="color:#ff7b72">export async function</span> <span style="color:#d2a8ff">POST</span>(request) {
+    <span style="color:#ff7b72">try</span> {
+        <span style="color:#ff7b72">const</span> body = <span style="color:#ff7b72">await</span> request.<span style="color:#d2a8ff">json</span>()
+
+        <span style="color:#8b949e">// 验证必填字段</span>
+        <span style="color:#ff7b72">if</span> (!body.user || !body.content || !body.articleId) {
+            <span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">json</span>(
+                { success: <span style="color:#79c0ff">false</span>, message: <span style="color:#a5d6ff">'缺少必填字段：user、content、articleId'</span> },
+                { status: <span style="color:#79c0ff">400</span> }
+            )
+        }
+
+        <span style="color:#8b949e">// 验证内容长度</span>
+        <span style="color:#ff7b72">if</span> (body.content.length > <span style="color:#79c0ff">500</span>) {
+            <span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">json</span>(
+                { success: <span style="color:#79c0ff">false</span>, message: <span style="color:#a5d6ff">'评论内容不能超过 500 字'</span> },
+                { status: <span style="color:#79c0ff">400</span> }
+            )
+        }
+
+        <span style="color:#8b949e">// 创建新评论</span>
+        <span style="color:#ff7b72">const</span> newComment = {
+            id: comments.length + <span style="color:#79c0ff">1</span>,
+            articleId: body.articleId,
+            user: body.user,
+            content: body.content,
+            time: <span style="color:#ff7b72">new</span> Date().<span style="color:#d2a8ff">toISOString</span>().<span style="color:#d2a8ff">split</span>(<span style="color:#a5d6ff">'T'</span>)[<span style="color:#79c0ff">0</span>]
+        }
+
+        comments.<span style="color:#d2a8ff">push</span>(newComment)
+
+        <span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">json</span>({
+            success: <span style="color:#79c0ff">true</span>,
+            data: newComment,
+            message: <span style="color:#a5d6ff">'评论成功！'</span>
+        }, { status: <span style="color:#79c0ff">201</span> })
+
+    } <span style="color:#ff7b72">catch</span> (error) {
+        <span style="color:#ff7b72">return</span> NextResponse.<span style="color:#d2a8ff">json</span>(
+            { success: <span style="color:#79c0ff">false</span>, message: <span style="color:#a5d6ff">'请求格式错误，请发送 JSON'</span> },
+            { status: <span style="color:#79c0ff">400</span> }
+        )
+    }
+}</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+  </div>
+</details>
+</section>
+
+<!-- 17.13 -->
+<section id="s13">
+<h2>17.13 前端调用</h2>
+<p>在文章页面中调用 POST 接口提交评论：</p>
+
+<details class="glow-card">
+  <summary>📄 查看前端调用代码 (page.js)</summary>
+  <div class="details-body">
+<pre><code><span style="color:#8b949e">// src/app/articles/[slug]/page.js（部分代码）</span>
+<span style="color:#a5d6ff">'use client'</span>
+
+<span style="color:#ff7b72">import</span> { useState } <span style="color:#ff7b72">from</span> <span style="color:#a5d6ff">'react'</span>
+
+<span style="color:#ff7b72">export default function</span> <span style="color:#d2a8ff">ArticlePage</span>() {
+    <span style="color:#ff7b72">const</span> [comments, setComments] = <span style="color:#d2a8ff">useState</span>([])
+    <span style="color:#ff7b72">const</span> [user, setUser] = <span style="color:#d2a8ff">useState</span>(<span style="color:#a5d6ff">''</span>)
+    <span style="color:#ff7b72">const</span> [content, setContent] = <span style="color:#d2a8ff">useState</span>(<span style="color:#a5d6ff">''</span>)
+
+    <span style="color:#8b949e">// 提交评论</span>
+    <span style="color:#ff7b72">async function</span> <span style="color:#d2a8ff">handleSubmit</span>(e) {
+        e.<span style="color:#d2a8ff">preventDefault</span>()
+
+        <span style="color:#8b949e">// 发送 POST 请求</span>
+        <span style="color:#ff7b72">const</span> res = <span style="color:#ff7b72">await</span> <span style="color:#d2a8ff">fetch</span>(<span style="color:#a5d6ff">'/api/comments'</span>, {
+            method: <span style="color:#a5d6ff">'POST'</span>,
+            headers: { <span style="color:#a5d6ff">'Content-Type'</span>: <span style="color:#a5d6ff">'application/json'</span> },
+            body: JSON.<span style="color:#d2a8ff">stringify</span>({
+                user: user,
+                content: content,
+                articleId: <span style="color:#a5d6ff">'hello-world'</span>
+            })
+        })
+
+        <span style="color:#ff7b72">const</span> data = <span style="color:#ff7b72">await</span> res.<span style="color:#d2a8ff">json</span>()
+
+        <span style="color:#ff7b72">if</span> (data.success) {
+            <span style="color:#d2a8ff">setComments</span>([...comments, data.data])
+            <span style="color:#d2a8ff">setContent</span>(<span style="color:#a5d6ff">''</span>)
+            <span style="color:#d2a8ff">alert</span>(<span style="color:#a5d6ff">'评论成功！'</span>)
+        } <span style="color:#ff7b72">else</span> {
+            <span style="color:#d2a8ff">alert</span>(<span style="color:#a5d6ff">'评论失败：'</span> + data.message)
+        }
+    }
+
+    <span style="color:#ff7b72">return</span> (
+        &lt;div&gt;
+            &lt;h1&gt;文章页面&lt;/h1&gt;
+
+            {/* 评论表单 */}
+            &lt;form onSubmit={handleSubmit}&gt;
+                &lt;input
+                    value={user}
+                    onChange={(e) =&gt; <span style="color:#d2a8ff">setUser</span>(e.target.value)}
+                    placeholder=<span style="color:#a5d6ff">"你的名字"</span>
+                    required
+                /&gt;
+                &lt;textarea
+                    value={content}
+                    onChange={(e) =&gt; <span style="color:#d2a8ff">setContent</span>(e.target.value)}
+                    placeholder=<span style="color:#a5d6ff">"写下你的评论..."</span>
+                    required
+                /&gt;
+                &lt;button type=<span style="color:#a5d6ff">"submit"</span>&gt;提交评论&lt;/button&gt;
+            &lt;/form&gt;
+
+            {/* 评论列表 */}
+            &lt;div&gt;
+                {comments.<span style="color:#d2a8ff">map</span>(c =&gt; (
+                    &lt;div key={c.id}&gt;
+                        &lt;strong&gt;{c.user}&lt;/strong&gt; · {c.time}
+                        &lt;p&gt;{c.content}&lt;/p&gt;
+                    &lt;/div&gt;
+                ))}
+            &lt;/div&gt;
+        &lt;/div&gt;
+    )
+}</code><button class="copy-btn" onclick="copyCode(this)">复制</button></pre>
+  </div>
+</details>
+
+<h3>调用流程</h3>
+<div class="flow glow-card">用户点击"提交评论"
+       ↓
+前端 fetch('/api/comments', { method: 'POST', body: ... })
+       ↓
+Next.js 找到 app/api/comments/route.js 的 POST 函数
+       ↓
+执行 POST 函数，解析请求体，创建评论
+       ↓
+返回 JSON { success: true, data: {...} }
+       ↓
+前端收到响应，更新页面显示</div>
+
+<div class="info">💡 这就是前后端一体开发的魅力——不需要跨域、不需要单独部署后端，前端直接调用自己项目的接口。</div>
+</section>
+
+<!-- 底部区域 -->
+<div class="section" style="margin-top:48px">
+
+<!-- 复盘 -->
+<h2 id="review">本章复盘——API Routes 核心要点</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>要点</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><strong>API Routes</strong></td><td>pages/api 目录下创建后端接口</td></tr>
+<tr><td><strong>请求处理</strong></td><td>req.method 区分 GET/POST，req.body 获取数据</td></tr>
+<tr><td><strong>动态路由</strong></td><td>[slug].js 处理动态参数</td></tr>
+<tr><td><strong>数据验证</strong></td><td>服务端校验输入，防止恶意请求</td></tr>
+</tbody>
+</table>
+</div>
+
+<hr style="margin:32px 0;border-color:#334155">
+
+<!-- 下一章预告 -->
+<blockquote>
+<strong>下一章预告（第18章）</strong>：我们将学习<strong>样式与资源处理</strong>——CSS Modules、图片优化和字体加载。
+</blockquote>
+
+<!-- 上下章导航 -->
+<div class="nav-links" style="margin-top:24px">
+<a href="4-nextjs-16数据获取与预渲染.html">⬅️ 上一章：数据获取与预渲染</a>
+<a href="4-nextjs-18样式与资源处理.html">下一章：样式与资源处理 ➡️</a>
+</div>
+
+<p style="text-align:center;color:var(--text-muted);font-size:.82rem;margin-top:32px">本文档由 zyyc-0336 编写，最后更新：2026-06-14</p>
+
+</div>
+
+
+</div><!-- /container -->
+
+
+<script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('back-top').classList.toggle('show', h.scrollTop > 300);
+});
+
+// Copy code
+function copyCode(btn) {
+  const code = btn.parentElement.querySelector('code');
+  navigator.clipboard.writeText(code.innerText).then(() => {
+    btn.textContent = '已复制 ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+
+<button id="back-top" onclick="window.scrollTo({top:0})" title="回到顶部">↑</button>
+
+
+</body>
+</html>

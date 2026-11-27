@@ -1,0 +1,365 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第七章 树 · 数据结构教程</title>
+<meta name="description" content="第七章 树 — 二叉树的性质与四种遍历是主干，再往上是线索二叉树、树与森林的转换、哈夫曼编码。">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/detail.css">
+<link rel="stylesheet" href="../../assets/css/tutorial.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../../index.html#contest" class="contest-link">计挑赛</a>
+            <a href="../../蓝桥杯真题/exam/index.html">蓝桥真题</a>
+    <a href="../../problems/algorithm/index.html">算法题库</a>
+    <a href="../../problems/algorithm/paths.html">学习路径</a>
+    <a href="../../problems/algorithm/learn.html">算法学习</a>
+    <a href="../../problems/algorithm/lab.html">动画实验室</a>
+    <a href="index.html" class="active">数据结构</a>
+    <a href="../algorithm-competition/index.html">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../fullstack/index.html">全栈笔记</a>
+    <a href="../../tools/mistakes.html">错题本</a>
+  </nav>
+</div>
+
+<div class="docwrap">
+  <aside class="docnav">
+    <a class="back" href="index.html">← 教程目录</a>
+    <nav class="docnav-list">
+      <a href="ch01.html"><span class="n">01</span><span class="t">数据结构入门</span></a>
+      <a href="ch02.html"><span class="n">02</span><span class="t">链表</span></a>
+      <a href="ch03.html"><span class="n">03</span><span class="t">栈</span></a>
+      <a href="ch04.html"><span class="n">04</span><span class="t">队列</span></a>
+      <a href="ch05.html"><span class="n">05</span><span class="t">C++ STL 库教程（附带题库）</span></a>
+      <a href="ch06.html"><span class="n">06</span><span class="t">串、数组、矩阵和广义表</span></a>
+      <a href="ch07.html" class="on"><span class="n">07</span><span class="t">树</span></a>
+      <a href="ch08.html"><span class="n">08</span><span class="t">图</span></a>
+      <a href="ch09.html"><span class="n">09</span><span class="t">查找算法</span></a>
+      <a href="ch10.html"><span class="n">10</span><span class="t">排序算法</span></a>
+      <a href="ch11.html"><span class="n">11</span><span class="t">算法和竞赛</span></a>
+      <a href="ch12.html"><span class="n">12</span><span class="t">后记</span></a>
+    </nav>
+    <div class="navstat">12 章 · 87 节<br>114 张图</div>
+  </aside>
+
+  <main class="docmain">
+    <div class="doc-eyebrow">— DATA STRUCTURE / 07</div>
+    <h1 class="doc-title">第七章 树</h1>
+    <p class="doc-lead">二叉树的性质与四种遍历是主干，再往上是线索二叉树、树与森林的转换、哈夫曼编码。</p>
+    <div class="doc-meta">
+      <span class="chip">11 节</span>
+      <span class="chip">32 图</span>
+      <span class="chip">原文订正 1 处</span>
+    </div>
+    <div class="rule"></div>
+<section class="dsec" id="s1">
+  <div class="sec-no">01 / SECTION</div>
+  <h2>树的概念</h2>
+<ul class="pts">
+<li><strong>定义</strong>：树是 n 个结点的有限集合，属于非线性结构，无环。n=0 为空树；n&gt;0 时有 1 个根结点，其余结点分成 m 个互不相交的有限集，每个子集都是一棵子树。</li>
+<li><strong>结点相关术语</strong>：</li>
+<li class="sub">结点的度：该结点子树的个数。</li>
+<li class="sub">树的度：所有结点度的最大值。</li>
+<li class="sub">分支结点：度不为 0；叶子结点：度为 0。</li>
+<li class="sub">路径 i→j：两结点间的通路；路径长度 = 路径经过结点数减 1。</li>
+<li><strong>关系术语</strong>：孩子（后继）、双亲（父母）、兄弟（同一双亲的孩子）、子孙（所有子树中的结点）、祖先（根到该结点路径上的结点）。</li>
+<li><strong>层次与高度</strong>：根为第 1 层；树的高度 = 结点的最大层次。</li>
+<li><strong>有序树</strong>：子树从左到右有序、次序不可改变；无序树则相反。</li>
+<li><strong>森林</strong>：互不相交的树的集合（可以为 0 棵）。</li>
+<li><strong>四条性质</strong>：</li>
+<li class="sub">树的结点总数 = 所有结点度数之和 + 1（多的 1 是根）。</li>
+<li class="sub">度为 m 的树第 i 层最多有 m^(i-1) 个结点。</li>
+<li class="sub">高度为 h 的 m 次树至多有 (mʰ − 1)/(m − 1) 个结点。</li>
+<li class="sub">含 n 个结点的 m 次树最小高度为 ⌈logₘ(n(m−1) + 1)⌉。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/4853f50ee3ea5016.webp" width="814" height="646" data-full="assets/4853f50ee3ea5016.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s2">
+  <div class="sec-no">02 / SECTION</div>
+  <h2>二叉树及分类介绍</h2>
+<ul class="pts">
+<li><strong>定义</strong>：n（n≥0）个结点的有限集合，或为空，或由根结点 + 两棵互不相交的左子树、右子树组成。</li>
+<li><strong>三个特点</strong>：</li>
+<li class="sub">每个结点最多两棵子树，不存在度 &gt; 2 的结点。</li>
+<li class="sub">左子树与右子树<strong>有顺序</strong>，次序不能颠倒。</li>
+<li class="sub">即使只有一棵子树，也要区分是左还是右。</li>
+<li><strong>四条性质</strong>：</li>
+<li class="sub">第 i 层最多 2^(i-1) 个结点（i≥1）。</li>
+<li class="sub">深度为 k 的二叉树至多 2ᵏ − 1 个结点。</li>
+<li class="sub">含 n 个结点的二叉树高度至少为 log₂(n+1)。</li>
+<li class="sub">任意二叉树中，叶子数 n0 与度为 2 的结点数 n2 满足 <strong>n0 = n2 + 1</strong>（最常考）。</li>
+<li><strong>三种特殊形态</strong>：</li>
+<li class="sub">斜树：所有结点都只有左子树（左斜树）或只有右子树（右斜树）。</li>
+<li class="sub">满二叉树：所有分支结点都有左右子树，且所有叶子都在同一层；非叶子结点度必为 2；同深度中结点数、叶子数最多。</li>
+<li class="sub">完全二叉树：按层编号后，每个编号 i 的结点位置与同深度满二叉树中编号 i 的位置完全相同——即只允许最下层右侧“缺角”，不允许中间空缺。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/567c4cd989717f41.webp" width="606" height="538" data-full="assets/567c4cd989717f41.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/93186422beb96154.webp" width="421" height="494" data-full="assets/93186422beb96154.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/3083d03f12041ffc.webp" width="509" height="333" data-full="assets/3083d03f12041ffc.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/81e7cf90af39cd18.webp" width="479" height="407" data-full="assets/81e7cf90af39cd18.png" loading="lazy" decoding="async" alt="图4" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s3">
+  <div class="sec-no">03 / SECTION</div>
+  <h2>二叉树的存储（C语言实现）</h2>
+<ul class="pts">
+<li>本节以<strong>二叉排序树</strong>的插入为例演示链式存储：按大小关系自动把数据放进左/右位置。</li>
+<li><strong>结点设计</strong>（parent 指针可选，可省内存，加了便于向上查找）：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>typedef struct node { int data; struct node *left, *right; } Node;
+typedef struct { Node *root; } Tree;   // 树根</code></pre></div>
+
+<ul class="pts">
+<li><strong>创建/插入思路</strong>：</li>
+<li class="sub">先 malloc 新结点并赋数据，左右置 NULL；</li>
+<li class="sub">若 <code>tree-&gt;root == NULL</code>，直接让根指向它；</li>
+<li class="sub">否则从根开始循环比较：小于当前结点就往左走，大于就往右走；走到空位就挂上并 return。</li>
+<li>这样建成的树就是<strong>二叉排序树</strong>，中序遍历即可得到有序序列。</li>
+<li><strong>中序遍历参考</strong>：<code>if(node){ inorder(node-&gt;left); 输出; inorder(node-&gt;right); }</code></li>
+<li>主流程：建空树 <code>tree.root = NULL</code> → 循环读入 n 个数并 insert → inorder 输出。</li>
+<li>练手题：1731（二叉树的基本创建）。</li>
+</ul>
+</section>
+<section class="dsec" id="s4">
+  <div class="sec-no">04 / SECTION</div>
+  <h2>树的遍历之先序遍历二叉树</h2>
+<ul class="pts">
+<li>三句口诀：<strong>先序 根左右</strong>、<strong>中序 左根右</strong>、<strong>后序 左右根</strong>。</li>
+<li>为什么要约定局部次序：二叉树本身没有全局次序，只能通过结点与孩子之间的局部访问顺序间接定义全局顺序。</li>
+<li><strong>先序过程</strong>：先访问根 A → 进入左子树 B，B 又作为子树根继续下钻到 D → D 下钻到 E，E 无子结点 → 回退访问 F → 左子树完成 → 访问 G……</li>
+<li>示例树先序结果为 <strong>ABDEFGCH</strong>。</li>
+<li><strong>递归代码</strong>（就三行顺序不同）：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void preorder(Node* node){
+    if(node != NULL){ printf("%d ", node-&gt;data); preorder(node-&gt;left); preorder(node-&gt;right); }
+}</code></pre></div>
+
+<ul class="pts">
+<li><strong>扩展：前缀表达式（波兰式）</strong>——先序遍历算术表达式的二叉树即得。如 (a+b)*c 的波兰式为 <code>*+cab</code>。</li>
+<li>波兰式无需括号即可表示优先级，更适合计算机处理；实现常规式↔波兰式的转换一般借助栈。</li>
+<li>练手题：1734（二叉树的遍历）。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/b86eda9a0cd4cea0.webp" width="297" height="240" data-full="assets/b86eda9a0cd4cea0.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/dac61acc88ee1309.webp" width="566" height="385" data-full="assets/dac61acc88ee1309.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/537fbad8818e28e4.webp" width="360" height="271" data-full="assets/537fbad8818e28e4.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/5f382b992697072b.webp" width="423" height="346" data-full="assets/5f382b992697072b.png" loading="lazy" decoding="async" alt="图4" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s5">
+  <div class="sec-no">05 / SECTION</div>
+  <h2>树的遍历之中序遍历二叉树</h2>
+<ul class="pts">
+<li>口诀：<strong>左根右</strong>。最简情形：访问 B → A → C。</li>
+<li>实际过程：进入 ABC 后先走左子树 B；B 是 BDG 的根，继续下钻；遇到 DEF 这一组先得 EDF；把 EDF 整体当 BDG 的左部分回溯，得 EDFBG；再把 EDFBG 当作 ABC 的左部分，得 EDFBGAC；最后访问右部分 C。</li>
+<li>示例树中序结果为 <strong>EDFBGACH</strong>。</li>
+<li><strong>递归代码</strong>：<code>inorder(left); 输出; inorder(right);</code></li>
+<li><strong>应用：中缀表达式</strong>——中序遍历表达式二叉树即得我们熟悉的 <code>(a+b)*c</code>，需靠括号表达优先级，嵌套多时括号多。</li>
+<li>关系记忆：先序 ↔ 波兰式，中序 ↔ 常规式，后序 ↔ 逆波兰式。</li>
+<li>练习：1734；另可自己画出 <code>((a+b)+(c+d))*e</code> 的中缀表达式二叉树。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/1d5d104672252dc6.webp" width="297" height="240" data-full="assets/1d5d104672252dc6.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/46fd8581ab53e103.webp" width="566" height="385" data-full="assets/46fd8581ab53e103.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/43c0fe924d80b667.webp" width="360" height="271" data-full="assets/43c0fe924d80b667.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/3c81c91e115055b8.webp" width="423" height="346" data-full="assets/3c81c91e115055b8.png" loading="lazy" decoding="async" alt="图4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/2bba8983e2cfa13e.webp" width="444" height="416" data-full="assets/2bba8983e2cfa13e.png" loading="lazy" decoding="async" alt="图5" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s6">
+  <div class="sec-no">06 / SECTION</div>
+  <h2>树的遍历之后序遍历二叉树</h2>
+<ul class="pts">
+<li>口诀：<strong>左右根</strong>。最简情形：B → C → A。</li>
+<li>实际过程：先处理最深的左分支，E 与 F 都在末端，得到 EFD；EFD 作为 D 的结果，再与 G 合成 <strong>EFDGB</strong>；右分支 ^HC 中空结点跳过，得 <strong>HC</strong>；最后 EFDGB（左）+ HC（右）+ A（根）。</li>
+<li>示例树后序结果为 <strong>EFDGBHCA</strong>。</li>
+<li><strong>递归代码</strong>：<code>postorder(left); postorder(right); 输出;</code></li>
+<li><strong>应用：后缀表达式（逆波兰式）</strong>——后序遍历得 <code>ab+c*</code>。</li>
+<li>逆波兰式的读取与计算天然契合<strong>栈</strong>的思路；考试中常见“波兰式 / 常规式 / 逆波兰式互相转换 + 求值”题型。</li>
+<li>练习：1734；并思考 <code>((a+b)+(c+d))*e</code> 的后缀表达式写法。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/299c98757f8a09c7.webp" width="297" height="240" data-full="assets/299c98757f8a09c7.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/974cc7f60be7bbb4.webp" width="566" height="385" data-full="assets/974cc7f60be7bbb4.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/3829286598e49e67.webp" width="360" height="271" data-full="assets/3829286598e49e67.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6fd9863347c9bce1.webp" width="423" height="346" data-full="assets/6fd9863347c9bce1.png" loading="lazy" decoding="async" alt="图4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f668712ec8f2a453.webp" width="444" height="416" data-full="assets/f668712ec8f2a453.png" loading="lazy" decoding="async" alt="图5" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s7">
+  <div class="sec-no">07 / SECTION</div>
+  <h2>DFS（深度优先搜索）算法讲解（附模板及习题）</h2>
+<ul class="pts">
+<li><strong>DFS</strong>：沿一条分支尽可能深地搜索，走不通就回溯到上一个分叉，直到所有结点被访问。</li>
+<li>DFS 的访问顺序称 <strong>DFS 序</strong>；同一棵树的 DFS 序可能不唯一（取决于子结点访问次序）。</li>
+<li>与先序遍历本质一致，区别只在：树的子结点可以是多个分支，而不止左右两个。</li>
+<li>复杂度代价：未加优化时，深度为 n 的二叉树上做 DFS 可达 <strong>O(2ⁿ)</strong>。</li>
+<li><strong>剪枝</strong>：提前判断该分支已不可能产生解，直接舍弃其后的所有结点，是提升 DFS 效率的关键手段。</li>
+<li><strong>标准模板</strong>：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>bool check(参数){ if(满足条件) return true; return false; }
+
+void dfs(int step){
+    判断边界;              // 到边界则执行相应操作并 return
+    for(尝试每一种可能){
+        if(check()){ 标记; dfs(step+1); 恢复初始状态; }  // 回溯必须恢复现场
+    }
+}</code></pre></div>
+
+<ul class="pts">
+<li>三步要点：边界判断、状态标记、回溯恢复——缺一不可。</li>
+<li>练手题：1177 三角形（含一点 DP 思维）、1861 程序员爬楼梯、1531 数的划分。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/b477399e0d770294.webp" width="386" height="302" data-full="assets/b477399e0d770294.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s8">
+  <div class="sec-no">08 / SECTION</div>
+  <h2>树形模拟法的运用（C语言例题讲解）</h2>
+<ul class="pts">
+<li>实战中很少真去建树，通常用<strong>多个数组模拟</strong>：一个数组存“指向的下标”，一个数组存“值”，二者一一对应。</li>
+<li>数组模拟的核心：<code>nxt[i]</code> 记录第 i 个结点的孩子下标，天然跳过 malloc 与指针，写起来更快。</li>
+<li><strong>例题一：全排列</strong></li>
+<li class="sub">暴力思路要写 10 层 for 循环 + if 判重，极其臃肿；</li>
+<li class="sub">DFS 思路：用 <code>p[x]</code> 记录第 x 位放什么数，<code>vis[i]</code> 标记 i 是否用过，递归层数即 for 的层数；</li>
+<li class="sub">边界：<code>x == n+1</code> 时输出整组排列并 return；</li>
+<li class="sub">每层枚举 1..n，未使用则填入 → 标记 → 递归 → 恢复标记。</li>
+<li>C++ 已有现成解法：<code>next_permutation</code>。</li>
+<li><strong>例题二：程序员爬楼梯</strong>（每次走 1 步或 3 步，求走到第 n 格的方案数）</li>
+<li class="sub">把“已走步数 k”作为状态建二叉树：k 的两个孩子是 k+1 与 k+3；</li>
+<li class="sub"><code>dfs(k)</code>：<code>k == n</code> 则 ans++ 返回；<code>k &gt; n</code> 则直接返回（剪枝）；否则递归 <code>dfs(k+1)</code>、<code>dfs(k+3)</code>。</li>
+<li>模拟 + DFS 的通用体会：用数组替代指针结构，用递归替代多层循环，用边界判断与标记数组控制状态。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/fec2f886678174e9.webp" width="467" height="103" data-full="assets/fec2f886678174e9.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/03fc8e33c80ee212.webp" width="555" height="332" data-full="assets/03fc8e33c80ee212.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/3c0f3f334804dda0.webp" width="565" height="334" data-full="assets/3c0f3f334804dda0.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s9">
+  <div class="sec-no">09 / SECTION</div>
+  <h2>二叉树(树)与森林的相互转换</h2>
+<ul class="pts">
+<li><strong>森林</strong>：m（≥0）棵互不相交的树的集合，可把每棵树视为一个点。</li>
+<li><strong>树 → 二叉树</strong>三步：</li>
+<li class="sub">加线：在兄弟之间加连线；</li>
+<li class="sub">抹线：每个结点只保留与第一个孩子的连线，其余孩子的连线抹掉；</li>
+<li class="sub">旋转：以根为轴心顺时针旋转 45°。</li>
+<li>结论：树转成的二叉树，其<strong>右子树一定为空</strong>。</li>
+<li><strong>二叉树 → 树</strong>三步：</li>
+<li class="sub">加线：若 p 是双亲的左孩子，把 p 的右孩子、右孩子的右孩子……（沿右分支的所有结点）都与 p 的双亲连起来；</li>
+<li class="sub">抹线：抹掉原二叉树中双亲与右孩子的连线；</li>
+<li class="sub">调整：按层次排列成树形。</li>
+<li><strong>森林 → 二叉树</strong>：各树先各自转成二叉树 → 把各棵树的根用线连起来 → 以第一棵树的根为总根，顺时针旋转 45°。</li>
+<li><strong>二叉树 → 森林</strong>：抹掉根与其右孩子、以及沿右分支所有右孩子之间的连线，变成若干孤立二叉树 → 再把每棵孤立二叉树还原成树。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/fbf92f6340ea3c75.webp" width="1304" height="769" data-full="assets/fbf92f6340ea3c75.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/df14051f42cea0bf.webp" width="1282" height="754" data-full="assets/df14051f42cea0bf.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/96aaf3f327a630d1.webp" width="1213" height="729" data-full="assets/96aaf3f327a630d1.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a0a1f0218a004118.webp" width="1248" height="795" data-full="assets/a0a1f0218a004118.png" loading="lazy" decoding="async" alt="图4" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s10">
+  <div class="sec-no">10 / SECTION</div>
+  <h2>哈夫曼树的介绍及C语言代码实现</h2>
+<ul class="pts">
+<li><strong>哈夫曼树（最优二叉树）</strong>：给定 N 个权值作为 N 个叶子结点，构造二叉树使<strong>带权路径长度 WPL 最小</strong>的树；权值越大离根越近。</li>
+<li><strong>术语</strong>：</li>
+<li class="sub">路径：结点间的通路；路径长度：每经过一个结点加 1（根到第 i 层的路径长度为 i−1）。</li>
+<li class="sub">结点的权：赋予该结点的数值。</li>
+<li class="sub">结点的带权路径长度 = 路径长度 × 权值。</li>
+<li class="sub"><strong>WPL</strong> = 所有叶子结点的带权路径长度之和。</li>
+<li><strong>构建规则（贪心）</strong>：</li>
+<li class="sub">先取权值最小的两个作为左右孩子，根的权为二者之和；</li>
+<li class="sub">把新根放回待处理集合，再取最小的与它组成新的一层；</li>
+<li class="sub">重复直到只剩一个根。</li>
+<li>示例（叶子权 1、4、6、8）：WPL = 8×1 + 6×2 + 1×3 + 4×3 = <strong>35</strong>（原文此处写作 273，按公式应为 35，属笔误）。</li>
+<li><strong>结点结构</strong>（用数组存，靠下标索引孩子与双亲，需 parent 域）：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>typedef struct { int weight; int parent, left, right; } HTNode, *HuffmanTree;</code></pre></div>
+
+<ul class="pts">
+<li><strong>建树流程</strong>（n 个叶子 → 共 2n−1 个结点，0 号位不用）：</li>
+<li class="sub">初始化 1..n 为叶子（weight 赋权值，parent/left/right 置 0）；</li>
+<li class="sub">初始化 n+1..2n−1 为待生成的内部结点（全 0）；</li>
+<li class="sub">循环 i = n+1..2n−1：调用 Select 找两个无父结点且权最小的 s1、s2 → 令二者 parent = i，i 的 left = s1、right = s2，weight = 两者之和。</li>
+<li><code>if(n &lt;= 1) return;</code> 特判：只有一个编码时无需构树。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/6a0a287dc95aabc4.webp" width="519" height="281" data-full="assets/6a0a287dc95aabc4.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0fc58b2fb3a708cf.webp" width="498" height="313" data-full="assets/0fc58b2fb3a708cf.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/66b2df3d36fc2f73.webp" width="547" height="427" data-full="assets/66b2df3d36fc2f73.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/44cb0c6053b0a905.webp" width="538" height="502" data-full="assets/44cb0c6053b0a905.png" loading="lazy" decoding="async" alt="图4" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s11">
+  <div class="sec-no">11 / SECTION</div>
+  <h2>哈夫曼树编码与查找算法（C语言实现）</h2>
+<ul class="pts">
+<li><strong>Select 的作用</strong>：在 1..end 中挑出两个 parent 为 0（尚未被用）的最小权结点，返回其下标。</li>
+<li><strong>挑选逻辑</strong>：</li>
+</ul>
+<p class="doc-lead">先找到第一个未使用结点记为 min1（s1），再找第二个作 min2（s2），二者比较，小的记 min1、大的记 min2； 之后逐个扫描其余未使用结点，分两种情况：</p>
+<ul class="pts">
+<li class="sub">比 min1 还小：min2 ← min1，min1 ← 新值，s2 ← s1，s1 ← j；</li>
+<li class="sub">介于两者之间：min2 ← 新值，s2 ← j。</li>
+<li><strong>哈夫曼编码</strong>：可变字长编码（VLC），按字符出现概率构造，使平均码长最短，又称最佳编码。</li>
+<li>目的：出现频率高的字符用更短的 0/1 串（更靠近根），从而最大化压缩存储空间。</li>
+<li>关键性质：它是<strong>无前缀编码</strong>——任一编码都不是另一编码的前缀，因此解码时不会混淆。</li>
+<li>应用：数据压缩、加密解密、文件传输。</li>
+<li>实现提示：从叶子出发沿 parent 向上回溯，左分支记 0、右分支记 1，再把得到的序列逆序即为该字符编码。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/d3baac94bb86e643.webp" width="585" height="501" data-full="assets/d3baac94bb86e643.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+    <div class="qnav">
+        <a class="prev" href="ch06.html"><span class="k">PREV / 06</span><span class="t">串、数组、矩阵和广义表</span></a>
+        <a class="next" href="ch08.html"><span class="k">NEXT / 08</span><span class="t">图</span></a>
+    </div>
+  </main>
+
+  <aside class="docside">
+    <div class="k">ON THIS PAGE</div>
+    <ol>
+      <li><a href="#s1">树的概念</a></li>
+      <li><a href="#s2">二叉树及分类介绍</a></li>
+      <li><a href="#s3">二叉树的存储（C语言实现）</a></li>
+      <li><a href="#s4">树的遍历之先序遍历二叉树</a></li>
+      <li><a href="#s5">树的遍历之中序遍历二叉树</a></li>
+      <li><a href="#s6">树的遍历之后序遍历二叉树</a></li>
+      <li><a href="#s7">DFS（深度优先搜索）算法讲解（附模板及习题）</a></li>
+      <li><a href="#s8">树形模拟法的运用（C语言例题讲解）</a></li>
+      <li><a href="#s9">二叉树(树)与森林的相互转换</a></li>
+      <li><a href="#s10">哈夫曼树的介绍及C语言代码实现</a></li>
+      <li><a href="#s11">哈夫曼树编码与查找算法（C语言实现）</a></li>
+    </ol>
+  </aside>
+</div>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>数据结构与算法教程笔记，整理自 dotcpp 教程（C 语言中文网），按 12 章重写为「章 → 节 → 要点」的形式，图片外挂存储。原文如有笔误，已在对应要点标注订正。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="index.html">数据结构教程</a>
+        <a href="../../problems/algorithm/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../fullstack/index.html">全栈笔记</a>
+        <a href="../../tools/mistakes.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/tutorial.js" defer></script>
+</body>
+</html>

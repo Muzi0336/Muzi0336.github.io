@@ -1,0 +1,382 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第十章 其他算法 · 算法竞赛教程</title>
+<meta name="description" content="第十章 其他算法 — 分块、莫队、CDQ、树上启发式合并、表达式求值，这些不在前面章节里的通用技巧都收在这里。">
+<meta name="theme-color" content="#f4f1e9">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/detail.css">
+<link rel="stylesheet" href="../../assets/css/tutorial.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../../index.html#contest" class="contest-link">计挑赛</a>
+            <a href="../../蓝桥杯真题/exam/index.html">蓝桥真题</a>
+    <a href="../../problems/algorithm/index.html">算法题库</a>
+    <a href="../../problems/algorithm/paths.html">学习路径</a>
+    <a href="../../problems/algorithm/learn.html">算法学习</a>
+    <a href="../../problems/algorithm/lab.html">动画实验室</a>
+    <a href="../data-structures/index.html">数据结构</a>
+    <a href="index.html" class="active">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../fullstack/index.html">全栈笔记</a>
+    <a href="../../tools/mistakes.html">错题本</a>
+  </nav>
+</div>
+
+<div class="docwrap">
+  <aside class="docnav">
+    <a class="back" href="index.html">← 教程目录</a>
+    <nav class="docnav-list">
+      <a href="ch01.html"><span class="n">01</span><span class="t">算法基础</span></a>
+      <a href="ch02.html"><span class="n">02</span><span class="t">搜索算法</span></a>
+      <a href="ch03.html"><span class="n">03</span><span class="t">排序算法</span></a>
+      <a href="ch04.html"><span class="n">04</span><span class="t">字符串相关</span></a>
+      <a href="ch05.html"><span class="n">05</span><span class="t">数学相关</span></a>
+      <a href="ch06.html"><span class="n">06</span><span class="t">动态规划</span></a>
+      <a href="ch07.html"><span class="n">07</span><span class="t">数据结构</span></a>
+      <a href="ch08.html"><span class="n">08</span><span class="t">图论</span></a>
+      <a href="ch09.html"><span class="n">09</span><span class="t">计算几何</span></a>
+      <a href="ch10.html" class="on"><span class="n">10</span><span class="t">其他算法</span></a>
+    </nav>
+    <div class="navstat">10 章 · 172 节<br>964 张图</div>
+  </aside>
+
+  <main class="docmain">
+    <div class="doc-eyebrow">— ALGORITHM CONTEST / 10</div>
+    <h1 class="doc-title">第十章 其他算法</h1>
+    <p class="doc-lead">分块、莫队、CDQ、树上启发式合并、表达式求值，这些不在前面章节里的通用技巧都收在这里。</p>
+    <div class="doc-meta">
+      <span class="chip">11 节</span>
+      <span class="chip">54 图</span>
+    </div>
+    <div class="rule"></div>
+<section class="dsec" id="s1">
+  <div class="sec-no">01 / SECTION</div>
+  <h2>离散化算法实例讲解</h2>
+<ul class="pts">
+<li><strong>问题</strong>：值的范围极大（如 1e9）但个数很少（如 1e5），无法直接开数组做下标。</li>
+<li><strong>做法</strong>：排序 → 去重 → 用 <code>lower_bound</code> 把原值替换成“排名”，得到 1..k 的紧凑下标。</li>
+<li>复杂度 <code>O(n log n)</code>，之后所有依赖下标的数据结构（树状数组、线段树、桶）都能正常使用。</li>
+<li>关键点：<strong>只关心相对大小/顺序</strong>的问题才能离散化；涉及“值本身参与运算（如求和、差值）”时不可替换原值。</li>
+<li>常与“前缀和/树状数组求逆序对/区间覆盖”配合。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>vector&lt;int&gt; v(a, a + n);
+sort(v.begin(), v.end()); v.erase(unique(v.begin(), v.end()), v.end());
+for (int i = 0; i &lt; n; ++i)
+    a[i] = lower_bound(v.begin(), v.end(), a[i]) - v.begin() + 1;</code></pre></div>
+
+</section>
+<section class="dsec" id="s2">
+  <div class="sec-no">02 / SECTION</div>
+  <h2>常用的双指针技巧</h2>
+<ul class="pts">
+<li><strong>思想</strong>：用两个下标同向或相向移动，把 <code>O(n²)</code> 的枚举降为 <code>O(n)</code>，前提是<strong>单调性</strong>（移动方向不回退）。</li>
+<li>四种典型形态：</li>
+<li class="sub"><strong>同向快慢指针</strong>：快指针探索、慢指针维护窗口（滑动窗口、去重、链表判环）；</li>
+<li class="sub"><strong>相向指针</strong>：有序数组的两数之和、反转字符串、回文判定；</li>
+<li class="sub"><strong>对撞指针 + 排序</strong>：三数之和（固定一个 + 双指针）；</li>
+<li class="sub"><strong>归并式双指针</strong>：合并两个有序数组、求交集。</li>
+<li>滑动窗口模板：右指针扩张直到不满足条件，左指针收缩直到重新满足，过程中更新答案。</li>
+<li>注意：双指针一般要求数组有序或答案具有单调性，否则需要用数据结构（如单调队列/哈希）维护。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>// 长度最小的子数组：和 ≥ target
+int l = 0, sum = 0, ans = INT_MAX;
+for (int r = 0; r &lt; n; ++r) {
+    sum += a[r];
+    while (sum &gt;= target) { ans = min(ans, r - l + 1); sum -= a[l++]; }
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/cd55223e72caa1fc.webp" width="692" height="222" data-full="assets/cd55223e72caa1fc.png" loading="lazy" decoding="async" alt="图1 左右指针1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/80814be197cb25c5.webp" width="679" height="221" data-full="assets/80814be197cb25c5.png" loading="lazy" decoding="async" alt="图2 左右指针2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d37f217c4bbb1ac6.webp" width="677" height="238" data-full="assets/d37f217c4bbb1ac6.png" loading="lazy" decoding="async" alt="图3 左右指针3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/39b02df6caa04769.webp" width="683" height="249" data-full="assets/39b02df6caa04769.png" loading="lazy" decoding="async" alt="图4 左右指针4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7d281cfdb4d0a3bb.webp" width="2000" height="1125" data-full="assets/7d281cfdb4d0a3bb.png" loading="lazy" decoding="async" alt="图5 快慢指针1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/aaff2a951ce2c443.webp" width="2000" height="1125" data-full="assets/aaff2a951ce2c443.png" loading="lazy" decoding="async" alt="图6 快慢指针2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/380072c6450b2bc9.webp" width="2000" height="1125" data-full="assets/380072c6450b2bc9.png" loading="lazy" decoding="async" alt="图7 快慢指针3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ac4b478ac523b9a8.webp" width="2000" height="1125" data-full="assets/ac4b478ac523b9a8.png" loading="lazy" decoding="async" alt="图8 快慢指针4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8366cd3c4ed40e99.webp" width="2000" height="1125" data-full="assets/8366cd3c4ed40e99.png" loading="lazy" decoding="async" alt="图9 快慢指针5" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s3">
+  <div class="sec-no">03 / SECTION</div>
+  <h2>在线算法和离线算法的区别</h2>
+<ul class="pts">
+<li><strong>在线算法</strong>：输入逐个到达，必须<strong>立即</strong>给出当前答案，不能等全部数据到齐（如交互题、动态查询）。</li>
+<li><strong>离线算法</strong>：先读入全部数据，重新排序/分块后统一处理，最后按原顺序输出（如莫队、CDQ 分治、扫描线）。</li>
+<li>对比：</li>
+<li class="sub">在线受“不可预知后续”限制，常用数据结构（线段树/平衡树/树状数组）支撑；</li>
+<li class="sub">离线可自由排序，常用分块、排序 + 双指针、时间分治，常数更小、思路更灵活。</li>
+<li>典型例子：区间不同数个数——在线用主席树，离线用“按右端点排序 + 树状数组”。</li>
+<li>注意：离线算法输出时要<strong>恢复原始顺序</strong>（记录查询编号）。</li>
+</ul>
+</section>
+<section class="dsec" id="s4">
+  <div class="sec-no">04 / SECTION</div>
+  <h2>浅谈分数规划</h2>
+<ul class="pts">
+<li><strong>问题形如</strong>：选一组元素使 <code>Σa_i / Σb_i</code> 最大（或最小），a、b 为收益与代价。</li>
+<li><strong>方法</strong>：二分答案 <code>mid</code>，判定是否存在方案使 <code>Σa_i - mid·Σb_i ≥ 0</code>；把权值改成 <code>a_i - mid·b_i</code> 后用 DP/贪心/最大流求最优。</li>
+<li>单调性：<code>mid</code> 越大越难满足，因此可以二分；答案是满足条件的最大值。</li>
+<li>整数情形可用 <strong>Dinkelbach 迭代</strong>（比二分快）：每次用当前最优比值更新，迭代若干次收敛。</li>
+<li>精度：二分 50~100 次或 <code>while (r - l &gt; 1e-6)</code>；输出按题目要求保留位数。</li>
+<li>典型题：最优比率环（二分 + SPFA 判正环）、最大密度子图（最大权闭合子图 + 二分）。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>double l = 0, r = 1e9;
+for (int it = 0; it &lt; 100; ++it) {
+    double mid = (l + r) / 2;
+    if (check(mid)) l = mid; else r = mid;   // check：Σ(a - mid*b) 能否 ≥ 0
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/7eb2755dcf1f9257.webp" width="156" height="66" data-full="assets/7eb2755dcf1f9257.png" loading="lazy" decoding="async" alt="图1 对于解空间 S 、连续的实值函数 a(x)，b(x) ，满足 ∀x∈S , b(x)&gt;0，求" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/5e84e90885faec7e.webp" width="96" height="30" data-full="assets/5e84e90885faec7e.png" loading="lazy" decoding="async" alt="图2 最优解" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/00078df45c9c1e9e.webp" width="241" height="120" data-full="assets/00078df45c9c1e9e.png" loading="lazy" decoding="async" alt="图3 分数规划" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8412664c61239af3.webp" width="237" height="44" data-full="assets/8412664c61239af3.png" loading="lazy" decoding="async" alt="图4 新函数" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a692932e00ca95da.webp" width="320" height="34" data-full="assets/a692932e00ca95da.png" loading="lazy" decoding="async" alt="图5 单调性" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/bfd84a759b1d0f4c.webp" width="49" height="35" data-full="assets/bfd84a759b1d0f4c.png" loading="lazy" decoding="async" alt="图6 单调性1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d5ff14c53cf4e9f3.webp" width="51" height="31" data-full="assets/d5ff14c53cf4e9f3.png" loading="lazy" decoding="async" alt="图7 单调性2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0778996f741f762a.webp" width="24" height="28" data-full="assets/0778996f741f762a.png" loading="lazy" decoding="async" alt="图8 Dinkelbach定理1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d64e9c678f04d1ee.webp" width="174" height="27" data-full="assets/d64e9c678f04d1ee.png" loading="lazy" decoding="async" alt="图9 Dinkelbach定理2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/5a4bdff97ebc5f4e.webp" width="172" height="28" data-full="assets/5a4bdff97ebc5f4e.png" loading="lazy" decoding="async" alt="图10 必要性1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a6a862a42ddd901c.webp" width="97" height="29" data-full="assets/a6a862a42ddd901c.png" loading="lazy" decoding="async" alt="图11 必要性2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/93e12d0aee54b1c0.webp" width="246" height="100" data-full="assets/93e12d0aee54b1c0.png" loading="lazy" decoding="async" alt="图12 必要性3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8b96f56f429fa5e5.webp" width="26" height="27" data-full="assets/8b96f56f429fa5e5.png" loading="lazy" decoding="async" alt="图13 必要性4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ccd288eb064d3600.webp" width="170" height="28" data-full="assets/ccd288eb064d3600.png" loading="lazy" decoding="async" alt="图14 充分性1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/83724b5df25ffa34.webp" width="224" height="84" data-full="assets/83724b5df25ffa34.png" loading="lazy" decoding="async" alt="图15 充分性2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/31bb07a195f87fb0.webp" width="24" height="21" data-full="assets/31bb07a195f87fb0.png" loading="lazy" decoding="async" alt="图16 二分查找1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/10d65d4b941fe49c.webp" width="201" height="94" data-full="assets/10d65d4b941fe49c.png" loading="lazy" decoding="async" alt="图17 二分查找2" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s5">
+  <div class="sec-no">05 / SECTION</div>
+  <h2>简述随机化算法</h2>
+<ul class="pts">
+<li><strong>思想</strong>：用随机数引导搜索/判定，牺牲“确定性”换速度与实现简单；结果有一定概率出错，需控制错误率。</li>
+<li>常见类型：</li>
+<li class="sub"><strong>随机化贪心/爬山法</strong>：随机扰动当前解，变好就接受（易陷局部最优）；</li>
+<li class="sub"><strong>模拟退火（SA）</strong>：以 <code>exp(-Δ/T)</code> 的概率接受变差的解，温度 T 逐渐降低，跳出局部最优；</li>
+<li class="sub"><strong>遗传算法</strong>：种群 + 交叉 + 变异；</li>
+<li class="sub"><strong>随机抽样/随机哈希</strong>：用随机权值降低被构造数据卡死的风险（如树哈希、字符串哈希）。</li>
+<li>竞赛实用场景：</li>
+<li class="sub">正确性难保证但能“骗分”（输出近似解）；</li>
+<li class="sub">破坏数据的最坏结构（随机打乱输入，规避有序数据导致的退化）；</li>
+<li class="sub">判定类（Miller-Rabin 素性测试、Pollard-Rho 分解）。</li>
+<li>注意：交互/评测环境要固定随机种子（或使用固定种子的 <code>mt19937</code>）保证可复现。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+shuffle(a, a + n, rng);      // 防退化
+// 模拟退火：接受概率 exp(-(new-old)/T)</code></pre></div>
+
+</section>
+<section class="dsec" id="s6">
+  <div class="sec-no">06 / SECTION</div>
+  <h2>悬线法实例讲解</h2>
+<ul class="pts">
+<li><strong>用途</strong>：在带障碍的矩阵中求<strong>最大全 1 子矩形</strong>（或最大正方形），复杂度 <code>O(nm)</code>。</li>
+<li>三个数组：</li>
+<li class="sub"><code>up[i][j]</code>：从 (i,j) 向上能延伸的全 1 高度；</li>
+<li class="sub"><code>left[i][j]</code> / <code>right[i][j]</code>：在当前高度范围内，能扩展到的最左/最右列。</li>
+<li>转移：若 <code>a[i][j] == 1</code>，<code>up = up[i-1][j] + 1</code>；<code>left = max(left[i-1][j], 当前行左侧边界)</code>；<code>right</code> 同理取 min。</li>
+<li>答案：<code>max( (right-left+1) * up )</code>；求最大正方形则取 <code>min(宽, 高)</code> 的平方。</li>
+<li>与“单调栈求柱状图最大矩形”的关系：两者都是“按行累积高度 + 维护左右边界”，悬线法更通用（支持障碍）。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>for (int i = 1; i &lt;= n; ++i) {
+    int curL = 1, curR = m;
+    for (int j = 1; j &lt;= m; ++j)
+        if (a[i][j]) left[i][j] = max(left[i-1][j], curL); else curL = j + 1, left[i][j] = 1;
+    for (int j = m; j &gt;= 1; --j)
+        if (a[i][j]) right[i][j] = min(right[i-1][j], curR); else curR = j - 1, right[i][j] = m;
+    for (int j = 1; j &lt;= m; ++j)
+        if (a[i][j]) up[i][j] = up[i-1][j] + 1,
+                     ans = max(ans, (right[i][j] - left[i][j] + 1) * up[i][j]);
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/e6326fff54fa9233.webp" width="65" height="29" data-full="assets/e6326fff54fa9233.png" loading="lazy" decoding="async" alt="图1 O(nm)" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/fc166ec73dc441f4.webp" width="60" height="21" data-full="assets/fc166ec73dc441f4.png" loading="lazy" decoding="async" alt="图2 nXm" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/5c82127cfb3ba8a6.webp" width="579" height="578" data-full="assets/5c82127cfb3ba8a6.png" loading="lazy" decoding="async" alt="图3 悬线法1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f2e5f96f6e6ffaf8.webp" width="65" height="29" data-full="assets/f2e5f96f6e6ffaf8.png" loading="lazy" decoding="async" alt="图4 O(nm)" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/e68998ca8529c349.webp" width="581" height="580" data-full="assets/e68998ca8529c349.png" loading="lazy" decoding="async" alt="图5 最长竖线" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d24ed52dddc7476b.webp" width="570" height="579" data-full="assets/d24ed52dddc7476b.png" loading="lazy" decoding="async" alt="图6 悬线法2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/4c134a7e2918e5ff.webp" width="38" height="26" data-full="assets/4c134a7e2918e5ff.png" loading="lazy" decoding="async" alt="图7 nm" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/1f3b90f4155fafbf.webp" width="38" height="26" data-full="assets/1f3b90f4155fafbf.png" loading="lazy" decoding="async" alt="图8 nm2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/068ad5ef4691c991.webp" width="87" height="25" data-full="assets/068ad5ef4691c991.png" loading="lazy" decoding="async" alt="图9 uIr" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/4aacb6b2a51e506f.webp" width="415" height="213" data-full="assets/4aacb6b2a51e506f.png" loading="lazy" decoding="async" alt="图10 悬线法3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/1b7c36ddf736a2aa.webp" width="481" height="140" data-full="assets/1b7c36ddf736a2aa.png" loading="lazy" decoding="async" alt="图11 悬线法4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/2fdcb2ce83506c31.webp" width="134" height="26" data-full="assets/2fdcb2ce83506c31.png" loading="lazy" decoding="async" alt="图12 LR" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/31c012067ec31053.webp" width="288" height="31" data-full="assets/31c012067ec31053.png" loading="lazy" decoding="async" alt="图13 最大的矩形面积" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8375bb2f760f875f.webp" width="321" height="38" data-full="assets/8375bb2f760f875f.png" loading="lazy" decoding="async" alt="图14 最大子正方形面积" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s7">
+  <div class="sec-no">07 / SECTION</div>
+  <h2>什么是字节顺序？</h2>
+<ul class="pts">
+<li><strong>定义</strong>：多字节数据在内存中的存放顺序。</li>
+<li class="sub"><strong>小端（Little-Endian）</strong>：低位字节放在低地址（x86/ARM 常用）；</li>
+<li class="sub"><strong>大端（Big-Endian）</strong>：高位字节放在低地址（网络字节序、部分嵌入式）。</li>
+<li>例：<code>0x12345678</code> 存到地址 0 起——小端为 <code>78 56 34 12</code>，大端为 <code>12 34 56 78</code>。</li>
+<li>影响：</li>
+<li class="sub">跨平台二进制文件/网络传输必须统一字节序（网络用大端，即 <code>htons/htonl</code>）；</li>
+<li class="sub">位运算、联合体（union）读取、序列化/反序列化时要格外注意；</li>
+<li class="sub">直接 memcpy 结构体在不同端序机器间会读错。</li>
+<li>判定本机端序：写 <code>int x = 1;</code> 看最低地址的那个字节是否为 1。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>bool isLittleEndian() {
+    union { int i; char c[4]; } u; u.i = 1;
+    return u.c[0] == 1;         // 小端：低地址存最低字节
+}</code></pre></div>
+
+<ul class="pts">
+<li>竞赛中出现场景：位运算题、模拟位图存储、读入特殊格式数据。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/8583cd15f73bf647.webp" width="1080" height="213" data-full="assets/8583cd15f73bf647.png" loading="lazy" decoding="async" alt="图1 字节顺序" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/91a229d4946c2d45.webp" width="1080" height="233" data-full="assets/91a229d4946c2d45.png" loading="lazy" decoding="async" alt="图2 字节顺序" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s8">
+  <div class="sec-no">08 / SECTION</div>
+  <h2>浅谈约瑟夫问题</h2>
+<ul class="pts">
+<li><strong>问题</strong>：n 个人围成环，从 1 开始报数，报到 m 的人出列，下一人重新从 1 报，求最后剩下的人（或出列顺序）。</li>
+<li>朴素模拟：链表/队列 O(nm)，n 小时可用。</li>
+<li><strong>递推解法</strong>（求最后存活者）：<code>J(1) = 0</code>，<code>J(n) = (J(n-1) + m) mod n</code>，结果为 <code>J(n) + 1</code>（0 基编号）。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>int josephus(int n, int m) {
+    int ans = 0;                       // 0 基
+    for (int i = 2; i &lt;= n; ++i) ans = (ans + m) % i;
+    return ans + 1;                    // 1 基
+}</code></pre></div>
+
+<ul class="pts">
+<li>复杂度 <code>O(n)</code>，内存 O(1)；若要输出完整出列顺序，仍需模拟（或用树状数组/线段树按“当前剩余人数”定位，<code>O(n log n)</code>）。</li>
+<li>变体：m 固定为 2（二进制规律：最高位之外左移一位）；k 步长可变、双向报数。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/d2661f5ad7c354ff.webp" width="269" height="210" data-full="assets/d2661f5ad7c354ff.png" loading="lazy" decoding="async" alt="图1 解约瑟夫问题1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f1f3511aaac46c64.webp" width="284" height="220" data-full="assets/f1f3511aaac46c64.png" loading="lazy" decoding="async" alt="图2 解约瑟夫问题2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f074c5821567caaf.webp" width="208" height="192" data-full="assets/f074c5821567caaf.png" loading="lazy" decoding="async" alt="图3 解约瑟夫问题3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0c67873dd007d408.webp" width="212" height="209" data-full="assets/0c67873dd007d408.jpg" loading="lazy" decoding="async" alt="图4 解约瑟夫问题4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/67e4cc0f729bd539.webp" width="192" height="169" data-full="assets/67e4cc0f729bd539.png" loading="lazy" decoding="async" alt="图5 解约瑟夫问题5" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/4ce9e7a4b0b6569a.webp" width="161" height="113" data-full="assets/4ce9e7a4b0b6569a.png" loading="lazy" decoding="async" alt="图6 解约瑟夫问题6" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s9">
+  <div class="sec-no">09 / SECTION</div>
+  <h2>什么是格雷码？</h2>
+<ul class="pts">
+<li><strong>定义</strong>：一种二进制编码，相邻两个数只有<strong>一位不同</strong>，用于减少状态切换时的错误（如旋转编码器）。</li>
+<li>生成规律：<code>g(i) = i ^ (i &gt;&gt; 1)</code>（i 为 0..2ⁿ-1）。</li>
+<li>反变换（格雷码 → 原码）：<code>b = g; while (g &gt;&gt;= 1) b ^= g;</code>。</li>
+<li>性质：首尾也只差一位（循环格雷码），是 n 维立方体的哈密顿回路。</li>
+<li>应用：状态压缩枚举（相邻状态只差一位）、位图/编码器、九连环、汉诺塔状态映射。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>int gray(int i) { return i ^ (i &gt;&gt; 1); }
+int ungray(int g) { int b = g; while (g &gt;&gt;= 1) b ^= g; return b; }</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/e22d19629b2da57b.webp" width="316" height="272" data-full="assets/e22d19629b2da57b.png" loading="lazy" decoding="async" alt="图1 格雷码" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s10">
+  <div class="sec-no">10 / SECTION</div>
+  <h2>浅谈表达式求值</h2>
+<ul class="pts">
+<li><strong>三类表达式</strong>：中缀（人读）、前缀（波兰式，运算符在前）、后缀（逆波兰式，运算符在后，无括号）。</li>
+<li><strong>双栈法（中缀直接求值）</strong>：一个数字栈、一个符号栈；遇数字入数栈；遇运算符按优先级弹出计算；遇括号递归/特判。</li>
+<li><strong>转后缀再求值</strong>：用调度场算法（Shunting-yard）转成后缀，再用一个栈顺序计算，逻辑最清晰。</li>
+<li><strong>递归下降</strong>：按文法 <code>expr := term {(+|-) term}</code>、<code>term := factor {(*|/) factor}</code> 写递归，天然支持括号与优先级。</li>
+<li>细节：一元负号、多位数字、除法取整方向、乘方右结合、错误表达式处理。</li>
+<li>复杂度 O(n)。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>// 后缀表达式求值
+stack&lt;long long&gt; st;
+for (auto &amp;tk : rpn) {
+    if (isNum(tk)) st.push(stoll(tk));
+    else {
+        long long b = st.top(); st.pop();
+        long long a = st.top(); st.pop();
+        st.push(calc(a, b, tk));        // 注意顺序：a 是左操作数，b 是右操作数
+    }
+}
+return st.top();</code></pre></div>
+
+</section>
+<section class="dsec" id="s11">
+  <div class="sec-no">11 / SECTION</div>
+  <h2>浅析Garsia-Wachs算法</h2>
+<ul class="pts">
+<li><strong>用途</strong>：在<strong>线性时间</strong>内构造<strong>最优二叉查找树</strong>与<strong>字母霍夫曼码</strong>（alphabetic code，要求叶子必须按原顺序排列，不能像普通哈夫曼那样自由组合）。</li>
+<li>三个阶段：</li>
+</ul>
+<p class="doc-lead">1. 先构造一棵“值位于叶子、但叶子顺序可能是错的”的二叉树； 2. 计算根到每个叶子的深度； 3. 按深度重新排出一棵“叶子深度相同、但顺序正确”的树——由第三阶段的结论（存在同深度的正确排序树且最优）可知结果最优。</p>
+<ul class="pts">
+<li>第一阶段的规则（原文描述）：在序列两端各加一个足够大的<strong>标记值</strong>（sentinel），然后重复：</li>
+<li class="sub">找到前三个连续权重 <code>x, y, z</code> 满足 <code>x ≤ z</code>（因结尾标记值足够大，这样的三元组一定存在）；</li>
+<li class="sub">删除 x、y，建一个新结点（父结点，值为 <code>x + y</code>）；</li>
+<li class="sub">把新结点插回“原来 x 的位置之后、第一个大于或等于 <code>x + y</code> 的值的最右边”。</li>
+<li>每步序列长度减一，直到只剩一棵包含所有叶子的树；叶子的深度即编码长度。</li>
+<li>实现：用平衡二叉查找树维护当前序列；位于偶数位、奇数位的权重各自构成递减序列，因此可用两次二分找到插入位置；三元组搜索从上一次的位置线性推进 ⇒ 总复杂度 <strong>O(n)</strong>（最坏写法用平衡树为 O(n log n)）。</li>
+<li>竞赛关联：它与“只能相邻合并”的合并类问题（石子合并型）是同一模型，比区间 DP 的 <code>O(n³)</code>、四边形不等式优化的 <code>O(n²)</code> 更快，理解它有助于理解区间 DP 的决策单调性。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/59a5d85c4c2f5606.webp" width="800" height="345" data-full="assets/59a5d85c4c2f5606.png" loading="lazy" decoding="async" alt="图1 Garsia-Wachs算法的三个阶段" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/898c29f98636b90f.webp" width="21" height="18" data-full="assets/898c29f98636b90f.png" loading="lazy" decoding="async" alt="图2 符号1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/414df739b364ec83.webp" width="37" height="17" data-full="assets/414df739b364ec83.png" loading="lazy" decoding="async" alt="图3 符号2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/19b93a4ec00ac3cc.webp" width="186" height="20" data-full="assets/19b93a4ec00ac3cc.png" loading="lazy" decoding="async" alt="图4 符号3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/25c556a4022e72c0.webp" width="74" height="23" data-full="assets/25c556a4022e72c0.png" loading="lazy" decoding="async" alt="图5 4" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+    <div class="qnav">
+        <a class="prev" href="ch09.html"><span class="k">PREV / 09</span><span class="t">计算几何</span></a>
+        <a class="next disabled"><span class="k">NEXT</span><span class="t">已是最后一章</span></a>
+    </div>
+  </main>
+
+  <aside class="docside">
+    <div class="k">ON THIS PAGE</div>
+    <ol>
+      <li><a href="#s1">离散化算法实例讲解</a></li>
+      <li><a href="#s2">常用的双指针技巧</a></li>
+      <li><a href="#s3">在线算法和离线算法的区别</a></li>
+      <li><a href="#s4">浅谈分数规划</a></li>
+      <li><a href="#s5">简述随机化算法</a></li>
+      <li><a href="#s6">悬线法实例讲解</a></li>
+      <li><a href="#s7">什么是字节顺序？</a></li>
+      <li><a href="#s8">浅谈约瑟夫问题</a></li>
+      <li><a href="#s9">什么是格雷码？</a></li>
+      <li><a href="#s10">浅谈表达式求值</a></li>
+      <li><a href="#s11">浅析Garsia-Wachs算法</a></li>
+    </ol>
+  </aside>
+</div>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>算法竞赛教程笔记，整理自 dotcpp 教程（C 语言中文网）。原文 172 篇长页面重排为 10 章「章 → 节 → 要点」，代码分块、配图外挂存储（webp 懒加载）。个别表述按原文口径订正，仍以原文为准。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="index.html">算法竞赛教程</a>
+        <a href="../data-structures/index.html">数据结构教程</a>
+        <a href="../../problems/algorithm/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../../tools/mistakes.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/tutorial.js" defer></script>
+</body>
+</html>

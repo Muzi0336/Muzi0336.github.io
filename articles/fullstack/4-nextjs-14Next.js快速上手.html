@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>第14章 Next.js快速上手</title>
+<link rel="stylesheet" href="assets/book.css">
+
+<div id="progress"></div>
+
+<nav>
+  <a href="index.html" class="back-link">← 返回</a>
+  <span class="nav-title">Next.js快速上手</span>
+  <div class="nav-links">
+
+    <a href="#s14-1">14.1 Next.js是什么</a>
+    <a href="#s14-2">14.2 环境与创建</a>
+    <a href="#s14-3">14.3 开发命令</a>
+    <a href="#s14-4">14.4 目录结构</a>
+    <a href="#review">复盘</a>
+  
+  </div>
+</nav>
+
+<div class="content">
+
+<!-- Header -->
+<h1>第14章 Next.js快速上手</h1>
+<p style="color:#94a3b8;margin-bottom:6px">React 全栈框架，服务端渲染入门</p>
+<p style="font-size:.9em;color:#64748b">作者：zyyc-0336 &nbsp;|&nbsp; 日期：2026-06-12</p>
+
+<div class="card">
+  <h3>🗺️ 学习路径建议</h3>
+  <ol>
+    <li>先学 <strong>14.1</strong>（Next.js 是什么），理解它和 React 的关系</li>
+    <li>再学 <strong>14.2-14.3</strong>（环境要求和创建项目），动手跑起来</li>
+    <li>最后学 <strong>14.4</strong>（目录结构和核心概念），建立整体认知</li>
+  </ol>
+</div>
+
+<div class="callout warn">
+  ⚠️ <strong>常见错误提示</strong><br>
+  • Next.js 的 <code>app/</code> 目录是 <span class="kw">App Router</span>（新），<code>pages/</code> 是 Pages Router（旧），本文用 App Router<br>
+  • <code>"use client"</code> 必须写在文件<strong>第一行</strong>，它让组件变成客户端组件<br>
+  • 默认组件是<strong>服务端组件</strong>，不能用 <code>useState</code>/<code>useEffect</code> 等 Hook<br>
+  • <code>next dev</code> 启动的默认端口是 <strong>3000</strong>，不是 5173（Vite 的端口）
+</div>
+
+<!-- 14.1 -->
+<h2 id="s14-1">14.1 什么是 Next.js</h2>
+
+<blockquote>
+  <strong>Next.js</strong> 是基于 React 的<strong>全栈框架</strong>。React 只管 UI，Next.js 在此基础上提供了路由、服务端渲染、API 接口、部署优化等"全家桶"能力。
+</blockquote>
+
+<h3>React vs Next.js</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>特性</th><th>React（纯库）</th><th>Next.js（框架）</th></tr></thead>
+<tbody>
+<tr><td>路由</td><td>需要第三方库（react-router）</td><td>内置文件式路由</td></tr>
+<tr><td>渲染方式</td><td>纯客户端渲染（CSR）</td><td>支持 SSR + SSG（更快、SEO 更好）</td></tr>
+<tr><td>API 接口</td><td>需要单独搭后端</td><td>内置 API Routes</td></tr>
+<tr><td>优化</td><td>需要自己配</td><td>自动代码分割、图片优化</td></tr>
+<tr><td>部署</td><td>需要配打包工具</td><td>一行命令部署到 Vercel</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Next.js 适合做什么？</h3>
+<ul>
+  <li>个人博客（SEO 友好，加载快）</li>
+  <li>企业官网</li>
+  <li>电商网站</li>
+  <li>任何需要 SEO 的网站</li>
+</ul>
+
+<div class="callout tip">
+  💡 简单理解：<strong>React 是发动机，Next.js 是一整辆车</strong>。发动机再好，你还需要轮子、方向盘、座椅。
+</div>
+
+<!-- 14.2 -->
+<h2 id="s14-2">14.2 环境要求与创建项目</h2>
+
+<h3>环境要求</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>工具</th><th>最低版本</th><th>检查命令</th></tr></thead>
+<tbody>
+<tr><td>Node.js</td><td>18.17 以上</td><td><code>node -v</code></td></tr>
+<tr><td>npm</td><td>9 以上</td><td><code>npm -v</code></td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>创建项目</h3>
+<div class="code-block">
+  <span class="lang-tag">bash</span>
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code># 创建 Next.js 项目（使用 App Router）
+npx create-next-app@latest my-blog --typescript --tailwind --eslint --app --src-dir
+
+# 参数说明：
+# --typescript  使用 TypeScript（可选，推荐）
+# --tailwind    使用 Tailwind CSS（可选）
+# --eslint      使用 ESLint（推荐）
+# --app         使用 App Router（必须选）
+# --src-dir     使用 src 目录（可选，推荐）</code></pre>
+</div>
+
+<p>如果你不想用 TypeScript，可以去掉 <code>--typescript</code>：</p>
+
+<div class="code-block">
+  <span class="lang-tag">bash</span>
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>npx create-next-app@latest my-blog --js --tailwind --eslint --app --src-dir</code></pre>
+</div>
+
+<h3>启动开发服务器</h3>
+<div class="code-block">
+  <span class="lang-tag">bash</span>
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code># 进入项目
+cd my-blog
+
+# 安装依赖（create-next-app 已自动安装）
+npm install
+
+# 启动开发服务器
+npm run dev</code></pre>
+</div>
+
+<p>打开浏览器访问 <code>http://localhost:3000</code>，看到 Next.js 欢迎页就说明成功了。</p>
+
+<div class="callout tip">
+  💡 <code>npm run dev</code> 启动的是<strong>开发服务器</strong>，修改代码后页面会自动热更新（Hot Reload），不用手动刷新。
+</div>
+
+<!-- 14.3 -->
+<h2 id="s14-3">14.3 开发命令</h2>
+
+<h3>常用命令</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>命令</th><th>作用</th></tr></thead>
+<tbody>
+<tr><td><code>npm run dev</code></td><td>启动开发服务器（开发时用）</td></tr>
+<tr><td><code>npm run build</code></td><td>构建生产版本（部署前用）</td></tr>
+<tr><td><code>npm start</code></td><td>启动生产服务器（构建后用）</td></tr>
+<tr><td><code>npm run lint</code></td><td>运行代码检查</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>命令</th><th>端口</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td><code>npm run dev</code></td><td>localhost:3000</td><td>开发调试</td></tr>
+<tr><td><code>npm run build && npm start</code></td><td>localhost:3000</td><td>模拟生产环境</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- 14.4 -->
+<h2 id="s14-4">14.4 目录结构</h2>
+
+<p>Next.js 项目的默认目录结构（App Router）：</p>
+
+<div class="code-block">
+  <span class="lang-tag">tree</span>
+  <button class="copy-btn" onclick="copyCode(this)">复制</button>
+  <pre><code>my-blog/
+├── public/                 静态资源（图片、字体等）
+│   └── next.svg            Next.js Logo
+├── src/
+│   └── app/                应用目录（路由和页面在这里）
+│       ├── layout.js       根布局（所有页面的公共外壳）
+│       ├── page.js         首页（对应路由 /）
+│       ├── globals.css     全局样式
+│       └── favicon.ico     网站图标
+├── next.config.js          Next.js 配置文件
+├── package.json            项目配置
+├── tailwind.config.js      Tailwind 配置
+└── tsconfig.json           TypeScript 配置</code></pre>
+</div>
+
+<h3>核心文件说明</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>文件</th><th>作用</th><th>必须？</th></tr></thead>
+<tbody>
+<tr><td><code>app/page.js</code></td><td>对应路由 <code>/</code>（首页）</td><td>✅</td></tr>
+<tr><td><code>app/layout.js</code></td><td>根布局，包裹所有页面</td><td>✅</td></tr>
+<tr><td><code>app/globals.css</code></td><td>全局样式</td><td>是</td></tr>
+<tr><td><code>public/</code></td><td>静态资源目录</td><td>是</td></tr>
+</tbody>
+</table>
+</div>
+
+<details class="collapsible">
+  <summary>📝 创建第一个页面示例</summary>
+  <div class="details-body">
+    <div class="code-block">
+      <span class="lang-tag">jsx</span>
+      <button class="copy-btn" onclick="copyCode(this)">复制</button>
+      <pre><code>// src/app/page.js —— 首页
+
+export default function Home() {
+    return (
+        &lt;main style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '100vh',
+            fontFamily: 'sans-serif'
+        }}&gt;
+            &lt;h1&gt;欢迎来到我的博客&lt;/h1&gt;
+            &lt;p&gt;用 Next.js 搭建的个人博客系统&lt;/p&gt;
+            &lt;div style={{ marginTop: '20px' }}&gt;
+                &lt;a href="/posts" style={{
+                    padding: '10px 20px',
+                    backgroundColor: '#3498db',
+                    color: 'white',
+                    textDecoration: 'none',
+                    borderRadius: '6px'
+                }}&gt;
+                    查看文章 →
+                &lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/main&gt;
+    );
+}</code></pre>
+    </div>
+    <p>保存后，浏览器会自动刷新显示新页面。</p>
+  </div>
+</details>
+
+<h3>App Router 核心概念</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>概念</th><th>说明</th><th>文件</th></tr></thead>
+<tbody>
+<tr><td><strong>页面</strong></td><td>每个 <code>page.js</code> 对应一个路由</td><td><code>app/about/page.js</code> → <code>/about</code></td></tr>
+<tr><td><strong>布局</strong></td><td><code>layout.js</code> 包裹页面，共享 UI</td><td><code>app/layout.js</code> 根布局</td></tr>
+<tr><td><strong>组件</strong></td><td>普通 React 组件</td><td>任何 <code>.js</code> 文件</td></tr>
+<tr><td><strong>静态资源</strong></td><td>放在 <code>public/</code> 里的图片等</td><td><code>/public/logo.png</code> → <code>/logo.png</code></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout warn">
+  ⚠️ <strong>新手易错</strong>：<code>app/</code> 目录下的文件名有特殊含义。<code>page.js</code> 是页面，<code>layout.js</code> 是布局，<code>loading.js</code> 是加载状态，<code>not-found.js</code> 是 404 页面。不要随便乱命名。<br><br>
+  ⚠️ <strong>新手易错</strong>：<code>app/page.js</code> 的组件名可以随便起（通常叫 <code>Home</code>），但<strong>必须默认导出</strong>：<code>export default function Home() {}</code>。
+</div>
+
+<!-- 底部区域 -->
+<div class="section" style="margin-top:48px">
+
+<!-- 复盘 -->
+<h2 id="review">本章复盘——Next.js 快速上手核心要点</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>要点</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><strong>Next.js 是什么</strong></td><td>基于 React 的全栈框架，内置路由、SSR/SSG、API</td></tr>
+<tr><td><strong>创建项目</strong></td><td><code>npx create-next-app@latest</code> 带 <code>--app</code> 参数</td></tr>
+<tr><td><strong>开发命令</strong></td><td><code>npm run dev</code> 启动开发服务器（端口 3000）</td></tr>
+<tr><td><strong>目录结构</strong></td><td><code>src/app/page.js</code> 是首页，<code>layout.js</code> 是布局</td></tr>
+<tr><td><strong>页面</strong></td><td>每个 <code>page.js</code> 对应一个路由</td></tr>
+<tr><td><strong>导航</strong></td><td>用 <code>next/link</code> 的 <code>&lt;Link&gt;</code> 组件，不用 <code>&lt;a&gt;</code></td></tr>
+</tbody>
+</table>
+</div>
+
+<hr style="margin:32px 0;border-color:#334155">
+
+<!-- 下一章预告 -->
+<blockquote>
+<strong>下一章预告（第15章）</strong>：我们将学习<strong>文件式路由与布局</strong>——App Router 目录结构、layout.js 和动态路由。
+</blockquote>
+
+<!-- 上下章导航 -->
+<div class="nav-links" style="margin-top:24px">
+<a href="3-react-State与事件处理.html">⬅️ 上一章：State 与事件处理</a>
+<a href="4-nextjs-15文件式路由与布局.html">下一章：文件式路由与布局 ➡️</a>
+</div>
+
+<p style="text-align:center;color:var(--text-muted);font-size:.82rem;margin-top:32px">本文档由 zyyc-0336 编写，最后更新：2026-06-14</p>
+
+</div>
+
+
+</div><!-- /container -->
+
+
+
+<script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('back-top').classList.toggle('show', h.scrollTop > 300);
+});
+
+// Copy code
+function copyCode(btn) {
+  const code = btn.parentElement.querySelector('code');
+  navigator.clipboard.writeText(code.innerText).then(() => {
+    btn.textContent = '已复制 ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+
+<button id="back-top" onclick="window.scrollTo({top:0})" title="回到顶部">↑</button>
+</body>
+</html>

@@ -1,0 +1,403 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第五章 C++ STL 库教程（附带题库） · 数据结构教程</title>
+<meta name="description" content="第五章 C++ STL 库教程（附带题库） — vector / list / queue / stack / set / map 的常用接口与坑点，竞赛里用它直接替掉手写实现。">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/detail.css">
+<link rel="stylesheet" href="../../assets/css/tutorial.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../../index.html#contest" class="contest-link">计挑赛</a>
+            <a href="../../蓝桥杯真题/exam/index.html">蓝桥真题</a>
+    <a href="../../problems/algorithm/index.html">算法题库</a>
+    <a href="../../problems/algorithm/paths.html">学习路径</a>
+    <a href="../../problems/algorithm/learn.html">算法学习</a>
+    <a href="../../problems/algorithm/lab.html">动画实验室</a>
+    <a href="index.html" class="active">数据结构</a>
+    <a href="../algorithm-competition/index.html">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../fullstack/index.html">全栈笔记</a>
+    <a href="../../tools/mistakes.html">错题本</a>
+  </nav>
+</div>
+
+<div class="docwrap">
+  <aside class="docnav">
+    <a class="back" href="index.html">← 教程目录</a>
+    <nav class="docnav-list">
+      <a href="ch01.html"><span class="n">01</span><span class="t">数据结构入门</span></a>
+      <a href="ch02.html"><span class="n">02</span><span class="t">链表</span></a>
+      <a href="ch03.html"><span class="n">03</span><span class="t">栈</span></a>
+      <a href="ch04.html"><span class="n">04</span><span class="t">队列</span></a>
+      <a href="ch05.html" class="on"><span class="n">05</span><span class="t">C++ STL 库教程（附带题库）</span></a>
+      <a href="ch06.html"><span class="n">06</span><span class="t">串、数组、矩阵和广义表</span></a>
+      <a href="ch07.html"><span class="n">07</span><span class="t">树</span></a>
+      <a href="ch08.html"><span class="n">08</span><span class="t">图</span></a>
+      <a href="ch09.html"><span class="n">09</span><span class="t">查找算法</span></a>
+      <a href="ch10.html"><span class="n">10</span><span class="t">排序算法</span></a>
+      <a href="ch11.html"><span class="n">11</span><span class="t">算法和竞赛</span></a>
+      <a href="ch12.html"><span class="n">12</span><span class="t">后记</span></a>
+    </nav>
+    <div class="navstat">12 章 · 87 节<br>114 张图</div>
+  </aside>
+
+  <main class="docmain">
+    <div class="doc-eyebrow">— DATA STRUCTURE / 05</div>
+    <h1 class="doc-title">第五章 C++ STL 库教程（附带题库）</h1>
+    <p class="doc-lead">vector / list / queue / stack / set / map 的常用接口与坑点，竞赛里用它直接替掉手写实现。</p>
+    <div class="doc-meta">
+      <span class="chip">15 节</span>
+      <span class="chip">3 图</span>
+    </div>
+    <div class="rule"></div>
+<section class="dsec" id="s1">
+  <div class="sec-no">01 / SECTION</div>
+  <h2>C++的区别</h2>
+<ul class="pts">
+<li>C++ 由 Bjarne Stroustrup 于 1980 年前后着手创建，是在 C 语言基础上改进而来的<strong>面向对象</strong>语言。</li>
+<li>C++ 是 C 的超集，兼容 C，新增关键字与面向对象特性；本教程只从数据结构角度使用 C++ 的便利特性。</li>
+<li><strong>头文件写法</strong>：C 用 <code>#include&lt;stdio.h&gt;</code>，C++ 直接 <code>#include&lt;cstdio&gt;</code>（C 系库前加 c 表示来自 C 语言）。</li>
+<li><strong>输入输出</strong>：C 的 <code>scanf/printf</code> 需指定格式符；C++ 用流 <code>cin &gt;&gt; n; cout &lt;&lt; n;</code>，自动判类型但速度较慢（后文有加速方案）。</li>
+<li><strong>STL</strong> = Standard Template Library，标准模板库，由惠普实验室的 Stepanov 等人开发，本质是“容器 + 算法”的集合。</li>
+<li>STL 的目的：组件标准化，已实现的数据结构与算法直接调用，无需重复开发，且是 C++ 标准的一部分、无需额外安装。</li>
+<li>C++ 标准中 STL 组织为 13 个头文件：algorithm、deque、functional、iterator、vector、list、map、memory、numeric、queue、set、stack、utility。</li>
+<li>关键提醒：<strong>先懂原理再用 STL</strong>，否则就是乱用。</li>
+</ul>
+</section>
+<section class="dsec" id="s2">
+  <div class="sec-no">02 / SECTION</div>
+  <h2>C++STL教程入门</h2>
+<ul class="pts">
+<li>STL 六大组件，重点是前三项：</li>
+<li class="sub"><strong>容器（Container）</strong>：已实现的数据结构，如 list、vector、stack、queue，以模板类提供。</li>
+<li class="sub"><strong>迭代器（Iterator）</strong>：一种特殊指针，是容器与算法之间的“胶合剂”，可安全访问容器元素。</li>
+<li class="sub"><strong>算法（Algorithm）</strong>：泛型算法模板，能直接作用于容器，也能作用于数组、自定义结构体。</li>
+<li>次重点三项（带 * 号）：</li>
+<li class="sub">仿函数（function object）：行为像函数，可理解为重载了 <code>()</code> 的类/结构体。</li>
+<li class="sub">迭代适配器（Iterator Adaptor）：修饰容器或仿函数的接口，支持逆向、安插、与流配合等模式。</li>
+<li class="sub">空间配置器（allocator）：负责容器空间的申请与释放，类似 malloc/free、new/delete。</li>
+<li>一句话：不学 STL 的 C++ 是不完整的 C++。</li>
+</ul>
+</section>
+<section class="dsec" id="s3">
+  <div class="sec-no">03 / SECTION</div>
+  <h2>C++STL之Vector容器</h2>
+<ul class="pts">
+<li><strong>本质</strong>：动态数组——连续存储、支持按下标随机访问，但大小可自动增长，空间由容器管理。</li>
+<li>头文件 <code>#include &lt;vector&gt;</code>；定义格式 <code>vector&lt;类型&gt; 名字;</code></li>
+<li><strong>五种初始化</strong>：</li>
+<li class="sub"><code>vector&lt;int&gt; v1;</code> 空向量</li>
+<li class="sub"><code>vector&lt;int&gt; v2(10);</code> 开辟 10 个元素（相当于 int v[10]）</li>
+<li class="sub"><code>vector&lt;int&gt; v3(10,5);</code> 10 个元素全为 5</li>
+<li class="sub"><code>vector&lt;int&gt; v4(v3.begin(),v3.end());</code> 区间拷贝</li>
+<li class="sub"><code>vector&lt;int&gt; v5(v4);</code> 复制构造</li>
+<li><strong>迭代器遍历</strong>：<code>vector&lt;int&gt;::iterator it; for(it=v.begin(); it!=v.end(); it++) cout&lt;&lt;*it;</code>；也可直接下标 <code>v[i]</code>（新手更常用）。</li>
+<li><strong>常用接口</strong>：</li>
+<li class="sub"><code>push_back(val)</code> 尾部插入，<code>pop_back()</code> 尾部删除</li>
+<li class="sub"><code>insert(pos, val)</code> 指定位置插单值；<code>insert(pos, n, val)</code> 插 n 个；<code>insert(pos, first, last)</code> 插一段</li>
+<li class="sub"><code>erase(pos)</code> 删单个；<code>erase(first, last)</code> 删区间（左闭右开）</li>
+<li class="sub"><code>clear()</code> 清空全部；<code>size()</code> 元素个数</li>
+<li class="sub"><code>capacity()</code> 已开辟容量（只增不减，与 size 可不等）</li>
+<li class="sub"><code>max_size()</code> 该机器可支持的最大容量（极大值，随机器不同）</li>
+<li>理解要点：capacity 反映“容器已经要了多大空间”，size 反映“实际装了多个”，这正是动态数组扩容的核心机制。</li>
+</ul>
+</section>
+<section class="dsec" id="s4">
+  <div class="sec-no">04 / SECTION</div>
+  <h2>C++STL之List容器</h2>
+<ul class="pts">
+<li><strong>本质</strong>：STL 提供的链表容器，适合频繁在任意位置插入删除，代价是不支持随机访问。</li>
+<li>头文件 <code>#include &lt;list&gt;</code>；初始化与 vector 一致：<code>list&lt;int&gt; l1;</code>、<code>list&lt;int&gt; l2(10);</code>、<code>list&lt;int&gt; l3(5,20);</code>、<code>list&lt;int&gt; l4(l3.begin(),l3.end());</code>、<code>list&lt;int&gt; l5(l4);</code></li>
+<li><strong>迭代器遍历</strong>写法与 vector 相同，只是把类型换成 <code>list&lt;int&gt;::iterator</code>。</li>
+<li><strong>常用接口</strong>：</li>
+<li class="sub"><code>empty()</code> 判空、<code>size()</code> 取元素个数</li>
+<li class="sub"><code>push_front(x)</code> / <code>pop_front()</code> 头部插入、删除</li>
+<li class="sub"><code>push_back(x)</code> / <code>pop_back()</code> 尾部插入、删除</li>
+<li class="sub"><code>insert(pos, val)</code>、<code>insert(pos, n, val)</code>、<code>insert(pos, first, last)</code></li>
+<li class="sub"><code>erase(pos)</code>、<code>erase(first, last)</code></li>
+<li><strong>排序</strong>：<code>sort()</code> 默认升序；<code>sort(cmp)</code> 传自定义比较函数，如 <code>bool cmp(const int &amp;a, const int &amp;b){ return a&gt;b; }</code> 得到降序。</li>
+<li>注意：list 只能用自己的成员函数 <code>sort()</code>，不能用 algorithm 的全局 <code>sort</code>（因为需要随机访问迭代器）。</li>
+<li><strong>逆序</strong>：<code>reverse()</code> 直接把整个链表反转，比自定义降序更省事。</li>
+</ul>
+</section>
+<section class="dsec" id="s5">
+  <div class="sec-no">05 / SECTION</div>
+  <h2>C++STL之stack栈容器</h2>
+<ul class="pts">
+<li><strong>本质</strong>：先进后出（LIFO）；STL 直接用模板类实现，不必再手写结构体链条。</li>
+<li>头文件 <code>#include &lt;stack&gt;</code>；初始化：<code>stack&lt;int&gt; s;</code>、<code>stack&lt;int&gt; v(s);</code></li>
+<li>特殊写法：<code>stack&lt;int, vector&lt;int&gt; &gt; s(v);</code>，用 vector 作为底层容器——注意 <code>&gt; &gt;</code> 之间<strong>必须有空格</strong>，否则被当成右移运算符。</li>
+<li><strong>无迭代器</strong>：栈只能通过“访问栈顶 → 弹出”的方式逐个取完，属于访问受限容器。</li>
+<li><strong>常用接口</strong>：</li>
+<li class="sub"><code>size()</code> 元素个数</li>
+<li class="sub"><code>top()</code> 取栈顶（可读也可改，如 <code>s.top() += 100</code>）</li>
+<li class="sub"><code>push(val)</code> 入栈</li>
+<li class="sub"><code>pop()</code> 出栈，<strong>无返回值</strong>，要取值需先 top 再 pop</li>
+<li class="sub"><code>empty()</code> 判空</li>
+<li>遍历套路：<code>while(!s.empty()){ cout&lt;&lt;s.top(); s.pop(); }</code>；注意这会清空原栈，想保留要先复制一份。</li>
+<li>练习：用 STL 重做进制转换（1055、1192）与斐波那契（1131）。</li>
+</ul>
+</section>
+<section class="dsec" id="s6">
+  <div class="sec-no">06 / SECTION</div>
+  <h2>C++STL之Queue容器</h2>
+<ul class="pts">
+<li><strong>本质</strong>：先进先出（FIFO）；STL 队列是快速构建搜索算法、图论/数论状态存储的基础，务必掌握。</li>
+<li>头文件 <code>#include &lt;queue&gt;</code>；初始化：<code>queue&lt;int&gt; q;</code>、<code>queue&lt;int&gt; qoo(q);</code>；也可 <code>queue&lt;int, vector&lt;int&gt; &gt; s(v);</code></li>
+<li><strong>无迭代器</strong>：只能访问队头并不断出队来遍历。</li>
+<li><strong>常用接口</strong>：</li>
+<li class="sub"><code>size()</code> 元素个数</li>
+<li class="sub"><code>push(val)</code> 入队（队尾插入）</li>
+<li class="sub"><code>pop()</code> 出队（队头弹出，无返回值）</li>
+<li class="sub"><code>front()</code> 访问队头（常用，可修改）</li>
+<li class="sub"><code>back()</code> 访问队尾（较少用）</li>
+<li class="sub"><code>empty()</code> 判空</li>
+<li>遍历套路：<code>while(!q.empty()){ cout&lt;&lt;q.front(); q.pop(); }</code></li>
+<li>练习：用 STL 重做队列基本操作（1895）。</li>
+</ul>
+</section>
+<section class="dsec" id="s7">
+  <div class="sec-no">07 / SECTION</div>
+  <h2>C++STL之Priority_queue（优先队列）</h2>
+<ul class="pts">
+<li><strong>本质</strong>：不遵守先进先出，而是给每个元素一个权值，按权值排序，<strong>权值最大（或最小）的永远在队头</strong>。</li>
+<li>底层是非线性的堆结构（因此只允许访问堆顶），属于较高级的数据结构。</li>
+<li>头文件仍用 <code>#include &lt;queue&gt;</code>。</li>
+<li><strong>模板参数</strong>：<code>priority_queue&lt;T, Container, Compare&gt;</code></li>
+<li class="sub">T：元素类型</li>
+<li class="sub">Container：底层容器，必须是用数组实现的容器（vector、deque 可以，<strong>list 不行</strong>），默认 vector</li>
+<li class="sub">Compare：比较方式，类似 sort 的第三个参数，但<strong>必须写成结构体的运算符重载</strong>，不能直接写 <code>bool cmp(int a,int b)</code></li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>struct cmp {
+    bool operator()(int &amp;a, int &amp;b) const { return a &gt; b; }  // 小根堆
+};
+priority_queue&lt;int, vector&lt;int&gt;, cmp&gt; q;
+priority_queue&lt;int&gt; pq;   // 默认大根堆</code></pre></div>
+
+<ul class="pts">
+<li><strong>常用接口</strong>：<code>size()</code>、<code>push()</code>、<code>pop()</code>、<code>top()</code>（只允许访问队头，命名沿用栈的 top）、<code>empty()</code></li>
+<li>示例流程：依次 push 10、20、30、40、50、15、4，再逐个取 top 输出，结果为从小到大 4、10、15、20、30、40、50（即小根堆）。</li>
+<li>应用价值：是 Dijkstra 等图论最短路算法堆优化的关键；练手题 1169。</li>
+</ul>
+</section>
+<section class="dsec" id="s8">
+  <div class="sec-no">08 / SECTION</div>
+  <h2>C++STL之Set容器</h2>
+<ul class="pts">
+<li><strong>本质</strong>：关联式容器，底层为<strong>红黑树</strong>，插入即自动排序，且元素<strong>唯一</strong>（不重复）。</li>
+<li>因此 set 天然可做数学意义上的集合，支持交、并、差等运算。</li>
+<li>头文件 <code>#include &lt;set&gt;</code>；初始化模板三个参数：值类型、比较器（默认 <code>less&lt;T&gt;</code>，升序）、空间配置器；实际只写 <code>set&lt;int&gt; s;</code> 即可。</li>
+<li><strong>迭代器</strong>：C98 写法 <code>for(set&lt;int&gt;::iterator it=s.begin(); it!=s.end(); ++it) cout&lt;&lt;*it;</code></li>
+<li>C11 起可用 auto：<code>for(auto it=s.cbegin(); it!=s.cend(); ++it)</code>，省去类型声明（需编译器开启 C11）。</li>
+<li><strong>常用接口</strong>：</li>
+<li class="sub"><code>size()</code> 元素个数</li>
+<li class="sub"><code>insert(val)</code> 插入（原型返回 <code>pair&lt;iterator,bool&gt;</code>，bool 表示是否插入成功，可用于判重）</li>
+<li class="sub"><code>erase(pos)</code> / <code>erase(first,last)</code> 删除单个/区间</li>
+<li class="sub"><code>clear()</code> 清空元素（已占用的内存空间不归还）</li>
+<li class="sub"><code>find(val)</code> 返回<strong>迭代器</strong>，取值要解引用 <code>*s.find(4)</code>；<code>s.erase(s.find(4))</code> 可按值删除</li>
+<li>复杂度：插入、删除、查找均 O(log n)，比手写链表按值查找 O(n) 高效得多。</li>
+</ul>
+</section>
+<section class="dsec" id="s9">
+  <div class="sec-no">09 / SECTION</div>
+  <h2>set theory（集合论）</h2>
+<ul class="pts">
+<li>集合论是数学基本分支，研究“集合、元素、成员关系”，高中已接触交、并、差运算。</li>
+<li>示例集合：A = {2,4,6}，B = {1,2,3,4,5}。</li>
+<li><strong>algorithm 头文件</strong>：STL 的标准算法集合，如 <code>sort(a, a+6)</code> 一行即可对数组排序。</li>
+<li>集合三大运算函数（都在 <code>&lt;algorithm&gt;</code> 中）：</li>
+<li class="sub"><code>set_union(a.begin(),a.end(),b.begin(),b.end(),back_inserter(c))</code> 并集</li>
+<li class="sub"><code>set_intersection(...)</code> 交集</li>
+<li class="sub"><code>set_difference(...)</code> 差集（A 减去 B 中 A 也有的元素）</li>
+<li>调用形式统一：<code>第一集合起止 + 第二集合起止 + 输出插入器</code>，结果常放进 vector。</li>
+<li>这些函数要求两个区间<strong>已按相同规则有序</strong>（set 天然有序，正好满足）。</li>
+<li>掌握这三个函数即可组合出更多集合论功能。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/f9ae4a2ff9feeb8d.webp" width="110" height="25" data-full="assets/f9ae4a2ff9feeb8d.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/07734476cd5d5012.webp" width="163" height="25" data-full="assets/07734476cd5d5012.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/33dfc91810138368.webp" width="104" height="27" data-full="assets/33dfc91810138368.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s10">
+  <div class="sec-no">10 / SECTION</div>
+  <h2>C++STL之Map容器</h2>
+<ul class="pts">
+<li><strong>本质</strong>：关联容器，存储<strong>键—值对</strong>，可理解为“关联数组”，键唯一、不允许重复，底层同样自动排序。</li>
+<li>头文件 <code>#include &lt;map&gt;</code>；模板四参数：Key、T（值）、比较器（默认 less&lt;Key&gt;）、配置器；常用只写 <code>map&lt;char,int&gt; s;</code></li>
+<li><strong>迭代器</strong>：不能用 <code>*it</code> 直接输出，因为 map 元素是复合类型，要用 <code>it-&gt;first</code> 取键、<code>it-&gt;second</code> 取值。</li>
+<li><strong>常用接口</strong>：</li>
+<li class="sub"><code>size()</code> 元素个数</li>
+<li class="sub"><code>insert(pair&lt;char,int&gt;('d',4))</code> 插入；更简便的写法是下标赋值 <code>s['d'] = 4;</code>（键不存在则新建）</li>
+<li class="sub"><code>erase(pos)</code>、<code>erase(first,last)</code>、<code>clear()</code></li>
+<li class="sub"><code>find('d')</code> 返回迭代器，取值用 <code>s.find('d')-&gt;second</code>；<code>s.erase(s.find('d'))</code> 按值删除</li>
+<li>与 set 的关系：map 是“带值”的 set，set 是“只有键”的 map。</li>
+<li>典型用途：计数、映射、去重、字典查找，是算法题中出现频率最高的 STL 容器之一。</li>
+</ul>
+</section>
+<section class="dsec" id="s11">
+  <div class="sec-no">11 / SECTION</div>
+  <h2>C++STL之Pair类模板</h2>
+<ul class="pts">
+<li><strong>本质</strong>：把两个数据（类型可不同）合成一组，像一个小结构体，因此可直接访问成员。</li>
+<li>两个典型用途：map 的键值成对使用；函数需要返回两个值时。</li>
+<li>头文件 <code>#include &lt;utility&gt;</code>（实际多数编译器不写也能用，pair 已在 std 中）。</li>
+<li><strong>初始化与访问</strong>：<code>pair&lt;int,int&gt; p;</code>、<code>pair&lt;int,int&gt; p(10,20);</code>，用 <code>p.first</code> / <code>p.second</code> 访问。</li>
+<li><strong>make_pair</strong>：<code>p = make_pair(10,20);</code> 免去分别赋值，且会自动做隐式类型转换（如传 float 会转成 int，灵活但需留意精度问题）。</li>
+<li>排序特性：pair 默认先按 first 再按 second 比较，常用于“坐标 + 权值”这类二元数据。</li>
+<li>练习：1096 扫雷题，可用 pair 存 (x, y) 二维坐标。</li>
+</ul>
+</section>
+<section class="dsec" id="s12">
+  <div class="sec-no">12 / SECTION</div>
+  <h2>C++STL之multiset与multimap容器</h2>
+<ul class="pts">
+<li><strong>multiset</strong>：拥有 set 的全部功能，但<strong>允许重复元素</strong>，插入总是成功（只要数据合法）。</li>
+<li><code>find(x)</code> 只返回第一个匹配元素的迭代器（如 {10,20,20,20} 查 20 返回第一个 20）；<code>lower_bound()</code> 等同理。</li>
+<li>迭代器是“匿名”的：只提供顺序访问，不告诉你元素是第几个；要算位置需自己从头计数。</li>
+<li>示例：依次插入 10、20、10、20、30、50，自动排成 {10,10,20,20,30,50}。</li>
+<li><strong>multimap</strong>：拥有 map 的全部功能，但<strong>键可重复</strong>，即一个 key 可对应多个 value（如一个学生有多门成绩）。</li>
+<li>三种遍历同一 key 全部值的方法：</li>
+<li class="sub">方法一：<code>find(key)</code> 找到首个，再循环 <code>count(key)</code> 次，迭代器 <code>m++</code> 逐个输出。</li>
+<li class="sub">方法二：<code>lower_bound(key)</code> 到 <code>upper_bound(key)</code> 区间遍历。</li>
+<li class="sub">方法三：<code>equal_range(key)</code> 得到一对迭代器（first、second）再遍历。</li>
+<li>三种思想本质相同，按习惯取舍即可。</li>
+</ul>
+</section>
+<section class="dsec" id="s13">
+  <div class="sec-no">13 / SECTION</div>
+  <h2>C/C++如何设计函数多返回值？</h2>
+<ul class="pts">
+<li><strong>全局变量法</strong>：函数内直接给全局变量赋值，看似能“返回”多个值，实为自欺欺人。</li>
+<li class="sub">缺陷：多次调用或递归时数据紊乱；工程中滥用会引发意外后果，不推荐。</li>
+<li><strong>pair 法</strong>：适合恰好两个返回值的场景，最理想也最简洁。</li>
+</ul>
+<p class="doc-lead"><code>pair&lt;string,int&gt; getClass(int id){ return make_pair("DOTCPP!", id); }</code></p>
+<ul class="pts">
+<li><strong>指针返回法（数组返回法）</strong>：返回指针，指向一段连续内存，适合多个<strong>同类型</strong>返回值。</li>
+<li class="sub">注意用 <code>new</code> 申请、<code>delete[]</code> 释放，否则内存泄漏。</li>
+<li><strong>结构体返回法</strong>：超过两个值、且类型不同时最推荐的写法，把各种类型打包成一个 struct 返回。</li>
+<li class="sub">这与此前章节定义结点结构体的思路完全相通。</li>
+<li>C/C++ 本身不支持逗号式多返回值，是历史设计遗留；Python 可直接 <code>return a,b,c</code> 并用 <code>x,y,z=getWay(97)</code> 接收。</li>
+</ul>
+</section>
+<section class="dsec" id="s14">
+  <div class="sec-no">14 / SECTION</div>
+  <h2>C/C++如何加速输入输出效率（上）</h2>
+<ul class="pts">
+<li><strong>痛点</strong>：大数据量时 cin/cout 常导致明明算法正确却超时，换成 scanf/printf 就过。</li>
+<li><strong>原因</strong>：cin 为了与 scanf 混用不出错，维护了同步缓冲区，牺牲了一部分效率。</li>
+<li><strong>加速三件套</strong>：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>ios::sync_with_stdio(false);   // 关闭与 stdio 的同步（默认开启）
+cin.tie(0);                    // 解除 cin 与 cout 的绑定
+cout.tie(0);                   // 进一步松绑 C++ 运行库层面的传输</code></pre></div>
+
+<ul class="pts">
+<li><code>sync_with_stdio(false)</code> 相当于“是否兼容 stdio”的开关；tie 解除的是运行库层面的绑定，操作系统层面的 stdin/stdout 绑定无法解除。</li>
+<li>可用宏简化：<code>#define jiasu ios::sync_with_stdio(false),cin.tie(0),cout.tie(0);</code></li>
+<li>注意：解除绑定后<strong>不要再混用 scanf/printf 与 cin/cout</strong>，否则可能乱码。</li>
+<li>实测数据（Windows，1e5 数据量）：解除绑定的 cout 约 29~30 秒，未解除约 47~51 秒，C++ 文件里的 printf 约 76~85 秒，C 文件 printf 约 29~30 秒。</li>
+<li>结论：解除绑定后 cout 已经是最快的输出方式之一，输入仍需配合“快读”（下一节）。</li>
+</ul>
+</section>
+<section class="dsec" id="s15">
+  <div class="sec-no">15 / SECTION</div>
+  <h2>C/C++如何加速输入输出效率（下）</h2>
+<ul class="pts">
+<li><strong>快读思想</strong>：用 <code>getchar()</code> 逐字符读入，按位拼数。</li>
+<li>核心流程：判断是否为数字 → 按位读取 → ASCII 转数字 → 继续读 → 每次乘 10 再累加 → 结束返回。</li>
+<li>负数处理：设 flag 标记，读到 '-' 时置 flag=0，最后返回负数（用 <code>~(X-1)</code> 取负）。</li>
+<li>基础快读模板：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>inline int read(){
+    int X=0; bool flag=1; char ch=getchar();
+    while(ch&lt;'0'||ch&gt;'9'){ if(ch=='-') flag=0; ch=getchar(); }
+    while(ch&gt;='0'&amp;&amp;ch&lt;='9'){ X=(X&lt;&lt;1)+(X&lt;&lt;3)+ch-'0'; ch=getchar(); }
+    if(flag) return X;
+    return ~(X-1);
+}</code></pre></div>
+
+<ul class="pts">
+<li>使用：<code>int tmp = read();</code>；加 <code>inline</code> 可进一步提升效率。</li>
+<li><strong>快速输出</strong>：思路相反，按位拆解输出，用递归先输出高位：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>inline void write(int X){
+    if(X&lt;0){ X=~(X-1); putchar('-'); }
+    if(X&gt;9) write(X/10);
+    putchar(X%10+'0');
+}</code></pre></div>
+
+<ul class="pts">
+<li><strong>高级模板</strong>：用命名空间 IO + 模板 + <code>fread</code> 缓冲区，可 <code>read&lt;long long&gt;()</code> 自动指定返回类型，效率最高但代码长、不易上手。</li>
+<li>取舍建议：日常刷题用 <code>ios::sync_with_stdio(false)</code> 三件套足够；卡时间极限时再上快读/快写。</li>
+</ul>
+</section>
+    <div class="qnav">
+        <a class="prev" href="ch04.html"><span class="k">PREV / 04</span><span class="t">队列</span></a>
+        <a class="next" href="ch06.html"><span class="k">NEXT / 06</span><span class="t">串、数组、矩阵和广义表</span></a>
+    </div>
+  </main>
+
+  <aside class="docside">
+    <div class="k">ON THIS PAGE</div>
+    <ol>
+      <li><a href="#s1">C++的区别</a></li>
+      <li><a href="#s2">C++STL教程入门</a></li>
+      <li><a href="#s3">C++STL之Vector容器</a></li>
+      <li><a href="#s4">C++STL之List容器</a></li>
+      <li><a href="#s5">C++STL之stack栈容器</a></li>
+      <li><a href="#s6">C++STL之Queue容器</a></li>
+      <li><a href="#s7">C++STL之Priority_queue（优先队列）</a></li>
+      <li><a href="#s8">C++STL之Set容器</a></li>
+      <li><a href="#s9">set theory（集合论）</a></li>
+      <li><a href="#s10">C++STL之Map容器</a></li>
+      <li><a href="#s11">C++STL之Pair类模板</a></li>
+      <li><a href="#s12">C++STL之multiset与multimap容器</a></li>
+      <li><a href="#s13">C/C++如何设计函数多返回值？</a></li>
+      <li><a href="#s14">C/C++如何加速输入输出效率（上）</a></li>
+      <li><a href="#s15">C/C++如何加速输入输出效率（下）</a></li>
+    </ol>
+  </aside>
+</div>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>数据结构与算法教程笔记，整理自 dotcpp 教程（C 语言中文网），按 12 章重写为「章 → 节 → 要点」的形式，图片外挂存储。原文如有笔误，已在对应要点标注订正。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="index.html">数据结构教程</a>
+        <a href="../../problems/algorithm/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../fullstack/index.html">全栈笔记</a>
+        <a href="../../tools/mistakes.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/tutorial.js" defer></script>
+</body>
+</html>

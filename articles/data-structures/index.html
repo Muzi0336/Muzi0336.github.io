@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数据结构教程 · 朝云暮辞</title>
+<meta name="description" content="数据结构与算法教程笔记，12 章 87 节，按章分页阅读，含原文配图。">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/detail.css">
+<link rel="stylesheet" href="../../assets/css/tutorial.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../../index.html#contest" class="contest-link">计挑赛</a>
+            <a href="../../蓝桥杯真题/exam/index.html">蓝桥真题</a>
+    <a href="../../problems/algorithm/index.html">算法题库</a>
+    <a href="../../problems/algorithm/paths.html">学习路径</a>
+    <a href="../../problems/algorithm/learn.html">算法学习</a>
+    <a href="../../problems/algorithm/lab.html">动画实验室</a>
+    <a href="index.html" class="active">数据结构</a>
+    <a href="../algorithm-competition/index.html">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../fullstack/index.html">全栈笔记</a>
+    <a href="../../tools/mistakes.html">错题本</a>
+  </nav>
+</div>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="hero-left">
+      <div class="eyebrow">— Data structure / 12 chapters</div>
+      <h1>把数据结构，<br>按章读完。</h1>
+      <p class="lede">整理自 dotcpp 的数据结构与算法教程。原文是逐篇的长页面，这里重排为 12 章：每章一个页面，左侧是全部章节，右侧是本章小标题，正文只保留「节 → 要点」和代码、配图。</p>
+    </div>
+    <div class="hero-stat">
+      <div class="num">12</div>
+      <div class="stat-label">
+        <span>章 · 87 节</span>
+        <span>114 张原文配图</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="idx-list">
+    <div class="idx-head">
+      <span>— Chapters / 章目录</span>
+      <span>19 千字 · 2026</span>
+    </div>
+    <a class="idx-row" href="ch01.html">
+      <div class="idx-no">01 / CH</div>
+      <div class="idx-main"><h3>数据结构入门</h3><p>从「程序 = 数据结构 + 算法」讲起，把复杂度、逻辑结构、抽象数据类型这些后面反复要用的词先立住。</p></div>
+      <div class="idx-side"><span class="tag">9 节 · 13 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch02.html">
+      <div class="idx-no">02 / CH</div>
+      <div class="idx-main"><h3>链表</h3><p>顺序表扩容要整段搬家，链表靠指针把零散的结点串起来：单链表、双向链表、循环链表与静态链表。</p></div>
+      <div class="idx-side"><span class="tag">7 节 · 21 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch03.html">
+      <div class="idx-no">03 / CH</div>
+      <div class="idx-main"><h3>栈</h3><p>只在一端进出的线性表，数组或链式都能实现；括号匹配、表达式求值、递归都靠它撑住。</p></div>
+      <div class="idx-side"><span class="tag">3 节 · 5 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch04.html">
+      <div class="idx-no">04 / CH</div>
+      <div class="idx-main"><h3>队列</h3><p>先进先出。真正容易错的是循环队列的下标取模，以及队空、队满的判定方式。</p></div>
+      <div class="idx-side"><span class="tag">4 节 · 16 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch05.html">
+      <div class="idx-no">05 / CH</div>
+      <div class="idx-main"><h3>C++ STL 库教程（附带题库）</h3><p>vector / list / queue / stack / set / map 的常用接口与坑点，竞赛里用它直接替掉手写实现。</p></div>
+      <div class="idx-side"><span class="tag">15 节 · 3 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch06.html">
+      <div class="idx-no">06 / CH</div>
+      <div class="idx-main"><h3>串、数组、矩阵和广义表</h3><p>从朴素的模式匹配走到 KMP，再往下是二维数组的行列映射与特殊矩阵的压缩存储。</p></div>
+      <div class="idx-side"><span class="tag">10 节 · 12 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch07.html">
+      <div class="idx-no">07 / CH</div>
+      <div class="idx-main"><h3>树</h3><p>二叉树的性质与四种遍历是主干，再往上是线索二叉树、树与森林的转换、哈夫曼编码。</p></div>
+      <div class="idx-side"><span class="tag">11 节 · 32 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch08.html">
+      <div class="idx-no">08 / CH</div>
+      <div class="idx-main"><h3>图</h3><p>邻接矩阵与邻接表两种存法，配上 DFS / BFS、最小生成树与最短路径这几套经典算法。</p></div>
+      <div class="idx-side"><span class="tag">9 节 · 10 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch09.html">
+      <div class="idx-no">09 / CH</div>
+      <div class="idx-main"><h3>查找算法</h3><p>顺序、折半、分块、二叉排序树、平衡树与哈希表；比较次数与 ASL 是统一的度量。</p></div>
+      <div class="idx-side"><span class="tag">5 节 · 2 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch10.html">
+      <div class="idx-no">10 / CH</div>
+      <div class="idx-main"><h3>排序算法</h3><p>插入、希尔、选择、堆、冒泡、快排、归并逐个过一遍，最后一张表把复杂度、空间与稳定性对齐。</p></div>
+      <div class="idx-side"><span class="tag">8 节 · 0 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch11.html">
+      <div class="idx-no">11 / CH</div>
+      <div class="idx-main"><h3>算法和竞赛</h3><p>从复杂度估算到题型分布，讲的是考试和比赛里怎么把前面那些结构用出来。</p></div>
+      <div class="idx-side"><span class="tag">4 节 · 0 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch12.html">
+      <div class="idx-no">12 / CH</div>
+      <div class="idx-main"><h3>后记</h3><p>原教程的收尾，谈的是学习方法与往后该走的路。</p></div>
+      <div class="idx-side"><span class="tag">2 节 · 0 图</span><span class="go">→</span></div>
+    </a>
+  </section>
+</main>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>数据结构与算法教程笔记，整理自 dotcpp 教程（C 语言中文网），按 12 章重写为「章 → 节 → 要点」的形式，图片外挂存储。原文如有笔误，已在对应要点标注订正。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="index.html">数据结构教程</a>
+        <a href="../../problems/algorithm/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../fullstack/index.html">全栈笔记</a>
+        <a href="../../tools/mistakes.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

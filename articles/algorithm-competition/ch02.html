@@ -1,0 +1,504 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第二章 搜索算法 · 算法竞赛教程</title>
+<meta name="description" content="第二章 搜索算法 — DFS / BFS 两副骨架，往上叠迭代加深、双向 BFS、A* 与 IDA*，搜索题的分水岭在剪枝写得好不好。">
+<meta name="theme-color" content="#f4f1e9">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/detail.css">
+<link rel="stylesheet" href="../../assets/css/tutorial.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../../index.html#contest" class="contest-link">计挑赛</a>
+            <a href="../../蓝桥杯真题/exam/index.html">蓝桥真题</a>
+    <a href="../../problems/algorithm/index.html">算法题库</a>
+    <a href="../../problems/algorithm/paths.html">学习路径</a>
+    <a href="../../problems/algorithm/learn.html">算法学习</a>
+    <a href="../../problems/algorithm/lab.html">动画实验室</a>
+    <a href="../data-structures/index.html">数据结构</a>
+    <a href="index.html" class="active">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../fullstack/index.html">全栈笔记</a>
+    <a href="../../tools/mistakes.html">错题本</a>
+  </nav>
+</div>
+
+<div class="docwrap">
+  <aside class="docnav">
+    <a class="back" href="index.html">← 教程目录</a>
+    <nav class="docnav-list">
+      <a href="ch01.html"><span class="n">01</span><span class="t">算法基础</span></a>
+      <a href="ch02.html" class="on"><span class="n">02</span><span class="t">搜索算法</span></a>
+      <a href="ch03.html"><span class="n">03</span><span class="t">排序算法</span></a>
+      <a href="ch04.html"><span class="n">04</span><span class="t">字符串相关</span></a>
+      <a href="ch05.html"><span class="n">05</span><span class="t">数学相关</span></a>
+      <a href="ch06.html"><span class="n">06</span><span class="t">动态规划</span></a>
+      <a href="ch07.html"><span class="n">07</span><span class="t">数据结构</span></a>
+      <a href="ch08.html"><span class="n">08</span><span class="t">图论</span></a>
+      <a href="ch09.html"><span class="n">09</span><span class="t">计算几何</span></a>
+      <a href="ch10.html"><span class="n">10</span><span class="t">其他算法</span></a>
+    </nav>
+    <div class="navstat">10 章 · 172 节<br>964 张图</div>
+  </aside>
+
+  <main class="docmain">
+    <div class="doc-eyebrow">— ALGORITHM CONTEST / 02</div>
+    <h1 class="doc-title">第二章 搜索算法</h1>
+    <p class="doc-lead">DFS / BFS 两副骨架，往上叠迭代加深、双向 BFS、A* 与 IDA*，搜索题的分水岭在剪枝写得好不好。</p>
+    <div class="doc-meta">
+      <span class="chip">15 节</span>
+      <span class="chip">54 图</span>
+    </div>
+    <div class="rule"></div>
+<section class="dsec" id="s1">
+  <div class="sec-no">01 / SECTION</div>
+  <h2>搜索算法简介</h2>
+<ul class="pts">
+<li><strong>定义</strong>：利用计算机的高性能，有目的地穷举问题的部分或全部状态，从而找到解；搜索过程本质是<strong>按扩展规则构造解答树</strong>、寻找目标节点。</li>
+<li>与枚举的区别：枚举是“平铺着试”，搜索有<strong>方向性和目标性</strong>——从一个状态转移到下一个状态，向解的方向扩展。</li>
+<li>搜索的两大基本形态：</li>
+<li class="sub"><strong>BFS（广度优先）</strong>：从初态生成全部下一层状态并检查目标，逐层展开；用<strong>队列</strong>模拟。取队首扩展 → 新状态入队 → 队首出队 → 重复，直到找到解或队列空。</li>
+<li class="sub"><strong>DFS（深度优先 / 回溯）</strong>：沿一条分支一路向下，遇到叶节点仍非目标就回溯换分支；用<strong>栈</strong>（递归即隐式栈）模拟。</li>
+<li>两者的选择：求“最少步数/最短路径”用 BFS（第一个到达目标即最短）；求“所有方案 / 是否可达 / 深搜剪枝”用 DFS，空间更省。</li>
+</ul>
+</section>
+<section class="dsec" id="s2">
+  <div class="sec-no">02 / SECTION</div>
+  <h2>结合实例解析深度优先搜索(DFS)搜索</h2>
+<ul class="pts">
+<li><strong>一句话</strong>：一条路走到黑，走不通再回头换路。</li>
+<li>实现靠<strong>栈</strong>保存路径；递归写法最自然：访问当前点 → 标记 → 枚举邻接点递归 → 取消标记。</li>
+<li>遍历图的步骤：从起点出发访问 → 依次访问未访问邻接点 → 若有顶点仍未访问，换一个起点继续 → 直到全部访问。</li>
+<li><strong>三个关键动作</strong>：</li>
+<li class="sub">剪枝：提前判断“这条路不可能出解”，减少时间成本；</li>
+<li class="sub">回溯：退回到上一层状态；</li>
+<li class="sub">还原现场：撤销本层做过的标记/修改，否则后续路径会被“污染”。</li>
+<li>经典例题（骑士遍历棋盘）：n×m 棋盘，马按“日”字走，不重复经过同一点，问遍历全部点的方案数。</li>
+<li class="sub">8 个方向写成两个方向数组；<code>dfs(x, y, 剩余步数)</code>；棋盘不重复访问用 <code>bool g[10][10]</code> 标记，回溯时清标记。</li>
+<li class="sub">答案要累加所有完整路径，<strong>不是</strong>找到一个就停，所以不做“找到即返回”。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>const int a[] = {1, 2, 2, 1, -1, -2, -2, -1};
+const int b[] = {2, 1, -1, -2, -2, -1, 1, 2};
+void dfs(int x, int y, int left) {
+    if (left == 0) { ++cnt; return; }
+    for (int i = 0; i &lt; 8; ++i) {
+        int nx = x + a[i], ny = y + b[i];
+        if (nx &gt;= 0 &amp;&amp; nx &lt; n &amp;&amp; ny &gt;= 0 &amp;&amp; ny &lt; m &amp;&amp; !g[nx][ny]) {
+            g[nx][ny] = true;
+            dfs(nx, ny, left - 1);
+            g[nx][ny] = false;      // 回溯：还原现场
+        }
+    }
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/97d2d02819dc9d27.webp" width="655" height="658" data-full="assets/97d2d02819dc9d27.png" loading="lazy" decoding="async" alt="图1 马走日(DFS)题解" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s3">
+  <div class="sec-no">03 / SECTION</div>
+  <h2>结合实例解析宽度优先搜索(BFS)搜索</h2>
+<ul class="pts">
+<li><strong>定义</strong>：从起点开始一层层向外扩展，先访问所有距离为 1 的点，再访问距离为 2 的点……是很多图算法（Dijkstra、Prim）的原型，属于“盲目搜索”。</li>
+<li>实现要素：队列 + <strong>访问标记</strong>（入队即标记，避免重复入队）。</li>
+<li>流程：起点入队 → 取队首出队 → 扩展其未访问邻接点入队并标记 → 队空或到达目标结束。</li>
+<li>BFS 与 DFS 的差别：DFS 关心“递归 + 回溯”，BFS 关心“<strong>状态选取 + 标记</strong>”。</li>
+<li>例题一（农夫追牛）：从 n 到 k，每步可 <code>x-1</code>、<code>x+1</code>、<code>2x</code>，求最少步数。</li>
+<li class="sub">三种转移等价于三条边，求最少步数 ⇒ BFS；用 <code>dist[]</code> 记录步数并判重。</li>
+<li class="sub">注意 <code>x-1</code> 不能小于 0、<code>2x</code> 不能越界（可设上限 2×10⁵）。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>while (!q.empty()) {
+    int x = q.front(); q.pop();
+    if (x == k) { cout &lt;&lt; d[x]; break; }
+    for (int nx : {x - 1, x + 1, x * 2})
+        if (nx &gt;= 0 &amp;&amp; nx &lt;= 200000 &amp;&amp; !vis[nx])
+            vis[nx] = true, d[nx] = d[x] + 1, q.push(nx);
+}</code></pre></div>
+
+<ul class="pts">
+<li>BFS 适用于<strong>边权相同</strong>的最短路；边权不同要换 Dijkstra。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/a67ccdceed74bcd9.webp" width="400" height="200" data-full="assets/a67ccdceed74bcd9.png" loading="lazy" decoding="async" alt="图1 BFS（广度优先搜索）1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c222715cf986e101.webp" width="400" height="200" data-full="assets/c222715cf986e101.png" loading="lazy" decoding="async" alt="图2 BFS（广度优先搜索）2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/969f418c1639c14d.webp" width="410" height="200" data-full="assets/969f418c1639c14d.png" loading="lazy" decoding="async" alt="图3 BFS（广度优先搜索）3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/518b41545a6dc711.webp" width="410" height="200" data-full="assets/518b41545a6dc711.png" loading="lazy" decoding="async" alt="图4 BFS（广度优先搜索）3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/985f22b6f05cb253.webp" width="410" height="200" data-full="assets/985f22b6f05cb253.png" loading="lazy" decoding="async" alt="图5 宽度优先搜索算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s4">
+  <div class="sec-no">04 / SECTION</div>
+  <h2>结合实例解析双向搜索</h2>
+<ul class="pts">
+<li><strong>思想</strong>：同时从起点和终点向中间搜索，两边“碰头”即得到答案，搜索树规模从 <code>b^d</code> 降到 <code>2·b^(d/2)</code>。</li>
+<li>适用信号：题目<strong>同时给出始态与终态</strong>，且正向搜索空间过大。</li>
+<li><strong>双向 DFS</strong>：先搜前一半空间并保存所有可达值，再搜后一半空间，查是否在前一半中出现（如“折半枚举 / meet in the middle”）。</li>
+<li><strong>双向 BFS</strong>：维护 q1（从起点）、q2（从终点）两个队列；每次扩展<strong>较小的那个队列</strong>（均衡两边），新状态若已被另一侧标记则相遇，答案为两边步数之和。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>q1.push(S), q2.push(T), vis[S] = 1, vis[T] = 2;
+while (!q1.empty() &amp;&amp; !q2.empty()) {
+    if (q1.size() &gt; q2.size()) expand(q2) else expand(q1);
+}</code></pre></div>
+
+<ul class="pts">
+<li>只需一个队列也可实现：队列元素里多带一个“来自哪一侧”的标记。</li>
+<li>例题（随机图多次最短路查询）：点边规模大、询问多。</li>
+<li class="sub">双向 BFS 扩展每点的邻接点；先用并查集判两点是否连通，不连通直接输出 -1；</li>
+<li class="sub">注意每轮询问要清空标记数组，可用“时间戳”代替 memset 降低开销。</li>
+</ul>
+</section>
+<section class="dsec" id="s5">
+  <div class="sec-no">05 / SECTION</div>
+  <h2>什么是启发式搜索？</h2>
+<ul class="pts">
+<li><strong>定义</strong>：在普通搜索中引入<strong>启发函数 h(n)</strong>，对每个分支做估价，优先扩展更“有希望”的方向，甚至直接砍掉明显无效的枝。</li>
+<li><strong>贪婪最佳优先</strong>：优先队列按“到终点的估计距离 h”排序，速度快但<strong>不保证最优</strong>（类似贪心）。</li>
+<li><strong>Dijkstra</strong>：按“到起点的实际代价 g”排序，保证最优但盲目、扩展点多。</li>
+<li><strong>A\</strong>*：按 <code>f = g + h</code> 排序，兼顾已付代价与目标引导，<code>h</code> 越准越省。</li>
+<li>三个算法的关系：<code>h ≡ 0</code> 时 A\* 退化为 Dijkstra；<code>g ≡ 0</code> 时退化为贪婪最佳优先。</li>
+<li>例题（采草药）：限时 T，每株有采摘时间和价值，求最大总价值。</li>
+<li class="sub">搜索 + 上界估价剪枝：按单位时间价值排序后做“剩余时间最多还能拿多少价值”的乐观估计，超过当前最优就剪掉。</li>
+<li>启发式搜索的收益取决于 h 的质量：h 过于乐观则剪枝弱，过于悲观则可能丢最优解（需保证 <code>h</code> 可采纳）。</li>
+</ul>
+<figure class="figure"><img src="assets/c1ad68255b820c65.gif" width="602" height="302" data-full="assets/c1ad68255b820c65.gif" loading="lazy" decoding="async" alt="图1 启发式搜索" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/1569b037352877a4.webp" width="558" height="508" data-full="assets/1569b037352877a4.jpg" loading="lazy" decoding="async" alt="图2 A star算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s6">
+  <div class="sec-no">06 / SECTION</div>
+  <h2>图文解析A*搜索算法</h2>
+<ul class="pts">
+<li><strong>来源</strong>：由 Dijkstra 改进，属于图遍历 + 最佳优先搜索，是 BFS 的加强版。</li>
+<li><strong>核心公式</strong>：<code>f(n) = g(n) + h(n)</code></li>
+<li class="sub"><code>g(n)</code>：起点到 n 的实际代价；</li>
+<li class="sub"><code>h(n)</code>：n 到终点的<strong>估计</strong>代价（启发函数）；</li>
+<li class="sub"><code>f(n)</code>：经 n 到终点的总估计代价。</li>
+<li><strong>两个集合</strong>：OPEN（待扩展，按 f 排序）、CLOSED（已扩展）。</li>
+<li>流程：起点入 OPEN → 取 f 最小的节点移入 CLOSED → 扩展其邻居：若更优则更新 <code>g</code> 与父指针并入 OPEN → 到达目标后沿父指针逆序回溯得到路径。</li>
+<li>细节：f 相同则 <code>h</code> 小者优先；已在 OPEN 中且新 g 更小要更新（“松弛”操作）。</li>
+<li>保证最优的条件：<code>h</code> <strong>可采纳</strong>（不高估真实剩余代价），如网格曼哈顿/欧氏距离；若 <code>h</code> 高估则可能找到次优解。</li>
+<li>例：图中 S→G，<code>c(A,E)=9</code>、<code>h(A)=15</code>，则 <code>f(A)=g(A)+h(A)</code>；示例最优路径为 <code>S→B→F→k→G</code>。</li>
+<li>复杂度取决于 h：h 越接近真实值，扩展节点越少；<code>h=0</code> 即 Dijkstra。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/9fb66ec7f23ab76a.webp" width="1739" height="951" data-full="assets/9fb66ec7f23ab76a.png" loading="lazy" decoding="async" alt="图1 A*算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ecb727bc0ed1baa9.webp" width="1688" height="2852" data-full="assets/ecb727bc0ed1baa9.png" loading="lazy" decoding="async" alt="图2 A*算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b27dcc367000e3c1.webp" width="992" height="1239" data-full="assets/b27dcc367000e3c1.png" loading="lazy" decoding="async" alt="图3 A*算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s7">
+  <div class="sec-no">07 / SECTION</div>
+  <h2>C++代码浅谈迭代加深搜索</h2>
+<ul class="pts">
+<li><strong>定义</strong>：每次给 DFS 限定一个深度上限 d，搜不到就把 d 加 1 重新从根搜索。</li>
+<li>用途：找<strong>最优解（最少步数）</strong>，但又不想承担 BFS 的队列空间。</li>
+<li>本质仍是 DFS，只多了“<code>d &gt; 限制</code> 就返回”的判断；空间 O(深度)，远小于 BFS 的 O(状态数)。</li>
+<li>为什么可行：分支多时每层节点数指数增长，浅层的重复搜索开销相对于最后一层可忽略，总复杂度与 BFS 同阶。</li>
+<li>伪代码：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>bool IDDFS(int u, int d) {              // 返回是否在限定深度内找到解
+    if (d &gt; limit) return false;        // 超过本轮深度上限，回头
+    if (isTarget(u)) return true;
+    for (int v : adj[u])
+        if (IDDFS(v, d + 1)) return true;
+    return false;
+}
+// 外层：for (limit = 0; ; ++limit) if (IDDFS(root, 0)) break;</code></pre></div>
+
+<ul class="pts">
+<li>选择策略：BFS 好判重、空间够时用 BFS；空间吃紧又要最优解时用迭代加深。</li>
+</ul>
+</section>
+<section class="dsec" id="s8">
+  <div class="sec-no">08 / SECTION</div>
+  <h2>C++代码浅谈IDA*算法</h2>
+<ul class="pts">
+<li><strong>定义</strong>：迭代加深 + A\*（用 DFS 方式实现 A\*），即每轮限定深度 <code>deep</code>，用估价函数剪掉“最少也走不完”的枝。</li>
+<li>解决的问题：</li>
+<li class="sub">A\* 需要判重与优先队列排序；</li>
+<li class="sub">A\* 的堆占用大量空间。</li>
+<li>思想：深度从 0 起递增，第一次搜到目标的深度就是最短步数。</li>
+<li>关键判断：<code>predict() &gt; deep</code> 就返回 false（乐观估计都超出剩余深度，必不可能到达）。</li>
+<li>结构：外层 <code>incDeep(u)</code> 递增深度，内层 <code>IDAstar(u, deep)</code>：先估价剪枝 → 判断目标 → 递归子节点。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>bool IDAstar(int u, int deep) {
+    if (predict(u) &gt; deep) return false;            // 乐观估计都超了，剪枝
+    if (isTarget(u)) return true;
+    if (deep == 0) return false;
+    for (int v : adj[u]) if (IDAstar(v, deep - 1)) return true;
+    return false;
+}</code></pre></div>
+
+<ul class="pts">
+<li>缺点：每轮失败都要从头再搜；深度大时递归需改栈模拟。</li>
+<li>适用：A\* 空间不够、或状态难以哈希判重的场合（如 15 数码、八数码）。</li>
+</ul>
+</section>
+<section class="dsec" id="s9">
+  <div class="sec-no">09 / SECTION</div>
+  <h2>回溯法入门级讲解</h2>
+<ul class="pts">
+<li><strong>本质</strong>：暴力枚举 + 及时回头，最多再加剪枝，是“通用解题法”。</li>
+<li>能解的题型：组合（n 选 k）、排列（全排列）、切割（字符串分段）、子集、棋盘（N 皇后、数独）。</li>
+<li>解空间树两种形态：</li>
+<li class="sub"><strong>子集树</strong>：每个元素“选/不选”，共 2ⁿ 个叶（0-1 背包）；</li>
+<li class="sub"><strong>排列树</strong>：元素的全排列，共 n! 个叶（旅行商、N 皇后按行放置）。</li>
+<li>与其它方法的关系：回溯 ≈ 图 DFS ≈ 二叉树后序；分支限界 ≈ 图 BFS ≈ 层序。</li>
+<li>剪枝函数两类：</li>
+<li class="sub"><strong>约束函数</strong>：剪掉不满足约束的路径（如皇后互相攻击）；</li>
+<li class="sub"><strong>限界函数</strong>：剪掉不可能优于当前最优的路径（如背包超重或上界不足）。</li>
+<li>递归范式（N 叉树）：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void backtrack(int t) {
+    if (t &gt; n) { output(x); return; }        // 到叶子，得到一个可行解
+    for (int i = 1; i &lt;= k; ++i) {           // 枚举当前层所有取值
+        x[t] = value(i);
+        if (constraint(t) &amp;&amp; bound(t)) backtrack(t + 1);
+    }
+}</code></pre></div>
+
+<ul class="pts">
+<li>迭代版本省递归栈但要自己维护“当前层 + 已试到第几个分支”，设计更复杂。</li>
+<li>复杂度一般是指数级，规模稍大必须靠剪枝或换 DP/搜索优化。</li>
+</ul>
+</section>
+<section class="dsec" id="s10">
+  <div class="sec-no">10 / SECTION</div>
+  <h2>回溯法经典例题分析</h2>
+<ul class="pts">
+<li>工作原理四步：构造解空间树 → 遍历 → 遇边界条件换分支 → 达到目标输出。</li>
+<li><strong>例题一：0-1 背包（子集树）</strong></li>
+<li class="sub"><code>x[i]=1/0</code> 表示放/不放；到达叶子比较总价值；</li>
+<li class="sub">剪枝一（约束）：<code>CurWeight + w[i] &gt; C</code> 不放；</li>
+<li class="sub">剪枝二（限界）：剩余物品全部取也超不过当前最优就返回。</li>
+<li><strong>例题二：N 皇后（按行放置，行内枚举列）</strong></li>
+<li class="sub">逐行放皇后，<code>Feasible(row, col)</code> 只需检查同列与两条斜线是否已有皇后；</li>
+<li class="sub">合法则放、递归下一行、回溯时撤销；<code>t &gt; N</code> 时方案数加一。</li>
+<li>技巧：把二维棋盘判断压成一维数组更省时——<code>col[j]</code>、<code>d1[i+j]</code>、<code>d2[i-j+n]</code> 三个标记数组即可 O(1) 判冲突。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void queen(int row) {
+    if (row &gt; n) { ++ways; return; }
+    for (int j = 1; j &lt;= n; ++j) {
+        if (col[j] || d1[row + j] || d2[row - j + n]) continue;
+        col[j] = d1[row + j] = d2[row - j + n] = 1;
+        queen(row + 1);
+        col[j] = d1[row + j] = d2[row - j + n] = 0;
+    }
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/dc750388bacbccd2.webp" width="425" height="215" data-full="assets/dc750388bacbccd2.png" loading="lazy" decoding="async" alt="图1 0-1背包问题" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0d45d9fa607957d5.webp" width="607" height="530" data-full="assets/0d45d9fa607957d5.png" loading="lazy" decoding="async" alt="图2 描述N皇后问题" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s11">
+  <div class="sec-no">11 / SECTION</div>
+  <h2>最优化算法实例讲解</h2>
+<ul class="pts">
+<li>DFS 是大多数题的“骗分利器”，很少作为正解，因为复杂度高；正解往往需要剪枝、记忆化或换 DP。</li>
+<li>两类用法：</li>
+<li class="sub"><strong>定义上的 DFS</strong>：测连通性、求可达点（迷宫、图的条件搜索）；</li>
+<li class="sub"><strong>广义 DFS（爆搜）</strong>：按搜索顺序穷举所有方案，再取最优/合法解。</li>
+<li>精髓在<strong>递归求解 + 回溯处理</strong>，成败在<strong>剪枝</strong>。</li>
+<li>连通性模型两种写法：</li>
+<li class="sub">只统计“能到达多少个点”：<strong>不需要回溯</strong>，访问过就永久标记；</li>
+<li class="sub">判断两点是否连通 / 走迷宫：<strong>需要回溯</strong>，非法的路要还原现场。</li>
+<li>同一模型可基于邻接矩阵、邻接表、边集数组实现，只是遍历方式不同。</li>
+<li>常见优化：</li>
+<li class="sub">可行性剪枝（越界、冲突、超限立即返回）；</li>
+<li class="sub">最优性剪枝（当前代价已劣于已知最优）；</li>
+<li class="sub">搜索顺序优化（先试更可能成功的分支）；</li>
+<li class="sub">等效性剪枝 / 记忆化（相同状态只算一次）。</li>
+<li>竞赛里写爆搜要先想清三件事：状态怎么表示、终止条件、怎么剪枝。</li>
+</ul>
+</section>
+<section class="dsec" id="s12">
+  <div class="sec-no">12 / SECTION</div>
+  <h2>Alpha-Beta剪枝搜索图文讲解</h2>
+<ul class="pts">
+<li>前提：<strong>博弈树</strong>（双方轮流行动展开成树）+ 深度优先搜索。</li>
+<li>角色设定：走棋方为 <strong>MAX</strong>（取子节点评估值的最大值），对手为 <strong>MIN</strong>（取最小值）。</li>
+<li><strong>α</strong>：MAX 沿着已完成分支能保证的<strong>下界</strong>（“我已能拿到这么多”）。</li>
+<li><strong>β</strong>：MIN 能压制到的<strong>上界</strong>（“对手最多让我拿这么多”）。</li>
+<li><strong>α 剪枝</strong>：在 MAX 节点继续试别的着法时，若某个孙节点的值低于 α，这条枝不必再展开。</li>
+<li><strong>β 剪枝</strong>：在 MIN 节点若某孙节点值高于 β，同样剪掉。</li>
+<li>合起来：当 <code>α ≥ β</code> 时即可停止该节点的搜索，返回当前界。</li>
+<li>本质仍是穷尽搜索，只是跳过了“不可能影响最终决策”的子树；剪枝效果强烈依赖<strong>着法排序</strong>（好的着法先试，剪得更多）。</li>
+<li>最优情况下复杂度从 <code>O(b^d)</code> 降到约 <code>O(b^(d/2))</code>，相当于同样时间多看一倍深度。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>int alphaBeta(pos, depth, alpha, beta, maximizing) {
+    if (depth == 0 || gameOver(pos)) return evaluate(pos);
+    if (maximizing) {
+        for (move : moves(pos)) {
+            alpha = max(alpha, alphaBeta(next, depth-1, alpha, beta, false));
+            if (alpha &gt;= beta) break;      // β 剪枝
+        }
+        return alpha;
+    } else {
+        for (move : moves(pos)) {
+            beta = min(beta, alphaBeta(next, depth-1, alpha, beta, true));
+            if (alpha &gt;= beta) break;      // α 剪枝
+        }
+        return beta;
+    }
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/906e43acb84bbf84.webp" width="613" height="431" data-full="assets/906e43acb84bbf84.png" loading="lazy" decoding="async" alt="图1 α剪枝1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/74e96627ce63bdde.webp" width="604" height="422" data-full="assets/74e96627ce63bdde.png" loading="lazy" decoding="async" alt="图2 α剪枝2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/df53842e62fc5d6a.webp" width="602" height="430" data-full="assets/df53842e62fc5d6a.png" loading="lazy" decoding="async" alt="图3 β剪枝1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/892a72959a71b04d.webp" width="599" height="424" data-full="assets/892a72959a71b04d.png" loading="lazy" decoding="async" alt="图4 β剪枝2" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s13">
+  <div class="sec-no">13 / SECTION</div>
+  <h2>Minimax算法（极小化极大算法）及实例讲解</h2>
+<ul class="pts">
+<li><strong>定义</strong>：零和博弈的标准搜索算法——我方选使自己收益最大的着法，对手选使收益最小的着法。</li>
+<li>属于<strong>悲观算法</strong>：假设对手每步都完美决策，于是“在最坏情况中挑最好的”。</li>
+<li>它不追求“理论最大值”（那要求对手犯错），而追求<strong>最小损失</strong>：对手越差，实际结果越好。</li>
+<li>格局树：每个节点是一种局面，父子表示一步走法；叶子用评估函数打分，然后自底向上交替取 max / min。</li>
+<li>博弈树通常极庞大，实际只搜有限深度，得到的是局部最优；更深处用评估函数近似。</li>
+<li>实例（三盘纸币）：甲选一个盘子 → 乙从该盘拿两张给甲 → 甲再选一张拿走，甲求最大、乙求最小。</li>
+<li class="sub">叶子是“甲最终拿到的那张面值”；乙层取 min（挑让甲最小的两张组合），甲层取 max（挑盘子、挑最后一张）。</li>
+<li>与 α-β 的关系：α-β 是 Minimax 的剪枝加速版，结果完全一致但访问节点更少。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/516c7928994be2f2.webp" width="920" height="429" data-full="assets/516c7928994be2f2.png" loading="lazy" decoding="async" alt="图1 格局树（1）" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/302365aff12ef18b.webp" width="921" height="430" data-full="assets/302365aff12ef18b.png" loading="lazy" decoding="async" alt="图2 格局树（2）" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/cdce52aabb31c731.webp" width="919" height="431" data-full="assets/cdce52aabb31c731.png" loading="lazy" decoding="async" alt="图3 完整赋值的格局树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7d8d398f1f60580a.webp" width="920" height="432" data-full="assets/7d8d398f1f60580a.png" loading="lazy" decoding="async" alt="图4 格局转换路径" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s14">
+  <div class="sec-no">14 / SECTION</div>
+  <h2>舞蹈链算法（Dancing Links）运用及执行过程</h2>
+<ul class="pts">
+<li><strong>精确覆盖问题</strong>：全集 X，子集族 S，找 S 的子集 S\*，使 X 中每个元素<strong>恰好出现一次</strong>；这是 NP 完全问题。</li>
+<li>矩阵化：每行 = 一个子集，每列 = X 的一个元素，1 表示包含；问题变为“选出若干行，使每列恰好一个 1”。</li>
+<li>上例 <code>X={1..7}</code>，<code>A={1,4,7}, B={1,4}, C={4,5,7}, D={3,5,6}, E={2,3,6,7}, F={2,7}</code>，精确覆盖为 <code>{B, D, F}</code>。</li>
+<li><strong>X 算法</strong>（非确定性的深度优先回溯）：</li>
+</ul>
+<p class="doc-lead">1. 矩阵无列 ⇒ 当前解合法，成功返回； 2. 选一列 c（通常选 1 最少的列）；若该列无 1 ⇒ 失败回溯； 3. 枚举行 r 使 <code>A[r][c]=1</code>，把 r 加入解； 4. 删除 r 覆盖到的所有列，以及这些列上有 1 的所有行（“冲突的行”）； 5. 在新矩阵上递归； 6. 回溯时按删除的逆序恢复。</p>
+<ul class="pts">
+<li><strong>Dancing Links</strong> 的作用：用十字双向循环链表表示 0-1 矩阵，使“删除一列/一行”和“恢复”都是 O(1) 的指针操作，从而让 X 算法跑得飞快。</li>
+<li>结点结构：每个 1 是一个结点，含 <code>left/right/up/down</code> 四个指针 + <code>col</code> 归属；列头结点额外存 <code>size</code>（该列 1 的个数）。</li>
+<li>关键操作：<code>remove(c)</code> 删列头及其所在行链，<code>resume(c)</code> 逆序恢复——恢复顺序必须与删除顺序相反。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void remove(int c) {                 // 删除第 c 列
+    L[R[c]] = L[c]; R[L[c]] = R[c];
+    for (int i = D[c]; i != c; i = D[i])
+        for (int j = R[i]; j != i; j = R[j])
+            U[D[j]] = U[j], D[U[j]] = D[j], --sz[col[j]];
+}</code></pre></div>
+
+<ul class="pts">
+<li>用途：数独、骨牌拼图、N 皇后、精确覆盖型谜题的统一解法。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/ec190264e1b0cbde.webp" width="293" height="234" data-full="assets/ec190264e1b0cbde.png" loading="lazy" decoding="async" alt="图1 步骤1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/aeee9f4832c482d9.webp" width="22" height="25" data-full="assets/aeee9f4832c482d9.png" loading="lazy" decoding="async" alt="图2 A" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/e50127d52c5e266f.webp" width="71" height="32" data-full="assets/e50127d52c5e266f.png" loading="lazy" decoding="async" alt="图3 该步是非确定性的" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f249497b02f04334.webp" width="69" height="31" data-full="assets/f249497b02f04334.png" loading="lazy" decoding="async" alt="图4 Ar,j=1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c2a351c427879316.webp" width="22" height="25" data-full="assets/c2a351c427879316.png" loading="lazy" decoding="async" alt="图5 A2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ba5328d9c379377d.webp" width="67" height="33" data-full="assets/ba5328d9c379377d.png" loading="lazy" decoding="async" alt="图6 Ai,j" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7ef1e13006d9b232.webp" width="278" height="225" data-full="assets/7ef1e13006d9b232.png" loading="lazy" decoding="async" alt="图7 步骤2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/9e927cb3bc98d285.webp" width="290" height="237" data-full="assets/9e927cb3bc98d285.png" loading="lazy" decoding="async" alt="图8 步骤3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/feb9a76b3b8a62fb.webp" width="308" height="231" data-full="assets/feb9a76b3b8a62fb.png" loading="lazy" decoding="async" alt="图9 步骤4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/4f0319fc56566a5d.webp" width="213" height="87" data-full="assets/4f0319fc56566a5d.png" loading="lazy" decoding="async" alt="图10 步骤5" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7f28ec752096e2cf.webp" width="310" height="233" data-full="assets/7f28ec752096e2cf.png" loading="lazy" decoding="async" alt="图11 步骤6" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0267e06dc179e8a9.webp" width="302" height="243" data-full="assets/0267e06dc179e8a9.png" loading="lazy" decoding="async" alt="图12 步骤7" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7769e580fc22be8b.webp" width="235" height="165" data-full="assets/7769e580fc22be8b.png" loading="lazy" decoding="async" alt="图13 步骤8" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/502547922c220b7e.webp" width="223" height="140" data-full="assets/502547922c220b7e.png" loading="lazy" decoding="async" alt="图14 步骤9" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7f18dd684e47b87b.webp" width="252" height="161" data-full="assets/7f18dd684e47b87b.png" loading="lazy" decoding="async" alt="图15 步骤10" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/bb76e70abdf795cf.webp" width="267" height="162" data-full="assets/bb76e70abdf795cf.png" loading="lazy" decoding="async" alt="图16 步骤11" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f7f34b1dc4228e4c.webp" width="179" height="89" data-full="assets/f7f34b1dc4228e4c.png" loading="lazy" decoding="async" alt="图17 步骤12" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/bb55c50efa9e3453.webp" width="176" height="96" data-full="assets/bb55c50efa9e3453.png" loading="lazy" decoding="async" alt="图18 步骤13" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0e71425d5069f03a.webp" width="165" height="100" data-full="assets/0e71425d5069f03a.png" loading="lazy" decoding="async" alt="图19 步骤14" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/1d1deb15a4d63e8a.webp" width="267" height="100" data-full="assets/1d1deb15a4d63e8a.png" loading="lazy" decoding="async" alt="图20 双向链表1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6a4a2f4a0cb2dc6b.webp" width="250" height="141" data-full="assets/6a4a2f4a0cb2dc6b.png" loading="lazy" decoding="async" alt="图21 双向链表2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/3e0576822c04f5b3.webp" width="643" height="485" data-full="assets/3e0576822c04f5b3.png" loading="lazy" decoding="async" alt="图22 Dancing links" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/48e82038bbf26e03.webp" width="638" height="489" data-full="assets/48e82038bbf26e03.png" loading="lazy" decoding="async" alt="图23 选择一列" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a1f919778e4a3747.webp" width="643" height="510" data-full="assets/a1f919778e4a3747.png" loading="lazy" decoding="async" alt="图24 选择列中的一个节点所在的行" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a5a2161be9785dec.webp" width="635" height="498" data-full="assets/a5a2161be9785dec.png" loading="lazy" decoding="async" alt="图25 移除了选择行的所有列，和每一列有交集的所有行" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0e8b04d08b10ab6f.webp" width="656" height="505" data-full="assets/0e8b04d08b10ab6f.png" loading="lazy" decoding="async" alt="图26 选择另一个节点所在行" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/78b0b2fe92132941.webp" width="625" height="498" data-full="assets/78b0b2fe92132941.png" loading="lazy" decoding="async" alt="图27 移除了选择行的所有列，和每一列有交集的所有行" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c11e4d43eec94914.webp" width="643" height="515" data-full="assets/c11e4d43eec94914.png" loading="lazy" decoding="async" alt="图28 选择节点最少的列，遍历这一列的节点所在行" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/47f6828d405d744e.webp" width="622" height="506" data-full="assets/47f6828d405d744e.png" loading="lazy" decoding="async" alt="图29 移除了选择行的所有列，和每一列有交集的所有行" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a77ad1702b1df3ff.webp" width="635" height="507" data-full="assets/a77ad1702b1df3ff.png" loading="lazy" decoding="async" alt="图30 空链表，只剩头节点" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s15">
+  <div class="sec-no">15 / SECTION</div>
+  <h2>舞蹈链算法（Dancing links）实例讲解</h2>
+<ul class="pts">
+<li>用 DLX 解实际题的<strong>唯一难点</strong>：把题目化成 0-1 精确覆盖模型；建模完成后套模板即可。</li>
+<li>建模三步：找出所有<strong>约束</strong>（每个约束 ⇒ 一组列）→ 找出所有<strong>可选择的操作</strong>（每个操作 ⇒ 一行）→ 确定每行在各列上的 1。</li>
+<li><strong>应用一：伤脑筋十二块（12 片五格骨牌拼 6×10）</strong></li>
+<li class="sub">列数 72 = 12（每种骨牌恰好用一次）+ 60（棋盘 60 个非中心格各被覆盖一次）；</li>
+<li class="sub">每行 = 某块骨牌在某位置的某种摆放，行内有 5 个 1（覆盖 5 格）+ 1 个 1（占用该骨牌对应的列）；</li>
+<li class="sub">全矩阵共 1568 行（各骨牌合法摆放数之和，如长条 I 有 64 种）。</li>
+<li><strong>应用二：数独</strong></li>
+<li class="sub">四条约束 ⇒ 324 列：81（每格填一个数）+ 81（每行 1-9 各一次）+ 81（每列）+ 81（每宫）；</li>
+<li class="sub">每行 = “在第 r 行第 c 列填数字 d”这一决策，恰好命中 4 个 1；</li>
+<li class="sub">共 9×9×9 = 729 行，精确覆盖的解即数独答案。</li>
+<li>输出时按选中行的语义还原棋盘即可。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/aedca3344ad3de9b.webp" width="338" height="319" data-full="assets/aedca3344ad3de9b.png" loading="lazy" decoding="async" alt="图1 伤脑筋十二块" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/a1e7db1a9e4f3b4a.gif" width="358" height="205" data-full="assets/a1e7db1a9e4f3b4a.gif" loading="lazy" decoding="async" alt="图2 精确覆盖" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/ad469b2436f92f5c.gif" width="482" height="34" data-full="assets/ad469b2436f92f5c.gif" loading="lazy" decoding="async" alt="图3 数独问题 sudoku" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+    <div class="qnav">
+        <a class="prev" href="ch01.html"><span class="k">PREV / 01</span><span class="t">算法基础</span></a>
+        <a class="next" href="ch03.html"><span class="k">NEXT / 03</span><span class="t">排序算法</span></a>
+    </div>
+  </main>
+
+  <aside class="docside">
+    <div class="k">ON THIS PAGE</div>
+    <ol>
+      <li><a href="#s1">搜索算法简介</a></li>
+      <li><a href="#s2">结合实例解析深度优先搜索(DFS)搜索</a></li>
+      <li><a href="#s3">结合实例解析宽度优先搜索(BFS)搜索</a></li>
+      <li><a href="#s4">结合实例解析双向搜索</a></li>
+      <li><a href="#s5">什么是启发式搜索？</a></li>
+      <li><a href="#s6">图文解析A*搜索算法</a></li>
+      <li><a href="#s7">C++代码浅谈迭代加深搜索</a></li>
+      <li><a href="#s8">C++代码浅谈IDA*算法</a></li>
+      <li><a href="#s9">回溯法入门级讲解</a></li>
+      <li><a href="#s10">回溯法经典例题分析</a></li>
+      <li><a href="#s11">最优化算法实例讲解</a></li>
+      <li><a href="#s12">Alpha-Beta剪枝搜索图文讲解</a></li>
+      <li><a href="#s13">Minimax算法（极小化极大算法）及实例讲解</a></li>
+      <li><a href="#s14">舞蹈链算法（Dancing Links）运用及执行过程</a></li>
+      <li><a href="#s15">舞蹈链算法（Dancing links）实例讲解</a></li>
+    </ol>
+  </aside>
+</div>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>算法竞赛教程笔记，整理自 dotcpp 教程（C 语言中文网）。原文 172 篇长页面重排为 10 章「章 → 节 → 要点」，代码分块、配图外挂存储（webp 懒加载）。个别表述按原文口径订正，仍以原文为准。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="index.html">算法竞赛教程</a>
+        <a href="../data-structures/index.html">数据结构教程</a>
+        <a href="../../problems/algorithm/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../../tools/mistakes.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/tutorial.js" defer></script>
+</body>
+</html>

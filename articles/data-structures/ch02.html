@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第二章 链表 · 数据结构教程</title>
+<meta name="description" content="第二章 链表 — 顺序表扩容要整段搬家，链表靠指针把零散的结点串起来：单链表、双向链表、循环链表与静态链表。">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/detail.css">
+<link rel="stylesheet" href="../../assets/css/tutorial.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../../index.html#contest" class="contest-link">计挑赛</a>
+            <a href="../../蓝桥杯真题/exam/index.html">蓝桥真题</a>
+    <a href="../../problems/algorithm/index.html">算法题库</a>
+    <a href="../../problems/algorithm/paths.html">学习路径</a>
+    <a href="../../problems/algorithm/learn.html">算法学习</a>
+    <a href="../../problems/algorithm/lab.html">动画实验室</a>
+    <a href="index.html" class="active">数据结构</a>
+    <a href="../algorithm-competition/index.html">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../fullstack/index.html">全栈笔记</a>
+    <a href="../../tools/mistakes.html">错题本</a>
+  </nav>
+</div>
+
+<div class="docwrap">
+  <aside class="docnav">
+    <a class="back" href="index.html">← 教程目录</a>
+    <nav class="docnav-list">
+      <a href="ch01.html"><span class="n">01</span><span class="t">数据结构入门</span></a>
+      <a href="ch02.html" class="on"><span class="n">02</span><span class="t">链表</span></a>
+      <a href="ch03.html"><span class="n">03</span><span class="t">栈</span></a>
+      <a href="ch04.html"><span class="n">04</span><span class="t">队列</span></a>
+      <a href="ch05.html"><span class="n">05</span><span class="t">C++ STL 库教程（附带题库）</span></a>
+      <a href="ch06.html"><span class="n">06</span><span class="t">串、数组、矩阵和广义表</span></a>
+      <a href="ch07.html"><span class="n">07</span><span class="t">树</span></a>
+      <a href="ch08.html"><span class="n">08</span><span class="t">图</span></a>
+      <a href="ch09.html"><span class="n">09</span><span class="t">查找算法</span></a>
+      <a href="ch10.html"><span class="n">10</span><span class="t">排序算法</span></a>
+      <a href="ch11.html"><span class="n">11</span><span class="t">算法和竞赛</span></a>
+      <a href="ch12.html"><span class="n">12</span><span class="t">后记</span></a>
+    </nav>
+    <div class="navstat">12 章 · 87 节<br>114 张图</div>
+  </aside>
+
+  <main class="docmain">
+    <div class="doc-eyebrow">— DATA STRUCTURE / 02</div>
+    <h1 class="doc-title">第二章 链表</h1>
+    <p class="doc-lead">顺序表扩容要整段搬家，链表靠指针把零散的结点串起来：单链表、双向链表、循环链表与静态链表。</p>
+    <div class="doc-meta">
+      <span class="chip">7 节</span>
+      <span class="chip">21 图</span>
+    </div>
+    <div class="rule"></div>
+<section class="dsec" id="s1">
+  <div class="sec-no">01 / SECTION</div>
+  <h2>顺序存储和链式存储</h2>
+<ul class="pts">
+<li><strong>顺序存储（数组）</strong>：元素在内存中连续存放，可随机访问，但插入、删除要成片移动元素。</li>
+<li>举例：在 {1,2,3,4,5,6,7} 第 2 个位置插入 'A'，需要把后面所有元素整体后移再覆盖，步骤繁琐。</li>
+<li>数组两大弊端：① 移动元素多，浪费算力；② 必须预先开足够大的空间，否则有溢出风险。</li>
+<li><strong>链式存储（链表）</strong>：元素分散存放，靠指针把结点串起来，内存随用随申请、自适应大小。</li>
+<li>结点由「数据域 + 指针域」组成：DATA 可为 int、结构体等任意类型；NEXT 指向下一个结点，尾结点的 NEXT 指向 NULL。</li>
+<li>插入、删除只需修改指针指向，不必搬运数据，这是链表最大的优势。</li>
+<li>代价：每个结点要多存一个指针，空间开销更大，且不支持随机访问（不能按下标直接取）。</li>
+<li>本章依次讲三种形态：单链表、双链表（双向链表）、循环单链表，思路大同小异。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/c8a96c16a6945218.webp" width="598" height="294" data-full="assets/c8a96c16a6945218.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/2bd3fbf04faa5f5f.webp" width="378" height="170" data-full="assets/2bd3fbf04faa5f5f.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/00b006dd2169a48b.webp" width="1013" height="98" data-full="assets/00b006dd2169a48b.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/824070a62055794a.webp" width="1045" height="265" data-full="assets/824070a62055794a.png" loading="lazy" decoding="async" alt="图4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/99315c9aa31f0cee.webp" width="601" height="170" data-full="assets/99315c9aa31f0cee.jpg" loading="lazy" decoding="async" alt="图5" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s2">
+  <div class="sec-no">02 / SECTION</div>
+  <h2>单链表的基本设计（C语言代码实现）</h2>
+<ul class="pts">
+<li><strong>概念</strong>：用“结点的序列”表示的线性表称单链表，属链式存取结构；结点 = 数据元素 + 指向后继的指针。</li>
+<li><strong>结点定义</strong>（<code>Node</code> 为结点类型，<code>LinkedList</code> 为指向结点的指针类型）：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>typedef struct Node {
+    int data;              // 数据域
+    struct Node *next;     // 指针域
+} Node, *LinkedList;</code></pre></div>
+
+<ul class="pts">
+<li><strong>初始化</strong>：申请一个头结点空间，<code>next</code> 置 NULL 表示空表；务必判断 <code>L == NULL</code>（申请失败要报错或退出），生产环境可用 C++ 的 try-catch 兜底。</li>
+<li><strong>头插法</strong>：新结点插在头结点之后，代码只需两句——<code>p-&gt;next = L-&gt;next; L-&gt;next = p;</code>。特点：写法简单，但得到的是<strong>逆序</strong>链表。</li>
+<li><strong>尾插法</strong>：必须额外维护尾指针 <code>r</code>（初始指向头结点），每次 <code>r-&gt;next = p; r = p;</code>，最后 <code>r-&gt;next = NULL</code>。特点：结果与输入顺序<strong>一致</strong>。</li>
+<li>两种创建方式无本质区别，都是逐个 malloc 新结点再挂接指针，只是挂接位置不同。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/79cac573ddc1ba88.webp" width="378" height="170" data-full="assets/79cac573ddc1ba88.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f5cdf5edb973569d.webp" width="719" height="419" data-full="assets/f5cdf5edb973569d.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/5269c0f833152a68.webp" width="814" height="373" data-full="assets/5269c0f833152a68.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s3">
+  <div class="sec-no">03 / SECTION</div>
+  <h2>单链表的基本操作及C语言代码实现</h2>
+<ul class="pts">
+<li><strong>遍历</strong>：从头结点的下一个结点开始，<code>while(p){ ...; p = p-&gt;next; }</code>；遍历可衍生出打印、查询、修改、统计长度等操作。</li>
+<li>只读操作可用 <code>void</code> 返回；涉及修改结构的操作习惯返回 <code>LinkedList</code>。</li>
+<li><strong>插入（第 i 个位置插入 x）</strong>：先找第 i 个位置的<strong>前驱</strong> pre（循环 i-1 次），再执行</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>p-&gt;next = pre-&gt;next;
+pre-&gt;next = p;   // 顺序不能反，否则断链</code></pre></div>
+
+<ul class="pts">
+<li><strong>删除（删除值为 x 的结点）</strong>：用 pre 和 p 双指针查找，命中后 <code>pre-&gt;next = p-&gt;next; free(p);</code>。</li>
+<li>删除必须 free 被删结点，否则内存泄漏；插入删除的时间开销主要在“找位置”，为 O(n)。</li>
+<li>完整实现一般包含 6 个函数：初始化、头插建表、尾插建表、插入、删除、修改，加 <code>printList</code> 输出验证。</li>
+<li>推荐配套练习：Dotcpp 1676 题、1052 题。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/64e15f4a439783f7.webp" width="1013" height="98" data-full="assets/64e15f4a439783f7.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/4d8fb1db166221a2.webp" width="1045" height="265" data-full="assets/4d8fb1db166221a2.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/4a0acc63dce85512.webp" width="899" height="151" data-full="assets/4a0acc63dce85512.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s4">
+  <div class="sec-no">04 / SECTION</div>
+  <h2>双向链表的基本设计（C语言代码实现）</h2>
+<ul class="pts">
+<li><strong>单链表的不足</strong>：只有一个后继指针，单向访问；想回溯或从后往前找，只能反复从头遍历。</li>
+<li><strong>双向链表</strong>：每个结点有两个指针，<code>pre</code> 指向前驱、<code>next</code> 指向后继，从任一结点都能方便地访问前后结点。</li>
+<li>完整形态：头结点的 <code>pre</code> 为空，尾结点的 <code>next</code> 为空，其余结点前后互链。</li>
+<li><strong>结点定义</strong>：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>typedef struct line {
+    int data;
+    struct line *pre;    // 前驱
+    struct line *next;   // 后继
+} line, *a;</code></pre></div>
+
+<ul class="pts">
+<li><strong>创建</strong>：先建头结点（注意：双链表头结点<strong>也存数据</strong>，这点与单链表的“空头结点”不同），再逐个 malloc 新结点，执行</li>
+</ul>
+<p class="doc-lead"><code>list-&gt;next = body; body-&gt;pre = list; list = list-&gt;next;</code></p>
+<ul class="pts">
+<li>理解技巧：把过程拆成“建头结点 → 建新结点 → 双向挂接 → 再建新结点”，反复对照代码看两遍即可。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/a0f75b5c7f7477d4.webp" width="1013" height="98" data-full="assets/a0f75b5c7f7477d4.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/9b712024e41f0cfd.webp" width="1046" height="114" data-full="assets/9b712024e41f0cfd.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8b6ed68a178cca0c.webp" width="490" height="282" data-full="assets/8b6ed68a178cca0c.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s5">
+  <div class="sec-no">05 / SECTION</div>
+  <h2>双向链表的基本操作及C语言代码实现</h2>
+<ul class="pts">
+<li><strong>插入</strong>：先 malloc 新结点 temp 并赋数据；插在表头要单独处理（<code>temp-&gt;next = head; head-&gt;pre = temp; head = temp;</code>）。</li>
+<li>插在中间/表尾：先找插入位置的前一个结点 body，然后分两种情况：</li>
+<li class="sub">body 已是尾结点（<code>body-&gt;next == NULL</code>）：<code>body-&gt;next = temp; temp-&gt;pre = body;</code></li>
+<li class="sub">插在中间，四句指针修改：<code>body-&gt;next-&gt;pre = temp; temp-&gt;next = body-&gt;next; body-&gt;next = temp; temp-&gt;pre = body;</code></li>
+<li><strong>删除</strong>：命中结点后两步改指针，再 free：</li>
+</ul>
+<p class="doc-lead"><code>list-&gt;pre-&gt;next = list-&gt;next; list-&gt;next-&gt;pre = list-&gt;pre; free(list);</code></p>
+<ul class="pts">
+<li>注意：删除头结点或尾结点时，<code>list-&gt;pre</code> / <code>list-&gt;next</code> 为空会出问题，实际实现需特判。</li>
+<li><strong>遍历</strong>：与单链表一样沿 <code>next</code> 走即可，<code>while(list)</code> 与 <code>while(list-&gt;next)</code> 判空效果等价；也可反向利用 <code>pre</code> 指针遍历。</li>
+<li>双链表练习较少，可拿单链表的题（1676、1585）改用双链表实现来练手。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/e65330982bfda45b.webp" width="1041" height="291" data-full="assets/e65330982bfda45b.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7942b4f19db2807d.webp" width="1038" height="344" data-full="assets/7942b4f19db2807d.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s6">
+  <div class="sec-no">06 / SECTION</div>
+  <h2>循环链表的介绍及创建（C语言代码实现）</h2>
+<ul class="pts">
+<li><strong>核心差别</strong>：非循环链表尾结点指向 NULL，循环链表尾结点指向<strong>头结点</strong>，从而首尾相接、可无限绕圈。</li>
+<li>把单链表的尾结点指向头结点，即得循环单链表（Circular Linked List）。</li>
+<li>结点设计与单链表完全一致（data + next），只是尾结点的 next 指向开头；只有一个结点时 next 指向自身。</li>
+<li><strong>初始化</strong>：malloc 头结点，成功后将 <code>head-&gt;next = head</code>（也可在 init 里置 NULL，调用后再手动指向自身，方便后续复用插入函数）。</li>
+<li><strong>创建</strong>：逐个插入——从 head 出发 <code>while(p-&gt;next != head) p = p-&gt;next;</code> 找到尾结点，再 <code>p-&gt;next = node; node-&gt;next = head;</code></li>
+<li>循环链表的最大坑是<strong>遍历没有 NULL 终点</strong>，必须靠“回到 head”（或计数）来判断结束。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/49817239551c5250.webp" width="832" height="255" data-full="assets/49817239551c5250.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/046687b2b5a4cd2a.webp" width="302" height="232" data-full="assets/046687b2b5a4cd2a.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6e0fd117a8746c5e.webp" width="893" height="330" data-full="assets/6e0fd117a8746c5e.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s7">
+  <div class="sec-no">07 / SECTION</div>
+  <h2>循环链表的基本操作及C语言代码实现</h2>
+<ul class="pts">
+<li><strong>插入</strong>：与单链表一致，找到第 pos 个结点 t，然后 <code>node-&gt;next = t-&gt;next; t-&gt;next = node;</code>。</li>
+<li><strong>删除</strong>：核心口诀是「<strong>前驱.next = 自身.next</strong>」，这样写可省去大部分头尾特判；但删除尾结点时要让新的尾结点指回 head。</li>
+<li><strong>删除实现要点</strong>：用 temp 记录头结点作“退出点”，ptr 从头结点的下一个结点开始，<code>while(ptr != head)</code> 循环；若 <code>ptr-&gt;next == head</code>（是尾结点），则 <code>temp-&gt;next = head; free(ptr);</code></li>
+<li><strong>遍历</strong>：不能用判 NULL 的方式，要用 <code>while(p-&gt;next != head)</code>；另一种方式是计数器 count 与结点数比较后退出（缺点是仍需先知道结点数）。</li>
+<li>三种链表对比记忆：单链表尾指 NULL；双链表双向指、首尾为空；循环链表尾指 head。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/7d0fa519d762cda6.webp" width="967" height="619" data-full="assets/7d0fa519d762cda6.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c1bf08cb9e1a8191.webp" width="983" height="521" data-full="assets/c1bf08cb9e1a8191.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+    <div class="qnav">
+        <a class="prev" href="ch01.html"><span class="k">PREV / 01</span><span class="t">数据结构入门</span></a>
+        <a class="next" href="ch03.html"><span class="k">NEXT / 03</span><span class="t">栈</span></a>
+    </div>
+  </main>
+
+  <aside class="docside">
+    <div class="k">ON THIS PAGE</div>
+    <ol>
+      <li><a href="#s1">顺序存储和链式存储</a></li>
+      <li><a href="#s2">单链表的基本设计（C语言代码实现）</a></li>
+      <li><a href="#s3">单链表的基本操作及C语言代码实现</a></li>
+      <li><a href="#s4">双向链表的基本设计（C语言代码实现）</a></li>
+      <li><a href="#s5">双向链表的基本操作及C语言代码实现</a></li>
+      <li><a href="#s6">循环链表的介绍及创建（C语言代码实现）</a></li>
+      <li><a href="#s7">循环链表的基本操作及C语言代码实现</a></li>
+    </ol>
+  </aside>
+</div>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>数据结构与算法教程笔记，整理自 dotcpp 教程（C 语言中文网），按 12 章重写为「章 → 节 → 要点」的形式，图片外挂存储。原文如有笔误，已在对应要点标注订正。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="index.html">数据结构教程</a>
+        <a href="../../problems/algorithm/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../fullstack/index.html">全栈笔记</a>
+        <a href="../../tools/mistakes.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/tutorial.js" defer></script>
+</body>
+</html>

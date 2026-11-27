@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面已搬家 · 朝云暮辞</title>
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="assets/css/site.css">
+    <link rel="stylesheet" href="assets/css/detail.css">
+    <style>
+        .move-wrap {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 96px 24px 120px;
+        }
+        .move-wrap h1 {
+            font-family: var(--serif);
+            font-size: clamp(30px, 5vw, 46px);
+            line-height: 1.25;
+            margin-bottom: 18px;
+        }
+        .move-wrap p {
+            color: var(--ink-2);
+            line-height: 1.9;
+            margin-bottom: 14px;
+        }
+        .move-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 18px;
+            margin-top: 28px;
+        }
+        .move-links a {
+            border-bottom: 1px solid var(--line-2);
+            padding-bottom: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="topbar">
+        <a class="brand" href="index.html" title="朝云暮辞 · 学习档案">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+            </svg>
+            <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+        </a>
+    </div>
+
+    <main class="move-wrap">
+        <div class="eyebrow">— 404 / MOVED</div>
+        <h1>这页搬了，<br>新版在下面。</h1>
+        <p>站点按“文章 / 真题 / 学习工具”重新归档，旧地址会自动跳到新地址；如果没有自动跳转，直接点下面的入口。</p>
+        <nav class="move-links">
+            <a href="articles/frontend/index.html">前端教程</a>
+            <a href="articles/fullstack/index.html">全栈笔记</a>
+            <a href="articles/data-structures/index.html">数据结构教程</a>
+            <a href="articles/algorithm-competition/index.html">算法竞赛教程</a>
+            <a href="problems/contest/index.html">计挑赛真题</a>
+            <a href="problems/algorithm/index.html">算法题库</a>
+            <a href="蓝桥杯真题/exam/index.html">蓝桥真题</a>
+            <a href="tools/mistakes.html">错题本</a>
+            <a href="index.html">返回首页</a>
+        </nav>
+    </main>
+
+    <script>
+        (function () {
+            var maps = [
+                ['/计挑赛/', '/problems/contest/'],
+                ['/算法/', '/problems/algorithm/'],
+                ['/数据结构教程/', '/articles/data-structures/'],
+                ['/算法竞赛教程/', '/articles/algorithm-competition/'],
+                ['/frontend/', '/articles/frontend/'],
+                ['/boke/', '/articles/fullstack/'],
+                ['/学习工具/错题本.html', '/tools/mistakes.html']
+            ];
+            var path = decodeURIComponent(location.pathname);
+            for (var i = 0; i < maps.length; i++) {
+                if (path.indexOf(maps[i][0]) === 0) {
+                    location.replace(maps[i][1] + path.slice(maps[i][0].length) + location.search + location.hash);
+                    return;
+                }
+            }
+        })();
+    </script>
+</body>
+
+</html>

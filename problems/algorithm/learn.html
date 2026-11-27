@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>算法学习 · 朝云暮辞 ARENA</title>
+<meta name="description" content="21 篇算法课程：基础语法、基础算法与进阶算法，每篇都带可运行代码。">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/detail.css">
+<link rel="stylesheet" href="assets/arena.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../../index.html"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg><span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span></a>
+  <nav class="nav">
+    <a class="contest-link" href="../../index.html#contest">计挑赛</a>
+            <a href="../../蓝桥杯真题/exam/index.html">蓝桥真题</a>
+    <a href="index.html">算法题库</a>
+    <a href="paths.html">学习路径</a>
+    <a href="learn.html" class="active">算法学习</a>
+    <a href="lab.html">动画实验室</a>
+    <a href="../../articles/data-structures/index.html">数据结构</a>
+    <a href="../../articles/algorithm-competition/index.html">算法竞赛</a>
+    <a href="../../articles/frontend/index.html">前端教程</a>
+    <a href="../../articles/fullstack/index.html">全栈笔记</a>
+    <a href="../../tools/mistakes.html">错题本</a>
+  </nav>
+</div>
+
+<main class="ar-wrap">
+  <section class="ar-hero">
+    <div>
+      <div class="eyebrow">— Learn / 21</div>
+      <h1>先把语言写顺，<br>再谈算法。</h1>
+      <p class="lede">二十一篇课，分成基础语法、基础算法、进阶算法三段。每篇都有解释、边界提醒和一份能直接运行的 C++ / Python 代码。读到哪一篇，本机会替你记着。</p>
+    </div>
+    <div class="ar-stat"><div class="num" id="readNum">0</div><div class="lab"><b>篇已读</b><span>共 21 篇 · 3 章</span></div></div>
+  </section>
+
+  <div id="chapters"></div>
+  <div class="foot"><div>课程内容整理自 ARENA LAB 的 Learn 栏目，经作者授权收录。</div><div>已读状态只保存在本机浏览器。</div></div>
+</main>
+
+<footer class="site-foot"><div class="sf-inner">
+  <div class="sf-top"><div class="sf-brand"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg><div><span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span><p>题库、路径与课程整理自 ARENA LAB，经作者授权收录。</p></div></div>
+  <nav class="sf-links"><a href="index.html">题库</a><a href="paths.html">学习路径</a><a href="lab.html">动画实验室</a><a href="../../tools/mistakes.html">错题本</a><a href="../contest/index.html">计挑赛</a></nav></div>
+  <div class="sf-bottom"><span>© 2026 朝云暮辞</span><span>21 篇课程 · 3 章</span></div>
+</div></footer>
+
+<script src="assets/app_data.js"></script>
+<script src="assets/arena.js"></script>
+<script>
+(function(){
+  const box = document.getElementById('chapters');
+  const read = A.data.lessons.filter(l => A.lessonRead(l.slug)).length;
+  document.getElementById('readNum').textContent = read;
+
+  box.innerHTML = A.data.chapters.map((c, ci) => {
+    const lessons = A.data.lessons.filter(l => l.chapter === c.slug);
+    return `<section class="chapter">
+      <div class="chapter-head"><span class="no">${c.index}</span><h2>${A.esc(c.title)}</h2><span class="en">${A.esc(c.en)}</span><p class="d">${A.esc(c.description)}</p></div>
+      <div class="lesson-grid" style="margin-top:6px">
+        ${lessons.map((l, i) => `<a class="lesson-row" href="lesson.html?slug=${encodeURIComponent(l.slug)}">
+          <span class="n">${String(i+1).padStart(2,'0')}</span>
+          <div><h3>${A.esc(l.title)}</h3><p>${A.esc(l.summary)}</p></div>
+          <span class="meta">${l.minutes} MIN${A.lessonRead(l.slug) ? '<span class="done">已读</span>' : ''}</span>
+        </a>`).join('')}
+      </div>
+    </section>`;
+  }).join('');
+})();
+</script>
+</body>
+</html>

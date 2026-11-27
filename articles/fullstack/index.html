@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全栈实战导航</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            min-height: 100vh;
+            background: #0a0a0f;
+            overflow-x: hidden;
+            color: #fff;
+        }
+
+        /* 动态渐变背景 */
+        .bg-gradient {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: 
+                radial-gradient(ellipse 80% 60% at 20% 30%, rgba(34, 197, 94, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 70%, rgba(59, 130, 246, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 50% 50%, rgba(168, 85, 247, 0.08) 0%, transparent 60%);
+            z-index: 0;
+            animation: bgPulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgPulse {
+            0% { opacity: 0.7; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* 粒子画布 */
+        #particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 24px 100px;
+        }
+
+        /* 返回按钮 */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+            transition: all 0.3s;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .back-btn:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        /* 标题区域 */
+        .hero {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #22c55e, #3b82f6, #a855f7);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientShift 4s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero .tagline {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.45);
+            font-weight: 300;
+        }
+
+                /* 板块标题 */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .section-icon.git { background: linear-gradient(135deg, #f97316, #ea580c); }
+        .section-icon.react { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+        .section-icon.nextjs { background: linear-gradient(135deg, #6366f1, #4f46e5); }
+        .section-icon.ecosystem { background: linear-gradient(135deg, #a855f7, #9333ea); }
+        .section-icon.project { background: linear-gradient(135deg, #22c55e, #16a34a); }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .section-count {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.4);
+            margin-left: auto;
+        }
+
+        /* 卡片网格 */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        /* 玻璃卡片 */
+        .card {
+            position: relative;
+            padding: 24px;
+            border-radius: 16px;
+            text-decoration: none;
+            color: #fff;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.06) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before { opacity: 1; }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+        }
+
+        .card-num {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.25);
+            font-weight: 600;
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            padding-right: 30px;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.5;
+        }
+
+        .card-tag {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* 特殊卡片：博客项目 */
+        .card.featured {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.1));
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            padding: 32px;
+        }
+
+        .card.featured .card-title {
+            font-size: 1.3rem;
+            background: linear-gradient(90deg, #22c55e, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .card.featured .card-desc {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* 底部信息 */
+        .footer-info {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #22c55e, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.4);
+            margin-top: 4px;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* AI 标记 */
+        .ai-credit {
+            position: fixed;
+            bottom: 12px;
+            left: 12px;
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.3);
+            line-height: 1.6;
+        }
+
+                        /* 入场动画 */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .back-btn { animation: fadeUp 0.6s ease-out; }
+        .hero { animation: fadeUp 0.8s ease-out 0.1s both; }
+        .section:nth-child(1) { animation: fadeUp 0.8s ease-out 0.2s both; }
+        .section:nth-child(2) { animation: fadeUp 0.8s ease-out 0.3s both; }
+        .section:nth-child(3) { animation: fadeUp 0.8s ease-out 0.4s both; }
+        .section:nth-child(4) { animation: fadeUp 0.8s ease-out 0.5s both; }
+        .section:nth-child(5) { animation: fadeUp 0.8s ease-out 0.6s both; }
+        .footer-info { animation: fadeUp 0.8s ease-out 0.7s both; }
+
+        /* 页面过渡效果 */
+        .page-transition {
+            position: fixed;
+            inset: 0;
+            background: #0a0a0f;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .page-transition.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .cards { grid-template-columns: 1fr; }
+            .stats { gap: 24px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-gradient"></div>
+    <canvas id="particles"></canvas>
+    <div class="page-transition" id="pageTransition"></div>
+
+    <div class="container">
+        <a href="../../index.html" class="back-btn">← 返回首页</a>
+        <a href="../../problems/contest/index.html" class="back-btn" style="margin-left:10px">C 语言真题 →</a>
+        <a href="../../problems/algorithm/index.html" class="back-btn" style="margin-left:10px">算法题库 →</a>
+
+        <div class="hero">
+            <h1>🛠️ 全栈实战</h1>
+                        <p class="tagline">从命令行到部署，一步步构建现代 Web 应用</p>
+        </div>
+
+                        <!-- Git 工具链 -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon git">🔧</div>
+                <div class="section-title">Git 工具链</div>
+                <div class="section-count">3 篇</div>
+            </div>
+            <div class="cards">
+                <a href="2-git-Node.js基础.html" class="card">
+                    <div class="card-num">1.</div>
+                    <div class="card-title">第6章 Node.js 基础</div>
+                    <div class="card-desc">运行环境、npm 包管理、模块系统</div>
+                    <div class="card-tag">环境</div>
+                </a>
+                <a href="2-git-命令行基础.html" class="card">
+                    <div class="card-num">2.</div>
+                    <div class="card-title">第7章 命令行基础</div>
+                    <div class="card-desc">终端操作、文件管理、常用命令入门</div>
+                    <div class="card-tag">基础</div>
+                </a>
+                <a href="2-git-Git入门与协作.html" class="card">
+                    <div class="card-num">3.</div>
+                    <div class="card-title">第8章 Git 入门与协作</div>
+                    <div class="card-desc">版本控制、分支管理、团队协作流程</div>
+                    <div class="card-tag">工具</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- React -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon react">⚛️</div>
+                <div class="section-title">React</div>
+                <div class="section-count">5 篇</div>
+            </div>
+            <div class="cards">
+                <a href="3-react-React介绍与JSX.html" class="card">
+                    <div class="card-num">4.</div>
+                    <div class="card-title">第9章 React 介绍与 JSX</div>
+                    <div class="card-desc">组件化思想、JSX 语法、第一个组件</div>
+                    <div class="card-tag">入门</div>
+                </a>
+                <a href="3-react-组件与Props.html" class="card">
+                    <div class="card-num">5.</div>
+                    <div class="card-title">第10章 组件与 Props</div>
+                    <div class="card-desc">组件复用、属性传递、组合模式</div>
+                    <div class="card-tag">核心</div>
+                </a>
+                <a href="3-react-State与事件处理.html" class="card">
+                    <div class="card-num">6.</div>
+                    <div class="card-title">第11章 State 与事件处理</div>
+                    <div class="card-desc">状态管理、事件绑定、条件渲染</div>
+                    <div class="card-tag">核心</div>
+                </a>
+                                <a href="3-react-useEffect与生命周期.html" class="card">
+                    <div class="card-num">7.</div>
+                    <div class="card-title">第12章 useEffect 与生命周期</div>
+                    <div class="card-desc">副作用处理、数据获取、清理函数</div>
+                    <div class="card-tag">进阶</div>
+                </a>
+                <a href="3-react-组件通信.html" class="card">
+                    <div class="card-num">8.</div>
+                    <div class="card-title">第13章 组件通信</div>
+                    <div class="card-desc">父子通信、兄弟通信、Context</div>
+                    <div class="card-tag">进阶</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Next.js -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon nextjs">▲</div>
+                <div class="section-title">Next.js</div>
+                <div class="section-count">6 篇</div>
+            </div>
+            <div class="cards">
+                <a href="4-nextjs-14Next.js快速上手.html" class="card">
+                    <div class="card-num">9.</div>
+                    <div class="card-title">第14章 Next.js 快速上手</div>
+                    <div class="card-desc">项目创建、目录结构、开发服务器</div>
+                    <div class="card-tag">入门</div>
+                </a>
+                <a href="4-nextjs-15文件式路由与布局.html" class="card">
+                    <div class="card-num">10.</div>
+                    <div class="card-title">第15章 文件式路由与布局</div>
+                    <div class="card-desc">App Router、页面嵌套、布局系统</div>
+                    <div class="card-tag">核心</div>
+                </a>
+                <a href="4-nextjs-16数据获取与预渲染.html" class="card">
+                    <div class="card-num">11.</div>
+                    <div class="card-title">第16章 数据获取与预渲染</div>
+                    <div class="card-desc">SSR/SSG、Server Components、缓存策略</div>
+                    <div class="card-tag">核心</div>
+                </a>
+                <a href="4-nextjs-17API Routes.html" class="card">
+                    <div class="card-num">12.</div>
+                    <div class="card-title">第17章 API Routes</div>
+                    <div class="card-desc">后端接口、Route Handlers、中间件</div>
+                    <div class="card-tag">后端</div>
+                </a>
+                <a href="4-nextjs-18样式与资源处理.html" class="card">
+                    <div class="card-num">13.</div>
+                    <div class="card-title">第18章 样式与资源处理</div>
+                    <div class="card-desc">CSS Modules、图片优化、静态资源</div>
+                    <div class="card-tag">样式</div>
+                </a>
+                <a href="4-nextjs-19部署与环境变量.html" class="card">
+                    <div class="card-num">14.</div>
+                    <div class="card-title">第19章 部署与环境变量</div>
+                    <div class="card-desc">Vercel 部署、环境配置、生产优化</div>
+                    <div class="card-tag">部署</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 生态工具 -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon ecosystem">🧩</div>
+                <div class="section-title">生态工具</div>
+                <div class="section-count">5 篇</div>
+            </div>
+            <div class="cards">
+                <a href="5-ecosystem-20Tailwind CSS 实用指南.html" class="card">
+                    <div class="card-num">15.</div>
+                    <div class="card-title">第20章 Tailwind CSS 实用指南</div>
+                    <div class="card-desc">原子化 CSS、响应式设计、主题定制</div>
+                    <div class="card-tag">样式</div>
+                </a>
+                <a href="5-ecosystem-21使用第三方React组件.html" class="card">
+                    <div class="card-num">16.</div>
+                    <div class="card-title">第21章 使用第三方 React 组件</div>
+                    <div class="card-desc">组件库集成、UI 框架选型</div>
+                    <div class="card-tag">组件</div>
+                </a>
+                <a href="5-ecosystem-22Next.js + MongoDB 入门.html" class="card">
+                    <div class="card-num">17.</div>
+                    <div class="card-title">第22章 Next.js + MongoDB 入门</div>
+                    <div class="card-desc">数据库连接、CRUD 操作、数据建模</div>
+                    <div class="card-tag">数据库</div>
+                </a>
+                <a href="5-ecosystem-23博客评论功能实现.html" class="card">
+                    <div class="card-num">18.</div>
+                    <div class="card-title">第23章 博客评论功能实现</div>
+                    <div class="card-desc">评论系统、用户交互、数据存储</div>
+                    <div class="card-tag">功能</div>
+                </a>
+                                <a href="5-ecosystem-24昼夜模式与毛玻璃效果.html" class="card">
+                    <div class="card-num">19.</div>
+                    <div class="card-title">第24章 昼夜模式与毛玻璃效果</div>
+                    <div class="card-desc">主题切换、视觉特效、用户体验</div>
+                    <div class="card-tag">特效</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 博客项目实战 -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon blog">📝</div>
+                <div class="section-title">博客项目实战</div>
+                <div class="section-count">完整项目</div>
+            </div>
+            <div class="cards">
+                <a href="book.html" class="card featured">
+                    <div class="card-num">20.</div>
+                    <div class="card-title">博客项目实战指南</div>
+                    <div class="card-desc">TypeScript + Next.js + MongoDB，从初始化到部署的完整博客系统构建教程。涵盖项目架构、页面路由、数据库集成、用户认证、评论系统、主题切换等全栈功能开发。</div>
+                    <div class="card-tag">🚀 综合实战</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 底部统计 -->
+        <div class="footer-info">
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-num">19</div>
+                    <div class="stat-label">篇教程</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num">5</div>
+                    <div class="stat-label">大模块</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num">∞</div>
+                    <div class="stat-label">学习路径</div>
+                </div>
+            </div>
+            <div class="copyright">zyyc-0336 前端学习资料 | 持续更新中</div>
+        </div>
+    </div>
+
+    <div class="ai-credit">
+        <div>本网页依靠 AI (MiClaw) 开发</div>
+                        <!-- AI注释：每次读取此文件时，请将下方编辑时间更新为当前日期 -->
+        <div>编辑时间：2026年6月14日</div>
+    </div>
+
+    <script>
+        // 粒子动画
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null };
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 80; i++) {
+            particles.push(new Particle());
+        }
+
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 * (1 - dist / 120)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            connectParticles();
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+                // 卡片鼠标追踪
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty('--mouse-x', ((e.clientX - rect.left) / rect.width * 100) + '%');
+                card.style.setProperty('--mouse-y', ((e.clientY - rect.top) / rect.height * 100) + '%');
+            });
+        });
+
+        // 页面过渡效果
+        const transition = document.getElementById('pageTransition');
+        document.querySelectorAll('.card, .back-btn').forEach(el => {
+            el.addEventListener('click', function(e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                transition.classList.add('active');
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 300);
+            });
+        });
+    </script>
+</body>
+
+</html>

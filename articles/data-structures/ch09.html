@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第九章 查找算法 · 数据结构教程</title>
+<meta name="description" content="第九章 查找算法 — 顺序、折半、分块、二叉排序树、平衡树与哈希表；比较次数与 ASL 是统一的度量。">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/detail.css">
+<link rel="stylesheet" href="../../assets/css/tutorial.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../../index.html#contest" class="contest-link">计挑赛</a>
+            <a href="../../蓝桥杯真题/exam/index.html">蓝桥真题</a>
+    <a href="../../problems/algorithm/index.html">算法题库</a>
+    <a href="../../problems/algorithm/paths.html">学习路径</a>
+    <a href="../../problems/algorithm/learn.html">算法学习</a>
+    <a href="../../problems/algorithm/lab.html">动画实验室</a>
+    <a href="index.html" class="active">数据结构</a>
+    <a href="../algorithm-competition/index.html">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../fullstack/index.html">全栈笔记</a>
+    <a href="../../tools/mistakes.html">错题本</a>
+  </nav>
+</div>
+
+<div class="docwrap">
+  <aside class="docnav">
+    <a class="back" href="index.html">← 教程目录</a>
+    <nav class="docnav-list">
+      <a href="ch01.html"><span class="n">01</span><span class="t">数据结构入门</span></a>
+      <a href="ch02.html"><span class="n">02</span><span class="t">链表</span></a>
+      <a href="ch03.html"><span class="n">03</span><span class="t">栈</span></a>
+      <a href="ch04.html"><span class="n">04</span><span class="t">队列</span></a>
+      <a href="ch05.html"><span class="n">05</span><span class="t">C++ STL 库教程（附带题库）</span></a>
+      <a href="ch06.html"><span class="n">06</span><span class="t">串、数组、矩阵和广义表</span></a>
+      <a href="ch07.html"><span class="n">07</span><span class="t">树</span></a>
+      <a href="ch08.html"><span class="n">08</span><span class="t">图</span></a>
+      <a href="ch09.html" class="on"><span class="n">09</span><span class="t">查找算法</span></a>
+      <a href="ch10.html"><span class="n">10</span><span class="t">排序算法</span></a>
+      <a href="ch11.html"><span class="n">11</span><span class="t">算法和竞赛</span></a>
+      <a href="ch12.html"><span class="n">12</span><span class="t">后记</span></a>
+    </nav>
+    <div class="navstat">12 章 · 87 节<br>114 张图</div>
+  </aside>
+
+  <main class="docmain">
+    <div class="doc-eyebrow">— DATA STRUCTURE / 09</div>
+    <h1 class="doc-title">第九章 查找算法</h1>
+    <p class="doc-lead">顺序、折半、分块、二叉排序树、平衡树与哈希表；比较次数与 ASL 是统一的度量。</p>
+    <div class="doc-meta">
+      <span class="chip">5 节</span>
+      <span class="chip">2 图</span>
+    </div>
+    <div class="rule"></div>
+<section class="dsec" id="s1">
+  <div class="sec-no">01 / SECTION</div>
+  <h2>线性（顺序）查找介绍与实现</h2>
+<ul class="pts">
+<li><strong>查找算法</strong>：在一批数据中定位某个特定数据的方法；与遍历高度相似，区别是它未必访问全部数据（如二分查找）。</li>
+<li>典型场景：已知特征，从一堆商品中挑出次品。</li>
+<li><strong>顺序（线性）查找</strong>：从一个端点开始依次访问每个数据，直到找到目标；本质上就是遍历。</li>
+<li>实现即一层 for 循环：<code>if(a[i] == 目标){ 记录/输出位置; }</code></li>
+<li>例题：6 件商品重量为 10，其中一件为 9 的次品，用数组存后遍历即可定位。</li>
+<li>复杂度：平均 O(n)，最坏 O(n)；优点是无须有序、实现最简单，适合小数据量或无序数据。</li>
+<li>前提对比：顺序查找适用于无序表或链式存储；一旦数据有序且顺序存储，就应改用更快的折半查找。</li>
+<li>静态查找（顺序、折半、分块）在本章前半部分，动态查找（二叉排序树、平衡二叉树）在后半部分。</li>
+</ul>
+</section>
+<section class="dsec" id="s2">
+  <div class="sec-no">02 / SECTION</div>
+  <h2>折半查找（二分查找）介绍与实现</h2>
+<ul class="pts">
+<li><strong>前提条件</strong>：线性表必须<strong>顺序存储</strong>，且元素<strong>按关键字有序</strong>（特殊数据情形可例外，如“只有一个次品”的场景）。</li>
+<li><strong>基本思想</strong>：每次取中点 a[n/2] 与 x 比较：</li>
+<li class="sub">相等 → 找到，结束；</li>
+<li class="sub">x &lt; a[n/2] → 到左半部分继续找；</li>
+<li class="sub">x &gt; a[n/2] → 到右半部分继续找。</li>
+<li><strong>复杂度推导</strong>：剩余元素数依次为 n, n/2, n/4, …, n/2ᵏ，令 n/2ᵏ = 1 得 k = log₂n，故时间复杂度 <strong>O(log₂n)</strong>。</li>
+<li><strong>代码要点</strong>：<code>low = 0, high = len-1</code>，<code>while(low &lt;= high)</code> 循环，<code>mid = (low+high)/2</code>；相等则返回，大于则 <code>high = mid-1</code>，小于则 <code>low = mid+1</code>；循环结束未找到返回 -1。</li>
+<li>易错点：<code>==</code> 不能写成 <code>=</code>；循环条件必须是 <code>low &lt;= high</code>（用 <code>&lt;</code> 会漏掉最后一个元素）。</li>
+<li>变体：找第一个 ≥ x 的位置（lower_bound）、最后一个 ≤ x 的位置（upper_bound），是二分答案的基础。</li>
+<li>记忆：二分只对有序数据有效，无序先用排序（O(n log n)）再二分，通常比顺序查找划算。</li>
+</ul>
+</section>
+<section class="dsec" id="s3">
+  <div class="sec-no">03 / SECTION</div>
+  <h2>分块查找算法介绍与实现</h2>
+<ul class="pts">
+<li><strong>定位</strong>：折半查找与顺序查找的折中改进——只要求<strong>索引表有序</strong>，块内元素可任意存放，因此特别适合结点动态变化的数据。</li>
+<li><strong>两个核心</strong>：① 建立索引表；② 分块处理。</li>
+<li><strong>分块要求</strong>：把线性表分成若干块，块内任意，但<strong>块与块之间必须有序</strong>——第 i 块所有关键码都小于第 i+1 块所有关键码（非递减）。</li>
+<li><strong>索引表</strong>：每块的最大关键码 + 该块起始位置，按块顺序存入辅助数组，天然有序。</li>
+<li><strong>查找过程（两步）</strong>：</li>
+<li class="sub">先在索引表中查找（可顺序也可折半）确定目标所在块；</li>
+<li class="sub">再在该块内顺序查找，定位具体元素。</li>
+<li>示例：查 38 时，索引表最大关键码为 22、48、86，因 22 &lt; 38 &lt; 48 锁定第二块；第二块起始位置为第 7 位，从第 7 位顺序查到第 10 位命中。</li>
+<li><strong>复杂度</strong>：总代价 ≈ 索引查找 + 块内顺序查找，均摊 O(√n)，介于 O(log n) 与 O(n) 之间。</li>
+<li><strong>生活映射</strong>：学校按班级存档，先定班级（索引），再在班级内查找学生——正是分块查找。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/52e36729a8e94bcb.webp" width="617" height="312" data-full="assets/52e36729a8e94bcb.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s4">
+  <div class="sec-no">04 / SECTION</div>
+  <h2>动态查找-二叉排序树介绍与实现</h2>
+<ul class="pts">
+<li><strong>二叉排序树（BST）</strong>：插入即自动保持有序的树结构，属动态查找；STL 的 set 底层红黑树即同类结构。</li>
+<li><strong>三条性质</strong>：</li>
+<li class="sub">左子树不空时，左子树上所有结点值 ≤ 根值；</li>
+<li class="sub">右子树不空时，右子树上所有结点值 ≥ 根值；</li>
+<li class="sub">左右子树本身也都是二叉排序树。</li>
+<li><strong>查找</strong>：空树则失败；值等于根则命中；小于根走左子树，大于根走右子树。平均 O(log n)，最坏退化成链 O(n)。</li>
+<li><strong>插入</strong>：按查找路径走到空位置再挂上新结点。递归实现：<code>t == NULL</code> 时新建结点（置左右为空）返回；<code>key &lt; t-&gt;data</code> 递归插左，否则递归插右。</li>
+<li><strong>建树</strong>：循环对数组每个元素调用 <code>InsertBST</code>，即得到整棵树；中序遍历必为有序序列。</li>
+<li><strong>删除四种情况</strong>：</li>
+<li class="sub">叶子结点：直接删（断开父指针）；</li>
+<li class="sub">只有左子树：用左子树顶替该位置；</li>
+<li class="sub">只有右子树：用右子树顶替该位置；</li>
+<li class="sub">左右子树都有：找<strong>中序前驱</strong>（左子树中最右的结点）s，用 <code>s-&gt;data</code> 覆盖待删结点，再删掉 s（s 现在至多只有左子树）。</li>
+<li>代码要点：<code>Delete</code> 里用 <code>q</code> 记住 s 的双亲，<code>q != *p</code> 时接 <code>q-&gt;rchild = s-&gt;lchild</code>，否则 <code>q-&gt;lchild = s-&gt;lchild</code>；最后 <code>free(s)</code>。</li>
+</ul>
+</section>
+<section class="dsec" id="s5">
+  <div class="sec-no">05 / SECTION</div>
+  <h2>动态查找-平衡二叉树</h2>
+<ul class="pts">
+<li><strong>定义</strong>：空树，或左右子树高度差绝对值 ≤ 1 且左右子树都是平衡二叉树的二叉排序树。</li>
+<li><strong>常见实现</strong>：AVL 树（最经典）、红黑树、替罪羊树、Treap、伸展树。</li>
+<li><strong>AVL 性质</strong>：</li>
+<li class="sub">必须是二叉查找树；</li>
+<li class="sub">左右子树都是平衡二叉树，深度差绝对值不超过 1；</li>
+<li class="sub"><strong>平衡因子 BF</strong> = 左子树深度 − 右子树深度，只能取 <strong>-1、0、1</strong>；</li>
+<li class="sub">任一结点 BF 绝对值大于 1 即失衡。</li>
+<li><strong>实现思路</strong>：按 BST 方式插入 → 若失衡，按“新插入结点与<strong>最低不平衡结点</strong>的位置关系”调整，共四种类型：</li>
+<li class="sub"><strong>LL 型</strong>（在左孩子的左子树插入）→ 右单旋；</li>
+<li class="sub"><strong>RR 型</strong>（在右孩子的右子树插入）→ 左单旋；</li>
+<li class="sub"><strong>LR 型</strong>（在左孩子的右子树插入）→ 先左旋再右旋（双旋）；</li>
+<li class="sub"><strong>RL 型</strong>（在右孩子的左子树插入）→ 先右旋再左旋（双旋）。</li>
+<li><strong>LR 型调整三步</strong>（以 A 为失衡点、B 为左孩子、C 为 B 的右孩子为例）：</li>
+<li class="sub">把 B 的左孩子 C 提升为新的根；</li>
+<li class="sub">原根 A 降为 C 的右孩子；</li>
+<li class="sub">其余子树按大小关系挂接：BL 与 AR 位置不变，CL 调整为 B 的右子树，CR 调整为 A 的左子树。</li>
+<li>复杂度：AVL 树高度始终 O(log n)，查找、插入、删除均为 O(log n)，代价是维护平衡的旋转开销。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/99e32fdd926dc102.webp" width="743" height="442" data-full="assets/99e32fdd926dc102.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+    <div class="qnav">
+        <a class="prev" href="ch08.html"><span class="k">PREV / 08</span><span class="t">图</span></a>
+        <a class="next" href="ch10.html"><span class="k">NEXT / 10</span><span class="t">排序算法</span></a>
+    </div>
+  </main>
+
+  <aside class="docside">
+    <div class="k">ON THIS PAGE</div>
+    <ol>
+      <li><a href="#s1">线性（顺序）查找介绍与实现</a></li>
+      <li><a href="#s2">折半查找（二分查找）介绍与实现</a></li>
+      <li><a href="#s3">分块查找算法介绍与实现</a></li>
+      <li><a href="#s4">动态查找-二叉排序树介绍与实现</a></li>
+      <li><a href="#s5">动态查找-平衡二叉树</a></li>
+    </ol>
+  </aside>
+</div>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>数据结构与算法教程笔记，整理自 dotcpp 教程（C 语言中文网），按 12 章重写为「章 → 节 → 要点」的形式，图片外挂存储。原文如有笔误，已在对应要点标注订正。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="index.html">数据结构教程</a>
+        <a href="../../problems/algorithm/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../fullstack/index.html">全栈笔记</a>
+        <a href="../../tools/mistakes.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/tutorial.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,1149 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第八章 图论 · 算法竞赛教程</title>
+<meta name="description" content="第八章 图论 — 存图、遍历、生成树、最短路、连通性、二分图、网络流与高级结构，全教程最长也最杂的一章。">
+<meta name="theme-color" content="#f4f1e9">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/detail.css">
+<link rel="stylesheet" href="../../assets/css/tutorial.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../../index.html#contest" class="contest-link">计挑赛</a>
+            <a href="../../蓝桥杯真题/exam/index.html">蓝桥真题</a>
+    <a href="../../problems/algorithm/index.html">算法题库</a>
+    <a href="../../problems/algorithm/paths.html">学习路径</a>
+    <a href="../../problems/algorithm/learn.html">算法学习</a>
+    <a href="../../problems/algorithm/lab.html">动画实验室</a>
+    <a href="../data-structures/index.html">数据结构</a>
+    <a href="index.html" class="active">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../fullstack/index.html">全栈笔记</a>
+    <a href="../../tools/mistakes.html">错题本</a>
+  </nav>
+</div>
+
+<div class="docwrap">
+  <aside class="docnav">
+    <a class="back" href="index.html">← 教程目录</a>
+    <nav class="docnav-list">
+      <a href="ch01.html"><span class="n">01</span><span class="t">算法基础</span></a>
+      <a href="ch02.html"><span class="n">02</span><span class="t">搜索算法</span></a>
+      <a href="ch03.html"><span class="n">03</span><span class="t">排序算法</span></a>
+      <a href="ch04.html"><span class="n">04</span><span class="t">字符串相关</span></a>
+      <a href="ch05.html"><span class="n">05</span><span class="t">数学相关</span></a>
+      <a href="ch06.html"><span class="n">06</span><span class="t">动态规划</span></a>
+      <a href="ch07.html"><span class="n">07</span><span class="t">数据结构</span></a>
+      <a href="ch08.html" class="on"><span class="n">08</span><span class="t">图论</span></a>
+      <a href="ch09.html"><span class="n">09</span><span class="t">计算几何</span></a>
+      <a href="ch10.html"><span class="n">10</span><span class="t">其他算法</span></a>
+    </nav>
+    <div class="navstat">10 章 · 172 节<br>964 张图</div>
+  </aside>
+
+  <main class="docmain">
+    <div class="doc-eyebrow">— ALGORITHM CONTEST / 08</div>
+    <h1 class="doc-title">第八章 图论</h1>
+    <p class="doc-lead">存图、遍历、生成树、最短路、连通性、二分图、网络流与高级结构，全教程最长也最杂的一章。</p>
+    <div class="doc-meta">
+      <span class="chip">39 节</span>
+      <span class="chip">330 图</span>
+    </div>
+    <div class="rule"></div>
+<section class="dsec" id="s1">
+  <div class="sec-no">01 / SECTION</div>
+  <h2>图论部分简介</h2>
+<ul class="pts">
+<li>图论研究的对象是“<strong>点 + 边</strong>”的关系模型，是建模能力最强的一类结构（交通网、社交关系、依赖关系、状态转移都可抽象成图）。</li>
+<li>本章主线：<strong>基础概念与存储 → 遍历 → 生成树 → 树上的算法 → 连通性/路径（欧拉、哈密顿）→ 二分图与匹配 → 网络流 → 高级结构</strong>。</li>
+<li>学习建议：先把“图的表示 + DFS/BFS”练扎实，再逐层上难度；网络流与匹配的代码模板要能默写。</li>
+<li>常见数据范围与算法选择（经验值）：</li>
+<li class="sub">n ≤ 1e5、边权非负单源最短路 ⇒ Dijkstra + 堆；</li>
+<li class="sub">有负权 ⇒ SPFA（慎用）或 Bellman-Ford；</li>
+<li class="sub">任意两点最短路 n ≤ 500 ⇒ Floyd；</li>
+<li class="sub">连通性/合并 ⇒ 并查集；</li>
+<li class="sub">最小生成树 ⇒ Kruskal（稀疏）/ Prim（稠密）。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/08a26b12f5ce3560.webp" width="800" height="596" data-full="assets/08a26b12f5ce3560.png" loading="lazy" decoding="async" alt="图1 顶点" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/e831e7a736f0e549.webp" width="800" height="596" data-full="assets/e831e7a736f0e549.png" loading="lazy" decoding="async" alt="图2 同构" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/acb0ead497deca7e.webp" width="800" height="596" data-full="assets/acb0ead497deca7e.png" loading="lazy" decoding="async" alt="图3 同构" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/e47393bb4f0136d8.webp" width="800" height="596" data-full="assets/e47393bb4f0136d8.png" loading="lazy" decoding="async" alt="图4 有向/无向图" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d874755dc7266bd4.webp" width="800" height="596" data-full="assets/d874755dc7266bd4.png" loading="lazy" decoding="async" alt="图5 权重" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c51739696e446d79.webp" width="800" height="596" data-full="assets/c51739696e446d79.png" loading="lazy" decoding="async" alt="图6 环" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/3e5b1937993024b0.webp" width="800" height="596" data-full="assets/3e5b1937993024b0.png" loading="lazy" decoding="async" alt="图7 连通图/连通分量" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s2">
+  <div class="sec-no">02 / SECTION</div>
+  <h2>图的基础概念</h2>
+<ul class="pts">
+<li><strong>顶点（Vertex）与边（Edge）</strong>：边可带权、可带方向。</li>
+<li>分类：无向图 / 有向图；简单图（无自环、无重边）/ 多重图；稀疏图 / 稠密图。</li>
+<li><strong>度</strong>：无向图中与点相连的边数；有向图分离为入度、出度（<code>Σ入度 = Σ出度 = 边数</code>）。</li>
+<li><strong>路径与回路</strong>：路径是顶点序列，回路（环）是首尾相同的路径；简单路径要求顶点不重复。</li>
+<li><strong>连通性</strong>：无向图连通 ⇒ 任意两点有路径；有向图分<strong>强连通</strong>（互相可达）与<strong>弱连通</strong>（忽略方向后连通）。</li>
+<li><strong>完全图</strong>：任意两点间都有边，n 个点有 <code>n(n-1)/2</code> 条边（有向为 <code>n(n-1)</code>）。</li>
+<li><strong>子图/生成子图</strong>：顶点与边的子集；<strong>生成树</strong>是含全部 n 个点、只有 n-1 条边的连通子图。</li>
+<li>竞赛常用术语：<code>n</code> 点数、<code>m</code> 边数、<code>u→v</code> 有向边、<code>w</code> 边权。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/447005a419135ee4.webp" width="250" height="165" data-full="assets/447005a419135ee4.png" loading="lazy" decoding="async" alt="图1 图的基础G=(V, E) " title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/9f9a79b4929660f0.webp" width="305" height="245" data-full="assets/9f9a79b4929660f0.png" loading="lazy" decoding="async" alt="图2 图的基础概念" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a21b9371e86e3753.webp" width="250" height="250" data-full="assets/a21b9371e86e3753.png" loading="lazy" decoding="async" alt="图3 环" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ef2129d7dbbb9b66.webp" width="569" height="384" data-full="assets/ef2129d7dbbb9b66.png" loading="lazy" decoding="async" alt="图4 连通的" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c48493f9f6735146.webp" width="566" height="304" data-full="assets/c48493f9f6735146.png" loading="lazy" decoding="async" alt="图5 不相交的连通子图称为图的连通分支" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/3fa30537299c89ff.webp" width="434" height="276" data-full="assets/3fa30537299c89ff.png" loading="lazy" decoding="async" alt="图6 关节点" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s3">
+  <div class="sec-no">03 / SECTION</div>
+  <h2>图的储存方式</h2>
+<ul class="pts">
+<li><strong>邻接矩阵</strong>：<code>g[u][v] = w</code>，空间 <code>O(n²)</code>；适合稠密图、Floyd、矩阵树定理；判重边方便。</li>
+<li><strong>邻接表</strong>：每个点挂一条边表，空间 <code>O(n+m)</code>；最常用，遍历效率高。</li>
+<li class="sub">数组模拟（链式前向星）：<code>head[u]</code>、<code>to[i]</code>、<code>w[i]</code>、<code>nxt[i]</code>，<code>addEdge</code> 头插；</li>
+<li class="sub"><code>vector&lt;pair&lt;int,int&gt;&gt; g[N]</code>：写法最简，常数略大。</li>
+<li><strong>边集数组</strong>：只存 <code>(u, v, w)</code>，适合 Kruskal、Bellman-Ford 等“按边处理”的算法。</li>
+<li>选型：稠密 + 小 n 用矩阵；稀疏 + 大 n 用邻接表；只要边排序用边集。</li>
+<li>无向边拆成两条有向边；有向图反向边用于网络流的残量。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>// 链式前向星（普通存图用这个即可，tot 从 0 开始）
+int head[N], to[N &lt;&lt; 1], w[N &lt;&lt; 1], nxt[N &lt;&lt; 1], tot = 0;
+void addEdge(int u, int v, int c) {
+    to[++tot] = v, w[tot] = c, nxt[tot] = head[u], head[u] = tot;
+}</code></pre></div>
+
+<ul class="pts">
+<li>注意：这里的 <code>tot</code> 从 0 开始、每条边编号 1..m；而网络流里为了用 <code>i ^ 1</code> 取反向边，<code>tot</code> 必须从 1 开始并成对加边（见第 33 节），两种编号方式不要混用。</li>
+</ul>
+</section>
+<section class="dsec" id="s4">
+  <div class="sec-no">04 / SECTION</div>
+  <h2>图文解析图论DFS（深度优先搜索）</h2>
+<ul class="pts">
+<li>从起点出发，沿一条边深入，走不通就回退，直到访问完所有可达点。</li>
+<li>递归模板：标记访问 → 遍历邻接点 → 未访问则递归。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void dfs(int u) {
+    vis[u] = true;
+    for (int i = head[u]; i; i = nxt[i]) {
+        int v = to[i];
+        if (!vis[v]) dfs(v);
+    }
+}</code></pre></div>
+
+<ul class="pts">
+<li>复杂度：邻接表 <code>O(n+m)</code>，邻接矩阵 <code>O(n²)</code>。</li>
+<li>用途：连通块计数、判环（有向图需三色标记：未访问/在栈中/已完成）、求割点与桥、拓扑排序（后序逆序）、树遍历。</li>
+<li>注意：递归深度可能达 1e5，需手动扩栈或改栈模拟；无向图要跳过“父亲”。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/b32676a8bcbe7560.webp" width="2595" height="1706" data-full="assets/b32676a8bcbe7560.jpg" loading="lazy" decoding="async" alt="图1 深度优先搜索DFS" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/80c3c8b79ace8253.webp" width="1786" height="5109" data-full="assets/80c3c8b79ace8253.jpg" loading="lazy" decoding="async" alt="图2 DFS算法步骤图解" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6435033e9e4c6297.webp" width="2378" height="1180" data-full="assets/6435033e9e4c6297.jpg" loading="lazy" decoding="async" alt="图3 DFS的一些性质" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/295c2bdf494132a2.webp" width="1356" height="728" data-full="assets/295c2bdf494132a2.jpg" loading="lazy" decoding="async" alt="图4 Topological Sorting 拓扑排序" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/20f22685e8149175.webp" width="1694" height="806" data-full="assets/20f22685e8149175.jpg" loading="lazy" decoding="async" alt="图5 Topological Sorting: In-Degree" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/894050f72ef35cca.webp" width="1716" height="752" data-full="assets/894050f72ef35cca.jpg" loading="lazy" decoding="async" alt="图6 Topological Sorting: Out Degree + DFS" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a295342254be9c72.webp" width="1656" height="782" data-full="assets/a295342254be9c72.jpg" loading="lazy" decoding="async" alt="图7 BCC: Bi-connectivity/Cut-Vertex 双连通分量" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f128052c7c5f197b.webp" width="1712" height="838" data-full="assets/f128052c7c5f197b.jpg" loading="lazy" decoding="async" alt="图8 DFS解决问题" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b371287f118c3b90.webp" width="1710" height="4471" data-full="assets/b371287f118c3b90.jpg" loading="lazy" decoding="async" alt="图9 图解BCC步骤" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s5">
+  <div class="sec-no">05 / SECTION</div>
+  <h2>图文解析图论BFS（广度优先搜索）</h2>
+<ul class="pts">
+<li>用队列逐层扩展，第一个到达的点即<strong>最短边数</strong>（BFS 层数）。</li>
+<li>模板：起点入队并标记 → 取队首 → 扩展未访问邻接点入队 → 直到队空。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>queue&lt;int&gt; q; q.push(s); vis[s] = true; d[s] = 0;
+while (!q.empty()) {
+    int u = q.front(); q.pop();
+    for (int i = head[u]; i; i = nxt[i]) {
+        int v = to[i];
+        if (!vis[v]) { vis[v] = true; d[v] = d[u] + 1; q.push(v); }
+    }
+}</code></pre></div>
+
+<ul class="pts">
+<li>用途：无权图最短路、层次遍历、二分图染色（相邻点染相反色）、求连通块、多源 BFS。</li>
+<li>与 DFS 的分工：求“最短步数/最少边数”一定用 BFS；求“全部方案/路径枚举”用 DFS。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/31a9d93c5f206eb3.webp" width="1000" height="795" data-full="assets/31a9d93c5f206eb3.jpg" loading="lazy" decoding="async" alt="图1 宽度优先搜索" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/332e76a288a02a7f.webp" width="1646" height="1704" data-full="assets/332e76a288a02a7f.jpg" loading="lazy" decoding="async" alt="图2 模拟图" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s6">
+  <div class="sec-no">06 / SECTION</div>
+  <h2>图论矩阵树定理实例讲解</h2>
+<ul class="pts">
+<li><strong>内容</strong>：用图的拉普拉斯矩阵求<strong>生成树个数</strong>。</li>
+<li>构造：<code>L = D - A</code>（D 为度数对角阵，A 为邻接矩阵）；无向图删掉任意一行一列，剩下的行列式即生成树个数。</li>
+<li>有向图：出度矩阵对应“以 i 为根的外向树”，入度矩阵对应内向树；根要删掉对应行列。</li>
+<li>带权版本：把 <code>A[u][v]</code> 换成权值，<code>D[u]</code> 换成关联边权之和，得到的行列式是<strong>所有生成树边权乘积之和</strong>。</li>
+<li>计算：高斯消元求行列式（模质数用逆元；实数用主元消元），复杂度 <code>O(n³)</code>。</li>
+<li>用途：统计生成树方案数、带权期望/概率题（如“随机游走回到起点的期望”）。</li>
+<li>易错：模数不一定是质数时要用“辗转相除消元”；重边要累加而不是覆盖。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/312d49f0c2e26bb9.webp" width="231" height="222" data-full="assets/312d49f0c2e26bb9.png" loading="lazy" decoding="async" alt="图1 Laplace矩阵" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/80db76668d778aad.webp" width="277" height="149" data-full="assets/80db76668d778aad.png" loading="lazy" decoding="async" alt="图2 矩阵树定理1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6f9f6524a88d2b15.webp" width="262" height="117" data-full="assets/6f9f6524a88d2b15.png" loading="lazy" decoding="async" alt="图3 矩阵树定理2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b6d7d63d55faaeb1.webp" width="40" height="24" data-full="assets/b6d7d63d55faaeb1.png" loading="lazy" decoding="async" alt="图4 矩阵树定理" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/65bde70466486d9b.webp" width="361" height="160" data-full="assets/65bde70466486d9b.png" loading="lazy" decoding="async" alt="图5 矩阵树定理3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/fcafbe18397fe77c.webp" width="369" height="147" data-full="assets/fcafbe18397fe77c.png" loading="lazy" decoding="async" alt="图6 矩阵树定理4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ad9b6a6045cb095e.webp" width="29" height="22" data-full="assets/ad9b6a6045cb095e.png" loading="lazy" decoding="async" alt="图7 10" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/e879ea83f7de6b1a.webp" width="29" height="22" data-full="assets/e879ea83f7de6b1a.png" loading="lazy" decoding="async" alt="图8 10" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7ff738f90428aa23.webp" width="548" height="259" data-full="assets/7ff738f90428aa23.png" loading="lazy" decoding="async" alt="图9 输入输出样例" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s7">
+  <div class="sec-no">07 / SECTION</div>
+  <h2>有向无环图图文讲解</h2>
+<ul class="pts">
+<li><strong>DAG</strong>：有向且无环的图，是“依赖关系”“任务调度”“表达式求值”的通用模型。</li>
+<li>性质：一定存在拓扑序；最长路可在多项式时间求出（一般图最长路是 NP-hard）。</li>
+<li>常见处理：拓扑排序 → 按序 DP；缩点（Tarjan）后可把任意有向图转成 DAG。</li>
+<li>应用：AOE 网关键路径（最早/最迟开始时间）、编译依赖、DP 的状态转移图。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/4d928806b5e8a061.webp" width="446" height="335" data-full="assets/4d928806b5e8a061.jpg" loading="lazy" decoding="async" alt="图1 有向无环图（DAG图）" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s8">
+  <div class="sec-no">08 / SECTION</div>
+  <h2>什么是拓扑排序？</h2>
+<ul class="pts">
+<li><strong>定义</strong>：把 DAG 的点排成序列，使每条边 <code>u→v</code> 都满足 u 在 v 之前。</li>
+<li>Kahn 算法（BFS）：统计入度 → 入度 0 入队 → 出队时把邻点入度减 1，减到 0 入队。</li>
+<li>复杂度 <code>O(n+m)</code>；若输出点数 &lt; n，说明图中有环（可用于判环）。</li>
+<li>DFS 法：后序遍历，逆序输出即拓扑序；也能判环（遇到“在栈中”的点即有环）。</li>
+<li>用途：DP 的顺序、依赖解析、判 DAG、求字典序最小的拓扑序（把队列换成小根堆）。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>for (int i = 1; i &lt;= n; ++i) if (!deg[i]) q.push(i);
+while (!q.empty()) {
+    int u = q.front(); q.pop(); ord[++cnt] = u;
+    for (int i = head[u]; i; i = nxt[i])
+        if (--deg[to[i]] == 0) q.push(to[i]);
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/90f52157b1d1deaf.webp" width="335" height="270" data-full="assets/90f52157b1d1deaf.png" loading="lazy" decoding="async" alt="图1 拓扑排序1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/1610bf48fb678c9f.webp" width="544" height="350" data-full="assets/1610bf48fb678c9f.png" loading="lazy" decoding="async" alt="图2 拓扑排序2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/febd0d9f7ad9d053.webp" width="398" height="290" data-full="assets/febd0d9f7ad9d053.png" loading="lazy" decoding="async" alt="图3 DAG图" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s9">
+  <div class="sec-no">09 / SECTION</div>
+  <h2>最小生成树图文讲解</h2>
+<ul class="pts">
+<li><strong>定义</strong>：连通无向图中，边权和最小的生成树（n-1 条边）。</li>
+<li><strong>Kruskal</strong>：边按权排序，用并查集依次尝试加入，不成环就选；复杂度 <code>O(m log m)</code>，适合稀疏图。</li>
+<li><strong>Prim</strong>：从任一点开始，每次选“连接已选集合与未选集合的最短边”；朴素 <code>O(n²)</code>，堆优化 <code>O((n+m) log n)</code>，适合稠密图。</li>
+<li>正确性靠<strong>切性质/环性质</strong>：最小生成树中，任意切割的两部分之间必取最短的跨界边。</li>
+<li>性质：MST 的<strong>最大边</strong>是所有生成树中最小的（瓶颈最小）；MST 不唯一但权值和唯一。</li>
+<li>变体：最大生成树（边权取负）、次小生成树（枚举替换一条边）、最小瓶颈生成树。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>sort(e + 1, e + m + 1, [](Edge a, Edge b) { return a.w &lt; b.w; });
+for (int i = 1; i &lt;= m; ++i)
+    if (find(e[i].u) != find(e[i].v)) {
+        merge(e[i].u, e[i].v); ans += e[i].w; if (++cnt == n - 1) break;
+    }</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/a90d476b73343183.webp" width="398" height="342" data-full="assets/a90d476b73343183.png" loading="lazy" decoding="async" alt="图1 最小生成树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/1990cc61a82c80c6.webp" width="398" height="342" data-full="assets/1990cc61a82c80c6.png" loading="lazy" decoding="async" alt="图2 Prim（普里姆）算法1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/21bb0bbb12e2405b.webp" width="398" height="342" data-full="assets/21bb0bbb12e2405b.png" loading="lazy" decoding="async" alt="图3 Prim（普里姆）算法2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/13ef327864467b2c.webp" width="398" height="342" data-full="assets/13ef327864467b2c.png" loading="lazy" decoding="async" alt="图4 Prim（普里姆）算法3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ef6d02cb555c5fc4.webp" width="398" height="342" data-full="assets/ef6d02cb555c5fc4.png" loading="lazy" decoding="async" alt="图5 Prim（普里姆）算法4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ea9de4aaec287d35.webp" width="398" height="342" data-full="assets/ea9de4aaec287d35.png" loading="lazy" decoding="async" alt="图6 Prim（普里姆）算法5" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/dc68711f5dbef995.webp" width="398" height="342" data-full="assets/dc68711f5dbef995.png" loading="lazy" decoding="async" alt="图7 Prim（普里姆）算法6" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f10da700837b3db0.webp" width="398" height="342" data-full="assets/f10da700837b3db0.png" loading="lazy" decoding="async" alt="图8 Prim（普里姆）算法7" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/16c0bdbb89add8e8.webp" width="398" height="342" data-full="assets/16c0bdbb89add8e8.png" loading="lazy" decoding="async" alt="图9 kruskal（克鲁斯卡尔）算法1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0b1eec885ecb289b.webp" width="398" height="342" data-full="assets/0b1eec885ecb289b.png" loading="lazy" decoding="async" alt="图10 kruskal（克鲁斯卡尔）算法2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6e5ba1ef2cc42926.webp" width="398" height="342" data-full="assets/6e5ba1ef2cc42926.png" loading="lazy" decoding="async" alt="图11 kruskal（克鲁斯卡尔）算法3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/90dd89fa0fbc244b.webp" width="398" height="342" data-full="assets/90dd89fa0fbc244b.png" loading="lazy" decoding="async" alt="图12 kruskal（克鲁斯卡尔）算法4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/3c6be665058680fb.webp" width="398" height="342" data-full="assets/3c6be665058680fb.png" loading="lazy" decoding="async" alt="图13 kruskal（克鲁斯卡尔）算法5" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a59d39265d27c51b.webp" width="398" height="342" data-full="assets/a59d39265d27c51b.png" loading="lazy" decoding="async" alt="图14 kruskal（克鲁斯卡尔）算法6" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s10">
+  <div class="sec-no">10 / SECTION</div>
+  <h2>斯坦纳树Steiner Tree实例讲解</h2>
+<ul class="pts">
+<li><strong>定义</strong>：连通无向图 + 指定点集 S，求使 S 中所有点连通的<strong>最小权子树</strong>（不要求包含全部点）。</li>
+<li>做法：<strong>状压 DP + 最短路</strong>，状态 <code>f[mask][i]</code> = 使 mask 集合连通且以 i 为根的子树最小代价。</li>
+<li>两步转移：</li>
+<li class="sub">合并（同一根下合并两个子集）：<code>f[mask][i] = min(f[sub][i] + f[mask^sub][i])</code>；</li>
+<li class="sub">扩展（换根）：对每层 mask 跑一次 Dijkstra/SPFA 松弛 <code>f[mask][v] = min(f[mask][u] + w)</code>。</li>
+<li>复杂度 <code>O(3^k·n + 2^k·(m log n))</code>（k = |S|，通常 k ≤ 10）。</li>
+<li>应用：多关键点连通、网络布线、虚拟骨干网设计。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>for (int mask = 0; mask &lt; (1 &lt;&lt; k); ++mask) {
+    for (int i = 1; i &lt;= n; ++i)
+        for (int sub = (mask - 1) &amp; mask; sub; sub = (sub - 1) &amp; mask)
+            f[mask][i] = min(f[mask][i], f[sub][i] + f[mask ^ sub][i]);
+    dijkstra(mask);      // 以 f[mask][*] 为初值做多源最短路
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/9ee87f71dc5b2789.webp" width="52" height="37" data-full="assets/9ee87f71dc5b2789.png" loading="lazy" decoding="async" alt="图1 Pollak−Gilbert猜想" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/33afaf853c194ab2.webp" width="267" height="29" data-full="assets/33afaf853c194ab2.png" loading="lazy" decoding="async" alt="图2 枚举子集的复杂度" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/5d2ab8d9ac7a5326.webp" width="56" height="26" data-full="assets/5d2ab8d9ac7a5326.png" loading="lazy" decoding="async" alt="图3 spfa的复杂度" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a0c855a04d934a5c.webp" width="85" height="32" data-full="assets/a0c855a04d934a5c.png" loading="lazy" decoding="async" alt="图4 总复杂度" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/13257e85096622ac.webp" width="23" height="24" data-full="assets/13257e85096622ac.png" loading="lazy" decoding="async" alt="图5 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/5a1823c037e393bf.webp" width="25" height="22" data-full="assets/5a1823c037e393bf.png" loading="lazy" decoding="async" alt="图6 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/165acf78416b8271.webp" width="99" height="27" data-full="assets/165acf78416b8271.png" loading="lazy" decoding="async" alt="图7 无向连通图" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b2af4c1b6bcd8518.webp" width="21" height="25" data-full="assets/b2af4c1b6bcd8518.png" loading="lazy" decoding="async" alt="图8 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/21dd4befdb66e1dc.webp" width="18" height="24" data-full="assets/21dd4befdb66e1dc.png" loading="lazy" decoding="async" alt="图9 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d51481a2c8861d9b.webp" width="20" height="21" data-full="assets/d51481a2c8861d9b.png" loading="lazy" decoding="async" alt="图10 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/686ac12b535d36fa.webp" width="118" height="33" data-full="assets/686ac12b535d36fa.png" loading="lazy" decoding="async" alt="图11 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f33b484449298e94.webp" width="64" height="26" data-full="assets/f33b484449298e94.png" loading="lazy" decoding="async" alt="图12 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/9f33da2b3d073fa1.webp" width="26" height="25" data-full="assets/9f33da2b3d073fa1.png" loading="lazy" decoding="async" alt="图13 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b90a6a02b262184e.webp" width="22" height="27" data-full="assets/b90a6a02b262184e.png" loading="lazy" decoding="async" alt="图14 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f63b29ad3b5fb713.webp" width="22" height="27" data-full="assets/f63b29ad3b5fb713.png" loading="lazy" decoding="async" alt="图15 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0a631c93d9537bfd.webp" width="68" height="24" data-full="assets/0a631c93d9537bfd.png" loading="lazy" decoding="async" alt="图16 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7a6c1201c2e227a4.webp" width="20" height="21" data-full="assets/7a6c1201c2e227a4.png" loading="lazy" decoding="async" alt="图17 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0c8410cc52cadd4c.webp" width="18" height="24" data-full="assets/0c8410cc52cadd4c.png" loading="lazy" decoding="async" alt="图18 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/08dbc5b22ee3d120.webp" width="25" height="22" data-full="assets/08dbc5b22ee3d120.png" loading="lazy" decoding="async" alt="图19 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/42b725897461f0b8.webp" width="59" height="22" data-full="assets/42b725897461f0b8.png" loading="lazy" decoding="async" alt="图20 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ebae5c670ab506ef.webp" width="36" height="23" data-full="assets/ebae5c670ab506ef.png" loading="lazy" decoding="async" alt="图21 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f99b117fa6751f1e.webp" width="20" height="22" data-full="assets/f99b117fa6751f1e.png" loading="lazy" decoding="async" alt="图22 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/e2120d5267721e77.webp" width="21" height="25" data-full="assets/e2120d5267721e77.png" loading="lazy" decoding="async" alt="图23 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0a66400135ec728d.webp" width="18" height="24" data-full="assets/0a66400135ec728d.png" loading="lazy" decoding="async" alt="图24 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/1ad74c4f4c68aa42.webp" width="22" height="27" data-full="assets/1ad74c4f4c68aa42.png" loading="lazy" decoding="async" alt="图25 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0bccfa13464a9f3f.webp" width="538" height="256" data-full="assets/0bccfa13464a9f3f.png" loading="lazy" decoding="async" alt="图26 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f2ac328e3567ac94.webp" width="18" height="24" data-full="assets/f2ac328e3567ac94.png" loading="lazy" decoding="async" alt="图27 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8273ac4395e9ed2d.webp" width="22" height="27" data-full="assets/8273ac4395e9ed2d.png" loading="lazy" decoding="async" alt="图28 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/789aa11c6cf826c5.webp" width="22" height="27" data-full="assets/789aa11c6cf826c5.png" loading="lazy" decoding="async" alt="图29 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f27432d7e3da3dd6.webp" width="338" height="200" data-full="assets/f27432d7e3da3dd6.png" loading="lazy" decoding="async" alt="图30 所有边的权值和为 2+2+3+4=11" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c477509280fb6635.webp" width="23" height="24" data-full="assets/c477509280fb6635.png" loading="lazy" decoding="async" alt="图31 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/83f51a18da6cb226.webp" width="25" height="22" data-full="assets/83f51a18da6cb226.png" loading="lazy" decoding="async" alt="图32 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a430284623da90fa.webp" width="21" height="25" data-full="assets/a430284623da90fa.png" loading="lazy" decoding="async" alt="图33 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/1bc2fdbb3325b4bd.webp" width="36" height="23" data-full="assets/1bc2fdbb3325b4bd.png" loading="lazy" decoding="async" alt="图34 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0ed8d4215b142424.webp" width="23" height="24" data-full="assets/0ed8d4215b142424.png" loading="lazy" decoding="async" alt="图35 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/32f80bd7dee35ad1.webp" width="20" height="22" data-full="assets/32f80bd7dee35ad1.png" loading="lazy" decoding="async" alt="图36 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/47032e6f1fadb6a2.webp" width="28" height="23" data-full="assets/47032e6f1fadb6a2.png" loading="lazy" decoding="async" alt="图37 斯坦纳树" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s11">
+  <div class="sec-no">11 / SECTION</div>
+  <h2>DFS求有向图(无向图)两点间路径</h2>
+<ul class="pts">
+<li>需求：输出从 s 到 t 的<strong>所有简单路径</strong>（或判断是否存在、输出任意一条）。</li>
+<li>做法：DFS + 记录前驱/栈；到达 t 时输出栈中路径；回溯时弹出。</li>
+<li>判“是否连通/是否存在路径”：找到即返回，无需回溯（标记永久保留）。</li>
+<li>若要“最短路径”：BFS 记录前驱，回溯得到路径。</li>
+<li>复杂度：最坏指数级（路径数可能爆炸），n 大于 20 左右就不适合枚举全部路径。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void dfs(int u) {
+    stk[++top] = u; vis[u] = true;
+    if (u == t) { print(stk, top); }
+    for (int i = head[u]; i; i = nxt[i])
+        if (!vis[to[i]]) dfs(to[i]);
+    vis[u] = false; --top;      // 回溯，允许其它路径经过 u
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/9ca09440c8e37282.webp" width="678" height="538" data-full="assets/9ca09440c8e37282.jpg" loading="lazy" decoding="async" alt="图1 DFS求有向图或无向图两点间所有路径" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s12">
+  <div class="sec-no">12 / SECTION</div>
+  <h2>树的基础知识</h2>
+<ul class="pts">
+<li><strong>定义</strong>：n 个点、n-1 条边、连通且无环的无向图；任意两点间路径唯一。</li>
+<li>术语：根、父/子、兄弟、叶子、深度、高度、子树、祖先/后代。</li>
+<li>重要性质：</li>
+<li class="sub">边数 = 点数 - 1；</li>
+<li class="sub">任意两点路径唯一（这也使树上问题可用“路径 = u→lca→v”刻画）；</li>
+<li class="sub">删除任一条边会分成两棵子树（对应“子树大小”和“补集大小”）。</li>
+<li>存储：邻接表（无根）→ DFS 定根后转“有根树”，记录 <code>fa[u]</code>、<code>dep[u]</code>、<code>sz[u]</code>。</li>
+<li>树上的“前缀和”思想：<code>sum[u] = sum[fa[u]] + w[u]</code>，则路径和 = <code>sum[u] + sum[v] - 2·sum[lca] (+ w[lca])</code>。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void dfs(int u, int p, int d) {
+    fa[u] = p; dep[u] = d; sz[u] = 1;
+    for (int v : g[u]) if (v != p) { dfs(v, u, d + 1); sz[u] += sz[v]; }
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/27beba90e57c921f.webp" width="525" height="430" data-full="assets/27beba90e57c921f.png" loading="lazy" decoding="async" alt="图1 树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6cce60f545388f57.webp" width="562" height="365" data-full="assets/6cce60f545388f57.png" loading="lazy" decoding="async" alt="图2 树的层" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/744e5cc9a8aacb87.webp" width="676" height="303" data-full="assets/744e5cc9a8aacb87.png" loading="lazy" decoding="async" alt="图3 斜树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/23596946d2a4f396.webp" width="638" height="292" data-full="assets/23596946d2a4f396.png" loading="lazy" decoding="async" alt="图4 二叉树示例" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8a04bf32f1b97927.webp" width="242" height="341" data-full="assets/8a04bf32f1b97927.png" loading="lazy" decoding="async" alt="图5 严格二叉树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/28050f8fc932b97f.webp" width="347" height="322" data-full="assets/28050f8fc932b97f.png" loading="lazy" decoding="async" alt="图6 满二叉树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/5f6da6d6da7db3c2.webp" width="292" height="328" data-full="assets/5f6da6d6da7db3c2.png" loading="lazy" decoding="async" alt="图7 完全二叉树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7c2856c26db0887c.webp" width="654" height="493" data-full="assets/7c2856c26db0887c.png" loading="lazy" decoding="async" alt="图8 二叉树性质" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/34b101ad6374c372.webp" width="640" height="155" data-full="assets/34b101ad6374c372.png" loading="lazy" decoding="async" alt="图9 二叉树的结构" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6957921848859cf6.webp" width="419" height="352" data-full="assets/6957921848859cf6.png" loading="lazy" decoding="async" alt="图10 二叉树的遍历" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s13">
+  <div class="sec-no">13 / SECTION</div>
+  <h2>树的直径实例讲解</h2>
+<ul class="pts">
+<li><strong>定义</strong>：树上最远两点的距离（边权和或点数）。</li>
+<li>求法一（两遍 DFS/BFS）：任取一点 A 找到最远点 B，再从 B 找最远点 C，B-C 即直径。</li>
+<li class="sub">正确性依赖“树上任意点的最远点一定是某条直径的端点”。</li>
+<li>求法二（树形 DP）：DFS 时维护“以 u 为顶端的最长下行链”与“次长下行链”，二者之和的最大值即直径。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>int dfs(int u, int p) {
+    int mx1 = 0, mx2 = 0;
+    for (auto [v, w] : g[u]) if (v != p) {
+        int d = dfs(v, u) + w;
+        if (d &gt; mx1) mx2 = mx1, mx1 = d; else if (d &gt; mx2) mx2 = d;
+    }
+    ans = max(ans, mx1 + mx2);
+    return mx1;
+}</code></pre></div>
+
+<ul class="pts">
+<li>注意：负权边时“两遍 DFS”失效，只能用 DP 版本。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/cc0efdb44d5cd6f0.webp" width="971" height="619" data-full="assets/cc0efdb44d5cd6f0.png" loading="lazy" decoding="async" alt="图1 我们一开始所选取的点在直径上" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/dddf3e20e7389b30.webp" width="1061" height="615" data-full="assets/dddf3e20e7389b30.png" loading="lazy" decoding="async" alt="图2 我们一开始所选取的点不在直径上" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8381507c786d8624.webp" width="989" height="607" data-full="assets/8381507c786d8624.png" loading="lazy" decoding="async" alt="图3 我们一开始所选取的点不在直径上" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s14">
+  <div class="sec-no">14 / SECTION</div>
+  <h2>什么是树的重心？</h2>
+<ul class="pts">
+<li><strong>定义</strong>：删去该点后，剩余各连通块中<strong>最大块的点数最小</strong>的点（至多两个）。</li>
+<li>性质：</li>
+<li class="sub">重心所有子树大小 ≤ n/2；</li>
+<li class="sub">到所有点的距离之和最小；</li>
+<li class="sub">两棵树连边后，新重心在原来两重心的路径上。</li>
+<li>求法：DFS 求子树大小，检查 <code>max(n - sz[u], max sz[v])</code> 是否 ≤ n/2。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void dfs(int u, int p) {
+    sz[u] = 1;
+    for (int v : g[u]) if (v != p) { dfs(v, u); sz[u] += sz[v]; }
+    if (max(n - sz[u], mxch[u]) &lt;= n / 2) centroid = u;
+}</code></pre></div>
+
+<ul class="pts">
+<li>应用：树的分治（点分治）、重心分解、树上带权距离和最小化。</li>
+</ul>
+</section>
+<section class="dsec" id="s15">
+  <div class="sec-no">15 / SECTION</div>
+  <h2>树链剖分解决什么问题？</h2>
+<ul class="pts">
+<li><strong>解决的问题</strong>：把<strong>树上的路径/子树操作</strong>转成<strong>序列上的区间操作</strong>，交给线段树/树状数组处理。</li>
+<li>核心概念：</li>
+<li class="sub">重儿子：子树最大的儿子；重链：沿重儿子连成的链；</li>
+<li class="sub"><code>dfn</code>：按“先重儿子”的 DFS 序，使<strong>同一条重链在序列上连续</strong>、<strong>子树也连续</strong>。</li>
+<li>路径操作：<code>u→v</code> 拆成若干重链区间，边跳 <code>top</code> 边在线段树上操作，<code>O(log²n)</code>。</li>
+<li>子树操作：利用 <code>dfn</code> 区间 <code>[dfn[u], dfn[u]+sz[u]-1]</code>，一次区间操作 <code>O(log n)</code>。</li>
+<li>支持：路径加/求和/最值、子树加/求和、LCA（跳链求）。</li>
+<li>代码量较大，是“树上问题 + 修改”的主力工具。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void pathUpdate(int u, int v, int val) {
+    while (top[u] != top[v]) {
+        if (dep[top[u]] &lt; dep[top[v]]) swap(u, v);
+        segUpdate(dfn[top[u]], dfn[u], val); u = fa[top[u]];
+    }
+    if (dep[u] &gt; dep[v]) swap(u, v);
+    segUpdate(dfn[u], dfn[v], val);
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/5dc8915f1fa46c88.webp" width="1868" height="766" data-full="assets/5dc8915f1fa46c88.png" loading="lazy" decoding="async" alt="图1 重链剖分" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/e3e1485a7424aec1.webp" width="422" height="256" data-full="assets/e3e1485a7424aec1.png" loading="lazy" decoding="async" alt="图2 树剖的实现过程" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/472626f09385aad6.webp" width="415" height="241" data-full="assets/472626f09385aad6.png" loading="lazy" decoding="async" alt="图3 树剖的实现过程" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b1f1a6d3e7c93c99.webp" width="1868" height="766" data-full="assets/b1f1a6d3e7c93c99.png" loading="lazy" decoding="async" alt="图4 长链剖分" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s16">
+  <div class="sec-no">16 / SECTION</div>
+  <h2>树上启发式合并</h2>
+<ul class="pts">
+<li><strong>定义</strong>：又称 DSU on Tree（“树上并查集”），用于<strong>离线统计子树信息</strong>，总复杂度 <code>O(n log n)</code>。</li>
+<li>思路：对每个点，先递归处理轻儿子（算完清空），再处理重儿子（保留结果），然后把轻儿子的贡献暴力加进来。</li>
+<li>复杂度分析：每个点被“暴力加入”的次数 = 它到根的轻边数 = <code>O(log n)</code>。</li>
+<li>适用：子树内“颜色种数”“出现次数最多”等<strong>可增量维护</strong>的统计量，且不需要修改。</li>
+<li>与莫队、树链剖分的区别：DSU on Tree 只处理“子树”查询，代码短、常数小。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void dfs(int u, int p, bool keep) {
+    for (int v : g[u]) if (v != p &amp;&amp; v != heavy[u]) dfs(v, u, false);
+    if (heavy[u]) dfs(heavy[u], u, true);
+    for (int v : g[u]) if (v != p &amp;&amp; v != heavy[u]) addSubtree(v, u);
+    add(u); ans[u] = cur;
+    if (!keep) clearSubtree(u, p);
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/ae1327add395fe96.webp" width="78" height="29" data-full="assets/ae1327add395fe96.png" loading="lazy" decoding="async" alt="图1 树上启发式合并" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/70769a11c9e9c3fe.webp" width="321" height="283" data-full="assets/70769a11c9e9c3fe.png" loading="lazy" decoding="async" alt="图2 树上启发式合并" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/5606f0a45e697f48.webp" width="44" height="27" data-full="assets/5606f0a45e697f48.png" loading="lazy" decoding="async" alt="图3 复杂度" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/9b1a92296f06273a.webp" width="233" height="240" data-full="assets/9b1a92296f06273a.png" loading="lazy" decoding="async" alt="图4 启发式算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s17">
+  <div class="sec-no">17 / SECTION</div>
+  <h2>什么是虚树？</h2>
+<ul class="pts">
+<li><strong>定义</strong>：只保留“关键点（询问点）及其两两 LCA”构成的<strong>压缩树</strong>，把大树的规模从 n 降到 <code>O(k)</code>（k 为关键点数）。</li>
+<li>构造：把所有关键点按 <code>dfn</code> 排序 → 相邻点求 LCA 并加入集合 → 再排序 → 用栈按 dfn 顺序建边。</li>
+<li>用途：多次询问、每次只涉及少量点的树上 DP（如“每次给 k 个点，求它们构成的连通块权值和”），总复杂度 <code>O(Σk log n)</code>。</li>
+<li>注意：虚树边权是“原树上两点距离”（用 <code>dis[u]+dis[v]-2dis[lca]</code>），不是 1。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>// 建虚树：h[] 为关键点 + 其 LCA，按 dfn 排序后用栈连边
+sort(h + 1, h + k + 1, cmp);
+for (int i = 1; i &lt; k; ++i) h[++k] = lca(h[i], h[i + 1]);   // 注意边遍历边扩容
+sort(h + 1, h + k + 1, cmp); k = unique(h + 1, h + k + 1) - h - 1;</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/4e723a1ee7159c3a.webp" width="881" height="421" data-full="assets/4e723a1ee7159c3a.png" loading="lazy" decoding="async" alt="图1 虚树" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s18">
+  <div class="sec-no">18 / SECTION</div>
+  <h2>树哈希常用的方式</h2>
+<ul class="pts">
+<li><strong>问题</strong>：判断两棵（无根/有根）树是否同构，需要给每个树结构算一个“指纹”。</li>
+<li>常用方式：</li>
+<li class="sub"><strong>子树哈希递归</strong>：<code>h[u] = f(Σ g(h[v]))</code>，如 <code>h[u] = 1 + Σ h[v] * P^{sz[v]}</code>；</li>
+<li class="sub"><strong>括号序列哈希</strong>：DFS 时“进点写 1、出点写 0”，得到序列后做字符串哈希；</li>
+<li class="sub"><strong>重心/中心定根</strong>：无根树先找重心（1~2 个）作为根，再算有根哈希，比较时取 min 的两个值。</li>
+<li>随机化：给每个深度/每个结点随机权值，降低被构造碰撞的概率。</li>
+<li>用途：判断子树是否相同（配合 map 统计出现次数）、比较两棵树的形态。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>ull dfs(int u, int p) {
+    ull h = 1;
+    vector&lt;ull&gt; s;
+    for (int v : g[u]) if (v != p) s.push_back(dfs(v, u));
+    sort(s.begin(), s.end());          // 无序树：排序后再合并
+    for (ull x : s) h = h * BASE + x;
+    return h;
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/3156c537d507b639.webp" width="309" height="38" data-full="assets/3156c537d507b639.png" loading="lazy" decoding="async" alt="图1 树哈希方法一公式" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/1105ff7d8d6d287c.webp" width="22" height="28" data-full="assets/1105ff7d8d6d287c.png" loading="lazy" decoding="async" alt="图2 fx" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/5567944774adc796.webp" width="40" height="25" data-full="assets/5567944774adc796.png" loading="lazy" decoding="async" alt="图3 sizex" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/df1ab0a83c598840.webp" width="49" height="21" data-full="assets/df1ab0a83c598840.png" loading="lazy" decoding="async" alt="图4 sonxi" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/daeb14fe6eecbf3b.webp" width="40" height="19" data-full="assets/daeb14fe6eecbf3b.png" loading="lazy" decoding="async" alt="图5 seed" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/51932550c0dec461.webp" width="264" height="230" data-full="assets/51932550c0dec461.png" loading="lazy" decoding="async" alt="图6 树哈希" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/48a8a5a60cfb3f49.webp" width="92" height="21" data-full="assets/48a8a5a60cfb3f49.png" loading="lazy" decoding="async" alt="图7 哈希值" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/81ce57b592eb6eaa.webp" width="314" height="41" data-full="assets/81ce57b592eb6eaa.png" loading="lazy" decoding="async" alt="图8 树哈希方法二公式" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/2d6c825aa2646695.webp" width="22" height="28" data-full="assets/2d6c825aa2646695.png" loading="lazy" decoding="async" alt="图9 fx" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b73fc8277fc45961.webp" width="40" height="25" data-full="assets/b73fc8277fc45961.png" loading="lazy" decoding="async" alt="图10 sizex" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a5e55216425ca87b.webp" width="49" height="21" data-full="assets/a5e55216425ca87b.png" loading="lazy" decoding="async" alt="图11 sonxi" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/5d13418bbe7d2c8a.webp" width="40" height="19" data-full="assets/5d13418bbe7d2c8a.png" loading="lazy" decoding="async" alt="图12 seed" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/60552db5e3a24d1d.webp" width="23" height="24" data-full="assets/60552db5e3a24d1d.png" loading="lazy" decoding="async" alt="图13 异或和" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/77813186aff421ea.webp" width="343" height="39" data-full="assets/77813186aff421ea.png" loading="lazy" decoding="async" alt="图14 树哈希方法三公式" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/95b42b8dfda85d40.webp" width="22" height="28" data-full="assets/95b42b8dfda85d40.png" loading="lazy" decoding="async" alt="图15 fx" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/877e8840789698e1.webp" width="40" height="25" data-full="assets/877e8840789698e1.png" loading="lazy" decoding="async" alt="图16 sizex" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6d31c3b899f81f9a.webp" width="49" height="21" data-full="assets/6d31c3b899f81f9a.png" loading="lazy" decoding="async" alt="图17 sonxi" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/1194fc665ac9d0f5.webp" width="65" height="23" data-full="assets/1194fc665ac9d0f5.png" loading="lazy" decoding="async" alt="图18 树哈希" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s19">
+  <div class="sec-no">19 / SECTION</div>
+  <h2>什么是树上随机游走？</h2>
+<ul class="pts">
+<li><strong>模型</strong>：在树上随机选择相邻点移动，求“从 u 出发首次到达 v 的期望步数”“访问所有点的期望时间”等。</li>
+<li>基础结论（无向树、每次等概率走向邻居）：从 u 到相邻父亲方向的期望步数 = <code>2·sz - 1</code>（sz 为该侧子树大小），因为来回往返。</li>
+<li>推导工具：设 <code>f[u]</code> 为从 u 到父亲的期望步数，<code>f[u] = 1 + (1/deg)·Σ_{v≠fa}(1 + f[v] + f[u])</code>，解方程即得。</li>
+<li>应用：期望 DP、概率题（如“随机游走访问每个点”）、树上高斯消元。</li>
+<li>注意：有环图上的随机游走期望需要解线性方程组（高斯消元），不能简单递推。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/d9634e4b70367fcf.webp" width="85" height="25" data-full="assets/d9634e4b70367fcf.png" loading="lazy" decoding="async" alt="图1 所讨论的树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8da83e4678427e90.webp" width="53" height="24" data-full="assets/8da83e4678427e90.png" loading="lazy" decoding="async" alt="图2 结点的度数" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/62b8436bfc21595d.webp" width="70" height="24" data-full="assets/62b8436bfc21595d.png" loading="lazy" decoding="async" alt="图3 结点与 v 结点之间的边的边权" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/e393181fe5b1d051.webp" width="37" height="24" data-full="assets/e393181fe5b1d051.png" loading="lazy" decoding="async" alt="图4 结点的父结点" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/9755c315e3b1e6e9.webp" width="52" height="21" data-full="assets/9755c315e3b1e6e9.png" loading="lazy" decoding="async" alt="图5 结点的子结点集合" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a0f0ea68821d1ea4.webp" width="75" height="22" data-full="assets/a0f0ea68821d1ea4.png" loading="lazy" decoding="async" alt="图6 结点的兄弟结点集合" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b59f75fbc7be49ef.webp" width="37" height="25" data-full="assets/b59f75fbc7be49ef.png" loading="lazy" decoding="async" alt="图7 树上随机游走" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/dcd5609bc1fdbec9.webp" width="19" height="25" data-full="assets/dcd5609bc1fdbec9.png" loading="lazy" decoding="async" alt="图8 树上随机游走2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0240a77465bdef47.webp" width="395" height="74" data-full="assets/0240a77465bdef47.png" loading="lazy" decoding="async" alt="图9 树上随机游走3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/49a20de2de25afce.webp" width="37" height="23" data-full="assets/49a20de2de25afce.png" loading="lazy" decoding="async" alt="图10 树上随机游走" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7287124b34b59e41.webp" width="451" height="211" data-full="assets/7287124b34b59e41.png" loading="lazy" decoding="async" alt="图11 树上随机游走" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/31b691590d8f2218.webp" width="81" height="23" data-full="assets/31b691590d8f2218.png" loading="lazy" decoding="async" alt="图12 初始状态" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0e5e7cc0e5ca1460.webp" width="188" height="53" data-full="assets/0e5e7cc0e5ca1460.png" loading="lazy" decoding="async" alt="图13 树上随机游走" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c4022219d2efcc54.webp" width="19" height="25" data-full="assets/c4022219d2efcc54.png" loading="lazy" decoding="async" alt="图14 pu" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7fb616fcd73060e5.webp" width="36" height="25" data-full="assets/7fb616fcd73060e5.png" loading="lazy" decoding="async" alt="图15 g(u)" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/2ce2da816500cae2.webp" width="19" height="25" data-full="assets/2ce2da816500cae2.png" loading="lazy" decoding="async" alt="图16 pu" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/3e250884dbc81f52.webp" width="579" height="76" data-full="assets/3e250884dbc81f52.png" loading="lazy" decoding="async" alt="图17 向子结点走的期望距离" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/399ce9ed7019a1bd.webp" width="43" height="24" data-full="assets/399ce9ed7019a1bd.png" loading="lazy" decoding="async" alt="图18 d(pu)" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/4bd18278ac39ea2f.webp" width="19" height="25" data-full="assets/4bd18278ac39ea2f.png" loading="lazy" decoding="async" alt="图19 08.png" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/193e90a3f6f06fa2.webp" width="636" height="317" data-full="assets/193e90a3f6f06fa2.png" loading="lazy" decoding="async" alt="图20 向子结点走的期望距离" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d19032fc30469458.webp" width="83" height="21" data-full="assets/d19032fc30469458.png" loading="lazy" decoding="async" alt="图21 树上随机游走" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s20">
+  <div class="sec-no">20 / SECTION</div>
+  <h2>简述矩阵树定理</h2>
+<ul class="pts">
+<li>本节偏“定理的完整表述”：同一主题另有第 6 节（实例讲解），两篇内容基本重合，此处给出更严格的定义口径。</li>
+<li>定义：<code>L = D - A</code>（D 为度数矩阵，A 为邻接矩阵；<code>A[i][j]</code> 记 i 与 j 之间的<strong>边数</strong>，允许重边，不允许自环）。</li>
+<li><strong>无向图</strong>：删掉 L 的任意一行一列，行列式 = 生成树个数；带权时把权值填进 <code>A</code>、度数换成关联边权之和。</li>
+<li><strong>有向图</strong>：按“出度”构 L 得到<strong>外向树</strong>（从根向外）的计数；按“入度”构 L 得到<strong>内向树</strong>；无论哪种，都要删掉根对应的行与列。</li>
+<li>计算：对模数取模时用高斯消元 + 逆元（模数须为质数）；模数非质数用辗转相除消元；实数用主元消元。</li>
+<li>与 Cayley 公式互证：完全图 <code>K_n</code> 的生成树数为 <code>n^{n-2}</code>，正是矩阵树定理代入后的结果。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/e7485cc849e55e1b.webp" width="226" height="27" data-full="assets/e7485cc849e55e1b.png" loading="lazy" decoding="async" alt="图1 01.png" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/cb40b3410b4eb8e0.webp" width="59" height="28" data-full="assets/cb40b3410b4eb8e0.png" loading="lazy" decoding="async" alt="图2 矩阵树定理" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/58348c29a1affb36.webp" width="239" height="34" data-full="assets/58348c29a1affb36.png" loading="lazy" decoding="async" alt="图3 邻接矩阵" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/cc3ec2e93a855ac6.webp" width="168" height="28" data-full="assets/cc3ec2e93a855ac6.png" loading="lazy" decoding="async" alt="图4 Laplace 矩阵" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/70da63de59ec0b8e.webp" width="64" height="25" data-full="assets/70da63de59ec0b8e.png" loading="lazy" decoding="async" alt="图5 出度矩阵" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/767e3e9204646fbf.webp" width="258" height="34" data-full="assets/767e3e9204646fbf.png" loading="lazy" decoding="async" alt="图6 出度矩阵" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/cf0b130f0bf0a849.webp" width="61" height="28" data-full="assets/cf0b130f0bf0a849.png" loading="lazy" decoding="async" alt="图7 出度矩阵" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/57bc96f162b59dc1.webp" width="59" height="28" data-full="assets/57bc96f162b59dc1.png" loading="lazy" decoding="async" alt="图8 邻接矩阵" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/06037d1663ae48c9.webp" width="179" height="36" data-full="assets/06037d1663ae48c9.png" loading="lazy" decoding="async" alt="图9 邻接矩阵" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0671299aa66d6292.webp" width="35" height="27" data-full="assets/0671299aa66d6292.png" loading="lazy" decoding="async" alt="图10 出度" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d314eeceeee5b00f.webp" width="199" height="42" data-full="assets/d314eeceeee5b00f.png" loading="lazy" decoding="async" alt="图11 出度 Laplace" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/daa2b0322802ec0d.webp" width="29" height="28" data-full="assets/daa2b0322802ec0d.png" loading="lazy" decoding="async" alt="图12 入度 Laplace" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/84cba2bc645b86d4.webp" width="197" height="34" data-full="assets/84cba2bc645b86d4.png" loading="lazy" decoding="async" alt="图13 入度 Laplace" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/452e502f91ece117.webp" width="74" height="26" data-full="assets/452e502f91ece117.png" loading="lazy" decoding="async" alt="图14 向树形图" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/171d8c1276971a6a.webp" width="72" height="31" data-full="assets/171d8c1276971a6a.png" loading="lazy" decoding="async" alt="图15 叶向树形图" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/bf18d15f2b24a2c0.webp" width="340" height="52" data-full="assets/bf18d15f2b24a2c0.png" loading="lazy" decoding="async" alt="图16 无向图行列式形式" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8b3c658f16fb89a9.webp" width="157" height="32" data-full="assets/8b3c658f16fb89a9.png" loading="lazy" decoding="async" alt="图17 记号" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/40d8947406ffca01.webp" width="174" height="24" data-full="assets/40d8947406ffca01.png" loading="lazy" decoding="async" alt="图18 行" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/06cedf292e524d7d.webp" width="169" height="23" data-full="assets/06cedf292e524d7d.png" loading="lazy" decoding="async" alt="图19 列" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7dff4ccbea968834.webp" width="116" height="22" data-full="assets/7dff4ccbea968834.png" loading="lazy" decoding="async" alt="图20 无向图特征值形式" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/47ef1bf38cb832b5.webp" width="172" height="31" data-full="assets/47ef1bf38cb832b5.png" loading="lazy" decoding="async" alt="图21 无向图特征值形式" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/09294ad07434b8a4.webp" width="340" height="52" data-full="assets/09294ad07434b8a4.png" loading="lazy" decoding="async" alt="图22 有向图根向形式" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ab0214f5b047511f.webp" width="76" height="23" data-full="assets/ab0214f5b047511f.png" loading="lazy" decoding="async" alt="图23 有向图根向形式" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ed062e2fd9a9bbd9.webp" width="379" height="53" data-full="assets/ed062e2fd9a9bbd9.png" loading="lazy" decoding="async" alt="图24 有向图叶向形式" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/286d9e354dd52695.webp" width="78" height="28" data-full="assets/286d9e354dd52695.png" loading="lazy" decoding="async" alt="图25 有向图叶向形式" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6955f31d4ea67f5d.webp" width="258" height="47" data-full="assets/6955f31d4ea67f5d.png" loading="lazy" decoding="async" alt="图26 BEST 定理" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/4e7220faeb4df02b.webp" width="34" height="24" data-full="assets/4e7220faeb4df02b.png" loading="lazy" decoding="async" alt="图27 节点" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d6f3a67a4f8757b2.webp" width="167" height="27" data-full="assets/d6f3a67a4f8757b2.png" loading="lazy" decoding="async" alt="图28 节点" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s21">
+  <div class="sec-no">21 / SECTION</div>
+  <h2>图论中的有向无环图</h2>
+<ul class="pts">
+<li>同主题另有第 7 节，本篇更侧重“性质与用法”，内容高度重合。</li>
+<li>定义：有向且无环；等价于“存在拓扑序”“不存在有向回路”。</li>
+<li>性质：最长路径可多项式求解（一般有向图是 NP-hard）；可达性可传递推导。</li>
+<li>三类常见用法：</li>
+<li class="sub">按拓扑序做 DP（路径计数、最长/最短路）；</li>
+<li class="sub">缩点（Tarjan）把一般有向图转成 DAG；</li>
+<li class="sub">用 <code>bitset</code> 做可达性传递，复杂度 <code>O(nm/64)</code>。</li>
+<li>建模价值：任务调度、版本依赖、状态机（转移不回退的场景都天然是 DAG）。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/68bd289b590f407e.webp" width="662" height="148" data-full="assets/68bd289b590f407e.png" loading="lazy" decoding="async" alt="图1 有向无环图示例" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/77438ef0c5b6760f.webp" width="238" height="62" data-full="assets/77438ef0c5b6760f.png" loading="lazy" decoding="async" alt="图2 有向无环图示例" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/160825cbf62d5f95.webp" width="251" height="106" data-full="assets/160825cbf62d5f95.png" loading="lazy" decoding="async" alt="图3 有向图示例" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/fd9c83407bae03e1.webp" width="661" height="147" data-full="assets/fd9c83407bae03e1.png" loading="lazy" decoding="async" alt="图4 有向图示例" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s22">
+  <div class="sec-no">22 / SECTION</div>
+  <h2>什么是拓扑排序？</h2>
+<ul class="pts">
+<li>同主题另有第 8 节，两篇内容基本一致，本节按“定义 → 两种实现 → 判环 → 应用”整理。</li>
+<li>定义：把 DAG 的所有顶点排成线性序列，满足“每个顶点只出现一次”且“若 A 到 B 有路径，则 A 排在 B 之前”。</li>
+<li>Kahn 实现：统计入度 → 入度 0 入队 → 出队时把邻点入度减 1，减到 0 再入队；复杂度 <code>O(n+m)</code>。</li>
+<li>DFS 实现：后序（回溯时入栈）得到的顺序逆序即拓扑序；也能判环（遇到“在栈中”的点即有环）。</li>
+<li>判环：Kahn 输出点数 &lt; n 说明有环；这是最常用的判 DAG 手段。</li>
+<li>变体：字典序最小拓扑序用优先队列；反向拓扑序用于“依赖方后置”的场景。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/c6d5764d3e32379e.webp" width="355" height="260" data-full="assets/c6d5764d3e32379e.png" loading="lazy" decoding="async" alt="图1 拓扑排序" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/85d6ef9eb3f9aeef.webp" width="689" height="458" data-full="assets/85d6ef9eb3f9aeef.png" loading="lazy" decoding="async" alt="图2 拓扑排序步骤" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s23">
+  <div class="sec-no">23 / SECTION</div>
+  <h2>最小生成树图文解析</h2>
+<ul class="pts">
+<li>同主题另有第 9 节，本篇偏“概念与算法对比”，第 9 节偏“实现与正确性”。</li>
+<li>生成树：连通无向图中包含全部 n 个顶点、恰好 n-1 条边的子图；<code>bfs</code>/<code>dfs</code> 也能生成（叫生成树，但无权值最优性）。</li>
+<li>最小生成树（MST）：边权和最小的生成树；对应的还有最大生成树。</li>
+<li>两种算法：Kruskal（按边权排序 + 并查集，<code>O(m log m)</code>，稀疏图首选）；Prim（从一点扩张 + 堆，<code>O((n+m) log n)</code>，稠密图好）。</li>
+<li>性质：MST 的最大边是所有生成树中最小的；权值和唯一，但树形可能不唯一。</li>
+<li>应用：铺路/布网/聚类的最小连接、最小瓶颈路径。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/a407b91b0b91c85e.webp" width="676" height="298" data-full="assets/a407b91b0b91c85e.png" loading="lazy" decoding="async" alt="图1 生成树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d4094f0e11c363c0.webp" width="698" height="338" data-full="assets/d4094f0e11c363c0.png" loading="lazy" decoding="async" alt="图2 生成树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b44a4239bff1b02c.webp" width="482" height="396" data-full="assets/b44a4239bff1b02c.jpg" loading="lazy" decoding="async" alt="图3 求最小的连通图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/851a06b50538a86f.webp" width="475" height="403" data-full="assets/851a06b50538a86f.png" loading="lazy" decoding="async" alt="图4 求最小的连通图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c3d096963c7cee7a.webp" width="483" height="425" data-full="assets/c3d096963c7cee7a.png" loading="lazy" decoding="async" alt="图5 求最小的连通图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6887ab9e74460e15.webp" width="618" height="518" data-full="assets/6887ab9e74460e15.png" loading="lazy" decoding="async" alt="图6 Prim算法图例1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/60c271fbfebd240e.webp" width="618" height="518" data-full="assets/60c271fbfebd240e.png" loading="lazy" decoding="async" alt="图7 Prim算法图例2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/877991b6ea82a284.webp" width="618" height="518" data-full="assets/877991b6ea82a284.png" loading="lazy" decoding="async" alt="图8 Prim算法图例3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/9bc9971dcc298e49.webp" width="618" height="518" data-full="assets/9bc9971dcc298e49.png" loading="lazy" decoding="async" alt="图9 Prim算法图例4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/68d68314dc126855.webp" width="618" height="518" data-full="assets/68d68314dc126855.png" loading="lazy" decoding="async" alt="图10 Prim算法图例5" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f4aa8895c4ddedb0.webp" width="618" height="518" data-full="assets/f4aa8895c4ddedb0.png" loading="lazy" decoding="async" alt="图11 Prim算法图例6" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/2c838fd92aae5271.webp" width="618" height="518" data-full="assets/2c838fd92aae5271.png" loading="lazy" decoding="async" alt="图12 Prim算法图例7" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7440d0071931964e.webp" width="618" height="518" data-full="assets/7440d0071931964e.png" loading="lazy" decoding="async" alt="图13 Prim算法图例8" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a4422d173fd544c2.webp" width="618" height="518" data-full="assets/a4422d173fd544c2.jpg" loading="lazy" decoding="async" alt="图14 Kruskal算法1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6d20247aad3c0e1e.webp" width="618" height="518" data-full="assets/6d20247aad3c0e1e.jpg" loading="lazy" decoding="async" alt="图15 Kruskal算法2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d21005b7a7389323.webp" width="618" height="518" data-full="assets/d21005b7a7389323.jpg" loading="lazy" decoding="async" alt="图16 Kruskal算法3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ea6e4ad387a7196a.webp" width="618" height="518" data-full="assets/ea6e4ad387a7196a.jpg" loading="lazy" decoding="async" alt="图17 Kruskal算法4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/33e16e3fdcf22a8f.webp" width="618" height="518" data-full="assets/33e16e3fdcf22a8f.jpg" loading="lazy" decoding="async" alt="图18 Kruskal算法5" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s24">
+  <div class="sec-no">24 / SECTION</div>
+  <h2>斯坦纳树的应用</h2>
+<ul class="pts">
+<li>同主题另有第 10 节，本篇偏“应用与建模”，两篇定义部分基本一致。</li>
+<li>定义复述：给定点集 S，允许在点集外<strong>额外引入点</strong>（Steiner 点）使 S 连通且总边权最小；MST 是“不许加点”的特例。</li>
+<li>求解仍是状压 DP + 最短路：<code>f[mask][i]</code> 表示 mask 集合连通且以 i 为根的最小代价，先合并子集，再对每层跑最短路。</li>
+<li>常见应用：</li>
+<li class="sub">城市间光缆/管道布线（可建中转站）；</li>
+<li class="sub">芯片布线、VLSI 布局；</li>
+<li class="sub">多点连通的最小网络设计；</li>
+<li class="sub">竞赛建模：给 k 个必经点求最小连通子图（k ≤ 10）。</li>
+<li>与 MST 的区别：MST 只在给定点上做文章，斯坦纳树允许“新建中转点”，因此结果可能更省。</li>
+</ul>
+</section>
+<section class="dsec" id="s25">
+  <div class="sec-no">25 / SECTION</div>
+  <h2>简述最小树形图</h2>
+<ul class="pts">
+<li><strong>定义</strong>：<strong>有向图</strong>中，从指定根出发能到达所有点、且每个非根点入度为 1 的生成子图，要求边权和最小（又称“有向最小生成树”）。</li>
+<li><strong>朱刘算法（Chu-Liu/Edmonds）</strong>：</li>
+</ul>
+<p class="doc-lead">1. 除根外每个点选一条最小的入边； 2. 若选出的边无环，即为答案； 3. 有环则把环缩成一个点，环上的点权值改为“原入边权 - 环上最小入边权”，再重复； 4. 直到无环，展开缩点累加答案。</p>
+<ul class="pts">
+<li>复杂度 <code>O(nm)</code>；用途：有向网络设计、最小费用广播。</li>
+<li>注意：与无向 MST 的差别在于“方向”——每个点只能有一个父亲。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/400310414e2ab123.webp" width="108" height="23" data-full="assets/400310414e2ab123.png" loading="lazy" decoding="async" alt="图1 DMST 算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/17d66a574637536f.webp" width="152" height="22" data-full="assets/17d66a574637536f.png" loading="lazy" decoding="async" alt="图2 路径" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/be6c38d992cc360b.webp" width="17" height="20" data-full="assets/be6c38d992cc360b.png" loading="lazy" decoding="async" alt="图3 vi" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/3b957d183e4ec27e.webp" width="49" height="17" data-full="assets/3b957d183e4ec27e.png" loading="lazy" decoding="async" alt="图4 vo=a" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/bdf478a26662640d.webp" width="51" height="23" data-full="assets/bdf478a26662640d.png" loading="lazy" decoding="async" alt="图5 最小入边" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6134ff3afbd23a96.webp" width="95" height="21" data-full="assets/6134ff3afbd23a96.png" loading="lazy" decoding="async" alt="图6 Tarjan 的 DMST 算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7559b8fd08673987.webp" width="62" height="20" data-full="assets/7559b8fd08673987.png" loading="lazy" decoding="async" alt="图7 Tarjan" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/544df0380fea5b62.webp" width="17" height="20" data-full="assets/544df0380fea5b62.png" loading="lazy" decoding="async" alt="图8 结点" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/04339dd9d1797a18.webp" width="142" height="22" data-full="assets/04339dd9d1797a18.png" loading="lazy" decoding="async" alt="图9 结点" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c2b83f0f6a78542b.webp" width="675" height="513" data-full="assets/c2b83f0f6a78542b.png" loading="lazy" decoding="async" alt="图10 Tarjan" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s26">
+  <div class="sec-no">26 / SECTION</div>
+  <h2>网络流常用小技巧拆点</h2>
+<ul class="pts">
+<li><strong>拆点</strong>：把一个点拆成“入点”和“出点”，中间连一条容量为 c 的边，用来<strong>限制经过该点的流量</strong>（点容量）。</li>
+<li>常见用法：</li>
+<li class="sub">点有容量限制（如“每个点最多经过 k 次”）；</li>
+<li class="sub">混合图/带下界的构造；</li>
+<li class="sub">二分图匹配中限制“每个点只能匹配一次”（容量 1）。</li>
+<li>拆点后编号：<code>in(u) = u</code>、<code>out(u) = u + n</code>，原边 <code>u→v</code> 变为 <code>out(u)→in(v)</code>。</li>
+<li>与“边容量”区别：边容量限制的是“这条边能流多少”，点容量限制的是“这个点能被多少路径共享”。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/5a8e993d2dfc4f4b.webp" width="253" height="129" data-full="assets/5a8e993d2dfc4f4b.png" loading="lazy" decoding="async" alt="图1 拆点1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/817e5d80a10cdd16.webp" width="256" height="143" data-full="assets/817e5d80a10cdd16.png" loading="lazy" decoding="async" alt="图2 拆点后" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f0086a4f8998a210.webp" width="39" height="21" data-full="assets/f0086a4f8998a210.png" loading="lazy" decoding="async" alt="图3 分层图最短路" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/e0e4f82e0bf12dd4.webp" width="371" height="41" data-full="assets/e0e4f82e0bf12dd4.png" loading="lazy" decoding="async" alt="图4 分层图最短路" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f841658c586dfc60.webp" width="85" height="27" data-full="assets/f841658c586dfc60.png" loading="lazy" decoding="async" alt="图5 分层图最短路" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s27">
+  <div class="sec-no">27 / SECTION</div>
+  <h2>什么是差分约束系统？</h2>
+<ul class="pts">
+<li><strong>定义</strong>：一组形如 <code>x_j - x_i ≤ c</code> 的不等式，求一组可行解（或最小值/最大值）。</li>
+<li><strong>转化</strong>：<code>x_j ≤ x_i + c</code> 即一条 <code>i→j</code> 权为 c 的边，于是问题变成<strong>最短路</strong>（或最长路）。</li>
+<li class="sub">求最大值：建图跑最短路，<code>dis[v] ≤ dis[u] + w</code> 正是三角不等式；</li>
+<li class="sub">求最小值：取反后跑最长路（或全部取负跑最短路）。</li>
+<li><strong>可行性判定</strong>：加超级源连所有点（权 0），跑 SPFA 判<strong>负环</strong>——有负环即无解。</li>
+<li>常见约束：<code>x_i - x_j ≥ c</code>（两边乘 -1 转成 ≤）、<code>x_i ≥ a</code>（与源点约束）。</li>
+<li>复杂度：SPFA 最坏 <code>O(nm)</code>，数据大时用 SLF/LLL 优化或改 Bellman-Ford。</li>
+<li>用途：排班/调度、区间和约束、整数规划的可转化情形。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/35c71d4fcf0764ea.webp" width="104" height="24" data-full="assets/35c71d4fcf0764ea.png" loading="lazy" decoding="async" alt="图1 差分约束" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/1b2858d68b8d52be.webp" width="21" height="21" data-full="assets/1b2858d68b8d52be.png" loading="lazy" decoding="async" alt="图2 常数" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/fbc4eace23f1247e.webp" width="69" height="22" data-full="assets/fbc4eace23f1247e.png" loading="lazy" decoding="async" alt="图3 差分约束系统" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/e7865a07c3c5c325.webp" width="103" height="23" data-full="assets/e7865a07c3c5c325.png" loading="lazy" decoding="async" alt="图4 差分约束1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ba6e02d4150c5731.webp" width="106" height="24" data-full="assets/ba6e02d4150c5731.png" loading="lazy" decoding="async" alt="图5 差分约束2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/2d406eb70c2a4357.webp" width="70" height="23" data-full="assets/2d406eb70c2a4357.png" loading="lazy" decoding="async" alt="图6 差分约束3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/236e4f56a1cd15fa.webp" width="78" height="24" data-full="assets/236e4f56a1cd15fa.png" loading="lazy" decoding="async" alt="图7 差分约束4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/bbb85aad0aae3986.webp" width="91" height="24" data-full="assets/bbb85aad0aae3986.png" loading="lazy" decoding="async" alt="图8 差分约束5" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/3c10a4ec9b8582ec.webp" width="152" height="26" data-full="assets/3c10a4ec9b8582ec.png" loading="lazy" decoding="async" alt="图9 差分约束6" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/1b3012963f5aaee9.webp" width="106" height="24" data-full="assets/1b3012963f5aaee9.png" loading="lazy" decoding="async" alt="图10 差分约束7" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/082d20b51963d561.webp" width="22" height="22" data-full="assets/082d20b51963d561.png" loading="lazy" decoding="async" alt="图11 差分约束8" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/74424bd7eecce69c.webp" width="70" height="24" data-full="assets/74424bd7eecce69c.png" loading="lazy" decoding="async" alt="图12 差分约束9" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/acdf7ee3a814d1b8.webp" width="105" height="23" data-full="assets/acdf7ee3a814d1b8.png" loading="lazy" decoding="async" alt="图13 最小值" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/4a456677f3c71eff.webp" width="70" height="24" data-full="assets/4a456677f3c71eff.png" loading="lazy" decoding="async" alt="图14 差分约束10" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/aafcee0a3293ce6c.webp" width="103" height="24" data-full="assets/aafcee0a3293ce6c.png" loading="lazy" decoding="async" alt="图15 不等式标准化" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/3e7b9f84adb2a64c.webp" width="105" height="23" data-full="assets/3e7b9f84adb2a64c.png" loading="lazy" decoding="async" alt="图16 不等式1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b7eaf559160c5b00.webp" width="103" height="23" data-full="assets/b7eaf559160c5b00.png" loading="lazy" decoding="async" alt="图17 不等式2" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s28">
+  <div class="sec-no">28 / SECTION</div>
+  <h2>欧拉图的判定</h2>
+<ul class="pts">
+<li><strong>欧拉路径</strong>：经过每条边<strong>恰好一次</strong>的路径；<strong>欧拉回路</strong>：回到起点的欧拉路径。</li>
+<li>无向图判定：</li>
+<li class="sub">所有非零度点连通（并查集）；</li>
+<li class="sub">奇度点个数为 0（欧拉回路）或 2（欧拉路径，必须从奇度点出发）。</li>
+<li>有向图判定：</li>
+<li class="sub">所有非零度点弱连通；</li>
+<li class="sub">每个点入度 = 出度（回路），或仅一个点出度比入度大 1（起点）、一个点入度比出度大 1（终点）。</li>
+<li>求路径：<strong>Hierholzer 算法</strong>——DFS 时“用完一条边就删”，回溯时把点压栈，最后逆序输出；复杂度 O(n+m)。</li>
+<li>应用：一笔画、扫雪车路线、DNA 拼接。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void dfs(int u) {
+    for (int &amp;i = head[u]; i; i = nxt[i]) {          // 注意引用，边用即删
+        int v = to[i];
+        if (used[i]) continue;
+        used[i] = used[i ^ 1] = true;                 // 无向边成对标记
+        dfs(v);
+    }
+    stk[++top] = u;                                   // 后序入栈
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/e8ec2add8ece5ea5.webp" width="164" height="28" data-full="assets/e8ec2add8ece5ea5.png" loading="lazy" decoding="async" alt="图1 时间复杂度" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/42e0ad92d9df893f.webp" width="493" height="296" data-full="assets/42e0ad92d9df893f.png" loading="lazy" decoding="async" alt="图2 Hierholzer 算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/9b7de975b67eb157.webp" width="93" height="25" data-full="assets/9b7de975b67eb157.png" loading="lazy" decoding="async" alt="图3 Hierholzer 算法时间复杂度" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ef1359ee270876cc.webp" width="114" height="28" data-full="assets/ef1359ee270876cc.png" loading="lazy" decoding="async" alt="图4 时间复杂度" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/107ca65d59a4ee90.webp" width="71" height="24" data-full="assets/107ca65d59a4ee90.png" loading="lazy" decoding="async" alt="图5 Hierholzer 算法性质" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/34cd5cb1ebef5232.webp" width="71" height="24" data-full="assets/34cd5cb1ebef5232.png" loading="lazy" decoding="async" alt="图6 Hierholzer 算法时间复杂度" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/9416f10428eab480.webp" width="30" height="25" data-full="assets/9416f10428eab480.png" loading="lazy" decoding="async" alt="图7 m的n次方" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ba46c551da3c875f.webp" width="30" height="25" data-full="assets/ba46c551da3c875f.png" loading="lazy" decoding="async" alt="图8 m的n次方" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/9ad663b725b6cf90.webp" width="30" height="25" data-full="assets/9ad663b725b6cf90.png" loading="lazy" decoding="async" alt="图9 m的n次方" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/564860fb12e2569f.webp" width="240" height="240" data-full="assets/564860fb12e2569f.png" loading="lazy" decoding="async" alt="图10 Hierholzer 算法应用" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/faf529dbe57d7b20.webp" width="143" height="27" data-full="assets/faf529dbe57d7b20.png" loading="lazy" decoding="async" alt="图11 有向欧拉图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/74688b95ec1b1b02.webp" width="295" height="30" data-full="assets/74688b95ec1b1b02.png" loading="lazy" decoding="async" alt="图12 有向欧拉图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/43a08fe831d036c0.webp" width="278" height="30" data-full="assets/43a08fe831d036c0.png" loading="lazy" decoding="async" alt="图13 有向欧拉图" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/51d4cb89816a13d7.webp" width="97" height="22" data-full="assets/51d4cb89816a13d7.png" loading="lazy" decoding="async" alt="图14 顶点" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ce8cd57fed172e1f.webp" width="218" height="23" data-full="assets/ce8cd57fed172e1f.png" loading="lazy" decoding="async" alt="图15 m条边" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/36fd6ad222c4e685.webp" width="99" height="21" data-full="assets/36fd6ad222c4e685.png" loading="lazy" decoding="async" alt="图16 边" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/810fd047cc6c84c3.webp" width="93" height="25" data-full="assets/810fd047cc6c84c3.png" loading="lazy" decoding="async" alt="图17 13.png" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7bdd2842396c58de.webp" width="264" height="172" data-full="assets/7bdd2842396c58de.png" loading="lazy" decoding="async" alt="图18 有向欧拉图" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s29">
+  <div class="sec-no">29 / SECTION</div>
+  <h2>哈密顿图的应用</h2>
+<ul class="pts">
+<li><strong>定义</strong>：经过每个<strong>顶点恰好一次</strong>的回路（哈密顿回路）/路径（哈密顿路径）。</li>
+<li>判定困难：哈密顿回路问题是 NP 完全问题，无多项式判定算法；只能靠充分条件或搜索。</li>
+<li>常用充分条件（Dirac 定理）：n ≥ 3 的<strong>简单图</strong>，若每个点度数 ≥ n/2，则必有哈密顿回路。</li>
+<li>竞赛做法：</li>
+<li class="sub">n 小（≤ 20）⇒ 状压 DP（TSP）；</li>
+<li class="sub">有特殊结构（竞赛图、网格图）⇒ 特殊构造；</li>
+<li class="sub">求“最短哈密顿路径” ⇒ 状压 DP <code>O(2ⁿn²)</code>。</li>
+<li>与欧拉图的区别：欧拉要求“<strong>边</strong>一次”，哈密顿要求“<strong>点</strong>一次”。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/a6d72454f9f1bc70.webp" width="38" height="22" data-full="assets/a6d72454f9f1bc70.png" loading="lazy" decoding="async" alt="图1 顶点" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ca40fd9089902139.webp" width="148" height="22" data-full="assets/ca40fd9089902139.png" loading="lazy" decoding="async" alt="图2 哈密顿通路" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f61bde335e5ed714.webp" width="38" height="22" data-full="assets/f61bde335e5ed714.png" loading="lazy" decoding="async" alt="图3 顶点" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/44c782952d95f248.webp" width="123" height="22" data-full="assets/44c782952d95f248.png" loading="lazy" decoding="async" alt="图4 哈密顿回路" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/e26bf23641b1b097.webp" width="17" height="19" data-full="assets/e26bf23641b1b097.png" loading="lazy" decoding="async" alt="图5 顶点" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/de60334ac76581bf.webp" width="73" height="23" data-full="assets/de60334ac76581bf.png" loading="lazy" decoding="async" alt="图6 哈密顿回路" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s30">
+  <div class="sec-no">30 / SECTION</div>
+  <h2>二分图的定义和判定</h2>
+<ul class="pts">
+<li><strong>定义</strong>：顶点可分成两个集合，所有边都跨集合（无奇环的图）。</li>
+<li><strong>判定</strong>：DFS/BFS 染色（相邻点染相反色），冲突即非二分图；复杂度 O(n+m)。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>bool dfs(int u, int c) {
+    col[u] = c;
+    for (int v : g[u]) {
+        if (!col[v] &amp;&amp; !dfs(v, -c)) return false;
+        if (col[v] == c) return false;
+    }
+    return true;
+}</code></pre></div>
+
+<ul class="pts">
+<li>性质：二分图 ⇔ 不含奇环；二分图的最大团 = n - 最小点覆盖 = n - 最大匹配（König 定理）。</li>
+<li>用途：匹配建模、冲突分配、奇偶染色类问题。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/7750e685892165f6.webp" width="127" height="221" data-full="assets/7750e685892165f6.png" loading="lazy" decoding="async" alt="图1 01.png" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s31">
+  <div class="sec-no">31 / SECTION</div>
+  <h2>二分图的最大匹配、完美匹配和匈牙利算法</h2>
+<ul class="pts">
+<li><strong>匹配</strong>：选若干边使任意两条边不共端点；<strong>最大匹配</strong>边数最多；<strong>完美匹配</strong>覆盖全部点（要求两侧点数相等）。</li>
+<li><strong>匈牙利算法</strong>：对左侧每个点尝试增广——找未匹配的右点，或让已匹配的右点“腾位置”（递归找增广路）。</li>
+<li>复杂度 <code>O(n·m)</code>（n 为左侧点数）；稀疏图很快。</li>
+<li>关键：<code>match[v]</code> 记录右点匹配的左点；<code>vis[v]</code> 防止同轮重复访问。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>bool tryKuhn(int u) {
+    for (int v : g[u]) {
+        if (vis[v]) continue;
+        vis[v] = true;
+        if (!match[v] || tryKuhn(match[v])) { match[v] = u; return true; }
+    }
+    return false;
+}
+// 主程序：for (u) { memset(vis, 0); if (tryKuhn(u)) ++ans; }</code></pre></div>
+
+<ul class="pts">
+<li>相关定理：最大匹配 = 最小点覆盖（二分图）；最大独立集 = n - 最大匹配；DAG 最小路径覆盖用拆点 + 匹配。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/05c97e011e05d324.webp" width="140" height="162" data-full="assets/05c97e011e05d324.png" loading="lazy" decoding="async" alt="图1 二分图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/10dddec92ffdb783.webp" width="140" height="169" data-full="assets/10dddec92ffdb783.png" loading="lazy" decoding="async" alt="图2 二分图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7a115a26dbe61dff.webp" width="140" height="169" data-full="assets/7a115a26dbe61dff.png" loading="lazy" decoding="async" alt="图3 二分图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/030bf0a4f6d71883.webp" width="140" height="169" data-full="assets/030bf0a4f6d71883.png" loading="lazy" decoding="async" alt="图4 二分图4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/003c6668f0d2998a.webp" width="252" height="189" data-full="assets/003c6668f0d2998a.png" loading="lazy" decoding="async" alt="图5 最大匹配问题" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/71ef3f6ffbb76ba0.webp" width="163" height="174" data-full="assets/71ef3f6ffbb76ba0.png" loading="lazy" decoding="async" alt="图6 匈牙利算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/4ebfb76f629f8aba.webp" width="286" height="70" data-full="assets/4ebfb76f629f8aba.png" loading="lazy" decoding="async" alt="图7 增广路" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/fb885c28958aac86.webp" width="140" height="241" data-full="assets/fb885c28958aac86.png" loading="lazy" decoding="async" alt="图8 匈牙利树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7d0cd37d905208d6.webp" width="145" height="234" data-full="assets/7d0cd37d905208d6.png" loading="lazy" decoding="async" alt="图9 匈牙利树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/5d6f462390f8cca4.webp" width="296" height="241" data-full="assets/5d6f462390f8cca4.png" loading="lazy" decoding="async" alt="图10 匈牙利树" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s32">
+  <div class="sec-no">32 / SECTION</div>
+  <h2>网络流的基本概念</h2>
+<ul class="pts">
+<li><strong>网络</strong>：有向图 + 每条边容量 <code>c(u,v)</code> + 源点 s + 汇点 t；流 <code>f</code> 满足<strong>容量限制</strong>与<strong>流量守恒</strong>（除 s、t 外流入=流出）。</li>
+<li><strong>可行流 / 最大流</strong>：满足约束的流；流量最大的可行流，值为 s 的净流出量。</li>
+<li><strong>残量网络</strong>：<code>c(u,v) - f(u,v)</code> 构成正向残量，<code>f(u,v)</code> 构成反向边；增广即在残量网络上找 s→t 路径。</li>
+<li><strong>割</strong>：把点分成含 s 与含 t 的两部分，割的容量为跨割正向边容量之和。</li>
+<li><strong>最大流最小割定理</strong>：最大流值 = 最小割容量（二者等价，这是对偶性的核心）。</li>
+<li>建模思路：把“限制”写成容量，“选择”写成边，“需求”写成流量；点容量靠拆点。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/466a4d158334f052.webp" width="270" height="37" data-full="assets/466a4d158334f052.png" loading="lazy" decoding="async" alt="图1 容量限制" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/93ef4a3bfd39addd.webp" width="235" height="53" data-full="assets/93ef4a3bfd39addd.png" loading="lazy" decoding="async" alt="图2 可行流的流量" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0ea7cea4227295c1.webp" width="379" height="345" data-full="assets/0ea7cea4227295c1.png" loading="lazy" decoding="async" alt="图3 残留网络" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/9da72bc944e9193f.webp" width="30" height="30" data-full="assets/9da72bc944e9193f.png" loading="lazy" decoding="async" alt="图4 残留网络" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/4c68f0cfb6bebd7d.webp" width="73" height="35" data-full="assets/4c68f0cfb6bebd7d.png" loading="lazy" decoding="async" alt="图5 残留网络" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/e1b89c9e5cee9f17.webp" width="489" height="37" data-full="assets/e1b89c9e5cee9f17.png" loading="lazy" decoding="async" alt="图6 每条边的容量" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/57c18d570e1314a4.webp" width="217" height="62" data-full="assets/57c18d570e1314a4.png" loading="lazy" decoding="async" alt="图7 割的容量" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8d6e9d4bd28cdbc0.webp" width="357" height="70" data-full="assets/8d6e9d4bd28cdbc0.png" loading="lazy" decoding="async" alt="图8 割的流量" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/96bd8ee74e4e2c3c.webp" width="405" height="58" data-full="assets/96bd8ee74e4e2c3c.png" loading="lazy" decoding="async" alt="图9 割的流量" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7ea18f32f0eb1073.webp" width="337" height="53" data-full="assets/7ea18f32f0eb1073.png" loading="lazy" decoding="async" alt="图10 构造的割" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d603a47d9c2fbb01.webp" width="82" height="36" data-full="assets/d603a47d9c2fbb01.png" loading="lazy" decoding="async" alt="图11 最小割" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/39677af184b79e4c.webp" width="271" height="40" data-full="assets/39677af184b79e4c.png" loading="lazy" decoding="async" alt="图12 最小割" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/5df7f56cc75a53b1.webp" width="171" height="48" data-full="assets/5df7f56cc75a53b1.png" loading="lazy" decoding="async" alt="图13 最大流的流量" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/52ff195e2cb48331.webp" width="133" height="41" data-full="assets/52ff195e2cb48331.png" loading="lazy" decoding="async" alt="图14 最大流的流量" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s33">
+  <div class="sec-no">33 / SECTION</div>
+  <h2>最大流是什么？</h2>
+<ul class="pts">
+<li><strong>Dinic 算法</strong>（主流）：</li>
+<li class="sub">BFS 分层（<code>level[]</code>），只沿层数 +1 的边增广；</li>
+<li class="sub">DFS 多路增广 + 当前弧优化（<code>cur[u]</code>）；</li>
+<li class="sub">复杂度 <code>O(n²m)</code>，二分图/单位容量图上远快于理论上界。</li>
+<li><strong>EK 算法</strong>：BFS 找增广路，<code>O(nm²)</code>，适合小图。</li>
+<li><strong>ISAP / HLPP</strong>：更快但代码复杂。</li>
+<li>常见技巧：</li>
+<li class="sub">无向边：正反两条容量都为 c；</li>
+<li class="sub">双向可走：建两条有向边；</li>
+<li class="sub">有下界的边：先减去下界，再补“虚拟源/汇”；</li>
+<li class="sub">多源多汇：加超级源/超级汇。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>int head[N], cap[N], level[N], cur[N], tot = 1;   // 关键：tot 从 1 开始
+int to[N], nxt[N];
+void addEdge(int u, int v, int c) {               // 成对加入：i 与 i^1 互为反向边
+    to[++tot] = v; cap[tot] = c; nxt[tot] = head[u]; head[u] = tot;
+    to[++tot] = u; cap[tot] = 0; nxt[tot] = head[v]; head[v] = tot;
+}
+bool bfs() {                       // 分层
+    memset(level, 0, sizeof level); level[S] = 1; q.push(S);
+    while (!q.empty()) { int u = q.front(); q.pop();
+        for (int i = head[u]; i; i = nxt[i])
+            if (cap[i] &amp;&amp; !level[to[i]]) level[to[i]] = level[u] + 1, q.push(to[i]);
+    }
+    return level[T];
+}
+int dfs(int u, int f) {            // 多路增广
+    if (u == T) return f;
+    for (int &amp;i = cur[u]; i; i = nxt[i])
+        if (cap[i] &amp;&amp; level[to[i]] == level[u] + 1) {
+            int d = dfs(to[i], min(f, cap[i]));
+            if (d) { cap[i] -= d; cap[i ^ 1] += d; return d; }
+        }
+    return 0;
+}</code></pre></div>
+
+<ul class="pts">
+<li>注意 <code>tot = 1</code> 起始：这样第 k 条正向边编号为偶数、反向边为奇数（或相反），<code>i ^ 1</code> 恰好取到反向边；若像“链式前向星”那样从 0 开始计数，<code>i ^ 1</code> 就会错位。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/03e1498105810b30.webp" width="321" height="41" data-full="assets/03e1498105810b30.png" loading="lazy" decoding="async" alt="图1 容量限制" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/52bb5089f436f719.webp" width="205" height="53" data-full="assets/52bb5089f436f719.png" loading="lazy" decoding="async" alt="图2 流量守恒" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b1ebe0935d6a6c84.webp" width="646" height="277" data-full="assets/b1ebe0935d6a6c84.png" loading="lazy" decoding="async" alt="图3 流网络的示例图" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c737225a83302149.webp" width="713" height="204" data-full="assets/c737225a83302149.png" loading="lazy" decoding="async" alt="图4 流网络的示例图" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c335b1b779d76830.webp" width="626" height="391" data-full="assets/c335b1b779d76830.png" loading="lazy" decoding="async" alt="图5 流网络" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7cce554cfdebe6e9.webp" width="121" height="43" data-full="assets/7cce554cfdebe6e9.png" loading="lazy" decoding="async" alt="图6 残存网络" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/79b34885449ac77c.webp" width="409" height="113" data-full="assets/79b34885449ac77c.png" loading="lazy" decoding="async" alt="图7 残存网络" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ca6b6d95a60970cb.webp" width="629" height="182" data-full="assets/ca6b6d95a60970cb.png" loading="lazy" decoding="async" alt="图8 残存网络示例图" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/57dd136811a07fa3.webp" width="694" height="85" data-full="assets/57dd136811a07fa3.png" loading="lazy" decoding="async" alt="图9 残存网络" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d3026da7d6f14dcd.webp" width="120" height="41" data-full="assets/d3026da7d6f14dcd.png" loading="lazy" decoding="async" alt="图10 幅度" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/2c6e24505183efb3.webp" width="44" height="47" data-full="assets/2c6e24505183efb3.png" loading="lazy" decoding="async" alt="图11 函数" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a7c4f778551366f8.webp" width="379" height="80" data-full="assets/a7c4f778551366f8.png" loading="lazy" decoding="async" alt="图12 函数" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/aa8115a7a9b9e845.webp" width="44" height="47" data-full="assets/aa8115a7a9b9e845.png" loading="lazy" decoding="async" alt="图13 fp" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6715955f9ebd8cca.webp" width="144" height="27" data-full="assets/6715955f9ebd8cca.png" loading="lazy" decoding="async" alt="图14 数值" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/11d4879374db2f47.webp" width="44" height="47" data-full="assets/11d4879374db2f47.png" loading="lazy" decoding="async" alt="图15 数值" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/cdd2f91b11b7f172.webp" width="44" height="47" data-full="assets/cdd2f91b11b7f172.png" loading="lazy" decoding="async" alt="图16 数值" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8efafbb3d177f256.webp" width="44" height="47" data-full="assets/8efafbb3d177f256.png" loading="lazy" decoding="async" alt="图17 值" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/80450b85686309db.webp" width="238" height="31" data-full="assets/80450b85686309db.png" loading="lazy" decoding="async" alt="图18 值" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s34">
+  <div class="sec-no">34 / SECTION</div>
+  <h2>上下界网络流总结</h2>
+<ul class="pts">
+<li><strong>无源汇可行流</strong>：每条边有下界 <code>low</code>、上界 <code>up</code>；先把所有边减去下界，统计每个点的“净入”。</li>
+<li class="sub">入 &gt; 出 的点连向超级汇，出 &gt; 入 的连超级源，跑最大流；满流即可行。</li>
+<li><strong>有源汇可行流</strong>：加 <code>t→s</code> 容量 ∞ 的边，转成无源汇问题。</li>
+<li><strong>有源汇最大流</strong>：先按上面求出可行流，再在残量网络上从 s 到 t 增广；答案为“可行流流量 + 新增广量”。</li>
+<li><strong>有源汇最小流</strong>：先不加 <code>t→s</code> 边求出可行流，再在残量网络上求 <code>t→s</code> 的最大流，答案 = 可行流 - 该值。</li>
+<li>关键：<strong>下界</strong>的处理统一靠“减下界 + 补虚拟边 + 判满流”。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/3a402f174191175d.webp" width="734" height="500" data-full="assets/3a402f174191175d.png" loading="lazy" decoding="async" alt="图1 无源汇有上下界可行流" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a1bf3126fb63c605.webp" width="721" height="247" data-full="assets/a1bf3126fb63c605.png" loading="lazy" decoding="async" alt="图2 流量上界与下界之差" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c4a53695262776db.webp" width="727" height="362" data-full="assets/c4a53695262776db.png" loading="lazy" decoding="async" alt="图3 差网络" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b1f18f6fa7794391.webp" width="25" height="19" data-full="assets/b1f18f6fa7794391.png" loading="lazy" decoding="async" alt="图4 可行流" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d000fe1d85c0134b.webp" width="741" height="535" data-full="assets/d000fe1d85c0134b.png" loading="lazy" decoding="async" alt="图5 有源汇有上下界可行流" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/e345022c65f547d4.webp" width="706" height="274" data-full="assets/e345022c65f547d4.png" loading="lazy" decoding="async" alt="图6 有源汇有上下界最大流" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8ee9c4e3da748f94.webp" width="698" height="446" data-full="assets/8ee9c4e3da748f94.png" loading="lazy" decoding="async" alt="图7 有源汇有上下界最大流" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s35">
+  <div class="sec-no">35 / SECTION</div>
+  <h2>简述最大团搜索算法</h2>
+<ul class="pts">
+<li><strong>团</strong>：两两相邻的点集；<strong>最大团</strong>是点数最多的团（NP-hard）。</li>
+<li>竞赛做法：<strong>Bron–Kerbosch</strong>（带枢轴）回溯 + 剪枝，n ≤ 60 左右可过。</li>
+<li>更好用的写法：<strong>最大团 = 补图的最大独立集</strong>；或用“分支定界 + 贪心上界”的 <code>dfs(当前团, 候选集)</code>。</li>
+<li>常用剪枝：<code>|当前| + |候选| ≤ 最优</code> 则返回（上界剪枝）；按度数排序优先扩展。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void expand(vector&lt;int&gt; R, vector&lt;int&gt; P, vector&lt;int&gt; X) {
+    if (P.empty() &amp;&amp; X.empty()) { best = max(best, (int)R.size()); return; }
+    if (R.size() + P.size() &lt;= best) return;          // 上界剪枝
+    // 选 P 中度数最大的 u，分别“含 u / 不含 u”两支递归
+}</code></pre></div>
+
+<ul class="pts">
+<li>相关：最大独立集（补图最大团）、最小点覆盖（二分图才有 König 等式）。</li>
+</ul>
+</section>
+<section class="dsec" id="s36">
+  <div class="sec-no">36 / SECTION</div>
+  <h2>什么是弦图？</h2>
+<ul class="pts">
+<li><strong>定义</strong>：无向图中<strong>任意长度 ≥ 4 的环都有弦</strong>（连接环上两个不相邻点的边）。</li>
+<li>等价刻画：存在<strong>完美消除序列</strong>（每个点在其中出现时，它在剩余图中的邻居两两相邻）。</li>
+<li>求法：MCS 算法（最大势算法）O(n+m)，再按序列验证。</li>
+<li>应用：弦图上的<strong>最小染色数 = 最大团大小</strong>（完美图性质），最大独立集、最小团覆盖可多项式求解。</li>
+<li>竞赛中主要用于“团/独立集”在特殊图上的多项式解法。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/15ee6c50dbb6a2c7.webp" width="554" height="449" data-full="assets/15ee6c50dbb6a2c7.png" loading="lazy" decoding="async" alt="图1 弦图" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/285ae1d589e19181.webp" width="40" height="23" data-full="assets/285ae1d589e19181.png" loading="lazy" decoding="async" alt="图2 团数" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/bb615f755e6fb5e6.webp" width="38" height="23" data-full="assets/bb615f755e6fb5e6.png" loading="lazy" decoding="async" alt="图3 色数" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/bc59cb8eccd9d313.webp" width="39" height="22" data-full="assets/bc59cb8eccd9d313.png" loading="lazy" decoding="async" alt="图4 最大独立集" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/39a2b38efdc92264.webp" width="38" height="20" data-full="assets/39a2b38efdc92264.png" loading="lazy" decoding="async" alt="图5 最小团覆盖" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s37">
+  <div class="sec-no">37 / SECTION</div>
+  <h2>简述LGV引理</h2>
+<ul class="pts">
+<li><strong>内容</strong>：在<strong>有向无环图</strong>中，给定起点集合 A 与终点集合 B，路径族“两两不相交”的计数可由一个<strong>行列式</strong>给出。</li>
+<li>构造矩阵 <code>M[i][j] = 从 a_i 到 b_j 的路径条数</code>；则不相交路径族的带符号计数 = <code>det(M)</code>。</li>
+<li>若图的结构保证“所有不相交路径族符号相同”（如平面网格、起点终点在同一侧），则 <code>det(M)</code> 就是方案数。</li>
+<li>用途：网格路径不相交计数（如“两条不交叉路径”）、平面图路径计数、配合容斥。</li>
+<li>注意：不是所有 DAG 都满足“符号一致”，用前需验证。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/a1feceddc2fa1ea2.webp" width="142" height="35" data-full="assets/a1feceddc2fa1ea2.png" loading="lazy" decoding="async" alt="图1 LGV引理" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/fe88c4b4562c8ac8.webp" width="19" height="19" data-full="assets/fe88c4b4562c8ac8.png" loading="lazy" decoding="async" alt="图2 LGV引理" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8f155969b078adb7.webp" width="25" height="20" data-full="assets/8f155969b078adb7.png" loading="lazy" decoding="async" alt="图3 03.png" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/caf970422c002b4a.webp" width="43" height="22" data-full="assets/caf970422c002b4a.png" loading="lazy" decoding="async" alt="图4 04.png" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b40646ac83ec802c.webp" width="44" height="22" data-full="assets/b40646ac83ec802c.png" loading="lazy" decoding="async" alt="图5 LGV引理" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/ce1dcad5371032c8.webp" width="19" height="19" data-full="assets/ce1dcad5371032c8.png" loading="lazy" decoding="async" alt="图6 LGV引理" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/766f66e9159a1f2b.webp" width="20" height="22" data-full="assets/766f66e9159a1f2b.png" loading="lazy" decoding="async" alt="图7 LGV引理" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d4e44295725d5e83.webp" width="344" height="125" data-full="assets/d4e44295725d5e83.png" loading="lazy" decoding="async" alt="图8 LGV引理1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7cab0d80b68246ad.webp" width="276" height="50" data-full="assets/7cab0d80b68246ad.png" loading="lazy" decoding="async" alt="图9 LGV引理2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/5945c8b55b7088f7.webp" width="47" height="39" data-full="assets/5945c8b55b7088f7.png" loading="lazy" decoding="async" alt="图10 LGV定理3" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s38">
+  <div class="sec-no">38 / SECTION</div>
+  <h2>什么是Prufer序列？</h2>
+<ul class="pts">
+<li><strong>定义</strong>：把 n 个点的<strong>带标号树</strong>双射到长度为 n-2 的序列，元素取自 1..n 的点编号。</li>
+<li>构造：每次取编号最小的叶子，输出其父亲，删掉该叶子；重复 n-2 次。</li>
+<li>反构造：由序列 + 剩余两点还原树（按出现次数算度数）。</li>
+<li>结论：n 个点的带标号树共有 <code>n^{n-2}</code> 棵（Cayley 公式）；度数为 <code>d_i</code> 的点出现 <code>d_i - 1</code> 次。</li>
+<li>用途：树计数、树的随机生成、树上组合计数、与矩阵树定理互证。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>// 构造：小根堆维护叶子
+for (int i = 1; i &lt;= n; ++i) if (deg[i] == 1) q.push(i);
+for (int i = 1; i &lt;= n - 2; ++i) {
+    int u = q.top(); q.pop();
+    prufer[i] = fa[u];               // 输出父亲
+    if (--deg[fa[u]] == 1) q.push(fa[u]);
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/44ce17f1e3d68c5c.webp" width="23" height="27" data-full="assets/44ce17f1e3d68c5c.png" loading="lazy" decoding="async" alt="图1 Prufer 序列" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b25f5b76fc844f55.webp" width="49" height="27" data-full="assets/b25f5b76fc844f55.png" loading="lazy" decoding="async" alt="图2 Prufer 序列" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/4cc8039b45a2d8be.webp" width="42" height="25" data-full="assets/4cc8039b45a2d8be.png" loading="lazy" decoding="async" alt="图3 Prufer 序列" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s39">
+  <div class="sec-no">39 / SECTION</div>
+  <h2>平面图的基本概念及性质</h2>
+<ul class="pts">
+<li><strong>定义</strong>：能画在平面上且<strong>边只在顶点处相交</strong>的图；等价于 <code>K5</code>、<code>K3,3</code> 都不是它的子式（Kuratowski 定理）。</li>
+<li>欧拉公式：连通平面图 <code>V - E + F = 2</code>（F 含外部面）。</li>
+<li>性质：</li>
+<li class="sub">平面图 <code>E ≤ 3V - 6</code>（V ≥ 3），所以平面图一定稀疏；</li>
+<li class="sub">平面图必有度数 ≤ 5 的点；</li>
+<li class="sub">平面图的对偶图仍是平面图。</li>
+<li>竞赛用途：平面图判定（暴力删边 + 判定可平面性）、平面图上的最短路/分治、网格图（天然的平面图）。</li>
+<li>与“平面图转对偶图求最小割”的经典技巧配合：把 s-t 割转成对偶图最短路。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/0a561edebd116f36.webp" width="437" height="99" data-full="assets/0a561edebd116f36.png" loading="lazy" decoding="async" alt="图1 同胚" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8864d1206bba831f.webp" width="632" height="498" data-full="assets/8864d1206bba831f.png" loading="lazy" decoding="async" alt="图2 平面图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f1d87027562565de.webp" width="621" height="528" data-full="assets/f1d87027562565de.png" loading="lazy" decoding="async" alt="图3 平面图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/1e41bfe4487f0b9d.webp" width="579" height="510" data-full="assets/1e41bfe4487f0b9d.png" loading="lazy" decoding="async" alt="图4 平面图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+    <div class="qnav">
+        <a class="prev" href="ch07.html"><span class="k">PREV / 07</span><span class="t">数据结构</span></a>
+        <a class="next" href="ch09.html"><span class="k">NEXT / 09</span><span class="t">计算几何</span></a>
+    </div>
+  </main>
+
+  <aside class="docside">
+    <div class="k">ON THIS PAGE</div>
+    <ol>
+      <li><a href="#s1">图论部分简介</a></li>
+      <li><a href="#s2">图的基础概念</a></li>
+      <li><a href="#s3">图的储存方式</a></li>
+      <li><a href="#s4">图文解析图论DFS（深度优先搜索）</a></li>
+      <li><a href="#s5">图文解析图论BFS（广度优先搜索）</a></li>
+      <li><a href="#s6">图论矩阵树定理实例讲解</a></li>
+      <li><a href="#s7">有向无环图图文讲解</a></li>
+      <li><a href="#s8">什么是拓扑排序？</a></li>
+      <li><a href="#s9">最小生成树图文讲解</a></li>
+      <li><a href="#s10">斯坦纳树Steiner Tree实例讲解</a></li>
+      <li><a href="#s11">DFS求有向图(无向图)两点间路径</a></li>
+      <li><a href="#s12">树的基础知识</a></li>
+      <li><a href="#s13">树的直径实例讲解</a></li>
+      <li><a href="#s14">什么是树的重心？</a></li>
+      <li><a href="#s15">树链剖分解决什么问题？</a></li>
+      <li><a href="#s16">树上启发式合并</a></li>
+      <li><a href="#s17">什么是虚树？</a></li>
+      <li><a href="#s18">树哈希常用的方式</a></li>
+      <li><a href="#s19">什么是树上随机游走？</a></li>
+      <li><a href="#s20">简述矩阵树定理</a></li>
+      <li><a href="#s21">图论中的有向无环图</a></li>
+      <li><a href="#s22">什么是拓扑排序？</a></li>
+      <li><a href="#s23">最小生成树图文解析</a></li>
+      <li><a href="#s24">斯坦纳树的应用</a></li>
+      <li><a href="#s25">简述最小树形图</a></li>
+      <li><a href="#s26">网络流常用小技巧拆点</a></li>
+      <li><a href="#s27">什么是差分约束系统？</a></li>
+      <li><a href="#s28">欧拉图的判定</a></li>
+      <li><a href="#s29">哈密顿图的应用</a></li>
+      <li><a href="#s30">二分图的定义和判定</a></li>
+      <li><a href="#s31">二分图的最大匹配、完美匹配和匈牙利算法</a></li>
+      <li><a href="#s32">网络流的基本概念</a></li>
+      <li><a href="#s33">最大流是什么？</a></li>
+      <li><a href="#s34">上下界网络流总结</a></li>
+      <li><a href="#s35">简述最大团搜索算法</a></li>
+      <li><a href="#s36">什么是弦图？</a></li>
+      <li><a href="#s37">简述LGV引理</a></li>
+      <li><a href="#s38">什么是Prufer序列？</a></li>
+      <li><a href="#s39">平面图的基本概念及性质</a></li>
+    </ol>
+  </aside>
+</div>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>算法竞赛教程笔记，整理自 dotcpp 教程（C 语言中文网）。原文 172 篇长页面重排为 10 章「章 → 节 → 要点」，代码分块、配图外挂存储（webp 懒加载）。个别表述按原文口径订正，仍以原文为准。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="index.html">算法竞赛教程</a>
+        <a href="../data-structures/index.html">数据结构教程</a>
+        <a href="../../problems/algorithm/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../../tools/mistakes.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/tutorial.js" defer></script>
+</body>
+</html>
