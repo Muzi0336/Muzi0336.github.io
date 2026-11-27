@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>算法竞赛教程 · 朝云暮辞</title>
+<meta name="description" content="算法竞赛教程笔记，10 章 172 节，按章分页阅读，含原文配图。">
+<link rel="stylesheet" href="../计挑赛/assets/style.css">
+<link rel="stylesheet" href="../计挑赛/assets/detail.css">
+<link rel="stylesheet" href="assets/reader.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../index.html#contest" class="contest-link">计挑赛</a>
+    <a href="../算法/index.html">算法题库</a>
+    <a href="../算法/paths.html">学习路径</a>
+    <a href="../算法/learn.html">算法学习</a>
+    <a href="../算法/lab.html">动画实验室</a>
+    <a href="../数据结构教程/index.html">数据结构</a>
+    <a href="../算法竞赛教程/index.html" class="active">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../boke/index.html">全栈笔记</a>
+    <a href="../学习工具/错题本.html">错题本</a>
+  </nav>
+</div>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="hero-left">
+      <div class="eyebrow">— Algorithm contest / 10 chapters</div>
+      <h1>把算法竞赛，<br>按章读完。</h1>
+      <p class="lede">整理自 dotcpp 的算法竞赛教程。原文是 172 篇各自独立的长页面，这里按原目录重排为 10 章：每章一个页面，左侧是全部章节，右侧是本章小标题，正文只保留「节 → 要点」、代码块与原文配图。图片走本地 webp + 懒加载，不依赖外站。</p>
+    </div>
+    <div class="hero-stat">
+      <div class="num">10</div>
+      <div class="stat-label">
+        <span>章 · 172 节</span>
+        <span>964 张原文配图</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="idx-list">
+    <div class="idx-head">
+      <span>— Chapters / 章目录</span>
+      <span>34 千字 · 2026</span>
+    </div>
+    <a class="idx-row" href="ch01.html">
+      <div class="idx-no">01 / CH</div>
+      <div class="idx-main"><h3>算法基础</h3><p>复杂度、枚举、模拟、贪心、递归与分治是地基，前缀和、差分、二分与倍增是后面每一章都会回来用的工具。</p></div>
+      <div class="idx-side"><span class="tag">14 节 · 23 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch02.html">
+      <div class="idx-no">02 / CH</div>
+      <div class="idx-main"><h3>搜索算法</h3><p>DFS / BFS 两副骨架，往上叠迭代加深、双向 BFS、A* 与 IDA*，搜索题的分水岭在剪枝写得好不好。</p></div>
+      <div class="idx-side"><span class="tag">15 节 · 54 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch03.html">
+      <div class="idx-no">03 / CH</div>
+      <div class="idx-main"><h3>排序算法</h3><p>冒泡、插入、选择、希尔、堆、归并、快排与计数、基数排序逐个过一遍，最后用一张表把复杂度与稳定性对齐。</p></div>
+      <div class="idx-side"><span class="tag">15 节 · 14 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch04.html">
+      <div class="idx-no">04 / CH</div>
+      <div class="idx-main"><h3>字符串相关</h3><p>从哈希与 KMP 走到 Z 函数、Manacher、后缀数组与自动机，字符串题的核心是把「重复」变成「可复用」。</p></div>
+      <div class="idx-side"><span class="tag">22 节 · 97 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch05.html">
+      <div class="idx-no">05 / CH</div>
+      <div class="idx-main"><h3>数学相关</h3><p>素数筛、快速幂、组合数、高斯消元与博弈论，数学题往往是「建模 + 模板」两件事。</p></div>
+      <div class="idx-side"><span class="tag">11 节 · 125 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch06.html">
+      <div class="idx-no">06 / CH</div>
+      <div class="idx-main"><h3>动态规划</h3><p>从线性 DP 一路到区间、树形、状压、数位与插头 DP，难点全在状态设计与转移顺序。</p></div>
+      <div class="idx-side"><span class="tag">23 节 · 98 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch07.html">
+      <div class="idx-no">07 / CH</div>
+      <div class="idx-main"><h3>数据结构</h3><p>并查集、树状数组、线段树、平衡树、可持久化与那些名字奇怪但好用的结构。</p></div>
+      <div class="idx-side"><span class="tag">12 节 · 57 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch08.html">
+      <div class="idx-no">08 / CH</div>
+      <div class="idx-main"><h3>图论</h3><p>存图、遍历、生成树、最短路、连通性、二分图、网络流与高级结构，全教程最长也最杂的一章。</p></div>
+      <div class="idx-side"><span class="tag">39 节 · 330 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch09.html">
+      <div class="idx-no">09 / CH</div>
+      <div class="idx-main"><h3>计算几何</h3><p>向量运算、凸包、旋转卡壳、半平面交与多边形面积，误差控制往往比算法本身更关键。</p></div>
+      <div class="idx-side"><span class="tag">10 节 · 112 图</span><span class="go">→</span></div>
+    </a>
+    <a class="idx-row" href="ch10.html">
+      <div class="idx-no">10 / CH</div>
+      <div class="idx-main"><h3>其他算法</h3><p>分块、莫队、CDQ、树上启发式合并、表达式求值，这些不在前面章节里的通用技巧都收在这里。</p></div>
+      <div class="idx-side"><span class="tag">11 节 · 54 图</span><span class="go">→</span></div>
+    </a>
+  </section>
+</main>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>算法竞赛教程笔记，整理自 dotcpp 教程（C 语言中文网）。原文 172 篇长页面重排为 10 章「章 → 节 → 要点」，代码分块、配图外挂存储（webp 懒加载）。个别表述按原文口径订正，仍以原文为准。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="../算法竞赛教程/index.html">算法竞赛教程</a>
+        <a href="../数据结构教程/index.html">数据结构教程</a>
+        <a href="../算法/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../学习工具/错题本.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

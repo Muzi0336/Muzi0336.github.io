@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第三章 排序算法 · 算法竞赛教程</title>
+<meta name="description" content="第三章 排序算法 — 冒泡、插入、选择、希尔、堆、归并、快排与计数、基数排序逐个过一遍，最后用一张表把复杂度与稳定性对齐。">
+<meta name="theme-color" content="#f4f1e9">
+<link rel="stylesheet" href="../计挑赛/assets/style.css">
+<link rel="stylesheet" href="../计挑赛/assets/detail.css">
+<link rel="stylesheet" href="assets/reader.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../index.html#contest" class="contest-link">计挑赛</a>
+    <a href="../算法/index.html">算法题库</a>
+    <a href="../算法/paths.html">学习路径</a>
+    <a href="../算法/learn.html">算法学习</a>
+    <a href="../算法/lab.html">动画实验室</a>
+    <a href="../数据结构教程/index.html">数据结构</a>
+    <a href="../算法竞赛教程/index.html" class="active">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../boke/index.html">全栈笔记</a>
+    <a href="../学习工具/错题本.html">错题本</a>
+  </nav>
+</div>
+
+<div class="docwrap">
+  <aside class="docnav">
+    <a class="back" href="index.html">← 教程目录</a>
+    <nav class="docnav-list">
+      <a href="ch01.html"><span class="n">01</span><span class="t">算法基础</span></a>
+      <a href="ch02.html"><span class="n">02</span><span class="t">搜索算法</span></a>
+      <a href="ch03.html" class="on"><span class="n">03</span><span class="t">排序算法</span></a>
+      <a href="ch04.html"><span class="n">04</span><span class="t">字符串相关</span></a>
+      <a href="ch05.html"><span class="n">05</span><span class="t">数学相关</span></a>
+      <a href="ch06.html"><span class="n">06</span><span class="t">动态规划</span></a>
+      <a href="ch07.html"><span class="n">07</span><span class="t">数据结构</span></a>
+      <a href="ch08.html"><span class="n">08</span><span class="t">图论</span></a>
+      <a href="ch09.html"><span class="n">09</span><span class="t">计算几何</span></a>
+      <a href="ch10.html"><span class="n">10</span><span class="t">其他算法</span></a>
+    </nav>
+    <div class="navstat">10 章 · 172 节<br>964 张图</div>
+  </aside>
+
+  <main class="docmain">
+    <div class="doc-eyebrow">— ALGORITHM CONTEST / 03</div>
+    <h1 class="doc-title">第三章 排序算法</h1>
+    <p class="doc-lead">冒泡、插入、选择、希尔、堆、归并、快排与计数、基数排序逐个过一遍，最后用一张表把复杂度与稳定性对齐。</p>
+    <div class="doc-meta">
+      <span class="chip">15 节</span>
+      <span class="chip">14 图</span>
+    </div>
+    <div class="rule"></div>
+<section class="dsec" id="s1">
+  <div class="sec-no">01 / SECTION</div>
+  <h2>排序算法简介</h2>
+<ul class="pts">
+<li><strong>定义</strong>：把无序序列按关键字调整为有序序列，是算法竞赛与工程中最基础的操作。</li>
+<li>两类视角：</li>
+<li class="sub"><strong>基于比较</strong>的排序：下界 <code>O(n log n)</code>（冒泡、插入、希尔、选择、堆、归并、快排）；</li>
+<li class="sub"><strong>非比较</strong>排序：利用值域分布，可到线性（计数、桶、基数）。</li>
+<li>三个评价维度：时间复杂度（平均/最坏）、空间复杂度（是否原地）、<strong>稳定性</strong>（相等元素相对次序是否保持）。</li>
+<li>稳定性只在“按多个关键字排序”时才真正有意义（先按次要关键字排、再按主要关键字排）。</li>
+<li>竞赛中的实用选择：</li>
+<li class="sub">需要稳定 + 最坏也 O(n log n) ⇒ 归并（或用 <code>stable_sort</code>）；</li>
+<li class="sub">通用最快 ⇒ 快排 / <code>sort</code>（内省排序，最坏已受控）；</li>
+<li class="sub">值域小且是整数 ⇒ 计数/桶排序；</li>
+<li class="sub">大整数、字符串 ⇒ 基数排序。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/01e1041cbf483b43.webp" width="966" height="588" data-full="assets/01e1041cbf483b43.png" loading="lazy" decoding="async" alt="图1 排序算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s2">
+  <div class="sec-no">02 / SECTION</div>
+  <h2>冒泡排序算法C/C++代码图文讲解</h2>
+<ul class="pts">
+<li><strong>思想</strong>：相邻两两比较，逆序就交换；每一轮把当前最大元素“冒”到末尾。</li>
+<li>轮数：n 个元素最多 n-1 轮，第 i 轮比较 n-i 次。</li>
+<li><strong>优化</strong>：设置 <code>swapped</code> 标志，某轮没有发生交换就说明已有序，提前结束 ⇒ 最好 O(n)。</li>
+<li>复杂度：时间 平均/最坏 <code>O(n²)</code>，最好 <code>O(n)</code>；空间 <code>O(1)</code>；<strong>稳定</strong>。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void bubbleSort(int a[], int n) {
+    for (int i = 0; i &lt; n - 1; ++i) {
+        bool swapped = false;
+        for (int j = 0; j &lt; n - 1 - i; ++j)
+            if (a[j] &gt; a[j + 1]) std::swap(a[j], a[j + 1]), swapped = true;
+        if (!swapped) break;
+    }
+}</code></pre></div>
+
+<ul class="pts">
+<li>现实意义：教学用最直观，实际数据量大时完全不可用。</li>
+</ul>
+<figure class="figure"><img src="assets/7c8cb1ababb53763.gif" width="826" height="257" data-full="assets/7c8cb1ababb53763.gif" loading="lazy" decoding="async" alt="图1 冒泡排序" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s3">
+  <div class="sec-no">03 / SECTION</div>
+  <h2>插入排序算法C/C++代码图文讲解</h2>
+<ul class="pts">
+<li><strong>思想</strong>：像整理扑克牌——把当前元素插入到前面<strong>已有序</strong>序列的正确位置，后面的元素依次后移。</li>
+<li>第 i 个元素最多比较 i 次，总比较约 n²/2。</li>
+<li>复杂度：平均/最坏 <code>O(n²)</code>，最好 <code>O(n)</code>（原始有序）；空间 <code>O(1)</code>；<strong>稳定</strong>。</li>
+<li>优点：常数小、几乎有序时极快，是小数组和“快排小区间”的首选（<code>std::sort</code> 内部对小段就退化为插入排序）。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void insertionSort(int a[], int n) {
+    for (int i = 1; i &lt; n; ++i) {
+        int key = a[i], j = i - 1;
+        while (j &gt;= 0 &amp;&amp; a[j] &gt; key) { a[j + 1] = a[j]; --j; }  // 严格大于才后移 ⇒ 稳定
+        a[j + 1] = key;
+    }
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/a95014d00e524459.gif" width="811" height="505" data-full="assets/a95014d00e524459.gif" loading="lazy" decoding="async" alt="图1 插入排序" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s4">
+  <div class="sec-no">04 / SECTION</div>
+  <h2>归并排序算法C/C++代码图文讲解</h2>
+<ul class="pts">
+<li><strong>思想</strong>：分治——序列对半拆到单元素（天然有序），再两两合并有序段。</li>
+<li>合并：双指针比较两段首元素，小的先放入临时数组，某段取完则把另一段剩余整段拷过去。</li>
+<li>复杂度：时间稳定 <code>O(n log n)</code>（不受数据分布影响）；空间 <code>O(n)</code>（临时数组 + 递归栈 O(log n)）；<strong>稳定</strong>。</li>
+<li>特性：<strong>唯一能做到“稳定 + 最坏 O(n log n)”的常用比较排序</strong>；适合外部排序与链表排序（链表合并只需改指针，空间 O(1)）。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void merge(int a[], int l, int mid, int r, int tmp[]) {
+    int i = l, j = mid + 1, k = l;
+    while (i &lt;= mid &amp;&amp; j &lt;= r) tmp[k++] = (a[i] &lt;= a[j]) ? a[i++] : a[j++];  // &lt;= 保证稳定
+    while (i &lt;= mid) tmp[k++] = a[i++];
+    while (j &lt;= r) tmp[k++] = a[j++];
+    for (int t = l; t &lt;= r; ++t) a[t] = tmp[t];
+}</code></pre></div>
+
+<ul class="pts">
+<li>注意：合并时 <code>a[i] &lt;= a[j]</code> 取左边才能保持稳定。</li>
+</ul>
+<figure class="figure"><img src="assets/e1a69f3f8d485f12.gif" width="811" height="505" data-full="assets/e1a69f3f8d485f12.gif" loading="lazy" decoding="async" alt="图1 归并排序算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s5">
+  <div class="sec-no">05 / SECTION</div>
+  <h2>快速排序算法C/C++代码图文讲解</h2>
+<ul class="pts">
+<li><strong>思想</strong>：选基准 pivot，把序列划分成“≤ pivot | pivot | ≥ pivot”三段，再对两侧递归。</li>
+<li>划分（Hoare / 挖坑 / 双指针）：一遍扫描 <code>O(n)</code>，故 <code>T(n) = 2T(n/2) + O(n) = O(n log n)</code>。</li>
+<li>复杂度：平均 <code>O(n log n)</code>，<strong>最坏 <code>O(n²)</code></strong>（每次基准都是最值，如已有序且取首元素为基准）；空间 <code>O(log n)</code>（递归栈）；<strong>不稳定</strong>。</li>
+<li>优化：随机选基准 / 三数取中（避免最坏）；小区间（如 ≤16）改用插入排序；三路划分处理大量重复元素。</li>
+<li>工程实现通常用“内省排序”：快排 + 堆排兜底 + 插排收尾，保证最坏 <code>O(n log n)</code>。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void quickSort(int a[], int l, int r) {
+    if (l &gt;= r) return;
+    int i = l, j = r, p = a[l + rand() % (r - l + 1)];   // 随机基准
+    while (i &lt;= j) {
+        while (a[i] &lt; p) ++i;
+        while (a[j] &gt; p) --j;
+        if (i &lt;= j) std::swap(a[i++], a[j--]);
+    }
+    quickSort(a, l, j); quickSort(a, i, r);
+}</code></pre></div>
+
+<ul class="pts">
+<li>命名的“第 14 节”与本节内容重复（同一篇快排），实际只需掌握本节。</li>
+</ul>
+<figure class="figure"><img src="assets/40a5a4d3435231ec.gif" width="811" height="252" data-full="assets/40a5a4d3435231ec.gif" loading="lazy" decoding="async" alt="图1 快速排序" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s6">
+  <div class="sec-no">06 / SECTION</div>
+  <h2>计数排序算法C/C++代码图文讲解</h2>
+<ul class="pts">
+<li><strong>思想</strong>：不开比较，直接统计每个值出现次数，再按值从小到大“倒出”对应个数。</li>
+<li>流程：求 max/min → 计数数组 <code>cnt[v]</code> → 前缀和得到“排名区间” → 从后往前回填（保证稳定）。</li>
+<li>复杂度：时间 <code>O(n + k)</code>（k 为值域），空间 <code>O(n + k)</code>；<strong>稳定</strong>（前缀和 + 逆序回填）。</li>
+<li>限制：只适合<strong>整数且值域不大</strong>（k 不应远大于 n），负数要加偏移。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>for (int i = 0; i &lt; n; ++i) ++cnt[a[i] - minv];
+for (int v = 1; v &lt;= maxv - minv; ++v) cnt[v] += cnt[v - 1];
+for (int i = n - 1; i &gt;= 0; --i) out[--cnt[a[i] - minv]] = a[i];   // 逆序 ⇒ 稳定</code></pre></div>
+
+<figure class="figure"><img src="assets/54e5afa8c91a4d39.gif" width="1012" height="557" data-full="assets/54e5afa8c91a4d39.gif" loading="lazy" decoding="async" alt="图1 计数排序" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s7">
+  <div class="sec-no">07 / SECTION</div>
+  <h2>桶排序算法C/C++代码图文讲解</h2>
+<ul class="pts">
+<li><strong>思想</strong>：按值域划分成若干“桶”（区间），把元素放进对应桶，桶内各自排序，最后按桶顺序拼接。</li>
+<li>计数排序可视为“每个值一个桶、桶内不排序”的特例。</li>
+<li>复杂度：平均 <code>O(n + k)</code>（桶内用插排且数据均匀时近似 O(n)）；空间 <code>O(n + k)</code>；<strong>稳定</strong>（前提是桶内稳定排序）。</li>
+<li>关键在<strong>映射函数</strong>：桶数太少退化成普通排序，太多浪费空间；数据分布不均会让某个桶退化成 <code>O(n²)</code>。</li>
+<li>适用：数据均匀分布、值域已知的浮点数/大整数。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>int idx = (a[i] - minv) / ((maxv - minv + 1) / m + 1);
+bucket[idx].push_back(a[i]);
+for (int i = 0; i &lt; m; ++i) {
+    sort(bucket[i].begin(), bucket[i].end());   // 或插入排序
+    for (int x : bucket[i]) out[k++] = x;
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/338b06910caa15c6.webp" width="425" height="389" data-full="assets/338b06910caa15c6.png" loading="lazy" decoding="async" alt="图1 桶排序图片解析" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s8">
+  <div class="sec-no">08 / SECTION</div>
+  <h2>希尔排序算法C/C++代码图文讲解</h2>
+<ul class="pts">
+<li><strong>思想</strong>：插入排序的改进——按<strong>增量 gap</strong> 把序列分成若干子序列分别插排，gap 逐步缩小到 1，最后整体插排一次。</li>
+<li>好处：早期大步长让元素“大步跳跃”，快速接近最终位置；后期小步长只需少量移动。</li>
+<li>增量序列：<code>n/2, n/4, …, 1</code>（折半）；Hibbard <code>2^k-1</code>；Sedgewick 序列可逼近 <code>O(n^{4/3})</code>。</li>
+<li>复杂度：平均约 <code>O(n^{1.3})</code>，最坏 <code>O(n²)</code>；空间 <code>O(1)</code>；<strong>不稳定</strong>（相等元素会跨组交换）。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>for (int gap = n / 2; gap &gt; 0; gap /= 2)
+    for (int i = gap; i &lt; n; ++i) {
+        int key = a[i], j = i - gap;
+        while (j &gt;= 0 &amp;&amp; a[j] &gt; key) { a[j + gap] = a[j]; j -= gap; }
+        a[j + gap] = key;
+    }</code></pre></div>
+
+<figure class="figure"><img src="assets/3c9f0a7028c51c14.gif" width="408" height="220" data-full="assets/3c9f0a7028c51c14.gif" loading="lazy" decoding="async" alt="图1 希尔排序算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s9">
+  <div class="sec-no">09 / SECTION</div>
+  <h2>选择排序算法C/C++代码图文讲解</h2>
+<ul class="pts">
+<li><strong>思想</strong>：每轮从剩余元素中选出最小（或最大）的，与当前位置交换。</li>
+<li>无论数据如何，比较次数恒为 <code>n(n-1)/2</code>，交换最多 n-1 次。</li>
+<li>复杂度：时间恒 <code>O(n²)</code>（最好也是 n²）；空间 <code>O(1)</code>；<strong>不稳定</strong>（远端交换会打乱相等元素次序）。</li>
+<li>唯一优势：交换次数少（最多 n-1 次），写 Flash/EEPROM 之类“写代价高”的场景有历史意义。</li>
+<li>与插入排序对比：插入在“近乎有序”时 O(n)，选择永远 n²。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>for (int i = 0; i &lt; n - 1; ++i) {
+    int m = i;
+    for (int j = i + 1; j &lt; n; ++j) if (a[j] &lt; a[m]) m = j;
+    if (m != i) std::swap(a[i], a[m]);
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/51632dc4b709a44a.webp" width="537" height="104" data-full="assets/51632dc4b709a44a.png" loading="lazy" decoding="async" alt="图1 选择排序算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a70e4aa52e96ffc4.webp" width="543" height="102" data-full="assets/a70e4aa52e96ffc4.png" loading="lazy" decoding="async" alt="图2 选择排序算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s10">
+  <div class="sec-no">10 / SECTION</div>
+  <h2>树形选择排序(锦标赛排序)C/C++代码图文讲解</h2>
+<ul class="pts">
+<li><strong>思想</strong>：把 n 个元素看作完全二叉树的叶子，两两比较取小者上浮，根即最小值（一次“锦标赛”）。</li>
+<li>取出根后，把该叶子改成 +∞，只沿它到根的路径重赛（<code>O(log n)</code>），下一轮最小值随之产生。</li>
+<li>复杂度：建树 <code>O(n)</code>，之后每次 <code>O(log n)</code>，总计 <code>O(n log n)</code>；空间 <code>O(n)</code>；<strong>不稳定</strong>。</li>
+<li>与堆排序的关系：思路相同（都是用完全二叉树维护最值 + 单路径调整），堆排序用数组下标隐式建树，<strong>空间 O(1)</strong>，是树形选择排序的优化版。</li>
+<li>现在实际都用堆排序，树形选择排序主要作为理解“胜者树/败者树”的过渡；败者树常用于<strong>多路归并</strong>（外部排序）减少比较次数。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>// 胜者树：p[i] 记录内部结点 i 的胜者下标
+// 更新叶子 k 后：for (t = (n + k) / 2; t; t /= 2) p[t] = winner(p[2*t], p[2*t+1]);</code></pre></div>
+
+</section>
+<section class="dsec" id="s11">
+  <div class="sec-no">11 / SECTION</div>
+  <h2>堆排序算法C/C++代码图文讲解</h2>
+<ul class="pts">
+<li><strong>思想</strong>：建大根堆 → 堆顶（最大值）与末尾交换 → 堆大小减一后向下调整 → 重复。</li>
+<li>两个阶段：建堆 <code>O(n)</code>（从 <code>n/2-1</code> 到 0 依次 <code>siftDown</code>）；排序 n-1 次，每次 <code>O(log n)</code>。</li>
+<li>复杂度：时间 恒 <code>O(n log n)</code>；空间 <code>O(1)</code>；<strong>不稳定</strong>。</li>
+<li>优点：最坏也是 <code>O(n log n)</code>、原地、常数可控，是内省排序的兜底方案；常用于堆顶取最值的在线场景（优先队列）。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>void siftDown(int a[], int i, int n) {
+    while (true) {
+        int l = 2 * i + 1, r = l + 1, m = i;
+        if (l &lt; n &amp;&amp; a[l] &gt; a[m]) m = l;
+        if (r &lt; n &amp;&amp; a[r] &gt; a[m]) m = r;
+        if (m == i) return;
+        std::swap(a[i], a[m]); i = m;
+    }
+}</code></pre></div>
+
+<ul class="pts">
+<li>注意：升序排序要建<strong>大根堆</strong>，每次把最大值换到末尾；降序则建小根堆。</li>
+</ul>
+<figure class="figure"><img src="assets/0ca965d847371f3b.gif" width="771" height="434" data-full="assets/0ca965d847371f3b.gif" loading="lazy" decoding="async" alt="图1 堆排序算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s12">
+  <div class="sec-no">12 / SECTION</div>
+  <h2>直接选择排序C/C++代码图文讲解</h2>
+<ul class="pts">
+<li>与第 9 节“选择排序”是同一个算法：每轮在无序区找最值，与无序区首元素交换。</li>
+<li>名字里的“直接”是为了与“树形选择排序（锦标赛排序）”区分——前者靠线性扫描找最值，后者靠树结构找最值。</li>
+<li>复杂度同选择排序：<code>O(n²)</code>、空间 <code>O(1)</code>、不稳定。</li>
+<li>结论：两种选择排序都不适合实战，只需记住“直接选择 = 线性找最值”这一区别。</li>
+</ul>
+<figure class="figure"><img src="assets/bf9bc4114a16ed76.gif" width="487" height="149" data-full="assets/bf9bc4114a16ed76.gif" loading="lazy" decoding="async" alt="图1 直接选择排序" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s13">
+  <div class="sec-no">13 / SECTION</div>
+  <h2>基数排序算法C/C++代码图文讲解</h2>
+<ul class="pts">
+<li><strong>思想</strong>：按位排序——从最低位到最高位，每一轮用<strong>稳定</strong>的计数/桶排序把元素按该位分桶，高位轮结束后整体有序。</li>
+<li>依赖稳定性：低位排好的次序必须被高位排序保留。</li>
+<li>复杂度：<code>O(d(n + r))</code>，d 为位数、r 为进制基数；空间 <code>O(n + r)</code>；<strong>稳定</strong>。</li>
+<li>取位方式：<code>(a[i] / base^k) % base</code>；负数需统一加偏移或先分正负两组。</li>
+<li>适用：位数少、规模大的整数/定长字符串；比比较排序更适合海量数据。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>for (int exp = 1; exp &lt;= maxv; exp *= 10) {
+    memset(cnt, 0, sizeof cnt);
+    for (int i = 0; i &lt; n; ++i) ++cnt[(a[i] / exp) % 10];
+    for (int i = 1; i &lt; 10; ++i) cnt[i] += cnt[i - 1];
+    for (int i = n - 1; i &gt;= 0; --i) out[--cnt[(a[i] / exp) % 10]] = a[i];  // 逆序保稳定
+    copy(out, out + n, a);
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/3c856204fd6930ed.gif" width="1012" height="574" data-full="assets/3c856204fd6930ed.gif" loading="lazy" decoding="async" alt="图1 LSD 基数排序动图" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s14">
+  <div class="sec-no">14 / SECTION</div>
+  <h2>快速排序算法C/C++代码图文讲解</h2>
+<ul class="pts">
+<li>与第 5 节是<strong>同一主题的两篇文章</strong>（原站分别以“思想讲解”和“代码图文讲解”收录，URL 不同、内容基本一致），这里只补算法要点与易错：</li>
+<li class="sub">划分 + 递归；平均 <code>O(n log n)</code>、最坏 <code>O(n²)</code>、空间 <code>O(log n)</code>、不稳定；</li>
+<li class="sub">优化点仍是随机基准、三数取中、小区间插排、三路划分。</li>
+<li>补充两点易错：</li>
+<li class="sub">手写快排时 <code>while (i &lt;= j)</code> 与 <code>i &lt; j</code> 会导致不同版本的划分边界，递归区间写法必须与之匹配，否则可能死循环；</li>
+<li class="sub">基准必须是“值”而不是“下标”，交换过程中 <code>pivot</code> 位置的元素会被换走。</li>
+</ul>
+<figure class="figure"><img src="assets/5f1b5331de071460.gif" width="811" height="252" data-full="assets/5f1b5331de071460.gif" loading="lazy" decoding="async" alt="图1 快速排序算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s15">
+  <div class="sec-no">15 / SECTION</div>
+  <h2>排序算法在日常的应用</h2>
+<ul class="pts">
+<li>现实中的排序几乎从不是“裸排一个数组”，而是<strong>多关键字排序</strong>、<strong>Top-K</strong>、<strong>去重</strong>、<strong>归并统计</strong>等组合需求。</li>
+<li>常见用法：</li>
+<li class="sub">结构体 + 多关键字比较器（成绩相同按学号）；</li>
+<li class="sub">先排序再二分 / 双指针 / 贪心（很多算法的前置步骤）；</li>
+<li class="sub">排序后去重（<code>std::unique</code>）；</li>
+<li class="sub">分组统计（排序 + 相邻扫描，替代哈希）。</li>
+<li>工程建议：优先用标准库（<code>sort</code> / <code>stable_sort</code>），只在需要稳定、需要自定义内存、或值域特殊（计数/基数）时才手写。</li>
+<li>复杂度速查表：</li>
+</ul>
+<table class="dtable"><thead><tr><th>算法</th><th>平均</th><th>最坏</th><th>空间</th><th>稳定</th></tr></thead><tbody><tr><td>冒泡</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>是</td></tr><tr><td>插入</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>是</td></tr><tr><td>选择 / 直接选择</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>否</td></tr><tr><td>希尔</td><td>~O(n^1.3)</td><td>O(n²)</td><td>O(1)</td><td>否</td></tr><tr><td>归并</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>是</td></tr><tr><td>快速</td><td>O(n log n)</td><td>O(n²)</td><td>O(log n)</td><td>否</td></tr><tr><td>堆</td><td>O(n log n)</td><td>O(n log n)</td><td>O(1)</td><td>否</td></tr><tr><td>树形选择</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>否</td></tr><tr><td>计数</td><td>O(n + k)</td><td>O(n + k)</td><td>O(n + k)</td><td>是</td></tr><tr><td>桶</td><td>O(n + k)</td><td>O(n²)</td><td>O(n + k)</td><td>是</td></tr><tr><td>基数</td><td>O(d(n + r))</td><td>O(d(n + r))</td><td>O(n + r)</td><td>是</td></tr></tbody></table>
+
+</section>
+    <div class="qnav">
+        <a class="prev" href="ch02.html"><span class="k">PREV / 02</span><span class="t">搜索算法</span></a>
+        <a class="next" href="ch04.html"><span class="k">NEXT / 04</span><span class="t">字符串相关</span></a>
+    </div>
+  </main>
+
+  <aside class="docside">
+    <div class="k">ON THIS PAGE</div>
+    <ol>
+      <li><a href="#s1">排序算法简介</a></li>
+      <li><a href="#s2">冒泡排序算法C/C++代码图文讲解</a></li>
+      <li><a href="#s3">插入排序算法C/C++代码图文讲解</a></li>
+      <li><a href="#s4">归并排序算法C/C++代码图文讲解</a></li>
+      <li><a href="#s5">快速排序算法C/C++代码图文讲解</a></li>
+      <li><a href="#s6">计数排序算法C/C++代码图文讲解</a></li>
+      <li><a href="#s7">桶排序算法C/C++代码图文讲解</a></li>
+      <li><a href="#s8">希尔排序算法C/C++代码图文讲解</a></li>
+      <li><a href="#s9">选择排序算法C/C++代码图文讲解</a></li>
+      <li><a href="#s10">树形选择排序(锦标赛排序)C/C++代码图文讲解</a></li>
+      <li><a href="#s11">堆排序算法C/C++代码图文讲解</a></li>
+      <li><a href="#s12">直接选择排序C/C++代码图文讲解</a></li>
+      <li><a href="#s13">基数排序算法C/C++代码图文讲解</a></li>
+      <li><a href="#s14">快速排序算法C/C++代码图文讲解</a></li>
+      <li><a href="#s15">排序算法在日常的应用</a></li>
+    </ol>
+  </aside>
+</div>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>算法竞赛教程笔记，整理自 dotcpp 教程（C 语言中文网）。原文 172 篇长页面重排为 10 章「章 → 节 → 要点」，代码分块、配图外挂存储（webp 懒加载）。个别表述按原文口径订正，仍以原文为准。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="../算法竞赛教程/index.html">算法竞赛教程</a>
+        <a href="../数据结构教程/index.html">数据结构教程</a>
+        <a href="../算法/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../学习工具/错题本.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/reader.js" defer></script>
+</body>
+</html>

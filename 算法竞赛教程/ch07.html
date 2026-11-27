@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第七章 数据结构 · 算法竞赛教程</title>
+<meta name="description" content="第七章 数据结构 — 并查集、树状数组、线段树、平衡树、可持久化与那些名字奇怪但好用的结构。">
+<meta name="theme-color" content="#f4f1e9">
+<link rel="stylesheet" href="../计挑赛/assets/style.css">
+<link rel="stylesheet" href="../计挑赛/assets/detail.css">
+<link rel="stylesheet" href="assets/reader.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../index.html#contest" class="contest-link">计挑赛</a>
+    <a href="../算法/index.html">算法题库</a>
+    <a href="../算法/paths.html">学习路径</a>
+    <a href="../算法/learn.html">算法学习</a>
+    <a href="../算法/lab.html">动画实验室</a>
+    <a href="../数据结构教程/index.html">数据结构</a>
+    <a href="../算法竞赛教程/index.html" class="active">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../boke/index.html">全栈笔记</a>
+    <a href="../学习工具/错题本.html">错题本</a>
+  </nav>
+</div>
+
+<div class="docwrap">
+  <aside class="docnav">
+    <a class="back" href="index.html">← 教程目录</a>
+    <nav class="docnav-list">
+      <a href="ch01.html"><span class="n">01</span><span class="t">算法基础</span></a>
+      <a href="ch02.html"><span class="n">02</span><span class="t">搜索算法</span></a>
+      <a href="ch03.html"><span class="n">03</span><span class="t">排序算法</span></a>
+      <a href="ch04.html"><span class="n">04</span><span class="t">字符串相关</span></a>
+      <a href="ch05.html"><span class="n">05</span><span class="t">数学相关</span></a>
+      <a href="ch06.html"><span class="n">06</span><span class="t">动态规划</span></a>
+      <a href="ch07.html" class="on"><span class="n">07</span><span class="t">数据结构</span></a>
+      <a href="ch08.html"><span class="n">08</span><span class="t">图论</span></a>
+      <a href="ch09.html"><span class="n">09</span><span class="t">计算几何</span></a>
+      <a href="ch10.html"><span class="n">10</span><span class="t">其他算法</span></a>
+    </nav>
+    <div class="navstat">10 章 · 172 节<br>964 张图</div>
+  </aside>
+
+  <main class="docmain">
+    <div class="doc-eyebrow">— ALGORITHM CONTEST / 07</div>
+    <h1 class="doc-title">第七章 数据结构</h1>
+    <p class="doc-lead">并查集、树状数组、线段树、平衡树、可持久化与那些名字奇怪但好用的结构。</p>
+    <div class="doc-meta">
+      <span class="chip">12 节</span>
+      <span class="chip">57 图</span>
+    </div>
+    <div class="rule"></div>
+<section class="dsec" id="s1">
+  <div class="sec-no">01 / SECTION</div>
+  <h2>什么是数据结构？</h2>
+<ul class="pts">
+<li><strong>定义</strong>：数据元素之间的<strong>逻辑关系</strong> + 在内存中的<strong>存储方式</strong> + 定义在其上的<strong>操作集合</strong>。</li>
+<li>三个层面：</li>
+<li class="sub">逻辑结构：线性（表、栈、队列）、树、图、集合；</li>
+<li class="sub">存储结构：顺序（数组）、链式（指针）、索引、哈希；</li>
+<li class="sub">操作：增删改查 + 特定的高级操作（区间查询、合并等）。</li>
+<li>选择标准：<strong>操作频率</strong>决定结构。读多写少用数组，频繁插入删除用链表，频繁按值查找用哈希/平衡树，区间查询用树状数组/线段树。</li>
+<li>衡量指标：单次操作的最坏/均摊时间、空间、常数、实现难度（竞赛里“常数”经常决定 1e8 量级能否过）。</li>
+<li>一句话：数据结构是“为了让某类操作变快，而额外付出的空间与维护成本”。</li>
+</ul>
+</section>
+<section class="dsec" id="s2">
+  <div class="sec-no">02 / SECTION</div>
+  <h2>解析数据结构：八大数据结构分类</h2>
+<ul class="pts">
+<li>常见八种（教科书口径）：</li>
+<li class="sub"><strong>数组</strong>：连续内存，随机访问 O(1)，插入删除 O(n)；</li>
+<li class="sub"><strong>链表</strong>：结点 + 指针，插入删除 O(1)（已知位置），访问 O(n)；</li>
+<li class="sub"><strong>栈</strong>：后进先出，只能在栈顶操作；</li>
+<li class="sub"><strong>队列</strong>：先进先出，队尾入队、队头出队；</li>
+<li class="sub"><strong>树</strong>：一对多的层次结构，二叉树/平衡树/堆；</li>
+<li class="sub"><strong>图</strong>：多对多，顶点 + 边，最复杂也最通用；</li>
+<li class="sub"><strong>哈希表</strong>：键值映射，均摊 O(1) 查找；</li>
+<li class="sub"><strong>堆</strong>：完全二叉树，O(1) 取最值、O(log n) 插入/删除。</li>
+<li>竞赛里实际会用到的扩展：树状数组、线段树、字典树、并查集、平衡树（Treap/Splay）、ST 表、单调栈/队列。</li>
+<li>记法：先记“逻辑结构”四类（线性、树、图、集合），再记每类的典型实现。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/08baf21fa2087459.webp" width="458" height="275" data-full="assets/08baf21fa2087459.png" loading="lazy" decoding="async" alt="图1 数据结构分类" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b82eb3feb7679805.webp" width="620" height="434" data-full="assets/b82eb3feb7679805.png" loading="lazy" decoding="async" alt="图2 栈" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a86d2167e7449415.webp" width="476" height="302" data-full="assets/a86d2167e7449415.png" loading="lazy" decoding="async" alt="图3 队列" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/88db7747f33a2d61.webp" width="1240" height="692" data-full="assets/88db7747f33a2d61.png" loading="lazy" decoding="async" alt="图4 链表" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7bc8506d95371d2e.webp" width="798" height="308" data-full="assets/7bc8506d95371d2e.png" loading="lazy" decoding="async" alt="图5 树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/3d0ebdaea7dfdb05.webp" width="603" height="480" data-full="assets/3d0ebdaea7dfdb05.jpg" loading="lazy" decoding="async" alt="图6 散列表" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8ff261af3911383a.webp" width="1792" height="776" data-full="assets/8ff261af3911383a.png" loading="lazy" decoding="async" alt="图7 堆" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/55ccb1b789dd8633.webp" width="276" height="223" data-full="assets/55ccb1b789dd8633.png" loading="lazy" decoding="async" alt="图8 无向图" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a05b7b377088c332.webp" width="243" height="188" data-full="assets/a05b7b377088c332.png" loading="lazy" decoding="async" alt="图9 有向图" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s3">
+  <div class="sec-no">03 / SECTION</div>
+  <h2>数据结构的特点</h2>
+<ul class="pts">
+<li>每种结构都有“<strong>用空间/维护成本换操作速度</strong>”的取舍：</li>
+<li class="sub">数组：查询快、修改慢；</li>
+<li class="sub">链表：修改快、查询慢；</li>
+<li class="sub">哈希：查找快，但无序、不支持范围查询；</li>
+<li class="sub">平衡树：什么都能做（<code>O(log n)</code>），但常数大、代码长；</li>
+<li class="sub">堆：只快在“最值”这一件事上。</li>
+<li>复杂度之外还要看：</li>
+<li class="sub"><strong>均摊 vs 最坏</strong>（哈希最坏退化 O(n)，动态数组扩容是均摊 O(1)）；</li>
+<li class="sub"><strong>常数与缓存局部性</strong>（数组遍历远快于链表遍历）；</li>
+<li class="sub"><strong>可持久化/可合并</strong>等附加能力。</li>
+<li>竞赛选型口诀：</li>
+<li class="sub">静态区间求和 → 前缀和 / 树状数组；</li>
+<li class="sub">动态区间修改+查询 → 线段树（带懒标记）；</li>
+<li class="sub">合并集合 → 并查集；</li>
+<li class="sub">维护最值并支持修改 → 堆 / 线段树；</li>
+<li class="sub">字符串前缀 → 字典树。</li>
+</ul>
+</section>
+<section class="dsec" id="s4">
+  <div class="sec-no">04 / SECTION</div>
+  <h2>栈的定义和特点</h2>
+<ul class="pts">
+<li><strong>定义</strong>：只允许在<strong>一端（栈顶）</strong>插入和删除的线性表，遵循<strong>后进先出（LIFO）</strong>。</li>
+<li>基本操作：<code>push</code>（入栈）、<code>pop</code>（出栈）、<code>top</code>（取栈顶）、<code>empty</code>（判空），全部 O(1)。</li>
+<li>两种实现：</li>
+<li class="sub"><strong>数组栈</strong>：<code>int st[N], top</code>，<code>push: st[top++] = x</code>；<code>pop: --top</code>；判空 <code>top == 0</code>。最快最常用。</li>
+<li class="sub"><strong>链栈</strong>：头插法建链，<code>top</code> 指向链头；无需预分配但每次 malloc。</li>
+<li>应用：括号匹配、表达式求值（中缀转后缀）、进制转换、DFS 与递归、撤销操作、单调栈、浏览器前进后退。</li>
+<li>常见坑：出栈前必须判空；数组栈要设容量上限（或动态扩容）；表达式求值时注意运算符优先级。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>int st[N], top = 0;
+void push(int x) { st[top++] = x; }
+void pop() { if (top) --top; }
+int getTop() { return st[top - 1]; }
+bool empty() { return top == 0; }</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/b4b6c858098adea7.webp" width="426" height="212" data-full="assets/b4b6c858098adea7.png" loading="lazy" decoding="async" alt="图1 栈1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c7065aca7e20720d.webp" width="316" height="194" data-full="assets/c7065aca7e20720d.png" loading="lazy" decoding="async" alt="图2 栈2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/57e0186c37477b52.webp" width="230" height="248" data-full="assets/57e0186c37477b52.png" loading="lazy" decoding="async" alt="图3 栈的示意图" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/103b5e6eaf893d7b.webp" width="294" height="279" data-full="assets/103b5e6eaf893d7b.png" loading="lazy" decoding="async" alt="图4 操作示意图-入栈" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/27dd194b54d5ac2f.webp" width="340" height="332" data-full="assets/27dd194b54d5ac2f.png" loading="lazy" decoding="async" alt="图5 操作示意图-出栈" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/039a0b4e6e680473.webp" width="1080" height="606" data-full="assets/039a0b4e6e680473.jpg" loading="lazy" decoding="async" alt="图6 入栈的时间复杂度" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/319e2e4998ae21a4.webp" width="618" height="556" data-full="assets/319e2e4998ae21a4.jpg" loading="lazy" decoding="async" alt="图7 调用栈的分析" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s5">
+  <div class="sec-no">05 / SECTION</div>
+  <h2>什么是队列？队列的应用</h2>
+<ul class="pts">
+<li><strong>定义</strong>：只允许<strong>队尾入队、队头出队</strong>的线性表，遵循<strong>先进先出（FIFO）</strong>。</li>
+<li>实现：</li>
+<li class="sub">数组 + 两个指针（<code>head</code>、<code>tail</code>），注意“假溢出”，用<strong>循环队列</strong> <code>head = (head+1) % N</code>；</li>
+<li class="sub">链表队列：尾插 + 头删，O(1)。</li>
+<li>变体：</li>
+<li class="sub"><strong>双端队列 deque</strong>：两端都能进出（单调队列的基础）；</li>
+<li class="sub"><strong>优先队列</strong>：按优先级出队（堆实现）；</li>
+<li class="sub"><strong>单调队列</strong>：维护滑动窗口最值。</li>
+<li>应用：BFS 的扩展队列、任务调度、缓冲区、打印队列、滑动窗口最值、SPFA 的松弛队列。</li>
+<li>判空条件：循环队列常用“留一个空位”或额外 <code>size</code> 变量区分队满与队空。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>int q[N], head = 0, tail = 0;
+void push(int x) { q[tail] = x; tail = (tail + 1) % N; }
+int pop() { int x = q[head]; head = (head + 1) % N; return x; }
+bool empty() { return head == tail; }</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/c401e0ffb3653e67.webp" width="134" height="220" data-full="assets/c401e0ffb3653e67.png" loading="lazy" decoding="async" alt="图1 队列是什么" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c32b810704648c13.webp" width="174" height="303" data-full="assets/c32b810704648c13.png" loading="lazy" decoding="async" alt="图2 入队" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/876b28fba9dc9e37.webp" width="144" height="258" data-full="assets/876b28fba9dc9e37.png" loading="lazy" decoding="async" alt="图3 数据 Red 也入队" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a92d19fdd0c415a9.webp" width="329" height="389" data-full="assets/a92d19fdd0c415a9.jpg" loading="lazy" decoding="async" alt="图4 取出blue" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0d7647e039265c11.webp" width="221" height="251" data-full="assets/0d7647e039265c11.jpg" loading="lazy" decoding="async" alt="图5 取出green" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/9639a6c13309d16b.gif" width="280" height="88" data-full="assets/9639a6c13309d16b.gif" loading="lazy" decoding="async" alt="图6 队列存储结构" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s6">
+  <div class="sec-no">06 / SECTION</div>
+  <h2>什么是链表？</h2>
+<ul class="pts">
+<li><strong>定义</strong>：用“数据域 + 指针域”的结点串成的线性表，物理上不连续，逻辑上连续。</li>
+<li>分类：单链表、双向链表、循环链表、静态链表（数组模拟）。</li>
+<li>核心操作（单链表）：</li>
+<li class="sub">头插：<code>p-&gt;next = head; head = p;</code>；</li>
+<li class="sub">尾插：维护 <code>tail</code>，<code>tail-&gt;next = p; tail = p;</code>；</li>
+<li class="sub">删除：找到前驱 <code>pre</code>，<code>pre-&gt;next = p-&gt;next; free(p);</code>。</li>
+<li>复杂度：按位置访问 O(n)，已知结点插入/删除 O(1)，头插/头删 O(1)。</li>
+<li>竞赛写法：<strong>数组模拟链表</strong>（<code>nxt[i]</code>、<code>val[i]</code>），避免指针与 malloc 的开销，且便于持久化/调试。</li>
+<li>应用：邻接表存图、LRU 缓存（双向链表 + 哈希）、大整数存储、多项式、块状链表。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>// 数组模拟单链表（头插）
+int head = -1, nxt[N], val[N], tot = 0;
+void addFront(int x) { val[tot] = x; nxt[tot] = head; head = tot++; }</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/e9dcd6d1135c8aae.webp" width="695" height="476" data-full="assets/e9dcd6d1135c8aae.jpg" loading="lazy" decoding="async" alt="图1 数组—顺序存储" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7fab57c2555b17c4.webp" width="372" height="108" data-full="assets/7fab57c2555b17c4.png" loading="lazy" decoding="async" alt="图2 链表—链式存储" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6270645ce99e6c50.webp" width="725" height="276" data-full="assets/6270645ce99e6c50.jpg" loading="lazy" decoding="async" alt="图3 一连串的结点形成链表" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/185fa45fc4cf1515.webp" width="701" height="379" data-full="assets/185fa45fc4cf1515.jpg" loading="lazy" decoding="async" alt="图4 链表概述" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s7">
+  <div class="sec-no">07 / SECTION</div>
+  <h2>什么是哈希表？</h2>
+<ul class="pts">
+<li><strong>定义</strong>：通过哈希函数把键映射到数组下标，实现均摊 O(1) 的插入、查找、删除。</li>
+<li>两个核心问题：</li>
+<li class="sub"><strong>哈希函数</strong>：除留余数法（模质数）、乘法取整、字符串哈希；</li>
+<li class="sub"><strong>冲突处理</strong>：链地址法（拉链）、开放寻址（线性探测/二次探测）。</li>
+<li>负载因子（元素数/表长）过高会退化，通常 &gt; 0.7 就扩容（倍增 + 重新散列）。</li>
+<li>复杂度：均摊 O(1)，最坏 O(n)（全部冲突）；C++ <code>unordered_map</code> 有被构造数据卡成 O(n) 的风险。</li>
+<li>竞赛替代：</li>
+<li class="sub">值域小 → 直接用数组当哈希表；</li>
+<li class="sub">需要防卡 → 手写哈希表（拉链 + 固定质数模）；</li>
+<li class="sub">需要有序 → <code>map</code>（红黑树，O(log n)）。</li>
+<li>典型应用：去重、计数、两数之和、字符串匹配（哈希）、状态判重（BFS/DP）。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>const int P = 1000003;                 // 质数
+int head[P], nxt[N], key[N], val[N], tot;
+void initHash() { memset(head, 0, sizeof head); tot = 0; }
+void put(int k, int v) {
+    int h = (k % P + P) % P;
+    for (int i = head[h]; i; i = nxt[i]) if (key[i] == k) { val[i] = v; return; }
+    key[++tot] = k; val[tot] = v; nxt[tot] = head[h]; head[h] = tot;
+}
+int get(int k, int def = -1) {          // 查不到返回 def
+    int h = (k % P + P) % P;
+    for (int i = head[h]; i; i = nxt[i]) if (key[i] == k) return val[i];
+    return def;
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/55dee6dce8a53b76.webp" width="227" height="168" data-full="assets/55dee6dce8a53b76.png" loading="lazy" decoding="async" alt="图1 哈希表" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s8">
+  <div class="sec-no">08 / SECTION</div>
+  <h2>什么是“并查集” ？</h2>
+<ul class="pts">
+<li><strong>定义</strong>：维护若干<strong>不相交集合</strong>，支持“合并两个集合”和“查询元素属于哪个集合”，近 O(1)。</li>
+<li>两个优化：</li>
+<li class="sub"><strong>路径压缩</strong>：查询时把路径上所有点直接挂到根上；</li>
+<li class="sub"><strong>按秩/按大小合并</strong>：小的树挂到大的树下，保证树高 O(log n)。</li>
+<li class="sub">两者结合后单次操作均摊 <code>O(α(n))</code>（α 为反阿克曼函数，实际可视为常数）。</li>
+<li>扩展：</li>
+<li class="sub"><strong>带权并查集</strong>：维护到根的距离/异或和（如“食物链”“奇偶游戏”）；</li>
+<li class="sub"><strong>种类并查集</strong>：开多倍空间表示“敌人的敌人是朋友”；</li>
+<li class="sub"><strong>可撤销并查集</strong>：按秩合并、不路径压缩，配合线段树分治。</li>
+<li>应用：连通性判定、Kruskal 最小生成树、等价类合并、区间染色（配合 <code>nxt</code> 数组跳跃）。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>int fa[N];
+int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+void merge(int a, int b) { a = find(a), b = find(b); if (a != b) fa[a] = b; }</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/6f563c759a4c1f44.webp" width="705" height="588" data-full="assets/6f563c759a4c1f44.png" loading="lazy" decoding="async" alt="图1 亲戚问题" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c1d2245fbac61323.webp" width="424" height="402" data-full="assets/c1d2245fbac61323.png" loading="lazy" decoding="async" alt="图2 初始化" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/05421aee7f317a59.webp" width="565" height="410" data-full="assets/05421aee7f317a59.png" loading="lazy" decoding="async" alt="图3 合并团伙1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/f1d9b4ee848cc443.webp" width="542" height="437" data-full="assets/f1d9b4ee848cc443.png" loading="lazy" decoding="async" alt="图4 合并团伙2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/40d77ca2d8b6569a.webp" width="406" height="408" data-full="assets/40d77ca2d8b6569a.png" loading="lazy" decoding="async" alt="图5 合并团伙3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/582e75afc95aa23e.webp" width="407" height="421" data-full="assets/582e75afc95aa23e.png" loading="lazy" decoding="async" alt="图6 合并团伙5" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/6c83aff071343a45.webp" width="390" height="404" data-full="assets/6c83aff071343a45.png" loading="lazy" decoding="async" alt="图7 合并团伙6" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s9">
+  <div class="sec-no">09 / SECTION</div>
+  <h2>什么是单调栈?</h2>
+<ul class="pts">
+<li><strong>定义</strong>：栈内元素保持<strong>单调递增或递减</strong>的栈；新元素入栈前弹出所有破坏单调性的元素。</li>
+<li>用途：求每个元素“左边/右边第一个比它大（小）的元素”、柱状图最大矩形、接雨水、单调队列的构造。</li>
+<li>复杂度：每个元素最多进出各一次 ⇒ 均摊 O(n)。</li>
+<li>以“下一个更大元素”为例：维护递减栈，遇到比栈顶大的元素就不断弹出并记录答案。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>int st[N], top = 0;
+for (int i = 1; i &lt;= n; ++i) {
+    while (top &amp;&amp; a[st[top]] &lt; a[i]) nxt[st[top--]] = i;   // i 是它的下一个更大元素
+    st[++top] = i;
+}</code></pre></div>
+
+<ul class="pts">
+<li>与单调队列的区别：单调栈处理“最近的大于/小于关系”，单调队列处理“固定窗口的最值”。</li>
+<li>常见变形：维护“区间最小值之和”“最大子矩阵”“矩形面积并”的前置计算。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/e270d7334132173d.webp" width="96" height="173" data-full="assets/e270d7334132173d.png" loading="lazy" decoding="async" alt="图1 单调栈" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/5b840c8799c26f4b.webp" width="91" height="283" data-full="assets/5b840c8799c26f4b.png" loading="lazy" decoding="async" alt="图2 单调栈" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s10">
+  <div class="sec-no">10 / SECTION</div>
+  <h2>什么是跳表？</h2>
+<ul class="pts">
+<li><strong>定义</strong>：在有序链表上叠加多层“索引链”，查询时从最高层开始跳跃下降，实现近似 <code>O(log n)</code> 的查找/插入/删除。</li>
+<li>结构：每层都是一个有序链表，上层是下层的“抽样”；每个结点随机决定“长到第几层”（概率 1/2 逐层晋升）。</li>
+<li>复杂度：期望 <code>O(log n)</code>，空间期望 O(n)（每层的结点数按概率减半）。</li>
+<li>优点：实现比平衡树简单、天然支持范围查询、并发友好（Redis 的 ZSet 就用跳表）。</li>
+<li>缺点：常数比平衡树大，最坏 O(n)（随机性极端差时）。</li>
+<li>竞赛中较少使用（有 Treap/Splay 或直接用 <code>pb_ds</code>），但需要“按排名查找 + 范围遍历”时很实用。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/618753cecb8801c7.webp" width="693" height="185" data-full="assets/618753cecb8801c7.png" loading="lazy" decoding="async" alt="图1 跳表" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/cec0568c55b8c28a.webp" width="1938" height="458" data-full="assets/cec0568c55b8c28a.jpg" loading="lazy" decoding="async" alt="图2 跳表的演化过程" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/326c228fbee0853f.webp" width="720" height="254" data-full="assets/326c228fbee0853f.jpg" loading="lazy" decoding="async" alt="图3 跳表的演化过程" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/1bd075d432b283a1.webp" width="720" height="311" data-full="assets/1bd075d432b283a1.jpg" loading="lazy" decoding="async" alt="图4 跳表具体有多快" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/4447afe328e779d3.webp" width="720" height="289" data-full="assets/4447afe328e779d3.jpg" loading="lazy" decoding="async" alt="图5 跳表的插入和删除" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s11">
+  <div class="sec-no">11 / SECTION</div>
+  <h2>简述霍夫曼树</h2>
+<ul class="pts">
+<li><strong>定义</strong>：给定 n 个带权叶子，构造一棵二叉树使<strong>带权路径长度（WPL）</strong>最小；权值大的离根近。</li>
+<li>构造（贪心）：每次取权值最小的两个结点合并成新结点（权值 = 两者之和），放回集合，重复 n-1 次。</li>
+<li>WPL = <code>Σ w_i · depth_i</code>，等于<strong>所有合并产生的新结点权值之和</strong>（这是最实用的计算方式）。</li>
+<li>实现：小根堆 <code>O(n log n)</code>；若权值范围小可用双队列（两个有序队列，<code>O(n)</code>）。</li>
+<li>应用：<strong>哈夫曼编码</strong>（前缀码，出现频率高的字符用短码）、文件压缩、以及“金条切割/合并果子”这类经典贪心题。</li>
+<li>注意：哈夫曼树不唯一（相同权值时合并顺序不同），但 WPL 唯一。</li>
+<li>常见错算：直接用 <code>Σw·depth</code> 手算容易错，用“合并和”验证更可靠。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>priority_queue&lt;long long, vector&lt;long long&gt;, greater&lt;long long&gt;&gt; q;
+long long wpl = 0;
+while (q.size() &gt; 1) {
+    long long a = q.top(); q.pop();
+    long long b = q.top(); q.pop();
+    wpl += a + b;           // 每次合并的代价累加即 WPL
+    q.push(a + b);
+}</code></pre></div>
+
+<figure class="figure"><img src="assets/webp/8fcf085908686550.webp" width="23" height="22" data-full="assets/8fcf085908686550.png" loading="lazy" decoding="async" alt="图1 w" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/41bba64c3a79e422.webp" width="21" height="21" data-full="assets/41bba64c3a79e422.png" loading="lazy" decoding="async" alt="图2 li" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/11c738cfb2ca13a0.webp" width="132" height="48" data-full="assets/11c738cfb2ca13a0.png" loading="lazy" decoding="async" alt="图3 WPL计算公式" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a2f9de8bddac4371.webp" width="367" height="308" data-full="assets/a2f9de8bddac4371.png" loading="lazy" decoding="async" alt="图4 WPL计算公式" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/04c3cbaf542784f3.webp" width="420" height="31" data-full="assets/04c3cbaf542784f3.png" loading="lazy" decoding="async" alt="图5 WPL计算过程与结果" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a82c096c42ca8e6a.webp" width="773" height="166" data-full="assets/a82c096c42ca8e6a.png" loading="lazy" decoding="async" alt="图6 霍夫曼算法" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/0f40664fc2ace207.webp" width="57" height="24" data-full="assets/0f40664fc2ace207.png" loading="lazy" decoding="async" alt="图7 等长编码" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/efa67936888bd4c3.webp" width="98" height="23" data-full="assets/efa67936888bd4c3.png" loading="lazy" decoding="async" alt="图8 字符集" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b3a2a98097b1732a.webp" width="102" height="20" data-full="assets/b3a2a98097b1732a.png" loading="lazy" decoding="async" alt="图9 字符集" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b08731807a0f265a.webp" width="98" height="23" data-full="assets/b08731807a0f265a.png" loading="lazy" decoding="async" alt="图10 叶结点" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/c613bc3a3c742dcc.webp" width="102" height="20" data-full="assets/c613bc3a3c742dcc.png" loading="lazy" decoding="async" alt="图11 叶结点" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/7b42889abc030b45.webp" width="765" height="340" data-full="assets/7b42889abc030b45.png" loading="lazy" decoding="async" alt="图12 霍夫曼编码" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s12">
+  <div class="sec-no">12 / SECTION</div>
+  <h2>手指树的基本结构</h2>
+<ul class="pts">
+<li><strong>来源</strong>：由 Ralf Hinze 与 Ross Paterson 提出的<strong>纯函数式序列数据结构</strong>（Finger Tree），是 Haskell 等函数式语言里的通用序列容器。</li>
+<li>为何需要：函数式语言的列表只能高效做“头部”操作，两端增删、任意位置插入/删除、拼接、按条件查找、按位置拆分都很难做得好；手指树用一个结构把这些操作都压到对数级。</li>
+<li>名字由来：手指（finger）是“指向序列端点附近结点”的结构，位于树的<strong>左右两端</strong>，因此两端访问与增删只需均摊常数时间（类似命令式语言里的指针）。</li>
+<li>复杂度（原文口径）：<strong>两端访问/添加/删除均摊 O(1)</strong>，<strong>串联（concat）与随机访问 O(log n)</strong>。</li>
+<li>结构层次：</li>
+<li class="sub"><strong>Digit（指）</strong>：存放 1~4 个元素的容器，位于树的边缘；</li>
+<li class="sub"><strong>Node</strong>：把 2~3 个元素打包成内部结点；</li>
+<li class="sub"><strong>FingerTree</strong>：<code>Empty | Single a | Deep (Digit) (FingerTree of Node) (Digit)</code>，即“左指 + 子树 + 右指”，中间子树元素是 Node，可递归嵌套。</li>
+<li>一个重要细节：手指树的“深度”是<strong>由下往上</strong>计数的，离根越近的结点指向原始树的子树越深，与常规树的层次方向相反；因此原始树必须保证统一深度（通常从平衡 2-3 树变形得到）。</li>
+<li>灵活之处：内部结点可存“后代上的幺半群标记”，从而同时实现随机访问序列、有序序列、区间树和优先队列。</li>
+<li>竞赛语境：极少考，但它是“可持久化 + 平衡结构”的漂亮范例；实战对应能力用 Treap/Splay/块状链表实现更简单。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/4a1afbaea3d474f6.webp" width="1470" height="292" data-full="assets/4a1afbaea3d474f6.png" loading="lazy" decoding="async" alt="图1 将一棵树变成手指树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/02eb814cf0e88df9.webp" width="948" height="562" data-full="assets/02eb814cf0e88df9.png" loading="lazy" decoding="async" alt="图2 手指树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/db601d03d164bc5b.webp" width="948" height="562" data-full="assets/db601d03d164bc5b.png" loading="lazy" decoding="async" alt="图3 手指树" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/45c14bba120fcb2f.webp" width="61" height="21" data-full="assets/45c14bba120fcb2f.png" loading="lazy" decoding="async" alt="图4 元素类型" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+    <div class="qnav">
+        <a class="prev" href="ch06.html"><span class="k">PREV / 06</span><span class="t">动态规划</span></a>
+        <a class="next" href="ch08.html"><span class="k">NEXT / 08</span><span class="t">图论</span></a>
+    </div>
+  </main>
+
+  <aside class="docside">
+    <div class="k">ON THIS PAGE</div>
+    <ol>
+      <li><a href="#s1">什么是数据结构？</a></li>
+      <li><a href="#s2">解析数据结构：八大数据结构分类</a></li>
+      <li><a href="#s3">数据结构的特点</a></li>
+      <li><a href="#s4">栈的定义和特点</a></li>
+      <li><a href="#s5">什么是队列？队列的应用</a></li>
+      <li><a href="#s6">什么是链表？</a></li>
+      <li><a href="#s7">什么是哈希表？</a></li>
+      <li><a href="#s8">什么是“并查集” ？</a></li>
+      <li><a href="#s9">什么是单调栈?</a></li>
+      <li><a href="#s10">什么是跳表？</a></li>
+      <li><a href="#s11">简述霍夫曼树</a></li>
+      <li><a href="#s12">手指树的基本结构</a></li>
+    </ol>
+  </aside>
+</div>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>算法竞赛教程笔记，整理自 dotcpp 教程（C 语言中文网）。原文 172 篇长页面重排为 10 章「章 → 节 → 要点」，代码分块、配图外挂存储（webp 懒加载）。个别表述按原文口径订正，仍以原文为准。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="../算法竞赛教程/index.html">算法竞赛教程</a>
+        <a href="../数据结构教程/index.html">数据结构教程</a>
+        <a href="../算法/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../学习工具/错题本.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/reader.js" defer></script>
+</body>
+</html>

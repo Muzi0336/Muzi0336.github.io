@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第六章 串、数组、矩阵和广义表 · 数据结构教程</title>
+<meta name="description" content="第六章 串、数组、矩阵和广义表 — 从朴素的模式匹配走到 KMP，再往下是二维数组的行列映射与特殊矩阵的压缩存储。">
+<link rel="stylesheet" href="../计挑赛/assets/style.css">
+<link rel="stylesheet" href="../计挑赛/assets/detail.css">
+<link rel="stylesheet" href="assets/reader.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../index.html#contest" class="contest-link">计挑赛</a>
+    <a href="../算法/index.html">算法题库</a>
+    <a href="../算法/paths.html">学习路径</a>
+    <a href="../算法/learn.html">算法学习</a>
+    <a href="../算法/lab.html">动画实验室</a>
+    <a href="../数据结构教程/index.html" class="active">数据结构</a>
+    <a href="../算法竞赛教程/index.html">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../boke/index.html">全栈笔记</a>
+    <a href="../学习工具/错题本.html">错题本</a>
+  </nav>
+</div>
+
+<div class="docwrap">
+  <aside class="docnav">
+    <a class="back" href="index.html">← 教程目录</a>
+    <nav class="docnav-list">
+      <a href="ch01.html"><span class="n">01</span><span class="t">数据结构入门</span></a>
+      <a href="ch02.html"><span class="n">02</span><span class="t">链表</span></a>
+      <a href="ch03.html"><span class="n">03</span><span class="t">栈</span></a>
+      <a href="ch04.html"><span class="n">04</span><span class="t">队列</span></a>
+      <a href="ch05.html"><span class="n">05</span><span class="t">C++ STL 库教程（附带题库）</span></a>
+      <a href="ch06.html" class="on"><span class="n">06</span><span class="t">串、数组、矩阵和广义表</span></a>
+      <a href="ch07.html"><span class="n">07</span><span class="t">树</span></a>
+      <a href="ch08.html"><span class="n">08</span><span class="t">图</span></a>
+      <a href="ch09.html"><span class="n">09</span><span class="t">查找算法</span></a>
+      <a href="ch10.html"><span class="n">10</span><span class="t">排序算法</span></a>
+      <a href="ch11.html"><span class="n">11</span><span class="t">算法和竞赛</span></a>
+      <a href="ch12.html"><span class="n">12</span><span class="t">后记</span></a>
+    </nav>
+    <div class="navstat">12 章 · 87 节<br>114 张图</div>
+  </aside>
+
+  <main class="docmain">
+    <div class="doc-eyebrow">— DATA STRUCTURE / 06</div>
+    <h1 class="doc-title">第六章 串、数组、矩阵和广义表</h1>
+    <p class="doc-lead">从朴素的模式匹配走到 KMP，再往下是二维数组的行列映射与特殊矩阵的压缩存储。</p>
+    <div class="doc-meta">
+      <span class="chip">10 节</span>
+      <span class="chip">12 图</span>
+    </div>
+    <div class="rule"></div>
+<section class="dsec" id="s1">
+  <div class="sec-no">01 / SECTION</div>
+  <h2>C++字符串常用操作（一）</h2>
+<ul class="pts">
+<li>字符串是由单个字符构成的<strong>线性</strong>串，常以 ASCII 表示；C 语言里它以 <code>'\0'</code> 结尾，本质是字符数组。</li>
+<li>这些操作在 <code>&lt;string.h&gt;</code>（C++ 中为 <code>&lt;cstring&gt;</code>）中已有封装，本节讲其<strong>手写实现原理</strong>。</li>
+<li><strong>求长度（strlen）</strong>：循环计数直到 <code>str[i] != '\0'</code> 为止，返回计数 i。例 "Hello My DotCpp.com" 长度为 19。</li>
+<li><strong>求字符位置（strchr）</strong>：从头扫描，<code>str[i] != '\0' &amp;&amp; str[i] != c</code>，返回首次出现的下标（hello 找 l 得 3）。</li>
+<li class="sub">扩展练习：改成返回该字符出现的<strong>所有</strong>位置，需循环扫描并记录多次命中的下标。</li>
+<li><strong>子串截取 substr(i, j)</strong>：把 <code>[i, j)</code> 区间的字符逐个拷到新串，末尾补 <code>'\0'</code>；"Hello My DotCpp.com" 取 0~5 得 "Hello"。</li>
+<li><strong>前缀 prefix(m)</strong>：只取前 m 个字符，同样要补结束符；取 5 个得 "Hello"。</li>
+<li><strong>后缀 suffix(m)</strong>：先求总长 len，再从 <code>len-m</code> 拷到 len，补结束符；取 3 个得 "com"。</li>
+<li>关键细节：所有新串末尾<strong>必须手动补 <code>'\0'</code></strong>，否则不是合法 C 字符串；suffix 用局部数组 <code>char backup[500]</code> 而非 <code>char *backup</code>，避免返回局部指针的内存错误。</li>
+</ul>
+</section>
+<section class="dsec" id="s2">
+  <div class="sec-no">02 / SECTION</div>
+  <h2>C++字符串常用操作（二）</h2>
+<ul class="pts">
+<li><strong>连接（strcat）</strong>：先让 dest 指针走到自身末尾（<code>while(*dest)</code>），再把 src 逐字符复制过去，最后补 <code>'\0'</code>，并返回原 dest 首地址。</li>
+<li><strong>比较（strcmp）</strong>：逐字符相减，<code>ret == 0</code> 表示相等，<code>ret &gt; 0</code> 表示前者大，<code>ret &lt; 0</code> 表示后者小；实现上把结果规整为 -1/0/1。</li>
+<li>比较时要转成 <strong><code>unsigned char</code></strong>，因为 char 的符号位可能被扩展，直接相减在大值字符上会出错。</li>
+<li><strong>暴力匹配（BF）思想</strong>：主串 T 与模式串 P，外层遍历 T 的每个起点，内层逐字符比对 P；失配就回到外层起点的下一个字符重新比。</li>
+<li>以 n = |T|、m = |P| 计，BF 的时间复杂度为 <strong>O(n·m)</strong>；现实里 n ≫ m ≫ 2，代价很大。</li>
+<li>典型最坏情况：T = 47 个 'A' 加 'B'，P = "AAAAAB"，每轮都要比到最后一个字符才失配，约 47×6 次比较。</li>
+<li>结论：BF 易理解但低效，是引出 KMP 的动机。</li>
+</ul>
+</section>
+<section class="dsec" id="s3">
+  <div class="sec-no">03 / SECTION</div>
+  <h2>字符串的KMP算法详解及C/C++代码实现</h2>
+<ul class="pts">
+<li>KMP（Knuth、Pratt、Morris，1977）的核心优势：失配时<strong>不回退主串指针</strong>，只按 next 表移动模式串，复杂度由 O(n·m) 优化到 <strong>O(n+m)</strong>。</li>
+<li><strong>前后缀概念</strong>：字符串 "ABCD" 的前缀为 "A"、"AB"、"ABC"（不含本身），后缀为 "D"、"CD"、"BCD"。</li>
+<li><strong>next 表含义</strong>：模式串每一位对应“该位之前的子串中，最长的相等前后缀长度”。</li>
+<li>例："ABCABDE" 的 next 表为 <strong>-1 0 0 0 1 2 0</strong>（首位置 -1；也有教程首位取 0，本质等价）。</li>
+<li><strong>构造规则</strong>：以已算好的前一位为基础递推——若当前字符与前缀后一位字符相等，则 <code>next[i] = next[i-1] + 1</code>；否则回退（<code>t = next[t]</code>）继续尝试，仍不匹配则填 0。</li>
+<li><strong>匹配过程</strong>：i 走主串、j 走模式串；<code>T[i] == P[j]</code> 则双指针前进；失配则 <code>j = next[j]</code>（j 可能变成 -1，此时 i、j 同时前进）。</li>
+<li>匹配完成后返回 <code>i - j</code> 即模式串首字符在主串中的位置；示例 "ABABABABABD" 中找 "ABABD"，返回 6（第 7 位匹配，从 0 计数为 6）。</li>
+<li>记忆点：BF 的浪费在于“失配后从头再比”，KMP 用 next 表把已经确认相等的前缀信息复用起来。</li>
+<li>注意：动态申请的 next 数组用完要 <code>delete[] next</code>。</li>
+</ul>
+</section>
+<section class="dsec" id="s4">
+  <div class="sec-no">04 / SECTION</div>
+  <h2>C++中string字符串类型介绍</h2>
+<ul class="pts">
+<li><code>string</code> 是 C++ 的模板类，比 C 的字符数组更安全方便，可自动管理长度。</li>
+<li>头文件 <code>#include &lt;string&gt;</code>——<strong>不是</strong> <code>&lt;string.h&gt;</code>（C 的头文件）也不是 <code>&lt;cstring&gt;</code>（C++ 兼容 C 的头文件）；且需 <code>using namespace std;</code></li>
+<li><strong>初始化六种写法</strong>：</li>
+<li class="sub"><code>string str;</code> 空串</li>
+<li class="sub"><code>string str1 = "Hello Dotcpp.com";</code></li>
+<li class="sub"><code>string str2(str1);</code> 拷贝构造</li>
+<li class="sub"><code>string str3(str1, 6);</code> 从下标 6 到末尾 → "Dotcpp.com"</li>
+<li class="sub"><code>string str4(str1, 6, 6);</code> 从 6 起取 6 个 → "Dotcpp"</li>
+<li class="sub"><code>string str5(5, 'D');</code> 5 个 'D' → "DDDDD"</li>
+<li class="sub"><code>string str6(str1.begin(), str1.end());</code> 区间构造</li>
+<li><strong>比较</strong>：直接用 <code>==</code>、<code>!=</code>、<code>&gt;</code>、<code>&lt;</code>、<code>&gt;=</code>、<code>&lt;=</code>，不必再写 strcmp，运算符重载更符合直觉。</li>
+<li><strong>连接</strong>：直接用 <code>+</code>，如 <code>"a" + "b" + "c" + "d"</code>，无需 strcat。</li>
+<li><strong>常用接口</strong>：</li>
+<li class="sub"><code>length()</code> 长度，<code>size()</code> 大小（两者等价）</li>
+<li class="sub"><code>empty()</code> 判空</li>
+<li class="sub"><code>resize(len, chr)</code> 重设长度：多则截断，少则用 chr 补齐，会改变占用空间（如 "HEllo" resize(8,'K') → "HElloKKK"）</li>
+<li><code>string</code> 与 STL 一脉相承，后续大量题目直接用 <code>string</code> 比字符数组省心。</li>
+</ul>
+</section>
+<section class="dsec" id="s5">
+  <div class="sec-no">05 / SECTION</div>
+  <h2>用数组实现模拟算法C/C++实现（配例题）</h2>
+<ul class="pts">
+<li>数组是<strong>顺序存储</strong>的数据结构：内存连续，随机寻址快，插入删除需整体挪动。</li>
+<li>与链表对比：数组读取更灵活，链表增删更便捷；但链表有指针开销，实际开发要按场景选型，不必迷信高级结构。</li>
+<li><strong>模拟</strong>不是某种算法，而是一种思维：按题目描述，用简单直观的方式一步步用代码复现过程。</li>
+<li>以「分糖果」（1431）为例，思路：</li>
+<li class="sub">用数组 <code>kid[i]</code> 表示每个小朋友的糖果数，答案计数器 <code>ans</code>。</li>
+<li class="sub">循环条件：所有人糖果数相等（<code>kid[0]</code> 与其余逐一比较，全等则 break）。</li>
+<li class="sub">每轮：全体减半（题目保证偶数，无需处理进位）→ 用临时变量 <code>temp = kid[n-1]</code>，每人加上前一个人的数，<code>kid[0] += temp</code>（环形传递）→ 奇数者加 1 且 <code>ans++</code>。</li>
+<li class="sub">最后输出 <code>ans</code>。</li>
+<li>模拟题通用套路：<strong>建数组表示状态 → 定循环 → 定退出条件 → 每轮按规则更新 → 计数/输出</strong>。</li>
+<li>推荐练习（均为蓝桥杯真题）：分糖果 1431、蚂蚁感冒 1454、计算器 1560；题库中可按“模拟”标签筛选。</li>
+</ul>
+</section>
+<section class="dsec" id="s6">
+  <div class="sec-no">06 / SECTION</div>
+  <h2>矩阵的介绍及乘法运算（附C语言实现代码）</h2>
+<ul class="pts">
+<li>矩阵：m×n 个数 aᵢⱼ 排列成的数表，记 Aₘₙ；aᵢⱼ 称 (i,j) 元。19 世纪由凯利提出，源于方程组系数。</li>
+<li>应用：线性代数、统计分析、物理（电路/力学/光学/量子）、计算机图形学与图像处理（像素矩阵）。</li>
+<li><strong>乘法前提</strong>：A 的<strong>列数</strong>等于 B 的<strong>行数</strong>（A 为 m×n，B 为 n×p），结果 C 为 m×p。</li>
+<li>元素计算：<code>C[i][j] = Σ A[i][k] * B[k][j]</code>（k 从 0 到 n-1），即“A 的第 i 行 × B 的第 j 列”。</li>
+<li>实现三重循环：外层遍历 C 的行、中层遍历 C 的列、内层做点积累加，答案矩阵先 <code>memset</code> 清零。</li>
+<li>复杂度 O(m·n·p)，这是朴素矩阵乘法的代价（快速幂、Strassen 等属于进阶优化）。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/5dc7e69983ca1101.webp" width="189" height="93" data-full="assets/5dc7e69983ca1101.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/522307c776a84a47.webp" width="336" height="48" data-full="assets/522307c776a84a47.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a791cddb3da95cd3.webp" width="973" height="126" data-full="assets/a791cddb3da95cd3.jpg" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s7">
+  <div class="sec-no">07 / SECTION</div>
+  <h2>矩阵加减法操作及C语言代码实现</h2>
+<ul class="pts">
+<li><strong>加法规则</strong>：同型矩阵（行数、列数都相同）对应位置元素相加，<code>C[i][j] = A[i][j] + B[i][j]</code>，满足交换律 A+B = B+A。</li>
+<li><strong>减法规则</strong>：同样要求同型，对应位置相减，<code>C[i][j] = A[i][j] - B[i][j]</code>，不满足交换律。</li>
+<li>实现极简：双重循环遍历 n 行 m 列，把运算符换掉即可；输入、输出也各是一套双重循环。</li>
+<li>注意：非齐型矩阵不能相加减，代码里应先判断维度是否一致。</li>
+<li>学习路线建议（原文给出）：基本概念 → 加减乘 → 秩、点阵、运算值 → 翻转等特殊操作 → 卷积核、稀疏矩阵、增广矩阵。</li>
+<li>进阶练习：用 C++ 类封装矩阵，重载 <code>+ - *</code> 运算符；再扩展矩阵幂与快速幂。</li>
+</ul>
+<figure class="figure"><img src="assets/6a9a20f8232685d7.gif" width="168" height="99" data-full="assets/6a9a20f8232685d7.gif" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/11a778ddd39318e8.gif" width="164" height="99" data-full="assets/11a778ddd39318e8.gif" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/f8f5d440941237d9.gif" width="296" height="99" data-full="assets/f8f5d440941237d9.gif" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s8">
+  <div class="sec-no">08 / SECTION</div>
+  <h2>矩阵扩展-算卷积算法介绍及C语言代码实现</h2>
+<ul class="pts">
+<li>卷积：用一个模板（卷积核）在图上滑动逐位置做加权求和，常用于<strong>锐化、边缘提取</strong>，也是 CNN 图像处理的基础。</li>
+<li>本节用 <strong>Zero padding、unit stride</strong>（零填充、步长为 1）的最简形式讲解，不展开复杂公式。</li>
+<li>运算两步：</li>
+<li class="sub">先把卷积核<strong>旋转 180°</strong>（倒置）；</li>
+<li class="sub">再把核与原图对应区域逐元素相乘求和，得该位置的输出值。</li>
+<li>举例（3×3 核）：<code>0*1+0*2+0*3+0*2+1*1+2*2+0*1+1*2+2*1 = 9</code>，边界按 0 参与计算。</li>
+<li>代码技巧：二维数组从下标 1 开始存数据，边界留出 0，这样遍历 <code>i=1..n, j=1..m</code> 时可直接用 <code>org[i-1+a][j-1+b]</code> 取 3×3 邻域，天然实现零填充。</li>
+<li>卷积核输入时可直接倒着读（<code>for(i=2;i&gt;=0;i--) cin&gt;&gt;ker[i][2]&gt;&gt;ker[i][1]&gt;&gt;ker[i][0];</code>），省去额外翻转。</li>
+<li>复杂度：n×m 个位置，每个位置做 k² 次乘法，O(n·m·k²)。</li>
+<li>本质仍是二维数组的遍历应用，理解“滑动窗口 + 加权求和”即可迁移到图像滤波、池化等。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/4a5e4a83042c9902.webp" width="800" height="548" data-full="assets/4a5e4a83042c9902.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/9942625fd0428581.webp" width="749" height="339" data-full="assets/9942625fd0428581.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/d5b178a8b02f76a6.webp" width="1415" height="549" data-full="assets/d5b178a8b02f76a6.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s9">
+  <div class="sec-no">09 / SECTION</div>
+  <h2>广义表的介绍及设计（C语言实现）</h2>
+<ul class="pts">
+<li>广义表是<strong>线性表的推广</strong>，元素既可以是不可再分的原子，也可以是一个子表，因此是多层次的线性表。</li>
+<li>记法 GL = (a₁, a₂, …, aₙ)，n 为长度（n≥0，n=0 为空表）；aᵢ 为原子或子表。</li>
+<li><strong>六条重要特性</strong>：</li>
+<li class="sub">元素之间有相对次序。</li>
+<li class="sub">长度 = 最外层元素个数。</li>
+<li class="sub">深度 = 所含括号的重数；原子深度为 0，空表深度为 1。</li>
+<li class="sub">可被其他广义表共享 → 再入表。</li>
+<li class="sub">可以是自身的子表 → 递归表（深度无穷，长度有限）。</li>
+<li class="sub">任意非空广义表可分解为表头 <code>head(GL) = a₁</code> 与表尾 <code>tail(GL) = (a₂,…,aₙ)</code>。</li>
+<li>因规模不定，广义表用<strong>动态链式</strong>存储，结点三部分：<code>tag</code>（标志）+ <code>atom/ptr</code>（值或指针，用 union 节省空间）+ <code>link/tp</code>（同层下一个结点）。</li>
+<li><strong>两种结点设计</strong>：</li>
+<li class="sub">头尾链表法：LIST 结点用 <code>hp</code>（表头指针）+ <code>tp</code>（表尾指针）。</li>
+<li class="sub">扩展线性表（子表法）：<code>hp</code> 指向本层第一个元素，<code>tp</code> 指向本层下一个元素。</li>
+<li>用 <code>enum{ATOM, LIST}</code> 定义 tag（0 原子 / 1 子表），用 <code>union</code> 让原子值与指针共用同一块内存——<strong>同一时刻只能存在一种</strong>，因此必须严格用 if/else 区分，切勿混用。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/a47b5183aee67af2.webp" width="498" height="125" data-full="assets/a47b5183aee67af2.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s10">
+  <div class="sec-no">10 / SECTION</div>
+  <h2>广义表的创建及C语言代码实现</h2>
+<ul class="pts">
+<li>以 <code>(2,3,4,(1,(3,(7,8)),2))</code> 为例：每层括号代表下一层，共 4 层，故可用括号级数表示广义表。</li>
+<li>创建思路：先按 <code>tag</code> 判断当前结点是原子还是子表，再按类型分别挂接 <code>hp</code> / <code>tp</code>。</li>
+<li><strong>核心工具函数 sever(str, hstr)</strong>：把非空串切分成“表头 hstr”与“剩余表尾 sub”。</li>
+<li class="sub">用 <code>k</code> 记录尚未配对的 <code>(</code> 数量，遇到 <code>(</code> 则 k++、<code>)</code> 则 k--；</li>
+<li class="sub">只在 <code>k == 0</code> 且遇到 <code>,</code> 处切分，这样才能跳过子表内部的逗号；</li>
+<li class="sub">若一直没找到逗号，则整串作为表头，剩余串置空。</li>
+<li><strong>CreateGList 递归流程</strong>：</li>
+<li class="sub">空串 → L = NULL；</li>
+<li class="sub">单个字符 → 建原子结点（<code>tag = ATOM</code>）；</li>
+<li class="sub">否则 → 建表结点（<code>tag = LIST</code>），先去掉最外层括号 <code>s.substr(1, s.size()-2)</code>，再循环：sever 分出表头 → 递归创建 <code>p-&gt;ptr.hp</code> → 若还有剩余就新建表尾结点并用 <code>q-&gt;ptr.tp = p</code> 连接 → 最后 <code>q-&gt;ptr.tp = NULL</code>。</li>
+<li><strong>求深度 GListDepth（递归）</strong>：</li>
+<li class="sub">空表返回 1；原子返回 0；</li>
+<li class="sub">否则沿同层 <code>pp = pp-&gt;ptr.tp</code> 遍历，递归求每个表头的深度取最大值；</li>
+<li class="sub">返回 <code>max + 1</code>（加 1 表示加上当前这一层括号）。</li>
+<li>易错点：union 两成员不能同时有效；创建时要记得给表尾最后置 NULL；字符串下标与括号配对必须逐一校验。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/2db9599bab17a59b.webp" width="984" height="118" data-full="assets/2db9599bab17a59b.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/10636137981b896f.webp" width="1157" height="397" data-full="assets/10636137981b896f.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+    <div class="qnav">
+        <a class="prev" href="ch05.html"><span class="k">PREV / 05</span><span class="t">C++ STL 库教程（附带题库）</span></a>
+        <a class="next" href="ch07.html"><span class="k">NEXT / 07</span><span class="t">树</span></a>
+    </div>
+  </main>
+
+  <aside class="docside">
+    <div class="k">ON THIS PAGE</div>
+    <ol>
+      <li><a href="#s1">C++字符串常用操作（一）</a></li>
+      <li><a href="#s2">C++字符串常用操作（二）</a></li>
+      <li><a href="#s3">字符串的KMP算法详解及C/C++代码实现</a></li>
+      <li><a href="#s4">C++中string字符串类型介绍</a></li>
+      <li><a href="#s5">用数组实现模拟算法C/C++实现（配例题）</a></li>
+      <li><a href="#s6">矩阵的介绍及乘法运算（附C语言实现代码）</a></li>
+      <li><a href="#s7">矩阵加减法操作及C语言代码实现</a></li>
+      <li><a href="#s8">矩阵扩展-算卷积算法介绍及C语言代码实现</a></li>
+      <li><a href="#s9">广义表的介绍及设计（C语言实现）</a></li>
+      <li><a href="#s10">广义表的创建及C语言代码实现</a></li>
+    </ol>
+  </aside>
+</div>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>数据结构与算法教程笔记，整理自 dotcpp 教程（C 语言中文网），按 12 章重写为「章 → 节 → 要点」的形式，图片外挂存储。原文如有笔误，已在对应要点标注订正。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="../数据结构教程/index.html">数据结构教程</a>
+        <a href="../算法/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../boke/index.html">全栈笔记</a>
+        <a href="../学习工具/错题本.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/reader.js" defer></script>
+</body>
+</html>

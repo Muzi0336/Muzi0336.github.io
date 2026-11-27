@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一章 数据结构入门 · 数据结构教程</title>
+<meta name="description" content="第一章 数据结构入门 — 从「程序 = 数据结构 + 算法」讲起，把复杂度、逻辑结构、抽象数据类型这些后面反复要用的词先立住。">
+<link rel="stylesheet" href="../计挑赛/assets/style.css">
+<link rel="stylesheet" href="../计挑赛/assets/detail.css">
+<link rel="stylesheet" href="assets/reader.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../index.html#contest" class="contest-link">计挑赛</a>
+    <a href="../算法/index.html">算法题库</a>
+    <a href="../算法/paths.html">学习路径</a>
+    <a href="../算法/learn.html">算法学习</a>
+    <a href="../算法/lab.html">动画实验室</a>
+    <a href="../数据结构教程/index.html" class="active">数据结构</a>
+    <a href="../算法竞赛教程/index.html">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../boke/index.html">全栈笔记</a>
+    <a href="../学习工具/错题本.html">错题本</a>
+  </nav>
+</div>
+
+<div class="docwrap">
+  <aside class="docnav">
+    <a class="back" href="index.html">← 教程目录</a>
+    <nav class="docnav-list">
+      <a href="ch01.html" class="on"><span class="n">01</span><span class="t">数据结构入门</span></a>
+      <a href="ch02.html"><span class="n">02</span><span class="t">链表</span></a>
+      <a href="ch03.html"><span class="n">03</span><span class="t">栈</span></a>
+      <a href="ch04.html"><span class="n">04</span><span class="t">队列</span></a>
+      <a href="ch05.html"><span class="n">05</span><span class="t">C++ STL 库教程（附带题库）</span></a>
+      <a href="ch06.html"><span class="n">06</span><span class="t">串、数组、矩阵和广义表</span></a>
+      <a href="ch07.html"><span class="n">07</span><span class="t">树</span></a>
+      <a href="ch08.html"><span class="n">08</span><span class="t">图</span></a>
+      <a href="ch09.html"><span class="n">09</span><span class="t">查找算法</span></a>
+      <a href="ch10.html"><span class="n">10</span><span class="t">排序算法</span></a>
+      <a href="ch11.html"><span class="n">11</span><span class="t">算法和竞赛</span></a>
+      <a href="ch12.html"><span class="n">12</span><span class="t">后记</span></a>
+    </nav>
+    <div class="navstat">12 章 · 87 节<br>114 张图</div>
+  </aside>
+
+  <main class="docmain">
+    <div class="doc-eyebrow">— DATA STRUCTURE / 01</div>
+    <h1 class="doc-title">第一章 数据结构入门</h1>
+    <p class="doc-lead">从「程序 = 数据结构 + 算法」讲起，把复杂度、逻辑结构、抽象数据类型这些后面反复要用的词先立住。</p>
+    <div class="doc-meta">
+      <span class="chip">9 节</span>
+      <span class="chip">13 图</span>
+    </div>
+    <div class="rule"></div>
+<section class="dsec" id="s1">
+  <div class="sec-no">01 / SECTION</div>
+  <h2>数据结构与算法入门</h2>
+<ul class="pts">
+<li><strong>核心公式</strong>：程序（Program）= 数据结构（Data Structure）+ 算法（Algorithm）。</li>
+<li>数据结构是介于数学、计算机硬件、计算机软件之间的一门核心课程，是数据库、程序、操作系统、游戏等设计的基础。</li>
+<li>它的三个典型用途：计算机专业考研指定科目、大厂面试常考、中学与大学的学科竞赛必备。</li>
+<li>算法与数据结构互相依存：算法依赖数据结构来组织数据，数据结构又直接决定算法的效率，从而决定一个程序的好坏。</li>
+<li>学习前提：至少掌握一门编程语言；具备一定的数学基础与逻辑思考能力。</li>
+<li>学好它的唯一途径：多读、多写、多练。只读书不写代码，不足以成为合格的程序员，必须与题库习题结合。</li>
+<li>阅读建议：先复习 C/C++ 基础（尤其指针）；顺序阅读、弄懂原理再抄代码；适当手写摘抄以加深记忆。</li>
+<li>本教程默认 IDE 为 Dev-C++（轻量、跨平台，NOIP、蓝桥杯等竞赛常用）。</li>
+</ul>
+</section>
+<section class="dsec" id="s2">
+  <div class="sec-no">02 / SECTION</div>
+  <h2>数学基础</h2>
+<ul class="pts">
+<li>本节只为后面分析复杂度做工具准备，深入学习需参考《高等数学》《离散数学》《数论》。</li>
+<li><strong>指数</strong>：aⁿ 中 a 为底数、n 为指数，表示 n 个 a 相乘（如 4³ = 4×4×4）。</li>
+<li><strong>对数</strong>：对数是求幂的逆运算，与除法是乘法的逆运算同理，满足 aˣ = N 时 x = logₐN。</li>
+<li><strong>级数</strong>：把数列各项用加号连接，用 Σ（西格玛）表示求和。</li>
+<li><strong>几何级数</strong>：n 趋于无穷时整个式子的变化趋势，常用于分析时空复杂度与归纳法推导。</li>
+<li><strong>Π 运算</strong>：与 Σ 法则相同，只是把加法换成乘法，表示连乘。</li>
+<li>这些公式不需要立刻用上，但学到复杂度分析、递归式求解时会反复出现。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/4046b775737dc846.webp" width="318" height="134" data-full="assets/4046b775737dc846.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/2818e2e4f11e76cf.webp" width="84" height="28" data-full="assets/2818e2e4f11e76cf.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/8cddfd341266c070.webp" width="805" height="171" data-full="assets/8cddfd341266c070.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/a66d1568ee8fcd8f.webp" width="176" height="22" data-full="assets/a66d1568ee8fcd8f.png" loading="lazy" decoding="async" alt="图4" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/78592c1c38240c67.webp" width="476" height="226" data-full="assets/78592c1c38240c67.png" loading="lazy" decoding="async" alt="图5" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/b7461eb1f6deba00.webp" width="213" height="27" data-full="assets/b7461eb1f6deba00.png" loading="lazy" decoding="async" alt="图6" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s3">
+  <div class="sec-no">03 / SECTION</div>
+  <h2>数据结构与算法</h2>
+<ul class="pts">
+<li>牢记：程序 = 数据结构 + 算法。</li>
+<li><strong>发展史三阶段</strong>：无结构阶段 → 结构化阶段 → 面向对象阶段，与程序设计的发展阶段一致。</li>
+<li>1968 年克努特《计算机程序设计技巧》第一卷《基本算法》，被视为数据结构系统概念的开端；70 年代初数据结构成为大学独立课程。</li>
+<li><strong>无结构阶段（40~60 年代）</strong>：以科学计算为主，机器语言/汇编语言编程，处理纯数值，数据关系靠数学公式描述，尚无明确的数据结构概念。</li>
+<li><strong>结构化阶段（60~80 年代）</strong>：计算机进入非数值处理领域，提出程序结构模块化，形成数据结构与抽象数据类型；沃斯提出“程序 = 数据结构 + 算法”。</li>
+<li><strong>面向对象阶段（80 年代至今）</strong>：大量封装类出现，数据结构日益丰富，大幅减少重复设计。</li>
+<li><strong>何为算法</strong>：以 1+2+…+100 为例，循环累加需要约 100 次运算，而等差数列公式 (1+100)×100/2 只需 1 次运算。</li>
+<li>结论：同一问题可以有多种解法，差别体现在运算次数上；规模越大（如算到 1000000），算法优劣的差距越悬殊。</li>
+</ul>
+</section>
+<section class="dsec" id="s4">
+  <div class="sec-no">04 / SECTION</div>
+  <h2>算法基础</h2>
+<ul class="pts">
+<li><strong>输入输出</strong>：算法有零个或多个输入，但至少要有一个输出；没有输出的算法没有意义。</li>
+<li><strong>确定性</strong>：每一步含义唯一、无二义性，相同输入必得相同输出。随机数看似违背，实为用线性同余等算法结合 CPU 时间产生，时间完全相同时结果仍相同。</li>
+<li><strong>有穷性</strong>：在输入合法的前提下，算法必须在有限步骤内结束。这是算法与程序最主要的区别——程序可以无限循环。</li>
+<li><strong>可行性</strong>：每一步都能通过已实现的基本运算、执行有限次完成。</li>
+<li><strong>正确性</strong>：满足预定功能与性能要求，分四层——无语法错误；几组输入结果正确；非法输入给出符合要求的处理；对精心构造的严苛数据仍正确。</li>
+<li><strong>健壮性</strong>：输入不合法时能做出相应处理，而不是产生不可预计的后果。</li>
+<li><strong>可读性</strong>：可阅读、可理解、可交流。</li>
+<li><strong>高效性</strong>：耗时低、占用空间少——这正是数据结构与算法研究的核心目标。</li>
+</ul>
+</section>
+<section class="dsec" id="s5">
+  <div class="sec-no">05 / SECTION</div>
+  <h2>数据结构基础</h2>
+<ul class="pts">
+<li><strong>数据</strong>：信息的载体，能被计算机识别、存储、加工，既含数值也含字符、声音、图像等非数值类型。</li>
+<li><strong>数据元素</strong>：描述数据的基本单位，也称记录，由若干数据项组成（如鸡、鸭都是“禽类”这一集合中的数据元素）。</li>
+<li><strong>数据项</strong>：描述数据的最小单位，分组合项（可再分割，如“2019年4月25日”）与原子项（不可再分割，如单取“25日”）。</li>
+<li><strong>数据对象</strong>：性质相同的一类数据元素的集合，是数据的子集，可有限也可无限。</li>
+<li><strong>数据结构</strong>：数据 + 关系的集合，关系指数据间的前后逻辑，与存储位置无关。</li>
+<li><strong>四大逻辑结构</strong>：</li>
+<li class="sub">集合结构：元素之间除同属一个集合外，无其他关系。</li>
+<li class="sub">线性结构：元素之间“一对一”。</li>
+<li class="sub">树形结构：元素之间“一对多”的层次关系。</li>
+<li class="sub">图形结构（网状结构）：元素之间“多对多”（多表示至少一个）。</li>
+<li><strong>数据类型</strong>：数据的取值范围 + 允许的操作的总和，规定程序中对象的特性。</li>
+<li><strong>抽象数据类型（ADT）</strong>：一个数学模型及定义在其上的一组操作，只描述取值范围与操作集合，不涉及实现。</li>
+<li>ADT 的本质特征是<strong>实现与操作分离</strong>，从而实现封装（如《魂斗罗》中“打、跳、移动”就是一组抽象操作）。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/b1ca6f284b2a66c8.webp" width="694" height="623" data-full="assets/b1ca6f284b2a66c8.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/68ff3c0a3cd1dbf2.webp" width="731" height="120" data-full="assets/68ff3c0a3cd1dbf2.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/31349af2ee10978f.webp" width="1083" height="643" data-full="assets/31349af2ee10978f.png" loading="lazy" decoding="async" alt="图3" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/e7999aaaacd2276a.webp" width="902" height="444" data-full="assets/e7999aaaacd2276a.png" loading="lazy" decoding="async" alt="图4" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s6">
+  <div class="sec-no">06 / SECTION</div>
+  <h2>理解复杂度概念</h2>
+<ul class="pts">
+<li><strong>时间复杂度</strong>：衡量算法运行所需时间，实际值需在具体机器上测，通常只比较量级即可。</li>
+<li><strong>时间频度 T(n)</strong>：算法中基本操作重复执行的次数，是问题规模 n 的函数。</li>
+<li>若存在 f(n) 使 n→∞ 时 T(n)/f(n) 的极限为非零常数，则 T(n) = O(f(n))，称 O(f(n)) 为渐进时间复杂度，简称为时间复杂度。</li>
+<li><strong>空间复杂度</strong>：程序运行所需内存大小，含两部分——固定部分（指令空间、常量、简单变量，属静态空间）与可变部分（动态分配空间、递归栈空间，与算法有关）。</li>
+<li><strong>事后统计法</strong>：运行后用计时器比较。缺陷：严重依赖机器环境；测试数据难以设计，同一算法对不同数据效果不同。</li>
+<li><strong>事先估计法</strong>：编译前用时间频度与函数思想估算，是主流做法。</li>
+<li>常用符号：O 表示最坏情况（最常用）、Ω 表示最好情况、θ 表示平均情况；n 为问题规模，主要看循环结构的执行次数。</li>
+<li><strong>三条化简公式</strong>：</li>
+<li class="sub">O(a) = O(1)，a 为常数。</li>
+<li class="sub">O(an) = O(n)，a 为常数。</li>
+<li class="sub">O(an² + bn + c) = O(n²)，只保留最高次项。</li>
+</ul>
+</section>
+<section class="dsec" id="s7">
+  <div class="sec-no">07 / SECTION</div>
+  <h2>时间复杂度的度量方法</h2>
+<ul class="pts">
+<li>度量关键：只看<strong>循环结构</strong>，一层循环代表执行 n 次，其余单条语句一般视为一次，常数项可忽略。</li>
+<li><strong>O(1)</strong>：无循环或循环次数固定，无论执行几次常数语句，均记常数阶。</li>
+<li><strong>O(n)</strong>：单层循环执行 n 次，如 for(i=0;i&lt;n;i++) 累加，总次数 n×1+2，化简为 O(n)，线性阶。</li>
+<li><strong>O(n²)</strong>：两层循环嵌套，n×n 次，平方阶；三层嵌套为 O(n³) 立方阶。</li>
+<li><strong>O(log n)</strong>：循环变量倍增（i*=2）而非累加，会更早到达边界，属对数阶。</li>
+<li><strong>O(n log n)</strong>：外层 n 次循环内嵌倍增循环，如 O(n×(logn+1)+2) 化简为 O(n·logn)。</li>
+<li>其他量级：O(n!) 阶乘级、O(2ⁿ) 指数级，复杂度极高、运行极慢；复杂情形还可能需要多个变量描述（如 O(nm)）。</li>
+<li><strong>量级比较</strong>：O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²) &lt; O(n³) &lt; O(2ⁿ)。</li>
+<li>从曲线看：n 较小时差异不明显，n 达到万级后，平方、立方几乎贴着 y 轴竖直上升，log n 几乎贴着 x 轴水平延伸。</li>
+<li>实践原则：高计算需求的环节，绝不能采用过高的时间复杂度。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/cfe9fb5c8b75f92f.webp" width="650" height="400" data-full="assets/cfe9fb5c8b75f92f.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+<figure class="figure"><img src="assets/webp/32bbb642b2ac8484.webp" width="650" height="400" data-full="assets/32bbb642b2ac8484.png" loading="lazy" decoding="async" alt="图2" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s8">
+  <div class="sec-no">08 / SECTION</div>
+  <h2>程序运行时的内存与地址</h2>
+<ul class="pts">
+<li>内存中每一段数据都有对应的<strong>地址</strong>，地址常用十六进制表示（0x + 十六进制数）。</li>
+<li>C 语言数组是顺序存储的，可直接打印每个元素及其地址：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>char array[10]="ACDEQSFVCK";
+for(i=0;i&lt;10;i++)
+    printf("The %c Address is %x \n",array[i],&amp;array[i]); // %p 可显示完整位数</code></pre></div>
+
+<ul class="pts">
+<li>输出可见地址连续递增（如 62fe40、62fe41、62fe42…）；换成 int 型则每 4 字节一跳，因为 char 占 1 字节、int 占 4 字节。</li>
+<li><strong>指针与内存</strong>：指针就是为灵活操纵内存而设计的，使内存地址能像数据一样被赋值、修改，极其灵活（也有风险）。</li>
+<li>结论：指针是 C/C++ 的灵魂，务必巩固，这是后续实现链表、树、图的基础。</li>
+</ul>
+<figure class="figure"><img src="assets/webp/d9be3c43dc4fdca7.webp" width="216" height="347" data-full="assets/d9be3c43dc4fdca7.png" loading="lazy" decoding="async" alt="图1" title="点击查看原图，滚轮或按钮缩放"></figure>
+</section>
+<section class="dsec" id="s9">
+  <div class="sec-no">09 / SECTION</div>
+  <h2>编程预备</h2>
+<ul class="pts">
+<li><strong>malloc</strong>（stdlib.h）：在堆上申请 size 字节的连续内存，成功返回起始地址指针，失败返回 NULL。</li>
+<li><strong>free</strong>（stdlib.h）：释放 p 指向的内存空间。</li>
+<li>二者是本教程最常用的两个函数，务必牢记“申请—判断—使用—释放”的固定套路。</li>
+<li><strong>新手三大坑</strong>：</li>
+<li class="sub">不判断 malloc 是否失败（失败不报错会一路崩溃）。</li>
+<li class="sub">只 malloc 不 free，产生内存垃圾、效率下降。</li>
+<li class="sub">指针随意移动，产生莫名位移，极难排查。</li>
+<li><strong>标准流程</strong>：定义变量与指针 → 申请内存 → 判断是否成功（失败则报错/退出）→ 对空间赋值、修改、查询、删除 → 释放指针。</li>
+<li>释放后 p 成为<strong>野指针</strong>，必须立即置 NULL。</li>
+<li><strong>new 与 malloc 的区别</strong>：new 从自由存储区（free store，C++ 基于 new 的抽象概念）分配；malloc 从堆上分配（操作系统维护的动态内存区），由 free 释放。</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>int *p;
+p = (int*)malloc(5*sizeof(int));
+if(p == NULL){ exit(1); }   // 申请失败
+p[0] = 1000;
+free(p); p = NULL;          // 释放后置空，避免野指针</code></pre></div>
+
+</section>
+    <div class="qnav">
+        <a class="prev disabled"><span class="k">PREV</span><span class="t">已是第一章</span></a>
+        <a class="next" href="ch02.html"><span class="k">NEXT / 02</span><span class="t">链表</span></a>
+    </div>
+  </main>
+
+  <aside class="docside">
+    <div class="k">ON THIS PAGE</div>
+    <ol>
+      <li><a href="#s1">数据结构与算法入门</a></li>
+      <li><a href="#s2">数学基础</a></li>
+      <li><a href="#s3">数据结构与算法</a></li>
+      <li><a href="#s4">算法基础</a></li>
+      <li><a href="#s5">数据结构基础</a></li>
+      <li><a href="#s6">理解复杂度概念</a></li>
+      <li><a href="#s7">时间复杂度的度量方法</a></li>
+      <li><a href="#s8">程序运行时的内存与地址</a></li>
+      <li><a href="#s9">编程预备</a></li>
+    </ol>
+  </aside>
+</div>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>数据结构与算法教程笔记，整理自 dotcpp 教程（C 语言中文网），按 12 章重写为「章 → 节 → 要点」的形式，图片外挂存储。原文如有笔误，已在对应要点标注订正。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="../数据结构教程/index.html">数据结构教程</a>
+        <a href="../算法/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../boke/index.html">全栈笔记</a>
+        <a href="../学习工具/错题本.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/reader.js" defer></script>
+</body>
+</html>

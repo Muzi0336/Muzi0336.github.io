@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第十章 排序算法 · 数据结构教程</title>
+<meta name="description" content="第十章 排序算法 — 插入、希尔、选择、堆、冒泡、快排、归并逐个过一遍，最后一张表把复杂度、空间与稳定性对齐。">
+<link rel="stylesheet" href="../计挑赛/assets/style.css">
+<link rel="stylesheet" href="../计挑赛/assets/detail.css">
+<link rel="stylesheet" href="assets/reader.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+      <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+      <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+    </svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+    <nav class="nav">
+    <a href="../index.html#contest" class="contest-link">计挑赛</a>
+    <a href="../算法/index.html">算法题库</a>
+    <a href="../算法/paths.html">学习路径</a>
+    <a href="../算法/learn.html">算法学习</a>
+    <a href="../算法/lab.html">动画实验室</a>
+    <a href="../数据结构教程/index.html" class="active">数据结构</a>
+    <a href="../算法竞赛教程/index.html">算法竞赛</a>
+    <a href="../frontend/index.html">前端教程</a>
+    <a href="../boke/index.html">全栈笔记</a>
+    <a href="../学习工具/错题本.html">错题本</a>
+  </nav>
+</div>
+
+<div class="docwrap">
+  <aside class="docnav">
+    <a class="back" href="index.html">← 教程目录</a>
+    <nav class="docnav-list">
+      <a href="ch01.html"><span class="n">01</span><span class="t">数据结构入门</span></a>
+      <a href="ch02.html"><span class="n">02</span><span class="t">链表</span></a>
+      <a href="ch03.html"><span class="n">03</span><span class="t">栈</span></a>
+      <a href="ch04.html"><span class="n">04</span><span class="t">队列</span></a>
+      <a href="ch05.html"><span class="n">05</span><span class="t">C++ STL 库教程（附带题库）</span></a>
+      <a href="ch06.html"><span class="n">06</span><span class="t">串、数组、矩阵和广义表</span></a>
+      <a href="ch07.html"><span class="n">07</span><span class="t">树</span></a>
+      <a href="ch08.html"><span class="n">08</span><span class="t">图</span></a>
+      <a href="ch09.html"><span class="n">09</span><span class="t">查找算法</span></a>
+      <a href="ch10.html" class="on"><span class="n">10</span><span class="t">排序算法</span></a>
+      <a href="ch11.html"><span class="n">11</span><span class="t">算法和竞赛</span></a>
+      <a href="ch12.html"><span class="n">12</span><span class="t">后记</span></a>
+    </nav>
+    <div class="navstat">12 章 · 87 节<br>114 张图</div>
+  </aside>
+
+  <main class="docmain">
+    <div class="doc-eyebrow">— DATA STRUCTURE / 10</div>
+    <h1 class="doc-title">第十章 排序算法</h1>
+    <p class="doc-lead">插入、希尔、选择、堆、冒泡、快排、归并逐个过一遍，最后一张表把复杂度、空间与稳定性对齐。</p>
+    <div class="doc-meta">
+      <span class="chip">8 节</span>
+      <span class="chip">0 图</span>
+    </div>
+    <div class="rule"></div>
+<section class="dsec" id="s1">
+  <div class="sec-no">01 / SECTION</div>
+  <h2>冒泡排序算法实例详解</h2>
+<ul class="pts">
+<li><strong>核心思想</strong>：相邻两两比较，逆序就交换；每趟把当前范围内的最大值“冒”到末尾，像气泡上浮。</li>
+<li><strong>一趟的定义</strong>：从第一对比较到最后一对，结束时最大元素落到本趟末尾。</li>
+<li><strong>复杂度与稳定性</strong>：平均 O(n²)，最坏 O(n²)，最好 O(n)（原本有序），空间 O(1)，<strong>稳定</strong>排序。</li>
+<li><strong>过程</strong>（以 {70,50,30,20,10,70,40,60} 为例）：第 1 趟后最大值 70 到末尾；第 2 趟次大值再到位……第 4 趟其实已有序，但程序仍会跑到第 7 趟，这是浪费算力。</li>
+<li><strong>优化</strong>：加 flag，某趟没有发生交换即说明已有序，直接 break（原实现无此优化）。</li>
+<li><strong>代码要点</strong>：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>for(int i = 0; i &lt; n; i++)
+    for(int j = 0; j &lt; n - i; j++)
+        if(a[j] &gt; a[j+1]) swap(a[j], a[j+1]);</code></pre></div>
+
+<ul class="pts">
+<li>循环上界 <code>n - i</code> 的作用是缩小范围，已排好的尾部不再参与比较。</li>
+<li><code>swap</code> 可直接用 std 提供的函数，也可自定义模板版 <code>template&lt;class T&gt; void swap(T &amp;a, T &amp;b)</code>。</li>
+<li>记忆点：冒泡是八大排序中最简单的一种，写法固定，适合入门与教学演示。</li>
+</ul>
+</section>
+<section class="dsec" id="s2">
+  <div class="sec-no">02 / SECTION</div>
+  <h2>简单选择排序算法实例详解</h2>
+<ul class="pts">
+<li><strong>核心思想</strong>：每一趟从未排序区间中挑出最小值（或最大值），与区间首元素交换，逐步扩大有序区。</li>
+<li><strong>与冒泡的区别</strong>：冒泡是“边比边换”，交换频繁；选择排序是“比完再换一次”，每趟最多交换一次。</li>
+<li><strong>复杂度与稳定性</strong>：平均/最好/最坏都是 <strong>O(n²)</strong>（比较次数固定，与数据初始顺序无关），空间 O(1)，<strong>不稳定</strong>（交换会打乱相等元素的相对次序）。</li>
+<li><strong>过程</strong>：第 i 趟在 <code>[i, n-1]</code> 中找最小元素下标 min，然后 <code>swap(a[i], a[min])</code>。</li>
+<li><strong>代码要点</strong>：双重循环，外层 i 从 0 到 n-2，内层找 min 下标，内层结束后交换一次。</li>
+<li>记忆点：交换次数最少（≤ n−1 次），数据元素较大、交换代价高时优于冒泡。</li>
+</ul>
+</section>
+<section class="dsec" id="s3">
+  <div class="sec-no">03 / SECTION</div>
+  <h2>直接插入排序算法实例详解</h2>
+<ul class="pts">
+<li><strong>核心思想</strong>：把待排元素逐个插入到前面“已排好序”的序列中，像打扑克摸牌插牌。</li>
+<li><strong>过程</strong>：取当前元素 temp = a[i]，从 i−1 往前逐个比较，比 temp 大的元素整体后移一位，直到找到合适位置插入 temp。</li>
+<li><strong>复杂度</strong>：平均 O(n²)、最坏 O(n²)，<strong>最好 O(n)</strong>（已有序，每次只需一次比较），空间 O(1)，<strong>稳定</strong>。</li>
+<li><strong>代码要点</strong>：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>for(int i = 1; i &lt; n; i++){
+    int temp = a[i], j;
+    for(j = i - 1; j &gt;= 0 &amp;&amp; a[j] &gt; temp; j--) a[j+1] = a[j];
+    a[j+1] = temp;
+}</code></pre></div>
+
+<ul class="pts">
+<li>优点：稳定、在基本有序的数据上非常快；缺点：数据量大时移动次数多。</li>
+<li>应用：常作为快速排序小区间（长度很小）时的收尾排序，实践中效率最高。</li>
+</ul>
+</section>
+<section class="dsec" id="s4">
+  <div class="sec-no">04 / SECTION</div>
+  <h2>希尔排序算法实例详解</h2>
+<ul class="pts">
+<li><strong>定位</strong>：插入排序的改进版，也称“缩小增量排序”，属<strong>不稳定</strong>排序。</li>
+<li><strong>核心思想</strong>：先按较大增量 gap 把序列分成若干子序列分别做插入排序，使数据“大体有序”；再逐步缩小 gap，最后一趟 gap=1 做普通插入排序。</li>
+<li><strong>为什么有效</strong>：前面几趟让元素大幅跳跃式地靠近目标位置，减少后面插入时的移动量。</li>
+<li><strong>复杂度</strong>：平均 O(n²)，最好 O(n)，最坏 O(n²)，空间 O(1)，<strong>不稳定</strong>（增量跳跃会打乱相等元素次序）。</li>
+<li><strong>代码要点</strong>：外层枚举增量 gap（常用 n/2 折半递减，也可用 3k+1 序列），每组内部用插入排序。</li>
+<li>实践特性：主要操作是<strong>比较</strong>而非交换，小数据量时甚至比快排、堆排更快；数据量大时仍不如快排。</li>
+</ul>
+</section>
+<section class="dsec" id="s5">
+  <div class="sec-no">05 / SECTION</div>
+  <h2>堆排序算法实例详解</h2>
+<ul class="pts">
+<li><strong>什么是堆</strong>：用完全二叉树结构维护的一维数组；分大顶堆（每个结点 ≥ 左右孩子）与小顶堆（每个结点 ≤ 左右孩子）。</li>
+<li>注意：此处的“堆”与编译器中的堆栈概念无关；优先队列的底层就是堆。</li>
+<li><strong>基本思想</strong>：把数组视为完全二叉树做“堆化”；大根堆的根是最大值，取出根放到数组末尾，再对剩余部分重新堆化，循环直到取完。</li>
+<li><strong>堆化的顺序</strong>：先从最后一个非叶结点（下标 len/2−1）自下而上建堆（先子树后根），之后每次取根又自上而下调整。</li>
+<li><strong>复杂度</strong>：平均 O(n log n)、最坏 O(n log n)、最好 O(n log n)，空间 O(1)，<strong>不稳定</strong>（元素交换跨越较大距离）。</li>
+<li><strong>实现要点</strong>（数组下标从 0 开始）：</li>
+<li class="sub">左孩子 <code>2*i+1</code>、右孩子 <code>2*i+2</code>；</li>
+<li class="sub"><code>Swap(heap, len)</code> 交换 heap[0] 与 heap[len-1]（把当前最大值放到末尾）；</li>
+<li class="sub">主循环 <code>for(i = n; i &gt; 0; i--){ BuildMaxHeap(a, i); Swap(a, i); }</code></li>
+<li>重要应用：求前 k 大/前 k 小（维护大小为 k 的堆，只处理 k 个，无需全排 n 个）。</li>
+<li>原文复杂度一栏写作“最坏 O(n²)、最好 O(n)、平均 O(n log n)”，与堆排序的实际结论不符；堆排序三种情况均为 <strong>O(n log n)</strong>。</li>
+</ul>
+</section>
+<section class="dsec" id="s6">
+  <div class="sec-no">06 / SECTION</div>
+  <h2>归并排序算法实例详解</h2>
+<ul class="pts">
+<li><strong>核心思想</strong>：分治——把序列不断二分，直到只剩单个元素（天然有序），再把两个有序子序列<strong>合并</strong>成一个有序序列。</li>
+<li><strong>合并（merge）过程</strong>：把 <code>[l, mid]</code> 与 <code>[mid+1, r]</code> 用双指针 i、j 比较，小者先放到临时数组/回写原数组，直到一者用完，再把另一者剩余部分接上。</li>
+<li><strong>复杂度</strong>：平均/最好/最坏都是 <strong>O(n log n)</strong>，空间 <strong>O(n)</strong>（需要辅助数组），<strong>稳定</strong>（相等时优先取左段元素即可保证）。</li>
+<li><strong>代码要点</strong>（原文给出的是<strong>自底向上</strong>的非递归写法）：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>for(int sz = 1; sz &lt;= n; sz += sz)                 // 子区间长度翻倍
+    for(int i = 0; i + sz &lt; n; i += sz + sz)
+        merge(arr, i, i + sz - 1, min(i + sz + sz - 1, n - 1));</code></pre></div>
+
+<ul class="pts">
+<li>merge 内部先用 <code>aux[]</code> 拷贝原区间，再 <code>i = l, j = mid+1</code> 双指针回写，注意 <code>i &gt; mid</code>、<code>j &gt; r</code> 的边界处理。</li>
+<li>自顶向下的递归写法：<code>merge_sort(l,mid); merge_sort(mid+1,r); merge(l,mid,r)</code>，两者复杂度相同。</li>
+<li>稳定性来源：<code>if(aux[i] &lt; aux[j])</code> 取左，相等时取右（原文写法），实际要保证稳定应取左段（<code>&lt;=</code> 取左）。</li>
+<li>原文汇总表把归并空间写作 O(1)，属笔误，正确为 <strong>O(n)</strong>。</li>
+</ul>
+</section>
+<section class="dsec" id="s7">
+  <div class="sec-no">07 / SECTION</div>
+  <h2>快速排序算法实例详解</h2>
+<ul class="pts">
+<li><strong>地位</strong>：面试与考试考察最多的排序，STL 的 <code>sort</code> 底层就是快排（兼顾小数组插入排序）。</li>
+<li><strong>核心思想</strong>：选一个基准（枢轴），把序列partition 成“左边都 ≤ 基准、右边都 ≥ 基准”，再对左右两段递归。</li>
+<li><strong>过程</strong>：取 <code>temp = a[low]</code> 作枢轴；先让 j（high 端）向左找第一个小于枢轴的元素，填到 a[i]；再让 i 向右找第一个大于枢轴的元素，填到 a[j]；交替进行直到 <code>i == j</code>，最后 <code>a[i] = temp</code>。</li>
+<li><strong>代码要点</strong>：</li>
+</ul>
+<div class="codecard"><div class="cc-head"><span class="lang">cpp</span><span class="sp"></span><button type="button" data-copy>复制</button></div><pre><code>if(low &lt; high){
+    int i = low, j = high, temp = a[low];
+    while(i != j){
+        while(j &gt; i &amp;&amp; a[j] &gt;= temp) --j;   if(i &lt; j){ a[i] = a[j]; ++i; }
+        while(i &lt; j &amp;&amp; a[i] &lt;  temp) ++i;   if(i &lt; j){ a[j] = a[i]; --j; }
+    }
+    a[i] = temp;
+    quick_sort(a, low, i-1); quick_sort(a, i+1, high);
+}</code></pre></div>
+
+<ul class="pts">
+<li><strong>复杂度</strong>：平均 O(n log n)、最好 O(n log n)、最坏 O(n²)；空间平均 O(log n)（递归栈），最坏 O(n)；<strong>不稳定</strong>。</li>
+<li><strong>最坏情形</strong>：数据已（正/逆）有序时每次划分极端不均，退化为冒泡级别；对策是随机选枢轴或三数取中。</li>
+<li>实用技巧：完全逆序的“毒瘤数据”可先 <code>rand()</code> 打乱再快排，能显著提速；OJ 上的快排模板题不一定能直接过。</li>
+</ul>
+</section>
+<section class="dsec" id="s8">
+  <div class="sec-no">08 / SECTION</div>
+  <h2>各种排序算法总结</h2>
+<ul class="pts">
+<li><strong>复杂度对照表</strong>（原文整理，已按标准结论校正）：</li>
+</ul>
+<table class="dtable"><thead><tr><th>方法</th><th>平均</th><th>最好</th><th>最坏</th><th>空间</th><th>稳定性</th></tr></thead><tbody><tr><td>直接插入</td><td>O(n²)</td><td>O(n)</td><td>O(n²)</td><td>O(1)</td><td>稳定</td></tr><tr><td>希尔排序</td><td>O(n²)</td><td>O(n)</td><td>O(n²)</td><td>O(1)</td><td>不稳定</td></tr><tr><td>直接选择</td><td>O(n²)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>不稳定</td></tr><tr><td>堆排序</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(1)</td><td>不稳定</td></tr><tr><td>冒泡排序</td><td>O(n²)</td><td>O(n)</td><td>O(n²)</td><td>O(1)</td><td>稳定</td></tr><tr><td>快速排序</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n²)</td><td>O(log n)</td><td>不稳定</td></tr><tr><td>归并排序</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>稳定</td></tr></tbody></table>
+
+<ul class="pts">
+<li>稳定排序：插入、冒泡、归并（另加基数排序）；其余四个（希尔、选择、堆、快排）均不稳定。</li>
+<li><strong>适用场景</strong>：</li>
+<li class="sub">快排：数据越乱越快，已有序时退化；对随机数据综合最优。</li>
+<li class="sub">插入排序：基本有序、数据量小时最快，稳定。</li>
+<li class="sub">堆排序：求前 k 大/前 k 小最省力，不必全排。</li>
+<li class="sub">希尔排序：小数组比快排、堆排更快，大数据不如快排。</li>
+<li class="sub">归并排序：要求稳定、或数据在链表/外部存储上排序时首选。</li>
+<li><strong>通用小技巧</strong>：加 flag 提前退出（数据早早有序时可省时间），但若剩余次数很少（如 100 趟只省 5 趟），省的还不如多判断的开销，此时不加更好。</li>
+<li>选型思路：先看数据规模与初始有序度，再看是否需要稳定、是否只要前 k 个、空间是否紧张；没有十全十美的排序，扬长避短才是对的。</li>
+</ul>
+</section>
+    <div class="qnav">
+        <a class="prev" href="ch09.html"><span class="k">PREV / 09</span><span class="t">查找算法</span></a>
+        <a class="next" href="ch11.html"><span class="k">NEXT / 11</span><span class="t">算法和竞赛</span></a>
+    </div>
+  </main>
+
+  <aside class="docside">
+    <div class="k">ON THIS PAGE</div>
+    <ol>
+      <li><a href="#s1">冒泡排序算法实例详解</a></li>
+      <li><a href="#s2">简单选择排序算法实例详解</a></li>
+      <li><a href="#s3">直接插入排序算法实例详解</a></li>
+      <li><a href="#s4">希尔排序算法实例详解</a></li>
+      <li><a href="#s5">堆排序算法实例详解</a></li>
+      <li><a href="#s6">归并排序算法实例详解</a></li>
+      <li><a href="#s7">快速排序算法实例详解</a></li>
+      <li><a href="#s8">各种排序算法总结</a></li>
+    </ol>
+  </aside>
+</div>
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+          <path d="M10 4H4v22h6M20 4h6v22h-6"/>
+          <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/>
+        </svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>数据结构与算法教程笔记，整理自 dotcpp 教程（C 语言中文网），按 12 章重写为「章 → 节 → 要点」的形式，图片外挂存储。原文如有笔误，已在对应要点标注订正。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="../数据结构教程/index.html">数据结构教程</a>
+        <a href="../算法/index.html">算法题库</a>
+        <a href="../frontend/index.html">前端教程</a>
+        <a href="../boke/index.html">全栈笔记</a>
+        <a href="../学习工具/错题本.html">错题本</a>
+      </nav>
+    </div>
+    <div class="sf-bottom">
+      <span>© 2026 朝云暮辞</span>
+      <span>笔记仅供学习参考，原文以 dotcpp 站点为准。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/reader.js" defer></script>
+</body>
+</html>
