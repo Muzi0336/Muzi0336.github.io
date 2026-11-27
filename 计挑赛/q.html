@@ -19,7 +19,7 @@
             <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
         </a>
         <nav class="nav">
-            <a class="active" href="index.html">真题</a>
+            <a class="contest-link active" href="../计挑赛/index.html" data-contest>计挑赛</a>
             <a href="../frontend/index.html">前端教程</a>
             <a href="../boke/index.html">全栈笔记</a>
             <a href="../算法/index.html">算法</a><a href="../学习工具/错题本.html">错题本</a>
@@ -210,7 +210,7 @@
 
             // ---------- 编程题区 ----------
             function renderProgram() {
-                const rest = (q.sections || []).slice(1);
+                const rest = (q.sections || []).slice(1).filter(s => s.h !== '样例');
                 let html = rest.map(s => `<div class="subblock"><h3>${esc(s.h)}</h3>${s.p.map(p => `<p class="prose">${esc(p)}</p>`).join('')}</div>`).join('');
 
                 if (q.samples && q.samples.length) {
@@ -227,7 +227,9 @@
 
                 const hasCode = !!(q.codeBlocks && q.codeBlocks.length);
                 html2 += `<div class="note-bar"><b>备注</b><span>${hasCode
-                    ? '参考代码为原试卷附带，未经改写，仅供对照思路。'
+                    ? (q.codeSource === 'ai'
+                        ? '以下为 AI 参考代码（非官方），仅供对照思路，不保证评测通过。'
+                        : '参考代码整理自原卷配套材料，未经改写，仅供对照思路；非官方评分答案。')
                     : '原始文件未提供参考代码，可依据样例与解析自行实现。'}</span></div>`;
 
                 if (hasCode) {
@@ -649,6 +651,7 @@
             });
         })();
     </script>
+    <script src="../计挑赛/assets/contest-nav.js"></script>
 </body>
 
 </html>

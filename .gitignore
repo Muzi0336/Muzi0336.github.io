@@ -17,7 +17,14 @@ bin-release/
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
 
-# C 语言原始试卷（仅本地保留，不随公开站点发布）
-C语言/*.xlsx
-C语言/*.docx
-C语言/*.pdf
+# 计挑赛原始试卷（仅本地保留，不随公开站点发布）
+计挑赛/**/*.xlsx
+计挑赛/**/*.docx
+计挑赛/**/*.pdf
+
+# 本地缓存与日志
+.cache/
+**/.cache/
+*.log
+**/__pycache__/
+cache/

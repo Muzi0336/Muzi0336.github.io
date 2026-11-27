@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>错题本 · 朝云暮辞</title>
-<meta name="description" content="朝云暮辞错题本：总题数、已写题数与 C 语言、算法分类错题，点开即可看题。">
-<link rel="stylesheet" href="../C语言/assets/style.css">
-<link rel="stylesheet" href="../C语言/assets/detail.css">
+<meta name="description" content="朝云暮辞错题本：总题数、已写题数与 C、C++、Java、Python、算法分类错题，点开即可看题。">
+<link rel="stylesheet" href="../计挑赛/assets/style.css">
+<link rel="stylesheet" href="../计挑赛/assets/detail.css">
 <style>
 .hero-stats{display:flex;gap:44px;align-items:flex-end;flex-wrap:wrap;padding-bottom:6px}
 .hero-stat .n{font-family:var(--serif);font-size:clamp(38px,5vw,64px);font-weight:700;line-height:1}
@@ -68,7 +68,7 @@
     <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
   </a>
   <nav class="nav">
-    <a href="../C语言/index.html">真题</a>
+    <a class="contest-link" href="../计挑赛/index.html" data-contest>计挑赛</a>
     <a href="../算法/index.html">算法</a>
     <a href="../frontend/index.html">前端教程</a>
     <a href="../boke/index.html">全栈笔记</a>
@@ -81,7 +81,7 @@
     <div class="hero-left">
       <div class="eyebrow">— Wrong book / 一个界面</div>
       <h1>错题，<br>都在这本里。</h1>
-      <p class="lede">总题数、已写题数、分类错题都在这一页。点开 C 语言或算法，就能看到具体错了哪些题，也可以直接移出。</p>
+      <p class="lede">总题数、已写题数、分类错题都在这一页。点开 C、C++、Java、Python 或算法，就能看到具体错了哪些题，也可以直接移出。</p>
       <p class="summary-line" id="summaryLine">正在读取本地记录…</p>
     </div>
     <div class="hero-stats">
@@ -91,33 +91,7 @@
     </div>
   </section>
 
-  <section class="cat-grid" aria-label="错题分类">
-    <button class="cat-card" type="button" data-cat="c" aria-controls="detail" aria-expanded="false">
-      <div class="cat-top">
-        <div><div class="cat-kicker">WRONG BOOK / C</div><div class="cat-name">C 语言真题</div></div>
-        <span class="cat-total"><span id="cTotal">236</span> 题</span>
-      </div>
-      <div class="cat-progress">
-        <b id="cWritten">0</b><span>/ <span id="cTotalInline">236</span> 已写</span>
-        <span class="cat-wrong"><b id="cWrong">0</b> 道错题</span>
-      </div>
-      <div class="cat-bar"><i id="cBar"></i></div>
-      <div class="cat-open">查看 C 语言错题 <span>点开 →</span></div>
-    </button>
-
-    <button class="cat-card" type="button" data-cat="a" aria-controls="detail" aria-expanded="false">
-      <div class="cat-top">
-        <div><div class="cat-kicker">WRONG BOOK / ARENA</div><div class="cat-name">算法题库</div></div>
-        <span class="cat-total"><span id="aTotal">145</span> 题</span>
-      </div>
-      <div class="cat-progress">
-        <b id="aWritten">0</b><span>/ <span id="aTotalInline">145</span> 已写</span>
-        <span class="cat-wrong"><b id="aWrong">0</b> 道错题</span>
-      </div>
-      <div class="cat-bar"><i id="aBar"></i></div>
-      <div class="cat-open">查看算法错题 <span>点开 →</span></div>
-    </button>
-  </section>
+  <section class="cat-grid" id="catGrid" aria-label="错题分类"></section>
 
   <section class="detail" id="detail" hidden>
     <div class="detail-head">
@@ -139,7 +113,7 @@
         <div><span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span><p>做题记录和错题只保存在当前浏览器。</p></div>
       </div>
       <nav class="sf-links">
-        <a href="../C语言/index.html">C 语言真题</a>
+        <a href="../计挑赛/index.html">计挑赛</a>
         <a href="../算法/index.html">算法题库</a>
         <a href="错题本.html">错题本</a>
       </nav>
@@ -148,93 +122,108 @@
   </div>
 </footer>
 
-<script src="../C语言/data.js"></script>
+<script src="../计挑赛/data.js"></script>
+<script src="../计挑赛/cpp/data.js"></script>
+<script src="../计挑赛/java/data.js"></script>
+<script src="../计挑赛/python/data.js"></script>
 <script src="../算法/assets/app_data.js"></script>
 <script>
 (function(){
-  const C_ANS = 'cquiz.ans.v1';
-  const C_CODE = 'cquiz.code.';
-  const ARENA_KEY = 'arena.v1';
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const read = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key) || '{}') || fallback; } catch(e){ return fallback; } };
   const save = (key, val) => { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){} };
-
-  const cQuestions = (window.CDATA && CDATA.questions) ? CDATA.questions : [];
-  const aProblems = (window.ARENA && ARENA.problems) ? ARENA.problems : [];
-  const cById = new Map(cQuestions.map(q => [q.id, q]));
-  const aById = new Map(aProblems.map(p => [p.id, p]));
-  const cAns = read(C_ANS, {});
+  const ARENA_KEY = 'arena.v1';
   const arena = read(ARENA_KEY, { status:{}, book:{}, quiz:{}, lessons:{}, code:{}, wrong:{} });
   arena.status = arena.status || {}; arena.quiz = arena.quiz || {}; arena.code = arena.code || {}; arena.wrong = arena.wrong || {};
+  const aProblems = (window.ARENA && ARENA.problems) ? ARENA.problems : [];
+  const aById = new Map(aProblems.map(p => [p.id, p]));
 
-  function cWrittenSet(){
+  const banks = [
+    { id:'c', name:'C 语言', kicker:'WRONG BOOK / C', total:236, questions: (window.CDATA && CDATA.questions) || [], ansKey:'cquiz.ans.v1', codePrefix:'cquiz.code.', href:'../计挑赛/q.html' },
+    { id:'cpp', name:'C++', kicker:'WRONG BOOK / C++', total:235, questions: (window.CDATA_CPP && CDATA_CPP.questions) || [], ansKey:'contest.ans.cpp.v1', codePrefix:'contest.code.cpp.', href:'../计挑赛/cpp/q.html' },
+    { id:'java', name:'Java', kicker:'WRONG BOOK / JAVA', total:238, questions: (window.CDATA_JAVA && CDATA_JAVA.questions) || [], ansKey:'contest.ans.java.v1', codePrefix:'contest.code.java.', href:'../计挑赛/java/q.html' },
+    { id:'python', name:'Python', kicker:'WRONG BOOK / PYTHON', total:235, questions: (window.CDATA_PY && CDATA_PY.questions) || [], ansKey:'contest.ans.python.v1', codePrefix:'contest.code.python.', href:'../计挑赛/python/q.html' }
+  ].map(b => ({ ...b, byId: new Map(b.questions.map(q => [q.id, q])), total: b.questions.length || b.total, ans: read(b.ansKey, {}) }));
+  const bankMap = new Map(banks.map(b => [b.id, b]));
+  const algo = { id:'a', name:'算法题库', kicker:'WRONG BOOK / ARENA', total:aProblems.length || 145, questions:aProblems, byId:aById, href:'../算法/q.html' };
+
+  function writtenSet(bank){
     const set = new Set();
-    Object.keys(cAns).forEach(id => { if (cById.has(id)) set.add(id); });
+    Object.keys(bank.ans).forEach(id => { if (bank.byId.has(id)) set.add(id); });
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
-      if (!k || !k.startsWith(C_CODE)) continue;
-      const id = k.slice(C_CODE.length);
-      if (cById.has(id) && (localStorage.getItem(k) || '').trim()) set.add(id);
+      if (!k || !k.startsWith(bank.codePrefix)) continue;
+      const id = k.slice(bank.codePrefix.length);
+      if (bank.byId.has(id) && (localStorage.getItem(k) || '').trim()) set.add(id);
     }
     return set;
   }
-  function aWrittenSet(){
+  function arenaWrittenSet(){
     const set = new Set();
     ['status','quiz','code'].forEach(k => {
       Object.keys(arena[k] || {}).forEach(id => {
         if (!aById.has(id)) return;
-        const v = arena[k][id];
-        if (k === 'status' && (!v || v === 'todo')) return;
+        if (k === 'status' && (!arena[k][id] || arena[k][id] === 'todo')) return;
         set.add(id);
       });
     });
     return set;
   }
-  function cWrongList(){
-    return cQuestions.filter(q => q.kind === 'single' && cAns[q.id] && cAns[q.id].ok === false)
+  function wrongList(bank){
+    return bank.questions.filter(q => q.kind === 'single' && bank.ans[q.id] && bank.ans[q.id].ok === false)
       .sort((a,b) => Number(b.year) - Number(a.year) || Number(a.no) - Number(b.no));
   }
-  function aWrongList(){
-    return aProblems.filter(p => arena.wrong[p.id]);
-  }
+  function arenaWrong(){ return aProblems.filter(p => arena.wrong[p.id]); }
 
   let activeCat = '';
+  let cache = {};
 
   function refresh(){
-    const cw = cWrittenSet();
-    const aw = aWrittenSet();
-    const cW = cWrongList();
-    const aW = aWrongList();
-    const cTotal = cQuestions.length || 236;
-    const aTotal = aProblems.length || 145;
-    const total = cTotal + aTotal;
+    cache = {};
+    let totalAll = 0, writtenAll = 0, wrongAll = 0;
+    banks.forEach(b => {
+      b.ans = read(b.ansKey, {});
+      const w = writtenSet(b), wrong = wrongList(b);
+      cache[b.id] = { written:w, wrong };
+      totalAll += b.total; writtenAll += w.size; wrongAll += wrong.length;
+    });
+    const aw = arenaWrittenSet(), aW = arenaWrong();
+    cache.a = { written:aw, wrong:aW };
+    totalAll += algo.total; writtenAll += aw.size; wrongAll += aW.length;
 
-    $('#totalQ').textContent = total;
-    $('#totalWritten').textContent = cw.size + aw.size;
-    $('#totalWrong').textContent = cW.length + aW.length;
-    $('#cTotal').textContent = cTotal;
-    $('#cTotalInline').textContent = cTotal;
-    $('#cWritten').textContent = cw.size;
-    $('#cWrong').textContent = cW.length;
-    $('#cBar').style.width = (cTotal ? Math.min(100, cw.size / cTotal * 100) : 0) + '%';
-    $('#aTotal').textContent = aTotal;
-    $('#aTotalInline').textContent = aTotal;
-    $('#aWritten').textContent = aw.size;
-    $('#aWrong').textContent = aW.length;
-    $('#aBar').style.width = (aTotal ? Math.min(100, aw.size / aTotal * 100) : 0) + '%';
-    $('#summaryLine').textContent = `一共 ${total} 题，已写 ${cw.size + aw.size} 题；其中 C 语言 ${cw.size}/${cTotal}，算法 ${aw.size}/${aTotal}。`;
-    if (activeCat) renderDetail(activeCat, cW, aW);
+    $('#totalQ').textContent = totalAll;
+    $('#totalWritten').textContent = writtenAll;
+    $('#totalWrong').textContent = wrongAll;
+    $('#summaryLine').textContent = `一共 ${totalAll} 题，已写 ${writtenAll} 题，错题 ${wrongAll} 道；下面按题库分类，点开就能看到具体题目。`;
+    renderCards();
+    if (activeCat) renderDetail(activeCat);
   }
 
-  function rowC(q){
+  function card(bank){
+    const c = cache[bank.id] || { written:new Set(), wrong:[] };
+    const pct = bank.total ? Math.min(100, c.written.size / bank.total * 100) : 0;
+    return `<button class="cat-card${activeCat === bank.id ? ' active' : ''}" type="button" data-cat="${bank.id}" aria-controls="detail" aria-expanded="${activeCat === bank.id}">
+      <div class="cat-top"><div><div class="cat-kicker">${esc(bank.kicker)}</div><div class="cat-name">${esc(bank.name)}</div></div>
+        <span class="cat-total"><span>${bank.total}</span> 题</span></div>
+      <div class="cat-progress"><b>${c.written.size}</b><span>/ ${bank.total} 已写</span><span class="cat-wrong"><b>${c.wrong.length}</b> 道错题</span></div>
+      <div class="cat-bar"><i style="width:${pct}%"></i></div>
+      <div class="cat-open">查看 ${esc(bank.name)} 错题 <span>点开 →</span></div>
+    </button>`;
+  }
+  function renderCards(){
+    $('#catGrid').innerHTML = banks.map(card).join('') + card(algo);
+    document.querySelectorAll('.cat-card').forEach(el => el.addEventListener('click', () => openCat(el.dataset.cat)));
+  }
+
+  function rowC(q, bank){
     return `<div class="wrow">
       <div class="wrow-main">
-        <div class="wrow-meta"><span>${esc(q.year)} 年</span><span class="dot"></span><span>${esc(q.title || '单选题')}</span></div>
-        <a href="../C语言/q.html?id=${encodeURIComponent(q.id)}">${esc(q.title || q.id)}</a>
+        <div class="wrow-meta"><span>${esc(q.year)} 年</span><span class="dot"></span><span>${esc(bank.name)} · 第 ${esc(q.no)} 题</span></div>
+        <a href="${bank.href}?id=${encodeURIComponent(q.id)}">${esc(q.title || q.id)}</a>
         <p>${esc(q.snippet || '')}</p>
       </div>
-      <div class="wrow-actions"><button class="wbtn" type="button" data-remove-c="${esc(q.id)}">清除记录</button></div>
+      <div class="wrow-actions"><button class="wbtn" type="button" data-remove-c="${bank.id}" data-id="${esc(q.id)}">清除记录</button></div>
     </div>`;
   }
   function rowA(p){
@@ -248,31 +237,28 @@
     </div>`;
   }
 
-  function renderDetail(cat, cW, aW){
-    const items = cat === 'c' ? cW : aW;
-    const isC = cat === 'c';
-    $('#detailKicker').textContent = isC ? 'WRONG BOOK / C 语言' : 'WRONG BOOK / ARENA';
-    $('#detailTitle').textContent = isC ? `C 语言错题 · ${items.length} 道` : `算法错题 · ${items.length} 道`;
+  function renderDetail(cat){
+    const bank = bankMap.get(cat);
+    const items = cache[cat] ? cache[cat].wrong : [];
+    const name = bank ? bank.name : '算法';
+    $('#detailKicker').textContent = bank ? bank.kicker : algo.kicker;
+    $('#detailTitle').textContent = `${name}错题 · ${items.length} 道`;
     $('#clearAll').disabled = items.length === 0;
     if (!items.length){
-      $('#wlist').innerHTML = `<div class="empty">这一类还没有错题。${isC ? '答错单选题后会自动出现在这里。' : '在算法题目页点「加入错题本」后会出现在这里。'}</div>`;
+      $('#wlist').innerHTML = `<div class="empty">这一类还没有错题。${bank ? '答错单选题后会自动出现在这里。' : '在算法题目页点「加入错题本」后会出现在这里。'}</div>`;
       return;
     }
-    if (isC){
+    if (bank){
       let html = '', lastYear = null;
       items.forEach(q => {
-        if (q.year !== lastYear){ lastYear = q.year; html += `<div class="wgroup-label">${esc(q.year)} 年</div>`; }
-        html += rowC(q);
+        if (q.year !== lastYear){ lastYear = q.year; html += `<div class="wgroup-label">${esc(q.year)} 年 · ${esc(bank.name)}</div>`; }
+        html += rowC(q, bank);
       });
       $('#wlist').innerHTML = html;
     } else {
-      const order = new Map(ARENA.tracks.map((t,i) => [t.name, i]));
+      const order = new Map((ARENA.tracks || []).map((t,i) => [t.name, i]));
       const groups = new Map();
-      items.forEach(p => {
-        const k = p.track || '其他';
-        if (!groups.has(k)) groups.set(k, []);
-        groups.get(k).push(p);
-      });
+      items.forEach(p => { const k = p.track || '其他'; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(p); });
       let html = '';
       [...groups.keys()].sort((a,b) => (order.has(a) ? order.get(a) : 99) - (order.has(b) ? order.get(b) : 99)).forEach(k => {
         html += `<div class="wgroup-label">${esc(k)} · ${groups.get(k).length} 道</div>`;
@@ -284,64 +270,55 @@
 
   function openCat(cat){
     activeCat = cat;
-    document.querySelectorAll('.cat-card').forEach(el => {
-      const on = el.dataset.cat === cat;
-      el.classList.toggle('active', on);
-      el.setAttribute('aria-expanded', on);
-    });
+    renderCards();
     $('#detail').hidden = false;
-    const cW = cWrongList(), aW = aWrongList();
-    renderDetail(cat, cW, aW);
+    renderDetail(cat);
     $('#detail').scrollIntoView({behavior:'smooth', block:'start'});
   }
-
-  document.querySelectorAll('.cat-card').forEach(el => {
-    el.addEventListener('click', () => openCat(el.dataset.cat));
-  });
 
   $('#wlist').addEventListener('click', (e) => {
     const cBtn = e.target.closest('[data-remove-c]');
     const aBtn = e.target.closest('[data-remove-a]');
     if (cBtn){
-      const id = cBtn.dataset.removeC;
-      delete cAns[id];
-      save(C_ANS, cAns);
-      try { localStorage.removeItem(C_CODE + id); } catch(err){}
-      refresh();
-      openCat('c');
+      const bank = bankMap.get(cBtn.dataset.removeC);
+      if (!bank) return;
+      const id = cBtn.dataset.id;
+      delete bank.ans[id];
+      save(bank.ansKey, bank.ans);
+      try { localStorage.removeItem(bank.codePrefix + id); } catch(err){}
+      refresh(); openCat(bank.id);
       return;
     }
     if (aBtn){
-      const id = aBtn.dataset.removeA;
-      delete arena.wrong[id];
+      delete arena.wrong[aBtn.dataset.removeA];
       save(ARENA_KEY, arena);
-      refresh();
-      openCat('a');
+      refresh(); openCat('a');
     }
   });
 
   $('#clearAll').addEventListener('click', () => {
     if (!activeCat) return;
-    const label = activeCat === 'c' ? 'C 语言错题' : '算法错题';
-    const msg = activeCat === 'c'
-      ? `确定清空${label}吗？会同时删除这些题的选择记录，已写数量会减少。`
-      : `确定清空${label}吗？只清空错题标记，已写数量不变。`;
-    if (!confirm(msg)) return;
-    if (activeCat === 'c'){
-      cWrongList().forEach(q => { delete cAns[q.id]; try { localStorage.removeItem(C_CODE + q.id); } catch(err){} });
-      save(C_ANS, cAns);
+    const bank = bankMap.get(activeCat);
+    const name = bank ? bank.name : '算法';
+    if (!confirm(`确定清空${name}错题吗？`)) return;
+    if (bank){
+      wrongList(bank).forEach(q => {
+        delete bank.ans[q.id];
+        try { localStorage.removeItem(bank.codePrefix + q.id); } catch(err){}
+      });
+      save(bank.ansKey, bank.ans);
     } else {
       arena.wrong = {};
       save(ARENA_KEY, arena);
     }
-    refresh();
-    openCat(activeCat);
+    refresh(); openCat(activeCat);
   });
 
   refresh();
   const hash = location.hash.replace('#','');
-  if (hash === 'c' || hash === 'a') openCat(hash);
+  if (bankMap.has(hash) || hash === 'a') openCat(hash);
 })();
 </script>
+    <script src="../计挑赛/assets/contest-nav.js"></script>
 </body>
 </html>

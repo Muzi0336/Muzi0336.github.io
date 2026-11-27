@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>真题 · Java｜朝云暮辞</title>
+    <meta name="description" content="2019–2025 年 Java 历年真题，单选题可直接作答，编程题附解析、参考代码与代码练习区。">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="stylesheet" href="../assets/detail.css">
+</head>
+
+<body>
+    <div class="topbar">
+        <a class="brand" href="../../index.html" title="返回站点导航">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+            </svg>
+            <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+        </a>
+        <nav class="nav">
+            <a class="contest-link active" href="../../计挑赛/index.html" data-contest>计挑赛</a>
+            <a href="../../frontend/index.html">前端教程</a>
+            <a href="../../boke/index.html">全栈笔记</a>
+            <a href="../../算法/index.html">算法</a><a href="../../学习工具/错题本.html">错题本</a>
+            <a href="../../index.html">返回导航</a>
+        </nav>
+    </div>
+
+    <main class="wrap">
+        <section class="hero">
+            <div class="hero-left">
+                <div class="eyebrow">— Past papers / 06</div>
+                <h1>真题，<br>是命题者的口音。</h1>
+                <p class="lede">2019–2025 年 Java 历年真题，按年份与题型归档。单选题可直接作答并查看解析，编程题附思路解析、折叠参考答案与可自动补全的代码练习区。</p>
+            </div>
+            <div class="hero-stat">
+                <div class="num" id="statNum">215</div>
+                <div class="stat-label">
+                    <span>道真题入库</span>
+                    <span id="statDup">重复题已折叠</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="filters" id="list">
+            <div class="searchbox">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+                <input id="q" type="search" placeholder="搜索题号、题干关键词" autocomplete="off">
+                <span class="hits" id="hits">215 道</span>
+            </div>
+            <div class="selects">
+                <div class="sel">
+                    <select id="year">
+                        <option value="">全部年份</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                    </select>
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4l4 4 4-4"/></svg>
+                </div>
+                <div class="sel">
+                    <select id="kind">
+                        <option value="">全部题型</option>
+                        <option value="single">单选题</option>
+                        <option value="program">编程题</option>
+                    </select>
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4l4 4 4-4"/></svg>
+                </div>
+                <div class="sel">
+                    <select id="state">
+                        <option value="">全部状态</option>
+                        <option value="todo">未作答</option>
+                        <option value="right">已答对</option>
+                        <option value="wrong">答错</option>
+                    </select>
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4l4 4 4-4"/></svg>
+                </div>
+                <label class="check"><input type="checkbox" id="dup"> 显示重复题</label>
+            </div>
+        </section>
+
+        <section class="list" id="rows"></section>
+        <div class="empty" id="empty" hidden>
+            <b>没有匹配的题目</b>
+            换个关键词，或把年份、题型筛选调回「全部」。
+        </div>
+
+        <div class="foot">
+            <div>2019–2025 · 历年试卷按年份与题型归档。</div>
+            <div>单选直接作答，编程题答案默认折叠，解析逐题补充。</div>
+        </div>
+    </main>
+
+    <footer class="site-foot">
+        <div class="sf-inner">
+            <div class="sf-top">
+                <div class="sf-brand">
+                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
+                        <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                        <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+                    </svg>
+                    <div>
+                        <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+                        <p>朝云暮辞 · Java 真题档案。2019–2025 年试卷按年份与题型整理，配套逐题解析、可折叠参考代码与手敲代码练习。</p>
+                    </div>
+                </div>
+                <nav class="sf-links">
+                    <a href="index.html">真题</a>
+                    <a href="../../frontend/index.html">前端教程</a>
+                    <a href="../../boke/index.html">全栈笔记</a>
+            <a href="../../算法/index.html">算法</a><a href="../../学习工具/错题本.html">错题本</a>
+            <a href="../../index.html">返回导航</a>
+                </nav>
+            </div>
+            <div class="sf-bottom">
+                <span>© 2026 朝云暮辞</span>
+                <span>题目与参考代码整理自原始试卷，解析由整理者补充，仅供参考。</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        (function () {
+            const D = window.CDATA_JAVA;
+            const ANS_KEY = 'contest.ans.java.v1';
+            const $ = s => document.querySelector(s);
+
+            function loadAns() {
+                try { return JSON.parse(localStorage.getItem(ANS_KEY) || '{}'); } catch (e) { return {}; }
+            }
+            function esc(s) {
+                return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            }
+            const state = {
+                ans: loadAns(),
+                y: '', k: '', st: '', dup: false, q: ''
+            };
+
+            // URL 预置筛选
+            const sp = new URLSearchParams(location.search);
+            state.y = sp.get('year') || '';
+            state.k = sp.get('kind') || '';
+            $('#year').value = state.y;
+            $('#kind').value = state.k;
+
+            const totalVisible = D.questions.filter(q => !q.dup).length;
+            $('#statNum').textContent = totalVisible;
+
+            function match(q) {
+                if (!state.dup && q.dup) return false;
+                if (state.y && String(q.year) !== state.y) return false;
+                if (state.k && q.kind !== state.k) return false;
+                if (state.st) {
+                    const rec = q.kind === 'single' ? state.ans[q.id] : null;
+                    const done = rec ? (rec.ok ? 'right' : 'wrong') : 'todo';
+                    if (done !== state.st) return false;
+                }
+                if (state.q) {
+                    const hay = [
+                        q.id, q.year, q.title, q.snippet,
+                        ...(q.kind === 'single' ? [q.stem.map(b => b.v).join(' '), ...Object.values(q.options)] : [])
+                    ].join(' ').toLowerCase();
+                    if (!hay.includes(state.q)) return false;
+                }
+                return true;
+            }
+
+            function rowHTML(q) {
+                const rec = q.kind === 'single' ? state.ans[q.id] : null;
+                const draft = q.kind === 'program' ? localStorage.getItem('contest.code.java.' + q.id) : null;
+                const dot = rec ? `<span class="dot ${rec.ok ? 'ok' : 'bad'}"></span>` : (draft ? '<span class="dot ok"></span>' : '');
+                const status = rec ? `<em class="${rec.ok ? 'ok' : 'bad'}">${rec.ok ? '已答对' : '答错'}</em>` : (draft ? '<em class="ok">已练习</em>' : '');
+                const label = q.kind === 'single' ? `单选题` : `编程题`;
+                const sub = q.kind === 'single' ? `第 ${q.no} 题` : `编程题 ${q.no}`;
+                return `<a class="row" href="q.html?id=${encodeURIComponent(q.id)}">
+                    <div class="row-year"><b>${q.year}</b><small>Java</small><small>${sub}</small></div>
+                    <div class="row-main">
+                        <h3>${esc(q.title)}${dot}</h3>
+                        <p>${esc(q.snippet)}</p>
+                    </div>
+                    <div class="row-side"><span class="tag">${label}</span>${status}</div>
+                </a>`;
+            }
+
+            function render() {
+                const list = D.questions.filter(match);
+                $('#rows').innerHTML = list.map(rowHTML).join('');
+                $('#hits').textContent = list.length + ' 道';
+                $('#empty').hidden = list.length > 0;
+            }
+
+            render();
+
+            $('#q').addEventListener('input', e => { state.q = e.target.value.trim().toLowerCase(); render(); });
+            $('#year').addEventListener('change', e => { state.y = e.target.value; render(); });
+            $('#kind').addEventListener('change', e => { state.k = e.target.value; render(); });
+            $('#state').addEventListener('change', e => { state.st = e.target.value; render(); });
+            $('#dup').addEventListener('change', e => { state.dup = e.target.checked; render(); });
+
+
+            document.addEventListener('keydown', e => {
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                    e.preventDefault();
+                    $('#q').focus();
+                }
+            });
+
+            // 从详情页返回时刷新答题状态
+            window.addEventListener('pageshow', () => { state.ans = loadAns(); render(); });
+        })();
+    </script>
+    <script src="../assets/contest-nav.js"></script>
+</body>
+
+</html>

@@ -20,7 +20,7 @@
             <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
         </a>
         <nav class="nav">
-            <a class="active" href="index.html">真题</a>
+            <a class="contest-link active" href="../计挑赛/index.html" data-contest>计挑赛</a>
             <a href="../frontend/index.html">前端教程</a>
             <a href="../boke/index.html">全栈笔记</a>
             <a href="../算法/index.html">算法</a><a href="../学习工具/错题本.html">错题本</a>
@@ -56,7 +56,6 @@
                         <option value="">全部年份</option>
                         <option value="2025">2025</option>
                         <option value="2024">2024</option>
-                        <option value="2023" disabled>2023（未收录）</option>
                         <option value="2022">2022</option>
                         <option value="2021">2021</option>
                         <option value="2020">2020</option>
@@ -92,7 +91,7 @@
         </div>
 
         <div class="foot">
-            <div>2019–2025 · 6 个年份 · 缺 2023 年试卷，其余年份已收录。</div>
+            <div>2019–2025 · 历年试卷按年份与题型归档。</div>
             <div>单选直接作答，编程题答案默认折叠，解析逐题补充。</div>
         </div>
     </main>
@@ -217,6 +216,7 @@
             window.addEventListener('pageshow', () => { state.ans = loadAns(); render(); });
         })();
     </script>
+    <script src="../计挑赛/assets/contest-nav.js"></script>
 </body>
 
 </html>

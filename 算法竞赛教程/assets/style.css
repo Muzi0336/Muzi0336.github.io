@@ -1,0 +1,55 @@
+:root{--fg:#20242b;--muted:#6b7280;--line:#e6e8eb;--accent:#2563eb;--bg:#fafaf8;--code-bg:#f6f8fa}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:16px/1.9 "Source Han Serif SC","Noto Serif CJK SC","Microsoft YaHei",system-ui,sans-serif}
+/* 侧栏 */
+aside.side{position:fixed;top:0;left:0;width:272px;height:100vh;overflow-y:auto;background:#fff;
+ border-right:1px solid var(--line);padding:20px 14px 60px;font:13px/1.7 "Microsoft YaHei",system-ui,sans-serif;z-index:10}
+.side-head{display:flex;align-items:baseline;gap:8px;padding:0 6px 14px;border-bottom:1px solid var(--line);margin-bottom:12px}
+.side-head .home{font-size:15px;font-weight:700;color:var(--fg);text-decoration:none;letter-spacing:.5px}
+.side-head .src{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+aside.side .ch{color:var(--accent);font-weight:700;margin:14px 0 4px;padding-left:8px;border-left:3px solid var(--accent);font-size:12.5px}
+aside.side ol{list-style:none;margin:0;padding:0 0 0 11px}
+aside.side li{padding:1px 0}
+aside.side a{color:#4b5563;text-decoration:none;display:block;padding:2px 6px;border-radius:4px}
+aside.side a:hover{color:var(--accent);background:#f3f6ff}
+aside.side a.on{color:#fff;background:var(--accent);font-weight:700}
+/* 正文 */
+main{margin-left:272px;padding:44px 56px 100px;background:#fff;min-height:100vh;max-width:1100px}
+.crumb{font-size:12.5px;color:var(--muted);margin-bottom:26px;font-family:"Microsoft YaHei",system-ui,sans-serif}
+.crumb a{color:var(--accent);text-decoration:none}
+article h1{font-size:24px;line-height:1.5;margin:0 0 26px;padding-bottom:14px;border-bottom:2px solid #111}
+article p{margin:14px 0;text-align:justify}
+article img{max-width:100%;height:auto;display:block;margin:20px auto;border:1px solid var(--line);border-radius:4px}
+article pre{background:var(--code-bg);border:1px solid #e1e4e8;border-radius:6px;padding:14px 16px;
+ overflow-x:auto;margin:18px 0;font:13.5px/1.65 Consolas,"Cascadia Mono","Courier New",monospace}
+article pre code{white-space:pre;color:#24292f}
+article code{font-family:Consolas,"Cascadia Mono",monospace;background:#f2f4f7;padding:1px 5px;border-radius:3px;font-size:.92em}
+article pre code{background:none;padding:0}
+article table{border-collapse:collapse;margin:18px 0;font-size:14px;display:block;overflow-x:auto}
+article td,article th{border:1px solid var(--line);padding:6px 10px}
+article a{color:var(--accent);text-decoration:none;border-bottom:1px dotted #a8c7fa}
+article h2{font-size:19px;margin:34px 0 12px}
+article h3{font-size:17px;margin:26px 0 10px}
+article ul,article ol{padding-left:26px}
+article blockquote{margin:16px 0;padding:8px 16px;border-left:3px solid var(--line);color:var(--muted)}
+/* 翻页 */
+.pager{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:22px;
+ border-top:1px solid var(--line);font:14px/1.6 "Microsoft YaHei",system-ui,sans-serif}
+.pager a{max-width:46%;color:var(--fg);text-decoration:none;padding:10px 14px;border:1px solid var(--line);
+ border-radius:8px;background:#fdfdfd}
+.pager a:hover{border-color:#bfd3fb;background:#f7faff;color:var(--accent)}
+.pager .next{margin-left:auto;text-align:right}
+@media (max-width:1000px){
+ aside.side{position:static;width:auto;height:auto;border-right:none;border-bottom:1px solid var(--line);max-height:none}
+ main{margin-left:0;padding:26px 20px 70px;max-width:none}
+}
+@media print{
+ aside.side,.pager,.crumb{display:none}
+ main{margin:0;padding:0}
+ article h1{font-size:18pt}
+ article pre{white-space:pre-wrap;word-break:break-all;font-size:9.5pt;page-break-inside:avoid}
+ article img{page-break-inside:avoid}
+ body{font-size:11.5pt}
+}
