@@ -7,6 +7,7 @@
     <title>题目详情 · Java 真题｜朝云暮辞</title>
     <link rel="stylesheet" href="../../../assets/css/site.css">
     <link rel="stylesheet" href="../../../assets/css/detail.css">
+    <link rel="stylesheet" href="../../../assets/css/hints.css">
 </head>
 
 <body>
@@ -55,8 +56,8 @@
                 <div id="extraTop"></div>
 
                 <section class="block">
-                    <h2><span>解析</span><button class="tg" id="explTg">展开</button></h2>
-                    <div class="explain" id="expl" hidden></div>
+                    <h2><span>提示阶梯</span></h2>
+                    <div id="hintLadder"></div>
                 </section>
 
                 <div id="extra"></div>
@@ -112,6 +113,7 @@
 
     <script src="data.js"></script>
     <script src="../../../assets/js/quiz-ai.js"></script>
+    <script src="../../../assets/js/hint-ladder.js"></script>
     <script>
         (function () {
             const D = window.CDATA_JAVA;
@@ -183,16 +185,50 @@
             }
             $('#stem').innerHTML = stemHTML;
 
-            // ---------- 解析 ----------
-            const expl = $('#expl');
-            expl.textContent = q.expl || '这道题暂无解析。';
-            let explOpen = q.kind === 'program';
-            function syncExpl() {
-                expl.hidden = !explOpen;
-                $('#explTg').textContent = explOpen ? '收起' : '展开';
+            // ---------- 提示阶梯 ----------
+            function contestLadder(q) {
+                const raw = String(q.expl || '').trim();
+                if (q.kind === 'single') {
+                    const m = raw.match(/^考点[:：]\s*([^。；]+)/);
+                    const guess = [
+                        [/值传递|引用传递/, '参数传递'],
+                        [/虚函数|多态/, '虚函数与多态'],
+                        [/构造|析构/, '构造与析构'],
+                        [/继承/, '继承与派生'],
+                        [/重载/, '函数重载'],
+                        [/模板/, '模板'],
+                        [/指针/, '指针'],
+                        [/引用/, '引用'],
+                        [/异常/, '异常处理'],
+                        [/文件/, '文件操作'],
+                        [/字符串|string/i, '字符串'],
+                        [/排序/, '排序'],
+                        [/查找/, '查找'],
+                        [/递归/, '递归'],
+                        [/动态规划|DP/i, '动态规划'],
+                        [/贪心/, '贪心'],
+                        [/图|树/, '图与树']
+                    ].find(function (pair) { return pair[0].test(q.snippet || ''); });
+                    const concept = m ? m[1].trim() : (guess ? guess[1] : '');
+                    let rest = m ? raw.slice(m[0].length).trim().replace(/^。/,'').trim() : raw;
+                    const first = (rest && !/^正确答案/.test(rest)) ? rest.split('。')[0].trim() + '。' : '';
+                    const lead = concept
+                        ? '<p><b>' + (m ? '考点' : '可能考点') + '：</b>' + esc(concept) + '</p><p>先用自己的话解释它，再逐项对照；解释不出来，就先补这个概念。</p>'
+                        : '<p><b>先圈概念：</b>把题干里反复出现的名词圈出来，写出它的定义，再逐项对照。</p>';
+                    return [
+                        { title: '方向 · 先认考点', html: lead },
+                        { title: '判断 · 用依据排除', html: (first ? '<p>' + esc(first) + '</p>' : '<p>解析只给了结论。自己补一步：把正确选项改写成“因为……所以……”，再看其他选项违反了定义里的哪一条。</p>') + '<p class="hl-lead">先排除，再决定</p>' },
+                        { title: '完整解析 · 对照答案', html: '<p>' + esc(raw || '这道题暂无解析。').replace(/\n/g, '<br>') + '</p>' }
+                    ];
+                }
+                return [
+                    { title: '方向 · 先看输入输出', html: '<p>先确认程序要读什么、输出什么，再手算第一组样例。不要急着打开参考代码。</p>' },
+                    { title: '步骤 · 先写朴素做法', html: '<p>把思路写成 3–5 步，估一下时间复杂度和边界；想不清的地方先记下来。</p>' },
+                    { title: '完整解析 · 最后对照', html: '<p>' + esc(raw || '这道题暂无解析。').replace(/\n/g, '<br>') + '</p>' }
+                ];
             }
-            syncExpl();
-            $('#explTg').addEventListener('click', () => { explOpen = !explOpen; syncExpl(); });
+            const ladder = window.HintLadder ? HintLadder.mount($('#hintLadder'), { key: 'contest:' + LANG + ':' + q.id, steps: contestLadder(q), note: '先自己选，再逐层展开' }) : null;
+            window.__contestLadder = ladder;
 
             // ---------- 来源 ----------
             const src = q.source || {};
@@ -519,8 +555,6 @@
                     try { localStorage.setItem(ANS_KEY, JSON.stringify(all)); } catch (err) { }
                     rec = null;
                     revealed = false;
-                    explOpen = false;
-                    syncExpl();
                     draw();
                 }
 
@@ -562,17 +596,13 @@
                             saveAns(q.id, record);
                             rec = record;
                             revealed = true;
-                            explOpen = true; syncExpl();
+                            if (!record.ok && window.__contestLadder) window.__contestLadder.open(1);
                             draw();
                         });
                     });
                     const rb = $('#revealBtn');
                     if (rb) rb.addEventListener('click', () => {
                         revealed = !revealed;
-                        if (!revealed) {
-                            explOpen = false;
-                            syncExpl();
-                        }
                         draw();
                     });
                     const redo = $('#redo');
