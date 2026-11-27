@@ -160,6 +160,17 @@
                 return '<div class="sol-text">' + out.join('') + '</div>';
             }
 
+            // 「让 AI 讲这题」→ 复用右侧 AI 卡的解析（用读者自己的 API Key）
+            function bindAi(scope) {
+                var btn = scope.querySelector('[data-ai]');
+                if (!btn) return;
+                btn.addEventListener('click', function () {
+                    var t = document.getElementById('qaiExplain');
+                    if (t) { t.click(); return; }
+                    if (window.QuizAI) QuizAI.openSettings();
+                });
+            }
+
             function renderSol(q) {
                 var mount = $('#sol');
                 if (!mount) return;
@@ -169,7 +180,9 @@
                 if (q.src !== 'dotcpp') {
                     mount.innerHTML = head('洛谷题 · 未收录') +
                         '<div class="sol-empty" style="margin-top:14px"><span>本题来自洛谷题单，本站只收录 Dotcpp 题解区的题解。</span>' +
+                        '<button type="button" class="sol-ai" data-ai>让 AI 讲这题</button>' +
                         '<a href="' + LQ.esc(q.url || '#') + '" target="_blank" rel="noopener">看洛谷讨论 ↗</a></div>';
+                    bindAi(mount);
                     return;
                 }
                 mount.innerHTML = head('加载中…') + '<div class="sol-wrap" id="solWrap"></div>';
@@ -183,7 +196,9 @@
 
                     if (!list.length) {
                         wrap.innerHTML = '<div class="sol-empty"><span>Dotcpp 题解区里这道题还没有题解，或都被隐藏了。</span>' +
+                            '<button type="button" class="sol-ai" data-ai>让 AI 讲这题</button>' +
                             '<a href="https://blog.dotcpp.com/tijie/p' + encodeURIComponent(q.id) + '/" target="_blank" rel="noopener">去题解页看看 ↗</a></div>';
+                        bindAi(wrap);
                         return;
                     }
 
