@@ -60,11 +60,12 @@
 
 <script src="assets/app_data.js"></script>
 <script src="assets/arena.js"></script>
+<script src="../../assets/js/quiz-ai.js"></script>
 <script>
 (function(){
   var raw = new URLSearchParams(location.search).get('id');
   var item = A.byId(raw) || A.data.problems[0];
-  document.write('<script src='assets/problems' + item.id + '.js"><\/script>');
+  document.write('<script src="assets/problems/' + item.id + '.js"><\/script>');
   if (item.animation && item.animation.type !== 'none') {
     document.write('<script src="assets/demo_captions.js"><\/script>');
     document.write('<script src="assets/lab.js"><\/script>');
@@ -242,7 +243,7 @@
       <button class="bookmark record-clear" id="sideClear" type="button"><span>清除本题做题记录</span><span>×</span></button>
       <p class="side-note">进度、草稿和错题标记只存在这台设备的浏览器里，不会上传。</p>
     </div>
-    <div class="card">
+    <div class="card" id="infoCard">
       <div class="card-head"><span class="k">INFO <span>/ 题目</span></span></div>
       <div class="side-meta">
         <div class="r"><span>分类</span><b>${A.esc(p.track)}</b></div>
@@ -396,6 +397,43 @@
       document.querySelectorAll(`.qopt[data-q="${qi}"]`).forEach(x => x.classList.toggle('picked', x === btn));
     });
   });
+
+  // AI 助教
+  if (window.QuizAI) {
+    QuizAI.mount({
+      question: { kind: 'program', id: p.id, title: p.title, year: 'ARENA' },
+      aiRole: '算法题库',
+      cardSub: '算法题库',
+      language: 'C++ 11',
+      sideSelector: '.qside',
+      sideBefore: '#infoCard',
+      codeSelector: '.editor-card',
+      getCode: function(){ return ed.value; },
+      isRefVisible: function(){ return card.classList.contains('open'); },
+      explainPrompt: '请解析这道算法题：先讲考点和解题思路，再给关键步骤、样例推演、边界情况和复杂度；不要声称实际运行过程序，也不要一上来就给完整正确代码。',
+      contextText: function(){
+        var lang = edLang.value;
+        var ref = card.classList.contains('open') ? ((p.code || {})[lang] || '') : '';
+        if (ref.length > 7000) ref = ref.slice(0, 7000) + '\n…（参考代码过长，已截断）';
+        var code = ed.value || '（空）';
+        if (code.length > 6000) code = code.slice(0, 6000) + '\n…（代码过长，已截断）';
+        var samples = (p.samples || []).map(function(s, i){
+          return '样例 ' + (i + 1) + '：\n输入：' + (s.input || '') + '\n输出：' + (s.output || '');
+        }).join('\n\n');
+        return [
+          '【题目】ARENA 算法题库 · ' + p.title + '（题号 ' + p.id + '）',
+          '【分类 / 难度】' + p.track + ' · ' + p.difficulty + ' · 建议 ' + p.minutes + ' 分钟',
+          '【题干】\n' + (p.statement || ''),
+          '【输入】\n' + (p.input || ''),
+          '【输出】\n' + (p.output || ''),
+          (p.constraints && p.constraints.length ? '【约束】\n' + p.constraints.join('\n') : ''),
+          (samples ? '【样例】\n' + samples : ''),
+          '【用户手敲代码】\n~~~' + lang + '\n' + code + '\n~~~',
+          (ref ? '【参考代码（用户已展开）】\n~~~\n' + ref + '\n~~~' : '【参考代码】用户尚未展开，请不要假设或编造官方代码。')
+        ].filter(Boolean).join('\n\n');
+      }
+    });
+  }
 
   // 演示
   if (p.animation && p.animation.type !== 'none' && window.renderArenaDemo){

@@ -103,6 +103,7 @@
     <script src="vendor/auto-render.min.js"></script>
     <script src="data/catalog.js"></script>
     <script src="assets/exam.js"></script>
+    <script src="../../assets/js/quiz-ai.js"></script>
     <script>
         (function () {
             var $ = function (s) { return document.querySelector(s); };
@@ -258,6 +259,47 @@
                     key: q.id,
                     lang: LQ.guessLang(q.tracks)
                 });
+
+                // AI 助教
+                if (window.QuizAI) {
+                    QuizAI.mount({
+                        question: { kind: 'program', id: q.id, title: q.title, year: q.year },
+                        aiRole: '蓝桥杯真题',
+                        cardSub: '蓝桥真题',
+                        language: 'C++',
+                        sideSelector: '.p-side',
+                        sideBefore: '#noteCard',
+                        codeSelector: '#editorMount',
+                        getCode: function () {
+                            var ed = document.querySelector('#editorMount #ed');
+                            return ed ? ed.value : '';
+                        },
+                        isRefVisible: function () { return false; },
+                        explainPrompt: '请解析这道蓝桥杯真题：先讲考点和解题思路，再给关键步骤、样例推演、边界情况和复杂度；不要声称实际运行过程序，也不要一上来就给完整正确代码。',
+                        contextText: function () {
+                            var langBtn = document.querySelector('#editorMount .langs button.on');
+                            var lang = langBtn ? langBtn.textContent.trim() : 'C++';
+                            var ed = document.querySelector('#editorMount #ed');
+                            var code = ed ? ed.value : '';
+                            if (code.length > 6000) code = code.slice(0, 6000) + '\n…（代码过长，已截断）';
+                            var stem = (q.sections || []).map(function (sec) {
+                                return '【' + sec.h + '】\n' + (sec.md || '');
+                            }).join('\n\n');
+                            var samples = (q.samples || []).map(function (x, i) {
+                                return '样例 ' + (i + 1) + '：\n输入：' + (x.in || '') + '\n输出：' + (x.out || '');
+                            }).join('\n\n');
+                            return [
+                                '【题目】蓝桥杯真题 · ' + q.year + ' · ' + q.title + '（题号 ' + q.id + '）',
+                                '【来源】' + (q.src === 'luogu' ? '洛谷题单' : 'Dotcpp'),
+                                '【题面】\n' + stem,
+                                (samples ? '【样例】\n' + samples : ''),
+                                (q.note ? '【补充说明】\n' + q.note : ''),
+                                '【用户手敲代码】\n~~~' + lang + '\n' + (code || '（空）') + '\n~~~',
+                                '【参考代码】本题页面不提供官方参考代码，请不要假设或编造。'
+                            ].filter(Boolean).join('\n\n');
+                        }
+                    });
+                }
 
                 // 上一题 / 下一题
                 var list;
