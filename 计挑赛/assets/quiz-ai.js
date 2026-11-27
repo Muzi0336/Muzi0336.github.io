@@ -3,6 +3,21 @@
     'use strict';
 
     var CFG_KEY = 'contest.ai.config.v1';
+    var PROVIDERS = [
+        { id: 'deepseek', name: 'DeepSeek', base: 'https://api.deepseek.com/v1', model: 'deepseek-chat', cors: 'ok' },
+        { id: 'moonshot', name: 'Moonshot / Kimi', base: 'https://api.moonshot.cn/v1', model: 'moonshot-v1-8k', cors: 'ok' },
+        { id: 'siliconflow', name: '硅基流动 SiliconFlow', base: 'https://api.siliconflow.cn/v1', model: 'deepseek-ai/DeepSeek-V3', cors: 'ok' },
+        { id: 'dashscope', name: '阿里云百炼 / 千问', base: 'https://dashscope.aliyuncs.com/compatible-mode/v1', model: 'qwen-plus', cors: 'ok' },
+        { id: 'openrouter', name: 'OpenRouter', base: 'https://openrouter.ai/api/v1', model: 'openai/gpt-4o-mini', cors: 'ok' },
+        { id: 'qianfan', name: '百度千帆', base: 'https://qianfan.baidubce.com/v2', model: 'ernie-4.0-8k', cors: 'ok' },
+        { id: 'baichuan', name: '百川智能', base: 'https://api.baichuan-ai.com/v1', model: 'Baichuan4', cors: 'ok' },
+        { id: 'stepfun', name: '阶跃星辰', base: 'https://api.stepfun.com/v1', model: 'step-2-16k', cors: 'ok' },
+        { id: 'sensenova', name: '商汤日日新', base: 'https://api.sensenova.cn/compatible-mode/v1', model: 'SenseChat-5', cors: 'ok' },
+        { id: 'modelscope', name: 'ModelScope 魔搭', base: 'https://api-inference.modelscope.cn/v1', model: 'Qwen/Qwen2.5-72B-Instruct', cors: 'ok' },
+        { id: 'ppio', name: 'PPIO 派欧云', base: 'https://api.ppinfra.com/v3/openai', model: 'deepseek-v3', cors: 'ok' },
+        { id: 'minimax', name: 'MiniMax', base: 'https://api.minimax.chat/v1', model: 'MiniMax-M1', cors: 'ok' },
+        { id: 'openai', name: 'ChatGPT / OpenAI', base: 'https://api.openai.com/v1', model: 'gpt-4o-mini', cors: 'warn' }
+    ];
     var state = {
         ctx: null,
         messages: [],
@@ -50,6 +65,60 @@
         base = String(base || '').trim().replace(/\/+$/, '');
         if (/\/chat\/completions$/i.test(base)) return base;
         return base + '/chat/completions';
+    }
+
+    function normalizeBase(base) {
+        return String(base || '').trim().replace(/\/+$/, '').replace(/\/chat\/completions$/i, '');
+    }
+
+    function providerById(id) {
+        for (var i = 0; i < PROVIDERS.length; i++) {
+            if (PROVIDERS[i].id === id) return PROVIDERS[i];
+        }
+        return null;
+    }
+
+    function providerForBase(base) {
+        var n = normalizeBase(base);
+        if (!n) return null;
+        for (var i = 0; i < PROVIDERS.length; i++) {
+            if (normalizeBase(PROVIDERS[i].base) === n) return PROVIDERS[i];
+        }
+        return null;
+    }
+
+    function providerOptions(selectedId) {
+        var html = '<option value="">自定义 / 手动填写</option>';
+        PROVIDERS.forEach(function (p) {
+            html += '<option value="' + esc(p.id) + '"' + (p.id === selectedId ? ' selected' : '') + '>' +
+                esc(p.name) + (p.cors === 'warn' ? '（CORS 未确认）' : '') + '</option>';
+        });
+        return html;
+    }
+
+    function providerNote(id) {
+        var p = providerById(id);
+        if (!p) return { text: '自定义 Base URL 需到 /v1 为止，或填写完整的 /chat/completions 地址。', cls: '' };
+        if (p.cors === 'warn') {
+            return { text: '当前网络实测超时，浏览器 CORS 未确认；需要能访问 api.openai.com 的网络或代理。', cls: 'warn' };
+        }
+        return { text: '已实测浏览器可直连；模型名可按账号可用模型修改。', cls: 'ok' };
+    }
+
+    function applyProvider(id) {
+        var p = providerById(id);
+        var base = $('#qaiBase');
+        var model = $('#qaiModel');
+        var note = $('#qaiProviderNote');
+        if (p) {
+            if (base) base.value = p.base;
+            if (model) model.value = p.model;
+        }
+        var n = providerNote(id);
+        if (note) {
+            note.textContent = n.text;
+            note.className = 'qai-provider-note ' + n.cls;
+        }
     }
 
     function systemPrompt() {
@@ -222,9 +291,14 @@
         var cfg = getConfig();
         var body = $('#qaiBody');
         if (!body) return;
+        var selected = providerForBase(cfg.baseUrl);
+        var selectedId = selected ? selected.id : '';
         body.innerHTML =
             '<div class="qai-settings">' +
             '<p class="qai-note"><b>只保存在本机。</b>API Key 会存在浏览器 localStorage，不会提交到仓库；但页面脚本和浏览器扩展可以读取它，建议使用限额子 Key。</p>' +
+            '<label>服务商 <span>选择后自动填入 Base URL，模型名可改</span>' +
+            '<select id="qaiProvider">' + providerOptions(selectedId) + '</select></label>' +
+            '<p class="qai-provider-note" id="qaiProviderNote"></p>' +
             '<label>Base URL <span>到 /v1 为止，或完整 /chat/completions 地址</span>' +
             '<input id="qaiBase" type="url" spellcheck="false" placeholder="https://api.openai.com/v1" value="' + esc(cfg.baseUrl) + '"></label>' +
             '<label>模型名 <span>服务商提供的 model id</span>' +
@@ -239,6 +313,16 @@
             '<div class="qai-test" id="qaiTestStatus"></div>' +
             '<p class="qai-fine">如果浏览器报 Failed to fetch，通常是接口不允许跨域；需要服务商开启 CORS，或加一个 Worker 代理。</p>' +
             '</div>';
+        var note = providerNote(selectedId);
+        var noteEl = $('#qaiProviderNote');
+        if (noteEl) {
+            noteEl.textContent = note.text;
+            noteEl.className = 'qai-provider-note ' + note.cls;
+        }
+        $('#qaiProvider').addEventListener('change', function () {
+            applyProvider(this.value);
+            setTest('', '');
+        });
         $('#qaiSave').addEventListener('click', function () {
             var next = readSettingsInputs();
             if (!next.baseUrl || !next.model || !next.apiKey) {
@@ -512,6 +596,10 @@
             '.qai-settings label span{display:block;font-weight:400;color:var(--muted);font-family:inherit;letter-spacing:0;font-size:10px;margin-top:4px}',
             '.qai-settings input{display:block;width:100%;box-sizing:border-box;margin-top:7px;border:1px solid var(--line-2);background:#fff;padding:8px;font:12px/1.4 var(--mono),monospace;color:var(--ink);outline:none}',
             '.qai-settings input:focus{border-color:var(--ink-2)}',
+            '.qai-settings select{display:block;width:100%;box-sizing:border-box;margin-top:7px;border:1px solid var(--line-2);background:#fff;padding:8px;font:12px/1.4 inherit;color:var(--ink);outline:none}',
+            '.qai-settings select:focus{border-color:var(--ink-2)}',
+            '.qai-provider-note{font-size:10px;line-height:1.6;color:var(--muted);margin:-6px 0 10px}',
+            '.qai-provider-note.ok{color:#2f6b43}.qai-provider-note.warn{color:#8a5b22}',
             '.qai-set-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}',
             '.qai-set-actions button{border:1px solid var(--line-2);background:var(--paper-2);padding:7px 12px;font:inherit;font-size:11px;cursor:pointer}',
             '.qai-set-actions button.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}',
