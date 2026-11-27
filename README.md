@@ -1,83 +1,95 @@
-# Note — Study Notes
+# 朝云暮辞 · 学习档案
 
-A personal study notes repository covering HTML, and CSS.
+个人学习站点：前端教程、全栈笔记、C 语言真题、算法题库和一个统一错题本。
 
-## Contents Overview
-
-
-
-### HTML Notes
-
-
-File: [前端\HTML.md]() (full version)
-
-**1. HTML Basics**
-
-- Document structure, tags & attributes, common text tags, list tags, block elements, inline-block elements, forms
-
-**2. Advanced HTML**
-
-- Semantic tags, media tags (img/audio/video/embed), advanced tables, advanced forms
-- Advanced links, HTML5 new tags, embedding & code (iframe/pre/code)
-- Character entities, link for CSS & icons, complete HTML template
-
-Example files in `前端\HTML\` (15 `.html` files) and `前端\index.html`.
-
----
-
-### CSS Notes
-
-File: [前端\CSS.md]()
-
-**1. CSS Basics**
-
-- CSS syntax, three import methods, selectors (basic/combinator/attribute/pseudo-class/pseudo-element/specificity)
-- CSS units (px/em/rem/vw/vh), text & font styling
-
-**2. Advanced CSS**
-
-- Box model (content-box vs border-box), layout & positioning (relative/absolute/fixed/sticky)
-- Flex layout, Grid layout, visual styling (background/shadow/opacity/filter), effects & transforms (transition/animation/transform)
-
-Example files in `前端\CSS\` (10 `.html` files + 1 `style.css`).
-
----
-
-## Project Structure
+## 目录结构
 
 ```
-note/
-├── README.md           # This file (English)
-├── LICENSE             # MIT License
-├── index.html
-├── HTML.md             # HTML notes (full)
-├── CSS.md              # CSS notes
-├── HTML/               # HTML examples (15 files)
-└── CSS/                # CSS examples (10 files + style.css)
+/
+├── index.html                 # 站点首页（GitHub Pages 入口）
+├── CNAME                      # 自定义域名 git.zyyc.cc
+├── _config.yml                # GitHub Pages 配置
+├── README.md
+├── LICENSE
+├── .gitignore
+├── dcfe...txt                 # 站点验证文件
+│
+├── frontend/                  # 前端教程
+│   ├── index.html             # 教程首页
+│   ├── bg.jpg                 # 教程首页背景
+│   ├── HTML/                  # HTML 示例（15 个）
+│   ├── CSS/                   # CSS 示例（10 个 + style.css）
+│   └── JS/                    # JavaScript 示例（9 个）
+│
+├── boke/                      # 全栈笔记
+│   ├── index.html             # 笔记目录
+│   ├── book.html              # 合集阅读页
+│   └── *.html                 # Git / React / Next.js / 生态笔记
+│
+├── C语言/                     # C 语言真题
+│   ├── index.html             # 真题列表与筛选
+│   ├── q.html                 # 题目详情
+│   └── data.js                # 题库数据
+│
+├── 算法/                      # 算法题库
+│   ├── index.html             # 题库列表
+│   ├── q.html                 # 题目详情
+│   ├── paths.html             # 学习路径
+│   ├── learn.html             # 课程目录
+│   ├── lesson.html            # 课程正文
+│   ├── lab.html               # 动画实验室
+│   └── assets/                # 拆分后的数据、样式、动画脚本
+│
+└── 学习工具/                  # 独立学习工具
+    └── 错题本.html            # 一个页面查看总题数、已写数与分类错题
 ```
 
-### C Language Past Papers (`C语言/`)
+## 页面说明
 
-Collection of C language exam papers, 2019–2025 (2023 not available), 236 questions in total.
+### 前端教程（`frontend/`）
 
-- `C语言/index.html` — paper index with keyword search, year/type/status filters; 21 duplicate questions folded by default
-- `C语言/q.html` — question detail: answer checking for single-choice, per-question explanation, prev/next navigation within the same year, collapsible and copyable reference solutions, and an in-browser code editor with keyword autocomplete
-- `C语言/data.js` — extracted and cleaned question data (stems, options, answers, explanations, source file hashes)
+- `frontend/index.html` — HTML / CSS / JS 学习导航
+- `frontend/HTML/` — HTML 基础、进阶、表单、媒体、语义化等示例
+- `frontend/CSS/` — CSS 导入、选择器、单位、盒模型、Flex、Grid、动效等示例
+- `frontend/JS/` — JS 基础、ES6、DOM、异步、模块化等示例
 
-### Algorithm Library (`算法/`)
+### 全栈笔记（`boke/`）
 
-Static edition of ARENA LAB, rebuilt in the site's paper-and-ink style with the author's permission. 145 problems across 7 tracks, 6 learning paths, 21 lessons, and 17 step-by-step algorithm demos. No backend: bookmarks, quiz choices and code drafts stay in `localStorage` (`arena.v1`).
+- `boke/index.html` — 笔记目录，按 Git / Node.js / React / Next.js / 生态分组
+- `boke/book.html` — 合集阅读页
+- `boke/*.html` — 20 篇独立笔记
 
-- `算法/index.html` — problem list with search, track/difficulty/status filters and bookmark-only view
-- `算法/q.html` — problem detail: statement, samples, derivation, complexity, collapsible C++/C/Python solutions with copy, scratch editor with keyword completion, self-check quiz, demo player, and prev/next navigation within the same track
-- `算法/paths.html` — six learning paths with per-path progress
-- `算法/learn.html`, `算法/lesson.html` — course index and lesson pages
-- `算法/lab.html` — 17 algorithm animations, drawn live with HTML/SVG code (no screenshot frames) with play/step/reset controls
-- `算法/assets/lab.js` — demo renderers and player; `算法/assets/demo_captions.js` — step captions
-- `算法/assets/app_data.js` — lightweight shared index (42 KB); `算法/assets/search_data.js` — full-text search index loaded on demand
-- `算法/assets/problems/<id>.js` — one problem per file, fetched only by `q.html`
-- `算法/assets/lessons/<slug>.js` — one lesson per file, fetched only by `lesson.html`
-- `错题本.html` — single wrong-book page: total/written counts, C and algorithm categories, expandable wrong lists
+### C 语言真题（`C语言/`）
+
+2019–2025 年 C 语言客观题，共 236 题（2023 年缺失）。
+
+- `C语言/index.html` — 关键词搜索、年份 / 类型 / 状态筛选，重复题默认折叠
+- `C语言/q.html` — 单选题判分与解析、上下题导航、可折叠参考答案、带补全的本地代码编辑器
+- `C语言/data.js` — 题干、选项、答案、解析与来源文件哈希
+
+### 算法题库（`算法/`）
+
+ARENA LAB 静态版，145 题、7 个分类、6 条学习路径、21 篇课程、17 个代码动画。全部动画由 HTML/SVG/JS 实时绘制，无截图帧。
+
+- `算法/index.html` — 搜索、分类 / 难度 / 状态筛选、只看收藏
+- `算法/q.html` — 题干、样例、推导、复杂度、多语言参考代码、草稿编辑器、自测与动画
+- `算法/paths.html` — 学习路径与进度
+- `算法/learn.html`、`算法/lesson.html` — 课程目录与正文
+- `算法/lab.html` — 动画实验室
+- `算法/assets/app_data.js` — 公共题库 / 路径 / 课程索引
+- `算法/assets/search_data.js` — 搜索索引，按需加载
+- `算法/assets/problems/<id>.js` — 单题文件，题目页只加载当前题
+- `算法/assets/lessons/<slug>.js` — 单课文件，课程页只加载当前课
+
+### 错题本（`学习工具/错题本.html`）
+
+单页展示：
+
+- 总题数、已写题数、错题总数
+- C 语言真题与算法题库两个分类，各显示已写 / 总数与错题数
+- 点击分类在当前页展开错题，可直接打开题目、清除 C 语言记录或移出算法错题
+
+做题记录与错题只保存在当前浏览器的 `localStorage`，不跨设备同步。
 
 ## License
 
