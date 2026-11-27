@@ -106,8 +106,7 @@ def convert(text, cfg):
                    '学习工具/错题本.html', 'index.html']:
         text = text.replace(f'href="../{target}"', f'href="../../{target}"')
     text = text.replace('href="assets/', 'href="../assets/')
-    text = text.replace('src="assets/contest-nav.js"', 'src="../assets/contest-nav.js"')
-    text = text.replace('src="../计挑赛/assets/contest-nav.js"', 'src="../assets/contest-nav.js"')
+    text = text.replace('href="../index.html#contest"', 'href="../../index.html#contest"')
     text = text.replace('href="../计挑赛/index.html"', 'href="../../计挑赛/index.html"')
     # language copy & storage keys
     text = text.replace('C 语言真题', f'{name} 真题').replace('C语言真题', f'{name} 真题')

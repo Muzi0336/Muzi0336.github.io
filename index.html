@@ -25,6 +25,7 @@
         }
 
         .idx-list { margin-bottom: 10px; }
+        .idx-list[hidden] { display: none; }
 
         .idx-row {
             display: grid;
@@ -61,57 +62,15 @@
             line-height: 1.85;
         }
 
-        .contest-langs {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 1px;
-            margin-top: 14px;
-            border: 1px solid var(--line-2);
-            background: var(--line-2);
-        }
-
-        .contest-lang {
-            display: block;
-            padding: 10px 11px 9px;
-            background: var(--paper);
-            color: var(--ink);
+        .idx-back {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .08em;
+            color: var(--muted);
             text-decoration: none;
-            transition: background .18s;
         }
 
-        .contest-lang:hover { background: var(--wash); }
-
-        .contest-lang b {
-            display: inline-block;
-            font-family: var(--mono);
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .contest-lang span {
-            float: right;
-            font-family: var(--mono);
-            font-size: 9px;
-            color: var(--muted);
-            letter-spacing: .06em;
-        }
-
-        .contest-lang small {
-            display: block;
-            margin-top: 4px;
-            font-size: 10.5px;
-            line-height: 1.4;
-            color: var(--muted);
-            white-space: nowrap;
-        }
-
-        .contest-lang.is-current {
-            background: var(--ink);
-            color: var(--paper);
-        }
-
-        .contest-lang.is-current span,
-        .contest-lang.is-current small { color: rgba(244, 239, 227, .72); }
+        .idx-back:hover { color: var(--ink); }
 
         .idx-side {
             display: flex;
@@ -162,7 +121,6 @@
             .idx-row { grid-template-columns: 56px minmax(0, 1fr); gap: 18px; padding: 24px 0; }
             .idx-side { display: none; }
             .idx-main p { color: #47473f; }
-            .contest-langs { grid-template-columns: 1fr 1fr; }
         }
 
         @media (max-width: 600px) {
@@ -170,7 +128,6 @@
             .idx-no { font-size: 10px; letter-spacing: .12em; }
             .idx-main h3 { font-size: 20px; }
             .idx-main p { margin-top: 6px; font-size: 12.5px; line-height: 1.8; }
-            .contest-lang small { display: none; }
             .idx-head { font-size: 9.5px; letter-spacing: .14em; gap: 10px; }
             .idx-foot { margin-top: 30px; padding-bottom: 44px; font-size: 11px; gap: 6px; }
         }
@@ -187,7 +144,7 @@
             <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
         </a>
         <nav class="nav">
-            <a class="contest-link" href="计挑赛/index.html" data-contest>计挑赛</a>
+            <a class="contest-link" href="#contest" data-contest-mode>计挑赛</a>
             <a href="算法/index.html">算法</a>
             <a href="frontend/index.html">前端教程</a>
             <a href="boke/index.html">全栈笔记</a><a href="学习工具/错题本.html">错题本</a>
@@ -210,26 +167,20 @@
             </div>
         </section>
 
-        <section class="idx-list">
+        <section class="idx-list" id="sections">
             <div class="idx-head">
                 <span>— Sections / 索引</span>
                 <span>2026 · updated</span>
             </div>
 
-            <div class="idx-row" id="contest">
+            <a class="idx-row" href="#contest" data-contest-mode>
                 <div class="idx-no">01 / CONTEST</div>
                 <div class="idx-main">
                     <h3>计挑赛</h3>
                     <p>C、C++、Java、Python 四套题库，2019–2025 年真题按语言与题型归档。单选题点选即判分并给出解析，编程题附参考代码、解析与可自动补全的代码练习区。</p>
-                    <div class="contest-langs">
-                        <a class="contest-lang" href="计挑赛/index.html"><b>C</b><span>215 道</span><small>语言基础 · 指针</small></a>
-                        <a class="contest-lang" href="计挑赛/cpp/index.html"><b>C++</b><span>212 道</span><small>STL · 竞赛写法</small></a>
-                        <a class="contest-lang" href="计挑赛/java/index.html"><b>Java</b><span>215 道</span><small>集合 · 面向对象</small></a>
-                        <a class="contest-lang" href="计挑赛/python/index.html"><b>Python</b><span>198 道</span><small>列表 · 内置库</small></a>
-                    </div>
                 </div>
-                <div class="idx-side"><span class="tag">4 套题库 · 6 个年份</span></div>
-            </div>
+                <div class="idx-side"><span class="tag">4 套题库 · 6 个年份</span><span class="go">→</span></div>
+            </a>
 
             <a class="idx-row" href="frontend/index.html">
                 <div class="idx-no">02 / HTML</div>
@@ -259,6 +210,49 @@
             </a>
         </section>
 
+        <section class="idx-list" id="contestView" hidden>
+            <div class="idx-head">
+                <span>— Contest / 选择语言题库</span>
+                <a class="idx-back" href="#sections">← 返回站点索引</a>
+            </div>
+
+            <a class="idx-row" href="计挑赛/index.html">
+                <div class="idx-no">01 / C</div>
+                <div class="idx-main">
+                    <h3>C 语言</h3>
+                    <p>指针、结构体、文件与基础算法。2019–2025 年真题，单选可直接作答，编程题附官方或 AI 参考代码。</p>
+                </div>
+                <div class="idx-side"><span class="tag">215 道 · 6 个年份</span><span class="go">→</span></div>
+            </a>
+
+            <a class="idx-row" href="计挑赛/cpp/index.html">
+                <div class="idx-no">02 / C++</div>
+                <div class="idx-main">
+                    <h3>C++</h3>
+                    <p>STL、类与模板，兼顾竞赛写法。2019–2025 年真题，按年份与题型归档，配套代码练习区。</p>
+                </div>
+                <div class="idx-side"><span class="tag">212 道 · 6 个年份</span><span class="go">→</span></div>
+            </a>
+
+            <a class="idx-row" href="计挑赛/java/index.html">
+                <div class="idx-no">03 / JAVA</div>
+                <div class="idx-main">
+                    <h3>Java</h3>
+                    <p>集合、字符串与面向对象。2019–2025 年真题，单选题与编程题分开整理，参考代码标明来源。</p>
+                </div>
+                <div class="idx-side"><span class="tag">215 道 · 6 个年份</span><span class="go">→</span></div>
+            </a>
+
+            <a class="idx-row" href="计挑赛/python/index.html">
+                <div class="idx-no">04 / PY</div>
+                <div class="idx-main">
+                    <h3>Python</h3>
+                    <p>列表、字典与内置库。2019–2025 年真题，适合快速上手与脚本式解题练习。</p>
+                </div>
+                <div class="idx-side"><span class="tag">198 道 · 6 个年份</span><span class="go">→</span></div>
+            </a>
+        </section>
+
         <div class="idx-foot">
             <div>朝云暮辞 · 学习档案 — 真题、教程与笔记，一处可查。</div>
         </div>
@@ -278,7 +272,7 @@
                     </div>
                 </div>
                 <nav class="sf-links">
-                    <a href="计挑赛/index.html">计挑赛</a>
+                    <a href="#contest">计挑赛</a>
                     <a href="算法/index.html">算法题库</a>
                     <a href="frontend/index.html">前端教程</a>
                     <a href="boke/index.html">全栈笔记</a><a href="学习工具/错题本.html">错题本</a>
@@ -290,7 +284,27 @@
             </div>
         </div>
     </footer>
-    <script src="计挑赛/assets/contest-nav.js"></script>
+
+    <script>
+        (function () {
+            var sections = document.getElementById('sections');
+            var contest = document.getElementById('contestView');
+            var triggers = document.querySelectorAll('a.contest-link[data-contest-mode]');
+
+            function sync() {
+                var on = location.hash === '#contest';
+                sections.hidden = on;
+                contest.hidden = !on;
+                triggers.forEach(function (el) {
+                    el.classList.toggle('active', on);
+                });
+                document.body.classList.toggle('is-contest-nav', on);
+            }
+
+            window.addEventListener('hashchange', sync);
+            sync();
+        })();
+    </script>
 </body>
 
 </html>
