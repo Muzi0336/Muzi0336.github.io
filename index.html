@@ -61,6 +61,58 @@
             line-height: 1.85;
         }
 
+        .contest-langs {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1px;
+            margin-top: 14px;
+            border: 1px solid var(--line-2);
+            background: var(--line-2);
+        }
+
+        .contest-lang {
+            display: block;
+            padding: 10px 11px 9px;
+            background: var(--paper);
+            color: var(--ink);
+            text-decoration: none;
+            transition: background .18s;
+        }
+
+        .contest-lang:hover { background: var(--wash); }
+
+        .contest-lang b {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .contest-lang span {
+            float: right;
+            font-family: var(--mono);
+            font-size: 9px;
+            color: var(--muted);
+            letter-spacing: .06em;
+        }
+
+        .contest-lang small {
+            display: block;
+            margin-top: 4px;
+            font-size: 10.5px;
+            line-height: 1.4;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .contest-lang.is-current {
+            background: var(--ink);
+            color: var(--paper);
+        }
+
+        .contest-lang.is-current span,
+        .contest-lang.is-current small { color: rgba(244, 239, 227, .72); }
+
         .idx-side {
             display: flex;
             align-items: center;
@@ -110,6 +162,7 @@
             .idx-row { grid-template-columns: 56px minmax(0, 1fr); gap: 18px; padding: 24px 0; }
             .idx-side { display: none; }
             .idx-main p { color: #47473f; }
+            .contest-langs { grid-template-columns: 1fr 1fr; }
         }
 
         @media (max-width: 600px) {
@@ -117,6 +170,7 @@
             .idx-no { font-size: 10px; letter-spacing: .12em; }
             .idx-main h3 { font-size: 20px; }
             .idx-main p { margin-top: 6px; font-size: 12.5px; line-height: 1.8; }
+            .contest-lang small { display: none; }
             .idx-head { font-size: 9.5px; letter-spacing: .14em; gap: 10px; }
             .idx-foot { margin-top: 30px; padding-bottom: 44px; font-size: 11px; gap: 6px; }
         }
@@ -145,7 +199,7 @@
             <div class="hero-left">
                 <div class="eyebrow">— Study archive / 04</div>
                 <h1>把学过的，<br>收进一间书房。</h1>
-                <p class="lede">四条线并排放着：C 语言历年真题、算法题库与课程、HTML / CSS / JavaScript 教程，以及 Git / React / Next.js 的全栈笔记。真题可以作答并看解析，算法题可以逐层看演示，教程可以顺着读，笔记可以翻到具体那一章。</p>
+                <p class="lede">四条线并排放着：计挑赛 C / C++ / Java / Python 四套真题、算法题库与课程、HTML / CSS / JavaScript 教程，以及 Git / React / Next.js 的全栈笔记。真题可以作答并看解析，算法题可以逐层看演示，教程可以顺着读，笔记可以翻到具体那一章。</p>
             </div>
             <div class="hero-stat">
                 <div class="num">55</div>
@@ -162,14 +216,20 @@
                 <span>2026 · updated</span>
             </div>
 
-            <a class="idx-row" href="计挑赛/index.html" data-contest>
+            <div class="idx-row" id="contest">
                 <div class="idx-no">01 / CONTEST</div>
                 <div class="idx-main">
                     <h3>计挑赛</h3>
-                    <p>C、C++、Java、Python 四套题库，2019–2025 年真题按语言与题型归档。单选题点选即判分并给出解析，编程题附 AI 参考代码、解析与可自动补全的代码练习区。</p>
+                    <p>C、C++、Java、Python 四套题库，2019–2025 年真题按语言与题型归档。单选题点选即判分并给出解析，编程题附参考代码、解析与可自动补全的代码练习区。</p>
+                    <div class="contest-langs">
+                        <a class="contest-lang" href="计挑赛/index.html"><b>C</b><span>215 道</span><small>语言基础 · 指针</small></a>
+                        <a class="contest-lang" href="计挑赛/cpp/index.html"><b>C++</b><span>212 道</span><small>STL · 竞赛写法</small></a>
+                        <a class="contest-lang" href="计挑赛/java/index.html"><b>Java</b><span>215 道</span><small>集合 · 面向对象</small></a>
+                        <a class="contest-lang" href="计挑赛/python/index.html"><b>Python</b><span>198 道</span><small>列表 · 内置库</small></a>
+                    </div>
                 </div>
-                <div class="idx-side"><span class="tag">4 套题库 · 6 个年份</span><span class="go">→</span></div>
-            </a>
+                <div class="idx-side"><span class="tag">4 套题库 · 6 个年份</span></div>
+            </div>
 
             <a class="idx-row" href="frontend/index.html">
                 <div class="idx-no">02 / HTML</div>

@@ -281,22 +281,46 @@ def docx_programs(path, lang, year):
     return out
 
 
+def pdf_lines(path):
+    """Read PDF lines with their left edge, so code indentation survives extraction."""
+    import pymupdf
+    doc = pymupdf.open(path)
+    lines = []
+    footer = '全国高校计算机能力挑战赛组委会版权所有'
+    for page in doc:
+        for block in page.get_text('dict').get('blocks', []):
+            for line in block.get('lines', []):
+                text = ''.join(s.get('text', '') for s in line.get('spans', [])).strip()
+                if not text or text == footer:
+                    continue
+                lines.append({'text': text, 'x': float(line['bbox'][0])})
+    return lines
+
+
 def pdf_programs(path, lang, year):
-    from pypdf import PdfReader
-    text = '\n'.join((p.extract_text() or '') for p in PdfReader(path).pages)
-    text = text.replace('\r', '')
-    # Remove repeated footer.
-    text = re.sub(r'全国高校计算机能力挑战赛组委会版权所有', '', text)
-    heads = list(re.finditer(r'(?:编程题|题目)\s*(\d+)\s*[：:]', text))
+    lines = pdf_lines(path)
+    head_re = re.compile(r'(?:编程题|题目)\s*(\d+)\s*[：:]')
+    heads = [(i, head_re.match(l['text'])) for i, l in enumerate(lines) if head_re.match(l['text'])]
     out = []
-    for n, m in enumerate(heads, 1):
-        end = heads[n].start() if n < len(heads) else len(text)
-        block = text[m.end():end].strip()
-        code_at = block.find('参考代码')
-        body = block[:code_at].strip() if code_at >= 0 else block
-        code = block[code_at + len('参考代码'):].strip() if code_at >= 0 else ''
+    for n, (idx, m) in enumerate(heads, 1):
+        end = heads[n][0] if n < len(heads) else len(lines)
+        block = lines[idx:end]
+        heading = head_re.sub('', block[0]['text'], count=1).strip()
+        code_at = next((i for i, l in enumerate(block)
+                        if l['text'].strip() == '参考代码' or l['text'].strip().startswith('参考代码：')), None)
+        body_lines = block[:code_at] if code_at is not None else block
+        body = '\n'.join(l['text'] for l in body_lines).strip()
+        code = ''
+        if code_at is not None:
+            code_lines = block[code_at + 1:]
+            if code_lines:
+                base_x = min(l['x'] for l in code_lines)
+                code = '\n'.join(
+                    ' ' * (max(0, round((l['x'] - base_x) / 22.0)) * 4) + l['text']
+                    for l in code_lines
+                ).strip()
         sections, desc = split_prompt(body)
-        title_line = body.split('\n')[0].strip()
+        title_line = heading
         sections = ensure_desc(sections, title_line, desc)
         out.append({
             'id': f'{year}-P{n}',
@@ -309,7 +333,7 @@ def pdf_programs(path, lang, year):
             'source': {'file': str(Path(path).relative_to(ROOT)), 'sha': sha(path), 'locator': f'编程题 {n}'},
             'dup': False,
             'snippet': make_snippet(desc),
-            'codeBlocks': [{'t': 'code', 'v': code}] if code else [],
+            'codeBlocks': [{'t': 'code', 'v': code + '\n'}] if code else [],
             'label': '编程题',
             'expl': '参考代码整理自试卷配套材料。',
         })

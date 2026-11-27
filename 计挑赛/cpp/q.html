@@ -226,10 +226,12 @@
                 let html2 = '';
 
                 const hasCode = !!(q.codeBlocks && q.codeBlocks.length);
+                const isAiCode = q.codeSource === 'ai';
+                const codeTitle = isAiCode ? 'AI 参考代码' : '官方参考代码';
                 html2 += `<div class="note-bar"><b>备注</b><span>${hasCode
-                    ? (q.codeSource === 'ai'
+                    ? (isAiCode
                         ? '以下为 AI 参考代码（非官方），仅供对照思路，不保证评测通过。'
-                        : '参考代码整理自原卷配套材料，未经改写，仅供对照思路；非官方评分答案。')
+                        : '以下为原卷配套参考代码（官方），整理自原始试卷，未经改写，仅供对照思路。')
                     : '原始文件未提供参考代码，可依据样例与解析自行实现。'}</span></div>`;
 
                 if (hasCode) {
@@ -238,7 +240,7 @@
                     const lines = codeText.split('\n');
                     html2 += `
                         <button class="refbar" id="refToggle" aria-expanded="false">
-                            <span class="lock">SOLUTION</span><b>参考代码</b>
+                            <span class="lock">SOLUTION</span><b>${codeTitle}</b>
                             <span class="sp"></span><span class="cta">展开查看</span>
                         </button>
                         <div class="codeview" id="codeview" hidden>
@@ -504,16 +506,27 @@
             // ---------- 单选作答 ----------
             function renderSideSingle() {
                 let rec = loadAns()[q.id];
-                let revealed = false;
+                let revealed = !!rec;
+
+                function retake() {
+                    const all = loadAns();
+                    delete all[q.id];
+                    try { localStorage.setItem(ANS_KEY, JSON.stringify(all)); } catch (err) { }
+                    rec = null;
+                    revealed = false;
+                    explOpen = false;
+                    syncExpl();
+                    draw();
+                }
 
                 function draw() {
                     const optsHTML = Object.keys(q.options).map(k => {
                         let cls = 'opt';
-                        if (rec) {
-                            if (k === q.answer) cls += k === rec.k ? ' picked-right' : ' reveal-right';
-                            if (k === rec.k && !rec.ok) cls += ' picked-wrong';
-                        } else if (revealed && k === q.answer) cls += ' reveal-right';
-                        const mark = rec && k === q.answer ? '✓ 正确' : (revealed && k === q.answer ? '✓ 答案' : '');
+                        if (revealed && (rec || k === q.answer)) {
+                            if (rec && k === rec.k && !rec.ok) cls += ' picked-wrong';
+                            else if (k === q.answer) cls += ' reveal-right';
+                        }
+                        const mark = revealed && k === q.answer ? '✓ 答案' : '';
                         return `<button class="${cls}" data-k="${k}" ${rec ? 'disabled' : ''}>
                             <span class="letter">${k}</span><span class="txt">${esc(q.options[k])}</span>
                             <span class="mark">${mark}</span></button>`;
@@ -521,14 +534,16 @@
 
                     let res = '';
                     if (rec) {
-                        res = `<div class="sidenote" style="margin-top:14px">你选了 ${rec.k} · ${rec.ok ? '回答正确' : '回答错误'}
-                        <a href="#" id="redo" style="margin-left:8px;text-decoration:underline;color:var(--ink-2)">清除本题记录</a></div>`;
+                        res = `<div class="sidenote" style="margin-top:14px">
+                            ${revealed ? `你选了 ${rec.k} · ${rec.ok ? '回答正确' : '回答错误'}` : '已作答 · 答案已隐藏'}
+                            <button id="redo" type="button" style="margin-left:8px;border:1px solid var(--line-2);background:var(--paper-2);padding:2px 8px;font-size:11px;color:var(--ink-2);cursor:pointer">重新答题</button>
+                        </div>`;
                     }
 
                     $('#sideCard').innerHTML = `
                         <div class="card-head">
                             <span class="k">Options <span>/ 选项</span></span>
-                            <button class="act" id="revealBtn">${revealed || rec ? '隐藏答案' : '显示答案'}</button>
+                            <button class="act" id="revealBtn">${revealed ? '隐藏答案' : '显示答案'}</button>
                         </div>
                         <p class="tip">点选你的答案，选错会同时标出正确项。</p>
                         <div class="opts">${optsHTML}</div>
@@ -541,21 +556,22 @@
                             const record = { k: k, ok: k === q.answer, at: Date.now() };
                             saveAns(q.id, record);
                             rec = record;
+                            revealed = true;
                             explOpen = true; syncExpl();
                             draw();
                         });
                     });
                     const rb = $('#revealBtn');
-                    if (rb) rb.addEventListener('click', () => { revealed = !revealed; draw(); });
-                    const redo = $('#redo');
-                    if (redo) redo.addEventListener('click', e => {
-                        e.preventDefault();
-                        if (!confirm('清除这道题的作答记录？')) return;
-                        const all = loadAns(); delete all[q.id];
-                        try { localStorage.setItem(ANS_KEY, JSON.stringify(all)); } catch (err) { }
-                        try { localStorage.removeItem(CODE_PREFIX + q.id); } catch (err) { }
-                        rec = null; revealed = false; draw();
+                    if (rb) rb.addEventListener('click', () => {
+                        revealed = !revealed;
+                        if (!revealed) {
+                            explOpen = false;
+                            syncExpl();
+                        }
+                        draw();
                     });
+                    const redo = $('#redo');
+                    if (redo) redo.addEventListener('click', retake);
                 }
                 draw();
             }
@@ -576,7 +592,7 @@
                             <dt>FILE</dt><dd>${esc(q.source.file || '—')}</dd>
                         </dl>
                         <div class="bar"></div>
-                        <div class="row"><span>参考代码</span><b>${hasCode ? '已提供 · 默认折叠' : '原卷未提供'}</b></div>
+                        <div class="row"><span>参考代码</span><b>${hasCode ? '已提供 · ' + (q.codeSource === 'ai' ? 'AI 参考' : '官方参考') : '原卷未提供'}</b></div>
                         <div class="row"><span>我的草稿</span><b>${draft ? draft.length + ' 字符' : '未开始'}</b></div>
                         <div class="row"><span>解析</span><b>已补充</b></div>
                     </div>
