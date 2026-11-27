@@ -309,3 +309,5 @@ select,input{font:inherit;color:inherit}
 @media (max-width:340px){
   .nav a[href="../index.html"]{display:none}
 }
+
+.row-side .tag.dup{color:var(--accent-2);border:1px solid rgba(168,73,42,.26);background:rgba(168,73,42,.05);padding:1px 5px;font-size:10px}

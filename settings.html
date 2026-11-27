@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>设置 · 朝云暮辞</title>
+<meta name="description" content="朝云暮辞站点设置：AI 助教接口、数据与隐私。所有配置只保存在当前浏览器。">
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/detail.css">
+<link rel="stylesheet" href="assets/css/settings.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
+  </a>
+  <nav class="nav">
+    <a class="contest-link" href="index.html#contest">计挑赛</a>
+    <a href="蓝桥杯真题/exam/index.html">蓝桥真题</a>
+    <a href="problems/algorithm/index.html">算法题库</a>
+    <a href="problems/algorithm/learn.html">算法学习</a>
+    <a href="problems/algorithm/lab.html">动画实验室</a>
+    <a href="articles/data-structures/index.html">数据结构</a>
+    <a href="articles/algorithm-competition/index.html">算法竞赛</a>
+    <a href="articles/frontend/index.html">前端教程</a>
+    <a href="articles/fullstack/index.html">全栈笔记</a>
+    <a href="tools/mistakes.html">错题本</a>
+    <a href="settings.html" class="active">设置</a>
+  </nav>
+</div>
+
+<main class="set-wrap">
+  <header class="set-head">
+    <div class="eyebrow">— SETTINGS / LOCAL ONLY</div>
+    <h1>设置</h1>
+    <p>站点配置只保存在当前浏览器，不会同步、不会提交到仓库。AI 助教的 Key 会存在 localStorage，建议使用单独的限额子 Key。</p>
+    <a class="set-back" id="backLink" href="index.html">← 返回首页</a>
+  </header>
+
+  <div class="set-layout">
+    <aside class="set-side">
+      <span class="set-side-label">SETTINGS</span>
+      <a href="#ai" class="active">AI 助教</a>
+      <a href="#data">数据与隐私</a>
+      <a href="#about">关于本站</a>
+      <div class="set-future">后续的显示、阅读与数据设置会继续加在这里。</div>
+    </aside>
+
+    <div class="set-content">
+      <section class="set-sec" id="ai">
+        <header class="set-sec-head"><span class="set-sec-no">01 / AI</span><h2>AI 助教</h2></header>
+        <p class="set-sec-desc">用于计挑赛题目页的「问 AI」「AI 解析」「AI 核对代码」。接口必须是 OpenAI 兼容格式，浏览器会直接请求你填写的 Base URL。</p>
+
+        <div class="set-card">
+          <div class="set-card-head">
+            <span>AI / CONTEST TUTOR</span>
+            <span class="set-state" id="configState"><i class="dot"></i>未配置</span>
+          </div>
+          <div class="set-form">
+            <div class="set-field">
+              <label for="setProvider">服务商 <span>选择后自动填入 Base URL，模型名可改</span></label>
+              <select id="setProvider"></select>
+            </div>
+            <div class="set-field">
+              <label for="setModel">模型名 <span>服务商提供的 model id</span></label>
+              <input id="setModel" type="text" spellcheck="false" placeholder="例如 deepseek-chat" autocomplete="off">
+            </div>
+            <div class="set-field wide">
+              <label for="setBase">Base URL <span>到 /v1 为止，或完整的 /chat/completions 地址</span></label>
+              <input id="setBase" type="url" spellcheck="false" placeholder="https://api.deepseek.com/v1" autocomplete="off">
+            </div>
+            <div class="set-field wide">
+              <label for="setKey">API Key <span>仅保存在当前浏览器 localStorage</span></label>
+              <input id="setKey" type="password" spellcheck="false" placeholder="sk-…" autocomplete="off">
+            </div>
+            <p class="set-provider-note" id="providerNote"></p>
+            <div class="set-actions">
+              <button id="saveBtn" class="primary" type="button">保存设置</button>
+              <button id="testBtn" type="button">测试连接</button>
+              <button id="clearBtn" type="button">清除 Key</button>
+              <span class="set-test-status" id="testStatus"></span>
+            </div>
+          </div>
+          <p class="set-note"><b>不会上传到服务器。</b>页面脚本或浏览器扩展理论上可以读取 localStorage；不要把主账号的长期 Key 放进来。遇到 Failed to fetch，通常是接口未开启 CORS，需要服务商支持或使用代理。</p>
+        </div>
+      </section>
+
+      <section class="set-sec" id="data">
+        <header class="set-sec-head"><span class="set-sec-no">02 / DATA</span><h2>数据与隐私</h2></header>
+        <p class="set-sec-desc">这个站点没有账号系统，做题进度、AI 配置和代码草稿都只存在当前设备。</p>
+        <div class="set-data-list">
+          <div class="set-data-row"><b>做题进度</b><span>保存在 localStorage，换浏览器或清理站点数据后会丢失。</span></div>
+          <div class="set-data-row"><b>AI 配置</b><span>只保存在当前浏览器；保存后仅本机可用。</span></div>
+          <div class="set-data-row"><b>代码草稿</b><span>计挑赛编程题的草稿默认留在本机，不会提交评测。</span></div>
+          <div class="set-data-row"><b>站点统计</b><span>不接入账号、不主动上传做题记录。</span></div>
+        </div>
+      </section>
+
+      <section class="set-sec" id="about">
+        <header class="set-sec-head"><span class="set-sec-no">03 / ABOUT</span><h2>关于本站</h2></header>
+        <p class="set-sec-desc">朝云暮辞是一个静态学习档案。站点自身标记为 ZYYC LAB；算法题库、路径与部分课程整理自 ARENA LAB，相关页面会在页脚保留来源说明。</p>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
+          <p>一个用来放学习资料的小站。设置只保存在当前浏览器，换设备不会同步。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="index.html">首页</a><a href="problems/algorithm/index.html">算法题库</a><a href="tools/mistakes.html">错题本</a><a href="settings.html">设置</a>
+      </nav>
+    </div>
+    <div class="sf-bottom"><span>© 2026 朝云暮辞</span><span>ZYYC LAB · LOCAL SETTINGS</span></div>
+  </div>
+</footer>
+
+<script src="assets/js/quiz-ai.js"></script>
+<script>
+(function(){
+  var Q = window.QuizAI;
+  var statusEl = document.getElementById('testStatus');
+  var stateEl = document.getElementById('configState');
+  var providerSel = document.getElementById('setProvider');
+  var baseInput = document.getElementById('setBase');
+  var modelInput = document.getElementById('setModel');
+  var keyInput = document.getElementById('setKey');
+  var noteEl = document.getElementById('providerNote');
+  if (!Q || !providerSel) return;
+
+  var cfg = Q.getConfig();
+  var selected = Q.providerForBase(cfg.baseUrl);
+  providerSel.innerHTML = '<option value="">自定义 / 手动填写</option>' + Q.providers.map(function(p){
+    return '<option value="' + p.id + '"' + (selected && selected.id === p.id ? ' selected' : '') + '>' +
+      p.name.replace(/&/g,'&amp;').replace(/</g,'&lt;') + (p.cors === 'warn' ? '（CORS 未确认）' : '') + '</option>';
+  }).join('');
+  baseInput.value = cfg.baseUrl || '';
+  modelInput.value = cfg.model || '';
+  keyInput.value = cfg.apiKey || '';
+
+  function setStatus(msg, kind){
+    statusEl.textContent = msg || '';
+    statusEl.className = 'set-test-status ' + (kind || '');
+  }
+  function updateState(){
+    var c = Q.getConfig();
+    if (c.apiKey && c.baseUrl && c.model){
+      stateEl.innerHTML = '<i class="dot ok"></i>已配置 · ' + Q.maskedKey(c.apiKey);
+    } else {
+      stateEl.innerHTML = '<i class="dot"></i>未配置';
+    }
+  }
+  function note(){
+    var p = null;
+    for (var i=0;i<Q.providers.length;i++) if (Q.providers[i].id === providerSel.value) p = Q.providers[i];
+    if (!p){
+      noteEl.textContent = '自定义 Base URL 需到 /v1 为止，或填写完整的 /chat/completions 地址。';
+      noteEl.className = 'set-provider-note';
+    } else if (p.cors === 'warn'){
+      noteEl.textContent = '当前网络实测超时，浏览器 CORS 未确认；需要能访问该接口的网络或代理。';
+      noteEl.className = 'set-provider-note warn';
+    } else {
+      noteEl.textContent = '已实测浏览器可直连；模型名可按账号可用模型修改。';
+      noteEl.className = 'set-provider-note ok';
+    }
+  }
+  providerSel.addEventListener('change', function(){
+    var p = null;
+    for (var i=0;i<Q.providers.length;i++) if (Q.providers[i].id === providerSel.value) p = Q.providers[i];
+    if (p){ baseInput.value = p.base; modelInput.value = p.model; }
+    note(); setStatus('', '');
+  });
+  note();
+
+  document.getElementById('saveBtn').addEventListener('click', function(){
+    var next = {
+      baseUrl: baseInput.value.trim().replace(/\/+$/,''),
+      model: modelInput.value.trim(),
+      apiKey: keyInput.value.trim()
+    };
+    if (!next.baseUrl || !next.model || !next.apiKey){
+      setStatus('Base URL、模型名、API Key 三项都要填写。', 'bad');
+      return;
+    }
+    Q.saveConfig(next);
+    updateState();
+    setStatus('已保存到当前浏览器。', 'ok');
+  });
+
+  document.getElementById('testBtn').addEventListener('click', function(){
+    var next = {
+      baseUrl: baseInput.value.trim().replace(/\/+$/,''),
+      model: modelInput.value.trim(),
+      apiKey: keyInput.value.trim()
+    };
+    if (!next.baseUrl || !next.model || !next.apiKey){
+      setStatus('先把三项填完整。', 'bad');
+      return;
+    }
+    setStatus('正在请求…', 'busy');
+    Q.request(next, [{ role: 'user', content: '只回复 OK 两个字母。' }], 20)
+      .then(function(){ setStatus('连接成功，接口可用。', 'ok'); })
+      .catch(function(err){ setStatus(err.message || String(err), 'bad'); });
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', function(){
+    Q.clearConfig();
+    keyInput.value = '';
+    updateState();
+    setStatus('已清除本机保存的 Key。', 'ok');
+  });
+
+  var back = new URLSearchParams(location.search).get('return');
+  if (back){
+    var link = document.getElementById('backLink');
+    link.href = back;
+    link.textContent = '← 返回刚才的页面';
+  }
+})();
+</script>
+</body>
+</html>

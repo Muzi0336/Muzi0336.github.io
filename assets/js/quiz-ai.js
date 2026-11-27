@@ -203,10 +203,15 @@
         ].join('\n');
     }
 
+    function goSettings() {
+        var back = encodeURIComponent(location.pathname + location.search + location.hash);
+        location.href = '/settings.html?return=' + back;
+    }
+
     function openChat(prompt, autoSend, displayText) {
         var cfg = getConfig();
         if (!cfg.apiKey || !cfg.baseUrl || !cfg.model) {
-            openSettings({ prompt: prompt || '', display: displayText || prompt || '', auto: !!autoSend });
+            goSettings();
             return;
         }
         state.messages = [];
@@ -488,12 +493,7 @@
         var cfg = getConfig();
         if (cfg.apiKey && cfg.baseUrl && cfg.model) {
             status.innerHTML = '<span class="dot ok"></span>已配置 · ' + esc(maskedKey(cfg.apiKey)) +
-                '<a href="#" id="qaiChange">修改</a>';
-            var change = $('#qaiChange');
-            if (change) change.addEventListener('click', function (e) {
-                e.preventDefault();
-                openSettings(null);
-            });
+                '<a href="/settings.html">修改</a>';
         } else {
             status.innerHTML = '<span class="dot"></span>未配置 API Key';
         }
@@ -510,7 +510,7 @@
             card.id = 'qaiCard';
             card.innerHTML =
                 '<div class="card-head"><span class="k">AI <span>/ 助教</span></span>' +
-                '<button class="act qai-set" id="qaiSettings" type="button">设置</button></div>' +
+                '<a class="act qai-set" id="qaiSettings" href="/settings.html">设置</a></div>' +
                 '<p class="tip">用自己的 API Key 提问。AI 生成内容，非官方答案。</p>' +
                 '<div class="qai-actions">' +
                 '<button class="qai-btn primary" id="qaiAsk" type="button">问 AI</button>' +
@@ -519,7 +519,6 @@
                 '<p class="qai-status" id="qaiStatus"></p>';
             if (sideNote) side.insertBefore(card, sideNote);
             else side.appendChild(card);
-            $('#qaiSettings').addEventListener('click', function () { openSettings(null); });
             $('#qaiAsk').addEventListener('click', function () { openChat('', false); });
             $('#qaiExplain').addEventListener('click', function () { openChat(buildExplainPrompt(), true, '请解析这道题'); });
             updateCard();
@@ -613,6 +612,13 @@
 
     window.QuizAI = {
         mount: mount,
-        openSettings: function () { openSettings(null); }
+        openSettings: function () { openSettings(null); },
+        getConfig: getConfig,
+        saveConfig: saveConfig,
+        clearConfig: clearConfig,
+        providers: PROVIDERS,
+        providerForBase: providerForBase,
+        request: requestAI,
+        maskedKey: maskedKey
     };
 })();

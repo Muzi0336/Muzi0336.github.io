@@ -17,7 +17,7 @@
                 <path d="M10 4H4v22h6M20 4h6v22h-6" />
                 <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
             </svg>
-            <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+            <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
         </a>
           <nav class="nav">
     <a href="../../../index.html#contest" class="contest-link active">计挑赛</a>
@@ -30,7 +30,7 @@
     <a href="../../../articles/frontend/index.html">前端教程</a>
     <a href="../../../articles/fullstack/index.html">全栈笔记</a>
     <a href="../../../tools/mistakes.html">错题本</a>
-  </nav>
+    <a href="../../../settings.html">设置</a></nav>
     </div>
 
     <main class="wrap">
@@ -110,7 +110,7 @@
                         <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
                     </svg>
                     <div>
-                        <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+                        <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
                         <p>朝云暮辞 · C++ 真题档案。2019–2025 年试卷按年份与题型整理，配套逐题解析、可折叠参考代码与手敲代码练习。</p>
                     </div>
                 </div>
@@ -156,7 +156,9 @@
             $('#kind').value = state.k;
 
             const totalVisible = D.questions.filter(q => !q.dup).length;
+            const dupCount = D.questions.filter(q => q.dup).length;
             $('#statNum').textContent = totalVisible;
+            $('#statDup').textContent = dupCount + ' 道重复题已折叠';
 
             function match(q) {
                 if (!state.dup && q.dup) return false;
@@ -190,14 +192,14 @@
                         <h3>${esc(q.title)}${dot}</h3>
                         <p>${esc(q.snippet)}</p>
                     </div>
-                    <div class="row-side"><span class="tag">${label}</span>${status}</div>
+                    <div class="row-side">${q.dup ? '<span class="tag dup">重复</span>' : ''}<span class="tag">${label}</span>${status}</div>
                 </a>`;
             }
 
             function render() {
                 const list = D.questions.filter(match);
                 $('#rows').innerHTML = list.map(rowHTML).join('');
-                $('#hits').textContent = list.length + ' 道';
+                $('#hits').textContent = list.length + ' 道' + (state.dup && dupCount ? '（含 ' + dupCount + ' 道重复）' : '');
                 $('#empty').hidden = list.length > 0;
             }
 

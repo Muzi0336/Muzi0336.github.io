@@ -8,6 +8,7 @@
 /
 ├── index.html                     # 站点首页
 ├── 404.html                       # 旧地址跳转 + 新入口
+├── settings.html                  # 独立设置页（AI 配置、数据与隐私）
 ├── CNAME                          # 自定义域名 git.zyyc.cc
 ├── _config.yml                    # GitHub Pages 配置
 ├── README.md
@@ -32,7 +33,8 @@
 │   ├── css/
 │   │   ├── site.css               # 全站顶栏、排版、卡片
 │   │   ├── detail.css             # 题目/详情页通用组件
-│   │   └── tutorial.css           # 两套教程共用的阅读版式
+│   │   ├── tutorial.css           # 两套教程共用的阅读版式
+│   │   └── settings.css           # 独立设置页
 │   └── js/
 │       ├── tutorial.js            # 教程阅读器：目录、代码复制、图片放大
 │       └── quiz-ai.js             # 计挑赛 AI 助教与核对模块
@@ -91,6 +93,10 @@ C、C++、Java、Python 四套题库，按语言和题型归档。单选题可�
 - `articles/fullstack/` — Git / React / Next.js 笔记与合集阅读页
 - `articles/data-structures/` — 12 章数据结构教程
 - `articles/algorithm-competition/` — 10 章算法竞赛教程
+
+### 设置（`settings.html`）
+
+独立设置页，顶栏“设置”进入。当前提供 AI 助教的 OpenAI 兼容接口配置、连接测试与清除 Key；配置只保存在当前浏览器。页面按分区组织，后续设置项继续追加。
 
 ### 错题本（`tools/mistakes.html`）
 
