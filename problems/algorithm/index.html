@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>题库 · 朝云暮辞 ARENA</title>
-<meta name="description" content="145 道算法题，7 个知识分类。题面、推导、参考代码与算法演示放在同一页，进度保存在本地。">
+<title>算法题库 · 朝云暮辞 ARENA</title>
+<meta name="description" content="算法题库分类入口：按七个知识分类或六条学习路径进入题目列表。">
 <link rel="stylesheet" href="../../assets/css/site.css">
 <link rel="stylesheet" href="../../assets/css/detail.css">
 <link rel="stylesheet" href="assets/arena.css">
@@ -19,7 +19,6 @@
     <a class="contest-link" href="../../index.html#contest">计挑赛</a>
             <a href="../../蓝桥杯真题/exam/index.html">蓝桥真题</a>
     <a href="index.html" class="active">算法题库</a>
-    <a href="paths.html">学习路径</a>
     <a href="learn.html">算法学习</a>
     <a href="lab.html">动画实验室</a>
     <a href="../../articles/data-structures/index.html">数据结构</a>
@@ -30,42 +29,54 @@
   </nav>
 </div>
 
-<main class="ar-wrap">
-  <section class="ar-hero">
-    <div>
-      <div class="eyebrow">— Library / 145</div>
-      <h1>把算法，<br>推演清楚。</h1>
-      <p class="lede">145 道题，7 个知识分类。每道题都摊开成同一张纸：题意、推导、正确性、复杂度、三语参考代码，以及可以逐帧看懂的算法演示。进度只记在这台设备上。</p>
+<main class="ar-wrap hub-wrap">
+  <section class="hub-hero">
+    <div class="hub-copy">
+      <div class="eyebrow">— ALGORITHM LIBRARY / 145</div>
+      <h1>算法题库<br><em>先选一类，再往下走。</em></h1>
+      <p class="lede">七个知识分类，六条学习路径。选分类看这一类全部题；选路径按依赖顺序从第一题做到最后一题。两个入口最终都落到同一张题库列表。</p>
+      <div class="hub-actions">
+        <a class="hub-btn" href="bank.html">直接看全部 145 题 <span>→</span></a>
+        <a class="hub-btn ghost" href="paths.html">路径总览 <span>↗</span></a>
+      </div>
     </div>
-    <div class="ar-stat">
-      <div class="num" id="heroCount">145</div>
-      <div class="lab"><b>道题在库</b><span>7 分类 · 17 演示</span></div>
+    <div class="hub-tally">
+      <div class="hub-tally-main"><b>145</b><span>道题</span></div>
+      <div class="hub-tally-grid">
+        <div><b>07</b><span>知识分类</span></div>
+        <div><b>06</b><span>学习路径</span></div>
+        <div><b>17</b><span>算法演示</span></div>
+        <div><b>三语</b><span>参考代码</span></div>
+      </div>
     </div>
   </section>
 
-  <section class="ar-filters">
-    <div class="searchbox">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
-      <input id="search" type="search" placeholder="搜索题目、考点或题面…" autocomplete="off">
-      <span class="hits" id="hits"></span>
-    </div>
-    <div class="selects">
-      <label class="sel"><select id="track"></select><svg viewBox="0 0 10 10"><path d="m2 3.5 3 3 3-3" stroke="currentColor" fill="none"/></svg></label>
-      <label class="sel"><select id="diff"><option value="">全部难度</option><option>入门</option><option>进阶</option><option>挑战</option></select><svg viewBox="0 0 10 10"><path d="m2 3.5 3 3 3-3" stroke="currentColor" fill="none"/></svg></label>
-      <label class="sel"><select id="status"><option value="">全部状态</option><option value="todo">未开始</option><option value="reading">在读</option><option value="done">已完成</option></select><svg viewBox="0 0 10 10"><path d="m2 3.5 3 3 3-3" stroke="currentColor" fill="none"/></svg></label>
-    </div>
-    <label class="check"><input id="onlyBook" type="checkbox">只看收藏</label>
+  <section class="hub-section">
+    <header class="hub-head">
+      <div class="hub-head-no">01 / TRACKS</div>
+      <div>
+        <h2>按知识分类</h2>
+        <p>每一类是一组同知识点的题。进去后仍是题库列表，可以继续按难度、状态和关键词筛选。</p>
+      </div>
+      <span class="hub-head-count" id="trackTotal"></span>
+    </header>
+    <div class="hub-track-grid" id="trackGrid"></div>
   </section>
 
-  <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:10px 0 2px">
-    <span class="ar-count" id="countLine">—</span>
-    <span class="ar-count">按题号排序</span>
-  </div>
-
-  <section class="ar-list" id="list"></section>
+  <section class="hub-section">
+    <header class="hub-head">
+      <div class="hub-head-no">02 / PATHS</div>
+      <div>
+        <h2>按学习路径</h2>
+        <p>路径不是另一套题，而是同一批题的推荐顺序。点击后进入题库列表，按路径顺序排列。</p>
+      </div>
+      <span class="hub-head-count" id="pathTotal"></span>
+    </header>
+    <div class="hub-path-grid" id="pathGrid"></div>
+  </section>
 
   <div class="foot">
-    <div>题目与解析整理自 <a href="https://arena.wuzl.top" target="_blank" rel="noopener">竞序 · ARENA LAB</a>，经作者授权收录；界面与交互按朝云暮辞重做。</div>
+    <div>题目与解析整理自 <a href="https://arena.wuzl.top" target="_blank" rel="noopener">竞序 · ARENA LAB</a>，经作者授权收录；分类与路径入口按朝云暮辞重做。</div>
     <div>进度保存在浏览器 localStorage · 换设备不会同步。</div>
   </div>
 </main>
@@ -81,10 +92,10 @@
         </div>
       </div>
       <nav class="sf-links">
-        <a href="index.html">题库</a><a href="paths.html">学习路径</a><a href="learn.html">算法学习</a><a href="lab.html">动画实验室</a><a href="../../tools/mistakes.html">错题本</a><a href="../contest/index.html">计挑赛</a>
+        <a href="bank.html">全部题目</a><a href="paths.html">学习路径</a><a href="learn.html">算法学习</a><a href="lab.html">动画实验室</a><a href="../../tools/mistakes.html">错题本</a><a href="../contest/index.html">计挑赛</a>
       </nav>
     </div>
-    <div class="sf-bottom"><span>© 2026 朝云暮辞</span><span>v0.9 · 145 题 · 17 演示</span></div>
+    <div class="sf-bottom"><span>© 2026 朝云暮辞</span><span>7 分类 · 6 路径 · 145 题</span></div>
   </div>
 </footer>
 
@@ -92,81 +103,38 @@
 <script src="assets/arena.js"></script>
 <script>
 (function(){
-  const list = document.getElementById('list');
-  const search = document.getElementById('search');
-  const trackSel = document.getElementById('track');
-  const diffSel = document.getElementById('diff');
-  const statusSel = document.getElementById('status');
-  const onlyBook = document.getElementById('onlyBook');
-  const hits = document.getElementById('hits');
-  const countLine = document.getElementById('countLine');
+  const incoming = new URLSearchParams(location.search);
+  if (['track','path','q','diff','status'].some(k => incoming.has(k))) { location.replace('bank.html?' + incoming.toString()); return; }
+  const tracks = A.data.tracks;
+  const paths = A.data.paths;
+  document.getElementById('trackTotal').textContent = tracks.length + ' 类 · ' + A.data.problems.length + ' 题';
+  document.getElementById('pathTotal').textContent = paths.length + ' 条路径';
 
-  const params = new URLSearchParams(location.search);
-  trackSel.innerHTML = '<option value="">全部分类</option>' + A.data.tracks.map(t => `<option value="${A.attr(t.name)}">${A.esc(t.name)} · ${t.count}</option>`).join('');
-  if (params.get('track')) trackSel.value = params.get('track');
-  if (params.get('diff')) diffSel.value = params.get('diff');
-  if (params.get('q')) search.value = params.get('q');
+  document.getElementById('trackGrid').innerHTML = tracks.map((t, i) => {
+    const no = String(i + 1).padStart(2, '0');
+    return `<a class="hub-track" href="bank.html?track=${encodeURIComponent(t.name)}">
+      <span class="hub-track-no">${no}</span>
+      <span class="hub-track-en">${A.esc(t.en)}</span>
+      <h3>${A.esc(t.name)}</h3>
+      <p>${A.esc(t.desc)}</p>
+      <span class="hub-track-foot"><b>${t.count}</b> 题 <i>进入 →</i></span>
+    </a>`;
+  }).join('');
 
-  function render(){
-    const q = search.value.trim().toLowerCase();
-    const tr = trackSel.value, df = diffSel.value, st = statusSel.value;
-    const book = onlyBook.checked;
-    const rows = A.data.problems.filter(p => {
-      if (tr && p.track !== tr) return false;
-      if (df && p.difficulty !== df) return false;
-      if (st && A.statusOf(p.id) !== st) return false;
-      if (book && !A.isBook(p.id)) return false;
-      if (!q) return true;
-      const hay = ((window.ARENA_SEARCH && window.ARENA_SEARCH[p.id]) || (p.title + ' ' + p.track + ' ' + p.id + ' ' + (p.excerpt || ''))).toLowerCase();
-      return hay.includes(q);
-    });
-
-    hits.textContent = rows.length ? rows.length + ' 题' : '';
-    countLine.textContent = `— 显示 ${rows.length} / ${A.data.problems.length} 题` + (tr ? ' · ' + tr : '') + (df ? ' · ' + df : '');
-    document.getElementById('heroCount').textContent = A.data.problems.length;
-
-    if (!rows.length){
-      list.innerHTML = '<div class="ar-empty"><b>没有找到这一题。</b>换个关键词，或把筛选条件放宽一点。</div>';
-      return;
-    }
-
-    list.innerHTML = rows.map(p => {
-      const state = A.statusOf(p.id);
-      const dot = state === 'done' ? '<i class="dot done"></i>' : state === 'reading' ? '<i class="dot read"></i>' : '';
-      const stLabel = state === 'done' ? '<span class="st done">已完成</span>' : state === 'reading' ? '<span class="st read">在读</span>' : '';
-      return `<a class="arow" href="q.html?id=${p.id}">
-        <div class="arow-idx"><b>${String(p.idx).padStart(3,'0')}</b><small>${p.id}</small></div>
-        <div class="arow-main">
-          <h3>${dot}${A.esc(p.title)}</h3>
-          <p>${A.esc(p.excerpt || p.title)}</p>
-          <div class="tags"><span class="chip track">${A.esc(p.track)}</span><span class="chip diff-${A.attr(p.difficulty)}">${A.esc(p.difficulty)}</span>${(p.animation && p.animation.type !== 'none') ? '<span class="chip">动画</span>' : ''}</div>
-        </div>
-        <div class="arow-side">
-          ${A.isBook(p.id) ? '<span class="bm">★ 已收藏</span>' : ''}
-          <span class="mins">${p.minutes} MIN</span>
-          ${stLabel}
-        </div>
-      </a>`;
-    }).join('');
-  }
-
-  let t = 0;
-  let searchLoading = false;
-  function ensureSearch(){
-    if (window.ARENA_SEARCH || searchLoading) return;
-    searchLoading = true;
-    const s = document.createElement('script');
-    s.src = 'assets/search_data.js';
-    s.onload = () => { if (search.value.trim()) render(); };
-    document.head.appendChild(s);
-  }
-  search.addEventListener('focus', ensureSearch, { once: true });
-  if ('requestIdleCallback' in window) requestIdleCallback(ensureSearch, { timeout: 3000 });
-  else setTimeout(ensureSearch, 2000);
-
-  search.addEventListener('input', () => { ensureSearch(); clearTimeout(t); t = setTimeout(render, 120); });
-  [trackSel, diffSel, statusSel, onlyBook].forEach(el => el.addEventListener('change', render));
-  render();
+  document.getElementById('pathGrid').innerHTML = paths.map(p => {
+    const done = p.problems.filter(id => A.statusOf(id) === 'done').length;
+    const pct = p.problems.length ? Math.round(done / p.problems.length * 100) : 0;
+    return `<a class="hub-path" href="bank.html?path=${encodeURIComponent(p.slug)}">
+      <span class="hub-path-no">${A.esc(p.index)} / PATH</span>
+      <div class="hub-path-body">
+        <h3>${A.esc(p.name)}</h3>
+        <p>${A.esc(p.description)}</p>
+        <div class="hub-path-bar"><i style="width:${pct}%"></i></div>
+        <div class="hub-path-meta"><span>计划 ${p.planned_count} 题 · 现有 ${p.problems.length} 题</span><span>${done ? '已完成 ' + done : '尚未开始'}</span></div>
+      </div>
+      <span class="hub-path-go">→</span>
+    </a>`;
+  }).join('');
 })();
 </script>
 </body>

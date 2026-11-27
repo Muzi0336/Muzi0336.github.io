@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>题库 · 算法题库</title>
+<meta name="description" content="按知识分类或学习路径查看算法题，题面、推导、参考代码与算法演示放在同一页。">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/detail.css">
+<link rel="stylesheet" href="assets/arena.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="../../index.html" title="朝云暮辞 · 学习档案">
+    <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg>
+    <span class="brand-text"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+  </a>
+  <nav class="nav">
+    <a class="contest-link" href="../../index.html#contest">计挑赛</a>
+            <a href="../../蓝桥杯真题/exam/index.html">蓝桥真题</a>
+    <a href="index.html" class="active">算法题库</a>
+    <a href="learn.html">算法学习</a>
+    <a href="lab.html">动画实验室</a>
+    <a href="../../articles/data-structures/index.html">数据结构</a>
+    <a href="../../articles/algorithm-competition/index.html">算法竞赛</a>
+    <a href="../../articles/frontend/index.html">前端教程</a>
+    <a href="../../articles/fullstack/index.html">全栈笔记</a>
+    <a href="../../tools/mistakes.html">错题本</a>
+  </nav>
+</div>
+
+<main class="ar-wrap">
+  <a class="bank-back" href="index.html">← 返回算法题库分类</a>
+  <div class="bank-scope" id="scope"></div>
+  <section class="ar-hero">
+    <div>
+      <div class="eyebrow" id="bankEyebrow">— ALL / 145</div>
+      <h1 id="bankTitle">全部题目</h1>
+      <p class="lede" id="bankLede">145 道题，按分类或路径筛出来。每题都摊开成同一张纸：题意、推导、正确性、复杂度、三语参考代码，以及可以逐帧看懂的算法演示。</p>
+    </div>
+    <div class="ar-stat">
+      <div class="num" id="heroCount">145</div>
+      <div class="lab"><b id="heroLabel">道题在库</b><span>进度只记在这台设备</span></div>
+    </div>
+  </section>
+
+  <section class="ar-filters">
+    <div class="searchbox">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
+      <input id="search" type="search" placeholder="搜索题目、考点或题面…" autocomplete="off">
+      <span class="hits" id="hits"></span>
+    </div>
+    <div class="selects">
+      <label class="sel"><select id="track"></select><svg viewBox="0 0 10 10"><path d="m2 3.5 3 3 3-3" stroke="currentColor" fill="none"/></svg></label>
+      <label class="sel"><select id="diff"><option value="">全部难度</option><option>入门</option><option>进阶</option><option>挑战</option></select><svg viewBox="0 0 10 10"><path d="m2 3.5 3 3 3-3" stroke="currentColor" fill="none"/></svg></label>
+      <label class="sel"><select id="status"><option value="">全部状态</option><option value="todo">未开始</option><option value="reading">在读</option><option value="done">已完成</option></select><svg viewBox="0 0 10 10"><path d="m2 3.5 3 3 3-3" stroke="currentColor" fill="none"/></svg></label>
+    </div>
+    <label class="check"><input id="onlyBook" type="checkbox">只看收藏</label>
+  </section>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:10px 0 2px">
+    <span class="ar-count" id="countLine">—</span>
+    <span class="ar-count" id="sortNote">按题号排序</span>
+  </div>
+
+  <section class="ar-list" id="list"></section>
+
+  <div class="foot">
+    <div>题目与解析整理自 <a href="https://arena.wuzl.top" target="_blank" rel="noopener">竞序 · ARENA LAB</a>，经作者授权收录；界面与交互按朝云暮辞重做。</div>
+    <div>进度保存在浏览器 localStorage · 换设备不会同步。</div>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="sf-inner">
+    <div class="sf-top">
+      <div class="sf-brand">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg>
+        <div>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ARENA LAB</small></span>
+          <p>一个用来放学习资料的小站。题库、路径与课程整理自 ARENA LAB，解析与演示版权归原作者，经授权收录。</p>
+        </div>
+      </div>
+      <nav class="sf-links">
+        <a href="index.html">分类</a><a href="paths.html">学习路径</a><a href="learn.html">算法学习</a><a href="lab.html">动画实验室</a><a href="../../tools/mistakes.html">错题本</a><a href="../contest/index.html">计挑赛</a>
+      </nav>
+    </div>
+    <div class="sf-bottom"><span>© 2026 朝云暮辞</span><span>v0.9 · 145 题 · 17 演示</span></div>
+  </div>
+</footer>
+
+<script src="assets/app_data.js"></script>
+<script src="assets/arena.js"></script>
+<script>
+(function(){
+  const list = document.getElementById('list');
+  const search = document.getElementById('search');
+  const trackSel = document.getElementById('track');
+  const diffSel = document.getElementById('diff');
+  const statusSel = document.getElementById('status');
+  const onlyBook = document.getElementById('onlyBook');
+  const hits = document.getElementById('hits');
+  const countLine = document.getElementById('countLine');
+  const scopeEl = document.getElementById('scope');
+  const params = new URLSearchParams(location.search);
+  const pathInfo = A.data.paths.find(p => p.slug === params.get('path')) || null;
+  const baseProblems = pathInfo ? pathInfo.problems.map(id => A.byId(id)).filter(Boolean) : A.data.problems;
+
+  trackSel.innerHTML = '<option value="">全部分类</option>' + A.data.tracks.map(t => `<option value="${A.attr(t.name)}">${A.esc(t.name)} · ${t.count}</option>`).join('');
+  if (params.get('track')) trackSel.value = params.get('track');
+  if (params.get('diff')) diffSel.value = params.get('diff');
+  if (params.get('q')) search.value = params.get('q');
+
+  function scopeMeta(tr){
+    if (pathInfo){
+      return {
+        eyebrow: `— PATH ${pathInfo.index} / ${pathInfo.problems.length}`,
+        title: pathInfo.name,
+        lede: `${pathInfo.description}。${pathInfo.lede || ''}`,
+        label: '道题在路径'
+      };
+    }
+    const track = A.data.tracks.find(t => t.name === tr);
+    if (track){
+      return {
+        eyebrow: `— TRACK ${String(A.data.tracks.indexOf(track) + 1).padStart(2,'0')} / ${track.count}`,
+        title: track.name,
+        lede: `${track.desc}。按题号排好，从第一道开始往下做。`,
+        label: '道题在分类'
+      };
+    }
+    return {
+      eyebrow: `— ALL / ${A.data.problems.length}`,
+      title: '全部题目',
+      lede: '145 道题，按分类或路径筛出来。每题都摊开成同一张纸：题意、推导、正确性、复杂度、三语参考代码，以及可以逐帧看懂的算法演示。',
+      label: '道题在库'
+    };
+  }
+
+  function render(){
+    const q = search.value.trim().toLowerCase();
+    const tr = trackSel.value, df = diffSel.value, st = statusSel.value;
+    const book = onlyBook.checked;
+    const meta = scopeMeta(tr);
+    const trackMeta = tr ? A.data.tracks.find(t => t.name === tr) : null;
+    const scopeTotal = trackMeta ? trackMeta.count : baseProblems.length;
+    document.getElementById('bankEyebrow').textContent = meta.eyebrow;
+    document.getElementById('bankTitle').textContent = meta.title;
+    document.getElementById('bankLede').textContent = meta.lede;
+    document.getElementById('heroCount').textContent = scopeTotal;
+    document.getElementById('heroLabel').textContent = meta.label;
+    document.getElementById('sortNote').textContent = pathInfo ? '按路径顺序' : '按题号排序';
+
+    if (pathInfo){
+      scopeEl.innerHTML = `<span class="scope-k">PATH ${pathInfo.index}</span><strong>${A.esc(pathInfo.name)}</strong><span>${A.esc(pathInfo.description)}</span><a href="paths.html">查看路径总览 →</a>`;
+    } else if (tr){
+      const track = A.data.tracks.find(t => t.name === tr);
+      scopeEl.innerHTML = track ? `<span class="scope-k">TRACK</span><strong>${A.esc(track.name)}</strong><span>${A.esc(track.desc)}</span>` : '';
+    } else {
+      scopeEl.innerHTML = '';
+    }
+
+    const rows = baseProblems.filter(p => {
+      if (tr && p.track !== tr) return false;
+      if (df && p.difficulty !== df) return false;
+      if (st && A.statusOf(p.id) !== st) return false;
+      if (book && !A.isBook(p.id)) return false;
+      if (!q) return true;
+      const hay = ((window.ARENA_SEARCH && window.ARENA_SEARCH[p.id]) || (p.title + ' ' + p.track + ' ' + p.id + ' ' + (p.excerpt || ''))).toLowerCase();
+      return hay.includes(q);
+    });
+
+    hits.textContent = rows.length ? rows.length + ' 题' : '';
+    countLine.textContent = `— 显示 ${rows.length} / ${scopeTotal} 题` + (tr ? ' · ' + tr : '') + (df ? ' · ' + df : '');
+
+    if (!rows.length){
+      list.innerHTML = '<div class="ar-empty"><b>没有找到这一题。</b>换个关键词，或把筛选条件放宽一点。</div>';
+      return;
+    }
+
+    list.innerHTML = rows.map(p => {
+      const state = A.statusOf(p.id);
+      const dot = state === 'done' ? '<i class="dot done"></i>' : state === 'reading' ? '<i class="dot read"></i>' : '';
+      const stLabel = state === 'done' ? '<span class="st done">已完成</span>' : state === 'reading' ? '<span class="st read">在读</span>' : '';
+      return `<a class="arow" href="q.html?id=${p.id}">
+        <div class="arow-idx"><b>${String(p.idx).padStart(3,'0')}</b><small>${p.id}</small></div>
+        <div class="arow-main">
+          <h3>${dot}${A.esc(p.title)}</h3>
+          <p>${A.esc(p.excerpt || p.title)}</p>
+          <div class="tags"><span class="chip track">${A.esc(p.track)}</span><span class="chip diff-${A.attr(p.difficulty)}">${A.esc(p.difficulty)}</span>${(p.animation && p.animation.type !== 'none') ? '<span class="chip">动画</span>' : ''}</div>
+        </div>
+        <div class="arow-side">
+          ${A.isBook(p.id) ? '<span class="bm">★ 已收藏</span>' : ''}
+          <span class="mins">${p.minutes} MIN</span>
+          ${stLabel}
+        </div>
+      </a>`;
+    }).join('');
+  }
+
+  let t = 0;
+  let searchLoading = false;
+  function ensureSearch(){
+    if (window.ARENA_SEARCH || searchLoading) return;
+    searchLoading = true;
+    const s = document.createElement('script');
+    s.src = 'assets/search_data.js';
+    s.onload = () => { if (search.value.trim()) render(); };
+    document.head.appendChild(s);
+  }
+  search.addEventListener('focus', ensureSearch, { once: true });
+  if ('requestIdleCallback' in window) requestIdleCallback(ensureSearch, { timeout: 3000 });
+  else setTimeout(ensureSearch, 2000);
+
+  search.addEventListener('input', () => { ensureSearch(); clearTimeout(t); t = setTimeout(render, 120); });
+  [trackSel, diffSel, statusSel, onlyBook].forEach(el => el.addEventListener('change', render));
+  render();
+})();
+</script>
+</body>
+</html>
