@@ -115,11 +115,47 @@
         return out.join('\n');
     };
 
-    /* ---------- KaTeX ---------- */
+    /* ---------- KaTeX（按需加载，避免每道题都先下 300KB） ---------- */
+    LQ.MATH = { loading: null, ready: false };
+    LQ.loadMath = function () {
+        if (window.renderMathInElement) { LQ.MATH.ready = true; return Promise.resolve(true); }
+        if (LQ.MATH.loading) return LQ.MATH.loading;
+        function loadScript(src) {
+            return new Promise(function (resolve) {
+                var s = document.createElement('script');
+                s.src = src;
+                s.onload = function () { resolve(true); };
+                s.onerror = function () { resolve(false); };
+                document.head.appendChild(s);
+            });
+        }
+        if (!document.querySelector('link[data-lq-katex]')) {
+            var css = document.createElement('link');
+            css.rel = 'stylesheet';
+            css.href = 'vendor/katex.min.css';
+            css.setAttribute('data-lq-katex', '1');
+            document.head.appendChild(css);
+        }
+        LQ.MATH.loading = loadScript('vendor/katex.min.js').then(function (ok) {
+            if (!ok) return false;
+            return loadScript('vendor/auto-render.min.js');
+        }).then(function (ok) {
+            LQ.MATH.ready = !!ok && !!window.renderMathInElement;
+            return LQ.MATH.ready;
+        });
+        return LQ.MATH.loading;
+    };
     LQ.renderMath = function (root) {
-        if (!window.renderMathInElement) return;
+        root = root || document.body;
+        if (!root) return;
+        var text = root.innerText || root.textContent || '';
+        if (!/\\\(|\\\[|(^|[^\\])\$/.test(text)) return;
+        if (!window.renderMathInElement) {
+            LQ.loadMath().then(function (ok) { if (ok) LQ.renderMath(root); });
+            return;
+        }
         try {
-            window.renderMathInElement(root || document.body, {
+            window.renderMathInElement(root, {
                 delimiters: [
                     { left: '$$', right: '$$', display: true },
                     { left: '$', right: '$', display: false },

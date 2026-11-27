@@ -172,12 +172,6 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="../problems/contest/data.js"></script>
-<script src="../problems/contest/cpp/data.js"></script>
-<script src="../problems/contest/java/data.js"></script>
-<script src="../problems/contest/python/data.js"></script>
-<script src="../problems/algorithm/assets/app_data.js"></script>
-<script src="../problems/lanqiao/data/catalog.js"></script>
 <script>
 (function(){
   const $ = (s) => document.querySelector(s);
@@ -192,31 +186,30 @@
   const arena = read(ARENA_KEY, { status:{}, book:{}, quiz:{}, lessons:{}, code:{}, wrong:{} });
   arena.wrong = arena.wrong || {};
 
-  const aProblems = (window.ARENA && ARENA.problems) ? ARENA.problems : [];
-  const aById = new Map(aProblems.map(p => [p.id, p]));
+  const CONTEST_TOTAL = 944;
+  const LQ_TOTAL = 757;
+  const A_TOTAL = 145;
+  let aProblems = [];
+  let aById = new Map();
+  let lqList = [];
+  let lqById = new Map();
 
   const banks = [
-    { id:'c', name:'C 语言', kicker:'CONTEST / C', lang:'C', questions:(window.CDATA && CDATA.questions) || [], ansKey:'cquiz.ans.v1', codePrefix:'cquiz.code.', href:'../problems/contest/q.html' },
-    { id:'cpp', name:'C++', kicker:'CONTEST / C++', lang:'C++', questions:(window.CDATA_CPP && CDATA_CPP.questions) || [], ansKey:'contest.ans.cpp.v1', codePrefix:'contest.code.cpp.', href:'../problems/contest/cpp/q.html' },
-    { id:'java', name:'Java', kicker:'CONTEST / JAVA', lang:'Java', questions:(window.CDATA_JAVA && CDATA_JAVA.questions) || [], ansKey:'contest.ans.java.v1', codePrefix:'contest.code.java.', href:'../problems/contest/java/q.html' },
-    { id:'python', name:'Python', kicker:'CONTEST / PYTHON', lang:'Python', questions:(window.CDATA_PY && CDATA_PY.questions) || [], ansKey:'contest.ans.python.v1', codePrefix:'contest.code.python.', href:'../problems/contest/python/q.html' }
-  ].map(b => ({ ...b, byId:new Map(b.questions.map(q => [q.id, q])), total:b.questions.length, ans:read(b.ansKey, {}) }));
+    { id:'c', name:'C 语言', kicker:'CONTEST / C', lang:'C', questions:null, ansKey:'cquiz.ans.v1', codePrefix:'cquiz.code.', href:'../problems/contest/q.html' },
+    { id:'cpp', name:'C++', kicker:'CONTEST / C++', lang:'C++', questions:null, ansKey:'contest.ans.cpp.v1', codePrefix:'contest.code.cpp.', href:'../problems/contest/cpp/q.html' },
+    { id:'java', name:'Java', kicker:'CONTEST / JAVA', lang:'Java', questions:null, ansKey:'contest.ans.java.v1', codePrefix:'contest.code.java.', href:'../problems/contest/java/q.html' },
+    { id:'python', name:'Python', kicker:'CONTEST / PYTHON', lang:'Python', questions:null, ansKey:'contest.ans.python.v1', codePrefix:'contest.code.python.', href:'../problems/contest/python/q.html' }
+  ].map(b => ({ ...b, total:0, ans:read(b.ansKey, {}) }));
   const bankMap = new Map(banks.map(b => [b.id, b]));
 
-  const lqList = (window.LQ_CATALOG && LQ_CATALOG.problems) ? LQ_CATALOG.problems : [];
-  const lqById = new Map(lqList.map(p => [p.id, p]));
-  const aTotal = aProblems.length || 145;
-  const lqTotal = lqList.length || 757;
-  const contestTotal = banks.reduce((n, b) => n + b.total, 0);
-
   const categories = [
-    { id:'contest', name:'计算机挑战赛', kicker:'WRONG BOOK / CONTEST', total:contestTotal },
-    { id:'lq', name:'蓝桥杯', kicker:'WRONG BOOK / LANQIAO', total:lqTotal },
-    { id:'a', name:'算法题库', kicker:'WRONG BOOK / ARENA', total:aTotal }
+    { id:'contest', name:'计算机挑战赛', kicker:'WRONG BOOK / CONTEST', total:CONTEST_TOTAL },
+    { id:'lq', name:'蓝桥杯', kicker:'WRONG BOOK / LANQIAO', total:LQ_TOTAL },
+    { id:'a', name:'算法题库', kicker:'WRONG BOOK / ARENA', total:A_TOTAL }
   ];
 
   function wrongList(bank){
-    return bank.questions.filter(q => q.kind === 'single' && bank.ans[q.id] && bank.ans[q.id].ok === false);
+    return (bank.questions || []).filter(q => q.kind === 'single' && bank.ans[q.id] && bank.ans[q.id].ok === false);
   }
   function lqWrong(){
     const obj = read('lq.wrong', {});
@@ -224,6 +217,94 @@
       .filter(p => p && p.title);
   }
   function arenaWrong(){ return aProblems.filter(p => arena.wrong[p.id]); }
+
+  /* 错题数据按分类懒加载：先出卡片和计数，点开某类再下题库。 */
+  const loaded = { contest:false, lq:false, a:false };
+  const loading = {};
+  const DATA_SRC = {
+    contest: ['../problems/contest/data.js', '../problems/contest/cpp/data.js', '../problems/contest/java/data.js', '../problems/contest/python/data.js'],
+    lq: ['../problems/lanqiao/data/catalog.js'],
+    a: ['../problems/algorithm/assets/app_data.js']
+  };
+  function loadScript(src){
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error('加载失败：' + src));
+      document.head.appendChild(s);
+    });
+  }
+  function attachData(catId){
+    if (catId === 'contest') {
+      const packs = [window.CDATA, window.CDATA_CPP, window.CDATA_JAVA, window.CDATA_PY];
+      banks.forEach((b, i) => {
+        b.questions = (packs[i] && packs[i].questions) || [];
+        b.byId = new Map(b.questions.map(q => [q.id, q]));
+        b.total = b.questions.length;
+      });
+      const cat = categories.find(c => c.id === 'contest');
+      if (cat) cat.total = banks.reduce((n, b) => n + b.total, 0) || cat.total;
+    } else if (catId === 'lq') {
+      lqList = (window.LQ_CATALOG && LQ_CATALOG.problems) ? LQ_CATALOG.problems : [];
+      lqById = new Map(lqList.map(p => [p.id, p]));
+      const cat = categories.find(c => c.id === 'lq');
+      if (cat) cat.total = lqList.length || cat.total;
+    } else {
+      aProblems = (window.ARENA && ARENA.problems) ? ARENA.problems : [];
+      aById = new Map(aProblems.map(p => [p.id, p]));
+      const cat = categories.find(c => c.id === 'a');
+      if (cat) cat.total = aProblems.length || cat.total;
+    }
+    loaded[catId] = true;
+  }
+  function ensureData(catId){
+    if (loaded[catId]) return Promise.resolve();
+    if (loading[catId]) return loading[catId];
+    loading[catId] = Promise.all((DATA_SRC[catId] || []).map(loadScript)).then(() => {
+      attachData(catId);
+    }).catch((err) => {
+      loading[catId] = null;
+      throw err;
+    });
+    return loading[catId];
+  }
+  function wrongKeys(catId){
+    if (catId === 'contest') {
+      const keys = [];
+      banks.forEach(b => {
+        b.ans = read(b.ansKey, {});
+        Object.keys(b.ans).forEach(id => {
+          const rec = b.ans[id];
+          if (rec && rec.ok === false) keys.push(reviewKey('contest', b.id, id));
+        });
+      });
+      return keys;
+    }
+    if (catId === 'lq') return Object.keys(read('lq.wrong', {})).map(id => reviewKey('lq', '', id));
+    return Object.keys(arena.wrong).filter(id => arena.wrong[id]).map(id => reviewKey('a', '', id));
+  }
+  function statsFor(catId){
+    const keys = wrongKeys(catId);
+    return {
+      count: keys.length,
+      due: keys.filter(k => statusOf(k) === 'due').length,
+      later: keys.filter(k => statusOf(k) === 'later').length,
+      mastered: keys.filter(k => statusOf(k) === 'mastered').length
+    };
+  }
+  function buildItems(catId){
+    if (catId === 'contest') {
+      const items = [];
+      banks.forEach(b => {
+        b.ans = read(b.ansKey, {});
+        wrongList(b).forEach(q => items.push(contestItem(b, q)));
+      });
+      return items;
+    }
+    if (catId === 'lq') return lqWrong().map(lqItem);
+    return arenaWrong().map(algoItem);
+  }
 
   function reviewKey(catId, bankId, id){ return catId + ':' + (bankId || '') + ':' + id; }
   function reviewOf(key){
@@ -365,28 +446,14 @@
   }
 
   let activeCat = '';
-  let cache = {};
+  let stats = {};
 
   function refresh(){
-    cache = {};
-    const contestItems = [];
-    banks.forEach(b => {
-      b.ans = read(b.ansKey, {});
-      wrongList(b).forEach(q => contestItems.push(contestItem(b, q)));
-    });
-    const lqItems = lqWrong().map(lqItem);
-    const aItems = arenaWrong().map(algoItem);
-    const allItems = { contest:contestItems, lq:lqItems, a:aItems };
-    categories.forEach(cat => {
-      const items = allItems[cat.id];
-      const due = items.filter(x => statusOf(x.key) === 'due').length;
-      const later = items.filter(x => statusOf(x.key) === 'later').length;
-      const mastered = items.filter(x => statusOf(x.key) === 'mastered').length;
-      cache[cat.id] = { items, due, later, mastered };
-    });
-    const totalWrong = categories.reduce((n,c) => n + cache[c.id].items.length, 0);
-    const due = categories.reduce((n,c) => n + cache[c.id].due, 0);
-    const mastered = categories.reduce((n,c) => n + cache[c.id].mastered, 0);
+    stats = {};
+    categories.forEach(cat => { stats[cat.id] = statsFor(cat.id); });
+    const totalWrong = categories.reduce((n,c) => n + stats[c.id].count, 0);
+    const due = categories.reduce((n,c) => n + stats[c.id].due, 0);
+    const mastered = categories.reduce((n,c) => n + stats[c.id].mastered, 0);
     $('#totalWrong').textContent = totalWrong;
     $('#dueToday').textContent = due;
     $('#masteredCount').textContent = mastered;
@@ -394,17 +461,20 @@
       ? `今天有 ${due} 道到期；做完后点“记住了”，会按 1 / 3 / 7 天继续排。已掌握 ${mastered} 道。`
       : '还没有错题。答错单选题，或在蓝桥、算法题页点“加入错题本”，就会出现在这里。';
     renderCards();
-    if (activeCat) renderDetail(activeCat);
+    if (activeCat) {
+      if (loaded[activeCat]) renderDetail(activeCat);
+      else renderDetailLoading(activeCat);
+    }
   }
 
   function card(cat){
-    const c = cache[cat.id] || { items:[], due:0, later:0, mastered:0 };
-    const pct = c.items.length ? Math.min(100, c.mastered / c.items.length * 100) : 0;
+    const c = stats[cat.id] || { count:0, due:0, later:0, mastered:0 };
+    const pct = c.count ? Math.min(100, c.mastered / c.count * 100) : 0;
     return `<button class="cat-card${activeCat === cat.id ? ' active' : ''}" type="button" data-cat="${cat.id}" aria-controls="detail" aria-expanded="${activeCat === cat.id}">
       <div class="cat-top"><div><div class="cat-kicker">${esc(cat.kicker)}</div><div class="cat-name">${esc(cat.name)}</div></div>
         <span class="cat-total">题库 ${cat.total}</span></div>
-      <div class="cat-count"><b>${c.items.length}</b><span>道错题</span></div>
-      <div class="cat-split"><span>今天 <b>${c.due}</b></span><span>稍后 <b>${c.later || 0}</b></span><span>已掌握 <b>${c.mastered}</b></span></div>
+      <div class="cat-count"><b>${c.count}</b><span>道错题</span></div>
+      <div class="cat-split"><span>今天 <b>${c.due}</b></span><span>稍后 <b>${c.later}</b></span><span>已掌握 <b>${c.mastered}</b></span></div>
       <div class="cat-bar"><i style="width:${pct}%"></i></div>
       <div class="cat-open">进入复习 <span>点开 →</span></div>
     </button>`;
@@ -448,11 +518,11 @@
   function renderDetail(catId){
     const cat = categories.find(c => c.id === catId);
     if (!cat) return;
-    const c = cache[catId] || { items:[] };
-    const items = c.items;
+    const items = buildItems(catId);
+    const s = stats[catId] || statsFor(catId);
     $('#detailKicker').textContent = cat.kicker;
     $('#detailTitle').textContent = cat.name + '错题复习 · ' + items.length + ' 道';
-    $('#detailCounts').innerHTML = `<span>今天 <b>${c.due || 0}</b></span><span>稍后 <b>${c.later || 0}</b></span><span>已掌握 <b>${c.mastered || 0}</b></span>`;
+    $('#detailCounts').innerHTML = `<span>今天 <b>${s.due}</b></span><span>稍后 <b>${s.later}</b></span><span>已掌握 <b>${s.mastered}</b></span>`;
     $('#clearAll').disabled = !items.length;
     if (!items.length){
       const hint = catId === 'lq' ? '在蓝桥题目页点“加入错题本”后会出现在这里。' : (catId === 'a' ? '在算法题目页点“加入错题本”后会出现在这里。' : '答错单选题后会自动出现在这里。');
@@ -477,11 +547,32 @@
     $('#wlist').innerHTML = html;
   }
 
+  function renderDetailLoading(catId){
+    const cat = categories.find(c => c.id === catId);
+    if (!cat) return;
+    const s = stats[catId] || { due:0, later:0, mastered:0 };
+    $('#detailKicker').textContent = cat.kicker;
+    $('#detailTitle').textContent = cat.name + '错题复习';
+    $('#detailCounts').innerHTML = `<span>今天 <b>${s.due}</b></span><span>稍后 <b>${s.later}</b></span><span>已掌握 <b>${s.mastered}</b></span>`;
+    $('#clearAll').disabled = true;
+    $('#wlist').innerHTML = `<div class="empty">正在加载这一类错题…<br><span style="color:var(--muted)">只加载你点开的分类，不会一次把三套题库全下载。</span></div>`;
+  }
+
   function openCat(catId, scroll){
     activeCat = catId;
     renderCards();
     $('#detail').hidden = false;
-    renderDetail(catId);
+    if (loaded[catId]) {
+      renderDetail(catId);
+    } else {
+      renderDetailLoading(catId);
+      ensureData(catId).then(() => {
+        renderCards();
+        if (activeCat === catId) renderDetail(catId);
+      }).catch(() => {
+        if (activeCat === catId) $('#wlist').innerHTML = '<div class="empty">题库加载失败。检查网络后刷新页面再试。</div>';
+      });
+    }
     if (scroll) $('#detail').scrollIntoView({ behavior:'smooth', block:'start' });
   }
 
@@ -555,7 +646,7 @@
   $('#clearAll').addEventListener('click', () => {
     if (!activeCat) return;
     const cat = categories.find(c => c.id === activeCat);
-    const items = (cache[activeCat] || {}).items || [];
+    const items = loaded[activeCat] ? buildItems(activeCat) : [];
     if (!cat || !items.length) return;
     if (!confirm(`确定清空${cat.name}错题吗？复习进度也会一起清掉。`)) return;
     clearReviews(items.map(x => x.key));
@@ -583,5 +674,6 @@
   else if (hash === 'a') openCat('a', false);
 })();
 </script>
+    <script src="../assets/js/site.js" defer></script>
 </body>
 </html>

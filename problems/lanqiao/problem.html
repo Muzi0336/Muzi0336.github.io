@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="../../assets/css/site.css">
     <link rel="stylesheet" href="../../assets/css/detail.css">
     <link rel="stylesheet" href="assets/exam.css">
-    <link rel="stylesheet" href="vendor/katex.min.css">
 </head>
 
 <body>
@@ -103,8 +102,6 @@
         </div>
     </footer>
 
-    <script src="vendor/katex.min.js"></script>
-    <script src="vendor/auto-render.min.js"></script>
     <script src="data/catalog.js"></script>
     <script src="assets/exam.js"></script>
     <script src="../../assets/js/quiz-ai.js"></script>
@@ -185,45 +182,54 @@
                     bindAi(mount);
                     return;
                 }
-                mount.innerHTML = head('加载中…') + '<div class="sol-wrap" id="solWrap"></div>';
+                mount.innerHTML = head('按需加载') +
+                    '<div class="sol-empty" style="margin-top:14px"><span>题解通常带完整代码，先自己写一版；卡住了再加载，别让题解替你思考。</span>' +
+                    '<button type="button" class="sol-ai" data-load-sol>加载题解</button>' +
+                    '<a href="https://blog.dotcpp.com/tijie/p' + encodeURIComponent(q.id) + '/" target="_blank" rel="noopener">去 Dotcpp 看看 ↗</a></div>';
 
-                LQ.loadSol(q.year).then(function (pack) {
-                    var list = (pack && pack[q.id]) || [];
-                    var em = document.querySelector('#sec-sol em');
-                    var wrap = document.querySelector('#solWrap');
-                    if (!em || !wrap) return;
-                    em.textContent = list.length ? list.length + ' 篇 · 来自 Dotcpp 博客' : '本题暂无收录题解';
+                mount.querySelector('[data-load-sol]').addEventListener('click', function () {
+                    var btn = this;
+                    btn.disabled = true;
+                    btn.textContent = '加载中…';
+                    mount.innerHTML = head('加载中…') + '<div class="sol-wrap" id="solWrap"></div>';
+                    LQ.loadSol(q.year).then(function (pack) {
+                        var list = (pack && pack[q.id]) || [];
+                        var em = document.querySelector('#sec-sol em');
+                        var wrap = document.querySelector('#solWrap');
+                        if (!em || !wrap) return;
+                        em.textContent = list.length ? list.length + ' 篇 · 来自 Dotcpp 博客' : '本题暂无收录题解';
 
-                    if (!list.length) {
-                        wrap.innerHTML = '<div class="sol-empty"><span>Dotcpp 题解区里这道题还没有题解，或都被隐藏了。</span>' +
-                            '<button type="button" class="sol-ai" data-ai>让 AI 讲这题</button>' +
-                            '<a href="https://blog.dotcpp.com/tijie/p' + encodeURIComponent(q.id) + '/" target="_blank" rel="noopener">去题解页看看 ↗</a></div>';
-                        bindAi(wrap);
-                        return;
-                    }
+                        if (!list.length) {
+                            wrap.innerHTML = '<div class="sol-empty"><span>Dotcpp 题解区里这道题还没有题解，或都被隐藏了。</span>' +
+                                '<button type="button" class="sol-ai" data-ai>让 AI 讲这题</button>' +
+                                '<a href="https://blog.dotcpp.com/tijie/p' + encodeURIComponent(q.id) + '/" target="_blank" rel="noopener">去题解页看看 ↗</a></div>';
+                            bindAi(wrap);
+                            return;
+                        }
 
-                    wrap.innerHTML = list.map(function (a) {
-                        return '<article class="sol-item">' +
-                            '<header class="sol-head">' +
-                            '<h4>' + LQ.esc(a.title || '未命名题解') + '</h4>' +
-                            '<div class="sol-meta">' + [a.date, a.likes ? a.likes + ' 赞' : '', a.views ? a.views + ' 浏览' : '']
-                                .filter(Boolean).map(function (x) { return '<span>' + LQ.esc(x) + '</span>'; }).join('') + '</div>' +
-                            '<span class="sol-arrow">展开 ↓</span>' +
-                            '</header>' +
-                            '<div class="sol-body" hidden>' + solText(a.md) + '</div>' +
-                            '<div class="sol-foot"><span>内容来自 Dotcpp 博客，版权归原作者</span>' +
-                            '<a href="https://blog.dotcpp.com/a/' + encodeURIComponent(a.aid) + '" target="_blank" rel="noopener">原文 ↗</a></div>' +
-                            '</article>';
-                    }).join('');
+                        wrap.innerHTML = list.map(function (a) {
+                            return '<article class="sol-item">' +
+                                '<header class="sol-head">' +
+                                '<h4>' + LQ.esc(a.title || '未命名题解') + '</h4>' +
+                                '<div class="sol-meta">' + [a.date, a.likes ? a.likes + ' 赞' : '', a.views ? a.views + ' 浏览' : '']
+                                    .filter(Boolean).map(function (x) { return '<span>' + LQ.esc(x) + '</span>'; }).join('') + '</div>' +
+                                '<span class="sol-arrow">展开 ↓</span>' +
+                                '</header>' +
+                                '<div class="sol-body" hidden>' + solText(a.md) + '</div>' +
+                                '<div class="sol-foot"><span>内容来自 Dotcpp 博客，版权归原作者</span>' +
+                                '<a href="https://blog.dotcpp.com/a/' + encodeURIComponent(a.aid) + '" target="_blank" rel="noopener">原文 ↗</a></div>' +
+                                '</article>';
+                        }).join('');
 
-                    Array.prototype.forEach.call(wrap.querySelectorAll('.sol-head'), function (h) {
-                        h.addEventListener('click', function () {
-                            var item = h.parentNode;
-                            var body = item.querySelector('.sol-body');
-                            var on = item.classList.toggle('on');
-                            body.hidden = !on;
-                            item.querySelector('.sol-arrow').textContent = on ? '收起 ↑' : '展开 ↓';
-                            if (on && LQ.renderMath) LQ.renderMath(body);
+                        Array.prototype.forEach.call(wrap.querySelectorAll('.sol-head'), function (h) {
+                            h.addEventListener('click', function () {
+                                var item = h.parentNode;
+                                var body = item.querySelector('.sol-body');
+                                var on = item.classList.toggle('on');
+                                body.hidden = !on;
+                                item.querySelector('.sol-arrow').textContent = on ? '收起 ↑' : '展开 ↓';
+                                if (on && LQ.renderMath) LQ.renderMath(body);
+                            });
                         });
                     });
                 });
@@ -476,6 +482,7 @@
             });
         })();
     </script>
+    <script src="../../assets/js/site.js" defer></script>
 </body>
 
 </html>

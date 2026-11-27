@@ -640,5 +640,6 @@ document.querySelectorAll('.nav-btn').forEach(btn=>{btn.addEventListener('click'
 function copyCode(btn){const p=btn.closest('.code-block').querySelector('pre');navigator.clipboard.writeText(p.textContent||p.innerText).then(()=>{btn.textContent='✅';btn.style.background='#5ae0a0';setTimeout(()=>{btn.textContent='复制';btn.style.background='';},2000);});}
 document.querySelectorAll('.code-block').forEach(block=>{const p=block.querySelector('pre');if(p&&p.scrollHeight>300){block.classList.add('collapsed');const h=document.createElement('div');h.className='expand-hint';h.textContent='▼ 点击展开完整代码';h.onclick=()=>{block.classList.remove('collapsed');h.style.display='none';};block.appendChild(h);}});
 </script>
+    <script src="../../assets/js/site.js" defer></script>
 </body>
 </html>
