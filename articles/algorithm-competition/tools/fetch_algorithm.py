@@ -7,7 +7,7 @@
   算法竞赛教程/pages/c01-01.html  每篇正文一页
   算法竞赛教程/assets/style.css
   算法竞赛教程/assets/images/     正文图片
-  算法竞赛教程/.cache/pages.json  原始正文缓存，支持断点续跑
+  .cache/algorithm-competition/pages.json  原始正文缓存，支持断点续跑
 """
 import hashlib
 import html as htmllib
@@ -27,7 +27,8 @@ UA = {
     "Referer": "https://www.dotcpp.com/course/algorithm/",
 }
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CACHE = os.path.join(ROOT, "cache")
+REPO_ROOT = os.path.dirname(os.path.dirname(ROOT))
+CACHE = os.path.join(REPO_ROOT, ".cache", "algorithm-competition")
 PAGES_DIR = os.path.join(ROOT, "pages")
 ASSETS = os.path.join(ROOT, "assets")
 IMGS = os.path.join(ASSETS, "images")

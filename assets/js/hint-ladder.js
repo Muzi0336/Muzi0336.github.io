@@ -1,9 +1,13 @@
-/* 全站提示阶梯：key 独立保存展开层级，不自动展开下一层 */
+/* 全站提示阶梯：未作答时逐层引导，作答后可独立展开全部步骤。 */
 (function () {
-  var KEY = 'hint.ladder.v1';
+  var KEY = 'hint.ladder.v2';
+  var LEGACY_KEY = 'hint.ladder.v1';
 
   function read() {
     try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; }
+  }
+  function readLegacy() {
+    try { return JSON.parse(localStorage.getItem(LEGACY_KEY) || '{}') || {}; } catch (e) { return {}; }
   }
   function write(all) {
     try { localStorage.setItem(KEY, JSON.stringify(all)); } catch (e) { }
@@ -17,14 +21,27 @@
     var steps = opts.steps || [];
     if (!steps.length) return null;
     var all = read();
-    var level = clamp(Number(all[key]) || 0, 0, steps.length);
+    var saved = all[key];
+    if (!saved) {
+      var legacy = readLegacy()[key];
+      saved = typeof legacy === 'number' ? { level: legacy, unlocked: false, open: [] } : null;
+    }
+    if (typeof saved === 'number') saved = { level: saved, unlocked: false, open: [] };
+    saved = saved || {};
+    var level = clamp(Number(saved.level) || 0, 0, steps.length);
+    var unlocked = !!saved.unlocked;
+    var openSet = {};
+    (Array.isArray(saved.open) ? saved.open : []).forEach(function (n) {
+      n = Number(n);
+      if (n >= 0 && n < steps.length) openSet[n] = true;
+    });
 
     root.classList.add('hint-ladder');
     root.innerHTML =
       '<div class="hl-top">' +
         '<span class="hl-kicker">HINTS / 提示阶梯</span>' +
         '<span class="hl-note">' + (opts.note || '先自己试，再逐层展开') + '</span>' +
-        (steps.length ? '<button class="hl-skip" type="button">直接看完整解析</button>' : '') +
+        '<button class="hl-skip" type="button">直接看完整解析</button>' +
       '</div>' +
       steps.map(function (step, i) {
         return '<div class="hl-step" data-i="' + i + '">' +
@@ -39,48 +56,109 @@
 
     var stepEls = Array.prototype.slice.call(root.querySelectorAll('.hl-step'));
     var skip = root.querySelector('.hl-skip');
+    var note = root.querySelector('.hl-note');
+    var baseNote = opts.note || '先自己试，再逐层展开';
+
+    function save() {
+      all[key] = {
+        level: level,
+        unlocked: unlocked,
+        open: Object.keys(openSet).map(Number).sort(function (a, b) { return a - b; })
+      };
+      write(all);
+    }
+
+    function allOpen() {
+      return steps.every(function (_, i) { return !!openSet[i]; });
+    }
 
     function paint() {
       stepEls.forEach(function (el, i) {
-        var open = i < level;
-        var allowed = i <= level;
+        var open = unlocked ? !!openSet[i] : i < level;
+        var allowed = unlocked || i <= level;
         el.classList.toggle('is-open', open);
         el.classList.toggle('is-locked', !allowed);
         var btn = el.querySelector('.hl-step-btn');
         var state = el.querySelector('.hl-state');
         btn.disabled = !allowed;
         btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        state.textContent = open ? '已展开' : (allowed ? '展开' : '先过上一层');
+        state.textContent = open ? '收起' : (allowed ? '展开' : '先过上一层');
       });
-      if (skip) skip.hidden = level >= steps.length;
+      root.classList.toggle('is-unlocked', unlocked);
+      if (note) note.textContent = unlocked ? (steps.length === 1 ? '已解锁：解析可展开' : '已解锁：每一步都可以单独展开') : baseNote;
+      if (skip) skip.textContent = steps.length === 1 ? (allOpen() ? '收起解析' : '查看解析') : (allOpen() ? '收起全部解析' : '展开全部解析');
     }
 
     function open(n) {
       n = clamp(Math.round(Number(n) || 0), 0, steps.length);
-      if (n <= level) return level;
-      level = n;
-      all[key] = level;
-      write(all);
+      if (unlocked) {
+        for (var i = 0; i < n; i++) openSet[i] = true;
+      } else if (n > level) {
+        level = n;
+      }
+      save();
       paint();
       return level;
+    }
+
+    function unlock(options) {
+      var expand = typeof options === 'boolean' ? options : !!(options && options.expand);
+      unlocked = true;
+      level = steps.length;
+      if (expand) steps.forEach(function (_, i) { openSet[i] = true; });
+      save();
+      paint();
+      return api;
+    }
+
+    function toggle(i) {
+      if (!unlocked) return open(i + 1);
+      if (openSet[i]) delete openSet[i];
+      else openSet[i] = true;
+      save();
+      paint();
     }
 
     root.addEventListener('click', function (e) {
       var b = e.target.closest('.hl-step-btn');
       if (b && !b.disabled) {
         var i = Number(b.closest('.hl-step').getAttribute('data-i'));
-        open(i + 1);
+        toggle(i);
         return;
       }
-      if (e.target.closest('.hl-skip')) open(steps.length);
+      if (e.target.closest('.hl-skip')) {
+        if (!unlocked) {
+          unlock({ expand: true });
+        } else if (allOpen()) {
+          openSet = {};
+          save();
+          paint();
+        } else {
+          steps.forEach(function (_, i) { openSet[i] = true; });
+          save();
+          paint();
+        }
+      }
     });
 
     paint();
-    return {
+    var api = {
       open: open,
+      unlock: unlock,
+      unlockAll: function () { return unlock({ expand: true }); },
+      toggle: toggle,
       level: function () { return level; },
-      reset: function () { level = 0; delete all[key]; write(all); paint(); }
+      isUnlocked: function () { return unlocked; },
+      reset: function () {
+        level = 0;
+        unlocked = false;
+        openSet = {};
+        delete all[key];
+        write(all);
+        paint();
+      }
     };
+    return api;
   }
 
   window.HintLadder = { mount: mount };

@@ -8,10 +8,10 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
-from fetch_algorithm import parse_toc, fetch_text, BASE  # noqa: E402
+from fetch_algorithm import parse_toc, fetch_text, BASE, CACHE as CACHE_DIR  # noqa: E402
 
-CACHE = os.path.join(ROOT, "cache", "pages.json")
-OUT = os.path.join(ROOT, "cache", "chapters_lite")
+CACHE = os.path.join(CACHE_DIR, "pages.json")
+OUT = os.path.join(CACHE_DIR, "chapters_lite")
 TEXT_LIMIT = 1100
 CODE_LINES = 12
 

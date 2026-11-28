@@ -16,18 +16,13 @@
     <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg>
     <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
   </a>
-  <nav class="nav">
-    <a class="contest-link" href="index.html#contest">计挑赛</a>
-    <a href="problems/lanqiao/index.html">蓝桥真题</a>
-    <a href="problems/algorithm/index.html">算法题库</a>
-    <a href="problems/algorithm/learn.html">算法学习</a>
-    <a href="problems/algorithm/lab.html">动画实验室</a>
-    <a href="articles/data-structures/index.html">数据结构</a>
-    <a href="articles/algorithm-competition/index.html">算法竞赛</a>
-    <a href="articles/frontend/index.html">前端教程</a>
-    <a href="articles/fullstack/index.html">全栈笔记</a>
-    <a href="tools/mistakes.html">错题本</a>
-    <a href="settings.html" class="active">设置</a>
+  <nav class="nav" aria-label="主要导航">
+    <a href="index.html" title="首页：查看今日入口与学习概览">首页</a>
+    <a href="contests.html" title="竞赛志：查看竞赛日程、报名信息与历年真题">竞赛志</a>
+    <a href="knowledge.html" title="研习录：阅读算法、数据结构与开发教程">研习录</a>
+    <a href="tools/mistakes.html" title="温故集：回看错题与练习记录">温故集</a>
+    <a href="ai.html" title="AI问学：查看 AI 助教说明与题目入口">AI问学</a>
+    <a class="nav-settings active" href="settings.html" title="设置：配置本机 AI 接口与站点数据" aria-current="page">设置</a>
   </nav>
 </div>
 
@@ -35,7 +30,7 @@
   <header class="set-head">
     <div class="eyebrow">— SETTINGS / LOCAL ONLY</div>
     <h1>设置</h1>
-    <p>站点配置只保存在当前浏览器，不会同步、不会提交到仓库。AI 助教的 Key 会存在 localStorage，建议使用单独的限额子 Key。</p>
+    <p>站点配置只保存在当前浏览器，不会同步、不会提交到仓库。打开或保存设置页不会自动发送 AI 请求；只有主动测试连接或在题目页发起 AI 操作时，才会把请求发给你选择的供应商。免登录不等于无需配置，请使用单独的限额子 Key。</p>
     <a class="set-back" id="backLink" href="index.html">← 返回首页</a>
   </header>
 
@@ -51,7 +46,7 @@
     <div class="set-content">
       <section class="set-sec" id="ai">
         <header class="set-sec-head"><span class="set-sec-no">01 / AI</span><h2>AI 助教</h2></header>
-        <p class="set-sec-desc">用于计挑赛题目页的「问 AI」「AI 解析」「AI 核对代码」。接口必须是 OpenAI 兼容格式，浏览器会直接请求你填写的 Base URL。</p>
+        <p class="set-sec-desc">用于题目详情页的「问 AI」「AI 解析」「AI 核对代码」。目前已接入计挑赛、蓝桥杯题目页与算法题页；未配置时不影响找题、练习和错题复习。接口须为 OpenAI 兼容格式，API 请求会由浏览器直接发给你填写的供应商，可能产生用量费用。</p>
 
         <div class="set-card">
           <div class="set-card-head">
@@ -83,7 +78,7 @@
               <span class="set-test-status" id="testStatus"></span>
             </div>
           </div>
-          <p class="set-note"><b>不会上传到服务器。</b>页面脚本或浏览器扩展理论上可以读取 localStorage；不要把主账号的长期 Key 放进来。遇到 Failed to fetch，通常是接口未开启 CORS，需要服务商支持或使用代理。</p>
+          <p class="set-note"><b>Key 只在本机浏览器中。</b>站点没有账号和后端，Key 不经过本站服务器；但页面脚本或浏览器扩展理论上可以读取 localStorage，不要把主账号的长期 Key 放进来。保存设置本身不会调用 AI，只有点击“测试连接”或主动使用题目 AI 功能才会请求所选供应商，并可能计费。遇到 Failed to fetch，通常是接口未开启 CORS，需要服务商支持或使用代理。</p>
         </div>
       </section>
 
@@ -93,7 +88,7 @@
         <div class="set-data-list">
           <div class="set-data-row"><b>做题进度</b><span>保存在 localStorage，换浏览器或清理站点数据后会丢失。</span></div>
           <div class="set-data-row"><b>AI 配置</b><span>只保存在当前浏览器；保存后仅本机可用。</span></div>
-          <div class="set-data-row"><b>代码草稿</b><span>计挑赛编程题的草稿默认留在本机，不会提交评测。</span></div>
+          <div class="set-data-row"><b>代码草稿</b><span>编程题草稿默认留在本机，不会提交在线评测。</span></div>
           <div class="set-data-row"><b>站点统计</b><span>不接入账号、不主动上传做题记录。</span></div>
         </div>
       </section>
@@ -220,7 +215,19 @@
     setStatus('已清除本机保存的 Key。', 'ok');
   });
 
-  var back = new URLSearchParams(location.search).get('return');
+  function safeReturnUrl(value){
+    if (!value) return null;
+    try {
+      var target = new URL(value, location.href);
+      var allowedProtocol = target.protocol === 'http:' || target.protocol === 'https:';
+      if (!allowedProtocol || target.origin !== location.origin || target.username || target.password) return null;
+      return target.href;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  var back = safeReturnUrl(new URLSearchParams(location.search).get('return'));
   if (back){
     var link = document.getElementById('backLink');
     link.href = back;

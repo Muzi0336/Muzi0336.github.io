@@ -6,7 +6,9 @@ import subprocess
 import tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+REPO_ROOT = os.path.dirname(os.path.dirname(ROOT))
 NOTES = os.path.join(ROOT, "笔记")
+TMP = os.path.join(REPO_ROOT, ".cache", "algorithm-competition", "tmp")
 SYNTAX_KEYS = ("expected", "stray", "unterminated", "mismatched", "extraneous",
                "missing terminating", "expected unqualified-id", "invalid preprocessing")
 
@@ -35,6 +37,7 @@ def balanced(code):
 
 
 def main():
+    os.makedirs(TMP, exist_ok=True)
     total = 0
     syntax_bad = []
     unbal = []
@@ -46,7 +49,7 @@ def main():
             if not balanced(code):
                 unbal.append((fn, title, code[:160]))
             src = "#include <bits/stdc++.h>\nusing namespace std;\n" + code
-            with tempfile.NamedTemporaryFile("w", suffix=".cpp", delete=False, encoding="utf-8") as f:
+            with tempfile.NamedTemporaryFile("w", suffix=".cpp", delete=False, encoding="utf-8", dir=TMP) as f:
                 f.write(src)
                 path = f.name
             try:

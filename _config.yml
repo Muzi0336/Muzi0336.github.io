@@ -1,7 +1,12 @@
 title: 前端学习教程
 description: 这是zyyc-0336写的哦！记得一键三连ヽ(=^･ω･^=)丿
 exclude:
+  - .cache
+  - .playwright-cli
+  - .serena
   - README.md
+  - AGENTS.md
+  - tests
   - articles/algorithm-competition/README.md
   - articles/algorithm-competition/笔记
   - articles/algorithm-competition/tools

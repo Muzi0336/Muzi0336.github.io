@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="../../assets/css/site.css">
 <link rel="stylesheet" href="../../assets/css/detail.css">
 <link rel="stylesheet" href="assets/arena.css">
-<link rel="stylesheet" href="../../assets/css/hints.css">
+<link rel="stylesheet" href="../../assets/css/hints.css?v=2">
 <style>
 .code-card.open .code-view.on{display:block}
 .code-card:not(.open) .code-view{display:none}
@@ -22,18 +22,14 @@
     <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg>
     <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
   </a>
-  <nav class="nav">
-    <a class="contest-link" href="../../index.html#contest">计挑赛</a>
-            <a href="../lanqiao/index.html">蓝桥真题</a>
-    <a href="index.html" class="active">算法题库</a>
-    <a href="learn.html">算法学习</a>
-    <a href="lab.html">动画实验室</a>
-    <a href="../../articles/data-structures/index.html">数据结构</a>
-    <a href="../../articles/algorithm-competition/index.html">算法竞赛</a>
-    <a href="../../articles/frontend/index.html">前端教程</a>
-    <a href="../../articles/fullstack/index.html">全栈笔记</a>
-    <a href="../../tools/mistakes.html">错题本</a>
-    <a href="../../settings.html">设置</a></nav>
+    <nav class="nav" aria-label="主要导航">
+    <a href="../../index.html" title="首页：站点入口与全景导览" aria-label="首页：站点入口与全景导览">首页</a>
+    <a class="active" aria-current="page" href="../../contests.html" title="竞赛志：计挑赛、蓝桥与算法练习总览" aria-label="竞赛志：计挑赛、蓝桥与算法练习总览">竞赛志</a>
+    <a href="../../knowledge.html" title="研习录：教程、笔记与数据结构研习" aria-label="研习录：教程、笔记与数据结构研习">研习录</a>
+    <a href="../../tools/mistakes.html" title="温故集：错题归档与复习队列" aria-label="温故集：错题归档与复习队列">温故集</a>
+    <a href="../../ai.html" title="AI问学：AI 助教与学习问答" aria-label="AI问学：AI 助教与学习问答">AI问学</a>
+    <a class="nav-settings" href="../../settings.html" title="站点设置：AI 接口、数据与隐私" aria-label="站点设置：AI 接口、数据与隐私">设置</a>
+  </nav>
 </div>
 
 <div class="qwrap">
@@ -64,7 +60,8 @@
 <script src="assets/arena.js"></script>
 <script src="../../assets/js/markdown.js"></script>
 <script src="../../assets/js/quiz-ai.js"></script>
-<script src="../../assets/js/hint-ladder.js"></script>
+<script src="../../assets/js/hint-ladder.js?v=3"></script>
+<script src="../../assets/js/progressive-analysis.js?v=4"></script>
 <script>
 (function(){
   var raw = new URLSearchParams(location.search).get('id');
@@ -140,21 +137,9 @@
   </div>`);
 
   const a = p.analysis || {};
-  const obs = (a.observations || []).filter(Boolean);
-  const hintItems = (p.hints || []).map(h => typeof h === 'string' ? fmt(h) : '<b>' + A.esc(h.title || '') + '</b>：' + fmt(h.body || ''));
-  const deriveSteps = [
-    { title: '观察 · 先找题眼', html:
-      (p.keyQuestion ? '<p class="hl-lead">先回答 04 里的 KEY QUESTION</p><p>先别往下翻，用一句话写出你的答案；写不出来，再看下面这条观察。</p>' : '') +
-      (obs.length ? '<p><b>先看这条观察：</b>' + fmt(obs[0]) + '</p>' : '<p>先看题目约束和样例，找出数据范围决定的第一件事。</p>') },
-    { title: '提示 · 把观察连起来', html:
-      (obs.length > 1 ? '<ul>' + obs.slice(1).map(o => '<li>' + fmt(o) + '</li>').join('') + '</ul>' : '') +
-      (hintItems.length ? '<p class="hl-lead">分步提示</p><ul>' + hintItems.map(o => '<li>' + o + '</li>').join('') + '</ul>' : '<p>先写出朴素做法，再想哪里可以优化。</p>') },
-    { title: '完整推导 · 做法与边界', html:
-      '<p class="hl-lead">推荐做法</p><p>' + fmt(a.approach || '暂无推导。') + '</p>' +
-      '<p class="hl-lead">为什么成立</p><p>' + fmt(a.correctness || '—') + '</p>' +
-      '<p><b>时间：</b>' + A.esc((a.complexity||{}).time || '—') + '　<b>空间：</b>' + A.esc((a.complexity||{}).space || '—') + '</p>' +
-      ((p.pitfalls||[]).length ? '<p class="hl-lead">容易错的地方</p><ul>' + p.pitfalls.map(x => '<li>' + fmt(x) + '</li>').join('') + '</ul>' : '') }
-  ];
+  const deriveSteps = window.ProgressiveAnalysis
+    ? ProgressiveAnalysis.algorithm(p, fmt)
+    : [{ title: '完整推导', html: '<p>' + fmt(a.approach || '暂无推导。') + '</p>' }];
   sections.push(`<div class="sec">
     <div class="sec-head"><span class="sec-no">05</span><h2>思路推导</h2><span class="note">先想，再看</span></div>
     <div id="deriveLadder"></div>
@@ -233,8 +218,11 @@
     window.__deriveLadder = HintLadder.mount(document.getElementById('deriveLadder'), {
       key: 'algorithm:' + p.id,
       steps: deriveSteps,
-      note: '先自己推，再逐层展开'
+      note: '未作答时逐步引导；作答自测后全部解锁'
     });
+    if (window.__deriveLadder && Object.keys(A.state.quiz[p.id] || {}).length) {
+      window.__deriveLadder.unlock({ expand: false });
+    }
   }
 
   // 手机端隐藏手敲区后，章节号顺延，避免 06 直接跳到 08
@@ -412,6 +400,7 @@
       A.state.quiz[p.id] = A.state.quiz[p.id] || {};
       A.state.quiz[p.id][qi] = oi; A.save();
       document.querySelectorAll(`.qopt[data-q="${qi}"]`).forEach(x => x.classList.toggle('picked', x === btn));
+      if (window.__deriveLadder) window.__deriveLadder.unlock({ expand: false });
     });
   });
 

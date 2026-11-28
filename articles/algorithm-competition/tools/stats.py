@@ -9,10 +9,10 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
-from fetch_algorithm import parse_toc, fetch_text, abs_url, BASE  # noqa: E402
+from fetch_algorithm import parse_toc, fetch_text, abs_url, BASE, CACHE as CACHE_DIR  # noqa: E402
 
 NOTES = os.path.join(ROOT, "笔记")
-pages = json.load(open(os.path.join(ROOT, "cache", "pages.json"), encoding="utf-8"))
+pages = json.load(open(os.path.join(CACHE_DIR, "pages.json"), encoding="utf-8"))
 chapters = parse_toc(fetch_text(BASE))
 
 

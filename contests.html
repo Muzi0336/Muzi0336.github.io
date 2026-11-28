@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <link rel="stylesheet" href="assets/css/fonts.css?v=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>竞赛志 · 赛事通知与历史入口｜朝云暮辞</title>
+    <meta name="description" content="查看近期赛事通知、历史赛事入口、蓝桥杯与计算机挑战赛模块和算法训练入口。">
+    <link rel="stylesheet" href="assets/css/site.css">
+    <link rel="stylesheet" href="assets/css/portal.css">
+</head>
+
+<body class="portal-page">
+    <header class="topbar">
+        <a class="brand" href="index.html" title="朝云暮辞首页">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+            </svg>
+            <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
+        </a>
+        <nav class="nav" aria-label="主要导航">
+            <a href="index.html" title="返回首页与备考总览">首页</a>
+            <a class="active" href="contests.html" title="查看赛事通知、历史赛事与赛程入口">竞赛志</a>
+            <a href="knowledge.html" title="查看算法、数据结构与开发学习入口">研习录</a>
+            <a href="tools/mistakes.html" title="按本地记录复习错题">温故集</a>
+            <a href="ai.html" title="了解静态提示、AI 追问与配置方式">AI问学</a>
+            <a class="nav-settings" href="settings.html#ai" title="配置本机 AI 接口与数据设置">设置</a>
+        </nav>
+    </header>
+
+    <main class="portal-main">
+        <section class="page-intro" aria-labelledby="contestsTitle">
+            <h1 id="contestsTitle">赛事看通知，练习看真题</h1>
+            <p>竞赛志只做两件事：把已经整理的下一节点和来源列清楚，再把已有真题、专项训练和学习入口送到你面前。日期按已有资料整理，不是实时查询；具体报名、考试与考场安排以来源通知为准。</p>
+            <div class="clock-line" aria-label="时钟说明">
+                <span>设备时钟：<b data-device-clock>读取中</b></span>
+                <span>北京时间：<b data-beijing-clock>读取中</b></span>
+                <span>状态会随本机时间更新。</span>
+            </div>
+        </section>
+
+        <section class="portal-section" aria-labelledby="noticesTitle">
+            <div class="portal-section-head">
+                <h2 id="noticesTitle">近期通知与赛事</h2>
+                <p>按当前时刻排序，最多三条。暂时没有可显示的赛程时会明确说明，不补造日期。</p>
+            </div>
+            <div data-recent-events data-limit="3" data-empty="暂时没有可显示的近期赛程。历史真题、蓝桥年份卷和算法专项仍可继续使用。"></div>
+        </section>
+
+        <section class="portal-section tint" id="practice" aria-labelledby="historyTitle">
+            <div class="portal-section-head">
+                <h2 id="historyTitle">历史赛事与内容模块</h2>
+                <p>蓝桥杯与计算机挑战赛的线上入口在此汇总。来源没有公开链接时只显示文字；还没有开放入口的赛事会明确标注。</p>
+            </div>
+            <div class="contest-modules" data-contest-modules>
+                <article class="contest-module">
+                    <div class="contest-module-head">
+                        <h3><a class="portal-link" href="problems/contest/index.html">计算机挑战赛</a></h3>
+                        <p>校内学科竞赛 · 按 C、C++、Java、Python 四套题库进入。</p>
+                        <div class="contest-module-state"><span class="portal-state done">时间信息暂不可用</span><small>入口仍可直接打开。</small></div>
+                    </div>
+                    <div class="module-links">
+                        <a class="module-link" href="problems/contest/index.html"><b>C 语言</b><span>指针、结构体与基础算法</span></a>
+                        <a class="module-link" href="problems/contest/cpp/index.html"><b>C++</b><span>STL、类与竞赛写法</span></a>
+                        <a class="module-link" href="problems/contest/java/index.html"><b>Java</b><span>集合、字符串与面向对象</span></a>
+                        <a class="module-link" href="problems/contest/python/index.html"><b>Python</b><span>列表、字典与内置库</span></a>
+                        <div class="module-source">来源：校内通知 · 日期按已有资料整理，不是实时查询。</div>
+                    </div>
+                </article>
+                <article class="contest-module">
+                    <div class="contest-module-head">
+                        <h3><a class="portal-link" href="problems/lanqiao/index.html">蓝桥杯</a></h3>
+                        <p>程序设计 · 省赛、国赛真题按年份归档，可从整套卷或全部题目进入。</p>
+                        <div class="contest-module-state"><span class="portal-state done">时间信息暂不可用</span><small>按题库现有年份进入。</small></div>
+                    </div>
+                    <div class="module-links">
+                        <a class="module-link" href="problems/lanqiao/index.html"><b>历年真题</b><span>按年份选择省赛与国赛</span></a>
+                        <a class="module-link" href="problems/lanqiao/bank.html"><b>全部题目</b><span>按年份、组别和赛段筛题</span></a>
+                        <a class="module-link" href="problems/algorithm/index.html"><b>基础训练</b><span>算法分类题与逐层演示</span></a>
+                        <div class="module-source">来源：<a href="https://dasai.lanqiao.cn/" target="_blank" rel="noopener noreferrer">蓝桥杯官网</a> · 日期按已有资料整理，不是实时查询。</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="portal-section" aria-labelledby="trainingTitle">
+            <div class="portal-section-head">
+                <h2 id="trainingTitle">算法训练</h2>
+                <p>赛事入口之外，用题库、学习路径和动画演示补齐基础。先做题暴露问题，再按专题补课。</p>
+            </div>
+            <div class="study-ledger">
+                <div class="study-ledger-main">
+                    <a class="portal-entry-card" href="problems/algorithm/index.html">
+                        <span class="entry-label">算法题库</span>
+                        <h3>按知识分类练习</h3>
+                        <p>从题面、样例、推导到参考代码，逐题完成。先自己推，再展开提示与解析。</p>
+                        <span class="entry-to text-arrow">进入题库</span>
+                    </a>
+                    <a class="portal-entry-card" href="problems/algorithm/learn.html">
+                        <span class="entry-label">学习路径</span>
+                        <h3>从薄弱专题补课</h3>
+                        <p>按知识块补齐输入输出、复杂度、排序、查找、树、图与动态规划等基础。</p>
+                        <span class="entry-to text-arrow">进入学习路径</span>
+                    </a>
+                </div>
+                <a class="portal-entry-card" href="problems/algorithm/lab.html">
+                    <span class="entry-label">动画实验室</span>
+                    <h3>把过程拆成可看的步骤</h3>
+                    <p>用逐帧演示理解排序、搜索、树与图等过程，再回到题目里复述关键状态。</p>
+                    <span class="entry-to text-arrow">进入动画实验室</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="portal-section tint" aria-labelledby="futureTitle">
+            <div class="future-panel">
+                <div>
+                    <h2 id="futureTitle">未来赛事占位</h2>
+                    <p>后续赛事需要先补齐名称、来源、报名与考试节点，再开放入口。这里不写猜测的年份、报名日期或上线日期。</p>
+                </div>
+                <div class="portal-placeholder">
+                    <b>暂时没有新赛事</b>
+                    <span>等名称、来源与时间信息齐备后，再开放入口。</span>
+                    <em>暂不可进入</em>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="portal-footer">
+        <div class="portal-footer-inner">
+            <div class="portal-footer-brand">
+                <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                    <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                    <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+                </svg>
+                <div>
+                    <b>朝云暮辞 · ZYYC LAB</b>
+                    <p>赛事时间以蓝桥杯官网、校内通知等来源为准。本页日期按已有资料整理，不是实时查询结果。</p>
+                </div>
+            </div>
+            <nav class="portal-footer-links" aria-label="页脚链接">
+                <a href="index.html#contest">按语言备战</a>
+                <a href="knowledge.html">研习录</a>
+                <a href="tools/mistakes.html">温故集</a>
+                <a href="ai.html">AI问学</a>
+            </nav>
+            <div class="portal-footer-bottom">
+                <span>© 2026 朝云暮辞</span>
+                <span>先看来源，再安排练习。</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/data/contest-catalog.js" defer></script>
+    <script src="assets/js/contest-schedule.js" defer></script>
+    <script src="assets/js/portal.js" defer></script>
+    <script src="assets/js/site.js" defer></script>
+</body>
+
+</html>

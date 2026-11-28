@@ -19,14 +19,15 @@ dotcpp《算法竞赛教程》的本地阅读版。原文 172 篇各自独立的
 │   ├── webp/              压缩副本（页面实际加载的就是它，21.8 MB → 5.7 MB）
 │   ├── img_meta.json      每张图的宽高（写进 width/height，防版面跳动）
 │   └── img_index.json     章 → 节 → 图片 的对应表（给 attach_images.py 用）
-├── cache/                 原文快照（pages.json + 分章 txt），不进 Git
 └── tools/
     ├── build_site.py          md → html
     ├── attach_images.py       把配图写进 md（幂等）
-    ├── fetch_images.py        从 cache 快照下载图片
+    ├── fetch_images.py        从 .cache/algorithm-competition 快照下载图片
     ├── optimize_images.py     png → webp + 写宽高表
-    └── fetch_algorithm.py     抓原文（重建 cache 用）
+    └── fetch_algorithm.py     抓原文（重建 .cache/algorithm-competition 用）
 ```
+
+原文快照、分章素材和代码块导出统一在仓库根 `.cache/algorithm-competition/`，不进 Git，也不参与部署。
 
 ## 三条命令
 

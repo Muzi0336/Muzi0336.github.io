@@ -6,6 +6,8 @@ import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NOTES = os.path.join(ROOT, "笔记")
+REPO_ROOT = os.path.dirname(os.path.dirname(ROOT))
+CACHE_DIR = os.path.join(REPO_ROOT, ".cache", "algorithm-competition")
 out = []
 for fn in sorted(os.listdir(NOTES)):
     if not fn.startswith("第") or not fn.endswith(".md"):
@@ -19,7 +21,8 @@ for fn in sorted(os.listdir(NOTES)):
         for cb in re.finditer(r"```(?:cpp|c\+\+|c)?\n(.*?)```", body, re.S):
             out.append({"file": fn, "sec": title, "code": cb.group(1)})
 
-path = os.path.join(ROOT, "cache", "codeblocks.json")
+os.makedirs(CACHE_DIR, exist_ok=True)
+path = os.path.join(CACHE_DIR, "codeblocks.json")
 with open(path, "w", encoding="utf-8") as f:
     json.dump(out, f, ensure_ascii=False, indent=1)
 print("代码块", len(out), "->", path)

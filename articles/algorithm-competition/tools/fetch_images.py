@@ -2,7 +2,7 @@
 """
 算法竞赛教程 · 图片抓取
 ================================================================
-读 cache/pages.json（172 篇正文 HTML），把每篇里 <img> 引用的图下载到
+读 .cache/algorithm-competition/pages.json（172 篇正文 HTML），把每篇里 <img> 引用的图下载到
 assets/，并写出一份 assets/img_index.json：
 
     { "第01章": { "1.算法是什么？": [{"file": "...png", "alt": "...", "w": .., "h": ..}], ... } }
@@ -22,7 +22,7 @@ from html import unescape
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from fetch_algorithm import parse_toc, fetch_text, BASE, abs_url  # noqa: E402
+from fetch_algorithm import parse_toc, fetch_text, BASE, abs_url, CACHE as CACHE_DIR  # noqa: E402
 
 ASSETS = os.path.join(ROOT, "assets")
 INDEX = os.path.join(ASSETS, "img_index.json")
@@ -77,7 +77,7 @@ def main():
     force = "--force" in sys.argv
     os.makedirs(ASSETS, exist_ok=True)
     chapters = parse_toc(fetch_text(BASE))
-    pages = json.load(open(os.path.join(ROOT, "cache", "pages.json"), encoding="utf-8"))
+    pages = json.load(open(os.path.join(CACHE_DIR, "pages.json"), encoding="utf-8"))
 
     index = {}
     tasks = []

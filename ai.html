@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <link rel="stylesheet" href="assets/css/fonts.css?v=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI问学 · 卡点追问与思路整理｜朝云暮辞</title>
+    <meta name="description" content="做题卡住时，用静态提示定位问题，再让 AI 帮你解释错因、比较写法或理清下一步。">
+    <link rel="stylesheet" href="assets/css/site.css">
+    <link rel="stylesheet" href="assets/css/portal.css">
+</head>
+
+<body class="portal-page">
+    <header class="topbar">
+        <a class="brand" href="index.html" title="朝云暮辞首页">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+            </svg>
+            <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
+        </a>
+        <nav class="nav" aria-label="主要导航">
+            <a href="index.html" title="返回首页与备考总览">首页</a>
+            <a href="contests.html" title="查看赛事通知、历史赛事与赛程入口">竞赛志</a>
+            <a href="knowledge.html" title="查看算法、数据结构与开发学习入口">研习录</a>
+            <a href="tools/mistakes.html" title="按本地记录复习错题">温故集</a>
+            <a class="active" href="ai.html" title="了解静态提示、AI 追问与配置方式">AI问学</a>
+            <a class="nav-settings" href="settings.html#ai" title="配置本机 AI 接口与数据设置">设置</a>
+        </nav>
+    </header>
+
+    <main class="portal-main">
+        <section class="page-intro" aria-labelledby="aiTitle">
+            <h1 id="aiTitle">遇到卡点，让 AI 帮你理清思路</h1>
+            <p>读题、看样例、试静态提示之后，仍然卡在某个状态、边界或代码写法上，就把具体问题交给 AI 助教。它适合解释错因、补一段推导或比较两种思路。</p>
+            <div class="portal-actions">
+                <a class="portal-button" href="settings.html?return=problems%2Falgorithm%2Fq.html%3Fid%3D269#ai">配置后返回《数据加密》</a>
+                <a class="portal-button secondary" href="problems/algorithm/q.html?id=269">先打开原题</a>
+            </div>
+            <p class="portal-note">配置与计费说明集中在下方和设置页；只有你在题目页主动追问时，才会请求已配置的接口。</p>
+        </section>
+
+        <section class="portal-section" aria-labelledby="usesTitle">
+            <div class="portal-section-head">
+                <h2 id="usesTitle">可以帮你做什么</h2>
+                <p>把原题里的状态、变量、边界和你已经试过的思路说清楚，AI 才能给出更贴近当前卡点的回答。</p>
+            </div>
+            <div class="ai-use-list">
+                <article class="ai-use">
+                    <h3>解释错因</h3>
+                    <p>例如：我把第 i 位理解成了从 0 开始，样例为什么对不上？请指出我漏掉的题面条件。</p>
+                </article>
+                <article class="ai-use">
+                    <h3>核对状态定义</h3>
+                    <p>例如：我的动态规划状态表示前 i 个元素，是否漏掉了必须记录的限制条件？</p>
+                </article>
+                <article class="ai-use">
+                    <h3>比较两种写法</h3>
+                    <p>例如：这段循环与参考代码等价吗？指出边界条件或复杂度上的差异。</p>
+                </article>
+                <article class="ai-use">
+                    <h3>理清下一步</h3>
+                    <p>例如：我已经想到前缀和，但不会处理重复区间，下一步该检查哪个状态或约束？</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="portal-section tint" aria-labelledby="stepsTitle">
+            <div class="portal-section-head">
+                <h2 id="stepsTitle">三步使用</h2>
+                <p>从原题开始，先自己走一步；提示不够时，再把具体卡点交给 AI 助教。</p>
+            </div>
+            <div class="study-map">
+                <article class="study-block">
+                    <h3>先读原题</h3>
+                    <p>看题面、输入输出、样例与约束，写下自己的第一版思路。不要先打开解析或代码。</p>
+                </article>
+                <article class="study-block">
+                    <h3>逐层展开静态提示</h3>
+                    <p>题目页的内置提示按阶梯展示，离线可读。仍然卡住时，记下具体是哪一步、哪个状态或哪个边界没想通。</p>
+                </article>
+                <article class="study-block">
+                    <h3>把具体卡点交给 AI</h3>
+                    <p>在题目页主动点击后才会请求已配置接口。带上你的推导、样例结果和没想通的位置，再核对回答是否贴合题面。</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="portal-section" aria-labelledby="differenceTitle">
+            <div class="portal-section-head">
+                <h2 id="differenceTitle">静态提示与 AI 的区别</h2>
+                <p>静态提示每次打开都一样；AI 会根据你的追问作答，但需要连接你配置的服务商。</p>
+            </div>
+            <div class="ai-compare">
+                <section class="ai-compare-col" aria-labelledby="staticTitle">
+                    <h3 id="staticTitle">页面内静态提示</h3>
+                    <ul>
+                        <li>由页面文件直接提供，不联网也能看。</li>
+                        <li>每次打开的内容一致，适合按顺序阅读。</li>
+                        <li>不读取 API Key，不产生接口费用。</li>
+                        <li>覆盖常见卡点；如果仍不清楚，可以带着具体问题继续追问。</li>
+                    </ul>
+                </section>
+                <section class="ai-compare-col ai-calls" aria-labelledby="remoteTitle">
+                    <h3 id="remoteTitle">配置后的 AI 追问</h3>
+                    <ul>
+                        <li>只在题目页主动点击后发送，本页不会自动请求。</li>
+                        <li>请求会带着当前题目上下文发往你填写的服务商。</li>
+                        <li>可能按使用量、次数或套餐收费，以服务商规则为准。</li>
+                        <li>回答可能有误，需要回到题面、样例与参考代码核对。</li>
+                    </ul>
+                </section>
+            </div>
+        </section>
+
+        <section class="portal-section tint" aria-labelledby="problemsTitle">
+            <div class="portal-section-head">
+                <h2 id="problemsTitle">从真实题目进入</h2>
+                <p>下面都是现有题库里的真实入口。任选一题，先看静态提示；需要时再配置 AI 追问。</p>
+            </div>
+            <div class="problem-list">
+                <article class="problem-row">
+                    <div>
+                        <h3>数据加密</h3>
+                        <p>算法题库 #269 · 字符与序列 · 入门</p>
+                    </div>
+                    <a class="text-arrow" href="problems/algorithm/q.html?id=269">打开原题</a>
+                </article>
+                <article class="problem-row">
+                    <div>
+                        <h3>C 语言 2025 年单选题 1</h3>
+                        <p>计算机挑战赛 · 标识符判断 · 单选题</p>
+                    </div>
+                    <a class="text-arrow" href="problems/contest/q.html?id=2025-1">打开原题</a>
+                </article>
+                <article class="problem-row">
+                    <div>
+                        <h3>均衡数</h3>
+                        <p>蓝桥杯 2026 年第十七届 · 省赛 · 大学 A 组</p>
+                    </div>
+                    <a class="text-arrow" href="problems/lanqiao/problem.html?id=P16224">打开原题</a>
+                </article>
+            </div>
+        </section>
+
+        <section class="portal-section" aria-labelledby="setupTitle">
+            <div class="setup-callout">
+                <div>
+                    <h2 id="setupTitle">首次配置说明</h2>
+                    <p>准备服务商提供的 Base URL、模型名和 API Key。保存后点击“返回刚才的页面”，回到原题；没有配置时，题库、静态提示、错题本和复习链接仍照常使用。</p>
+                    <p>配置只保存在当前浏览器。不要把主账号长期使用的 Key 放进公共设备；浏览器扩展或共用电脑也可能读取本地存储。</p>
+                </div>
+                <a class="portal-button" href="settings.html?return=problems%2Falgorithm%2Fq.html%3Fid%3D269#ai">去设置 AI 接口</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="portal-footer">
+        <div class="portal-footer-inner">
+            <div class="portal-footer-brand">
+                <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                    <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                    <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+                </svg>
+                <div>
+                    <b>朝云暮辞 · ZYYC LAB</b>
+                    <p>AI 在这里更像随叫随到的助教：帮你解释、追问和比较思路。它依赖你自行配置的第三方接口，回答仍要回到题面与样例核对。</p>
+                </div>
+            </div>
+            <nav class="portal-footer-links" aria-label="页脚链接">
+                <a href="index.html">首页</a>
+                <a href="contests.html">竞赛志</a>
+                <a href="knowledge.html">研习录</a>
+                <a href="tools/mistakes.html">温故集</a>
+            </nav>
+            <div class="portal-footer-bottom">
+                <span>© 2026 朝云暮辞</span>
+                <span>先自己做，再有针对性地问。</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/site.js" defer></script>
+</body>
+
+</html>

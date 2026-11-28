@@ -6,892 +6,230 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>朝云暮辞 · 竞赛备考与学习档案</title>
-    <meta name="description" content="本校蓝桥杯、计算机挑战赛报名时间与备赛入口，含真题、解析、错题复习与 AI 助教，以及算法、数据结构与前端学习资料。">
+    <meta name="description" content="竞赛消息、历年真题、算法训练、错题复习与本地 AI 助教入口。先看赛程，再按语言、题组和知识专题开始备战。">
     <link rel="stylesheet" href="assets/css/site.css">
-    <link rel="stylesheet" href="assets/css/detail.css">
-    <style>
-        /* 索引页专属 */
-        .idx-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 0 0 14px;
-            border-bottom: 1px solid var(--line-2);
-            font-family: var(--mono);
-            font-size: 10.5px;
-            letter-spacing: .2em;
-            color: var(--muted);
-            text-transform: uppercase;
-        }
-
-        .idx-list { margin-bottom: 10px; }
-        .idx-list[hidden] { display: none; }
-
-        .idx-row {
-            display: grid;
-            grid-template-columns: 92px minmax(0, 1fr) 168px;
-            gap: 30px;
-            align-items: center;
-            padding: 34px 14px 34px 0;
-            border-bottom: 1px solid var(--line);
-            transition: background .2s;
-        }
-
-        .idx-row:hover { background: var(--wash); }
-
-        .idx-no {
-            font-family: var(--mono);
-            font-size: 12.5px;
-            letter-spacing: .18em;
-            color: var(--muted);
-            white-space: nowrap;
-        }
-
-        .idx-main h3 {
-            font-family: var(--serif);
-            font-size: clamp(24px, 2.2vw, 30px);
-            font-weight: 800;
-            line-height: 1.3;
-            letter-spacing: -.01em;
-        }
-
-        .idx-main p {
-            margin-top: 8px;
-            font-size: 14.5px;
-            color: #55554c;
-            line-height: 1.85;
-        }
-
-        .idx-back {
-            font-family: var(--mono);
-            font-size: 11.5px;
-            letter-spacing: .08em;
-            color: var(--muted);
-            text-decoration: none;
-        }
-
-        .idx-back:hover { color: var(--ink); }
-
-        .idx-side {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 18px;
-        }
-
-        .idx-side .tag {
-            font-size: 12.5px;
-            letter-spacing: .06em;
-            color: var(--muted);
-            white-space: nowrap;
-        }
-
-        .idx-side .go {
-            width: 36px;
-            height: 36px;
-            flex: none;
-            border: 1px solid var(--line-2);
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            font-size: 14px;
-            color: var(--ink-2);
-            transition: background .2s, color .2s, border-color .2s, transform .2s;
-        }
-
-        .idx-row:hover .go {
-            background: var(--ink);
-            color: var(--paper);
-            border-color: var(--ink);
-            transform: translateX(3px);
-        }
-
-        .idx-foot {
-            margin-top: 44px;
-            padding-bottom: 82px;
-            display: flex;
-            justify-content: space-between;
-            gap: 24px;
-            flex-wrap: wrap;
-            font-size: 12px;
-            color: var(--muted);
-        }
-
-        @media (max-width: 900px) {
-            .idx-row { grid-template-columns: 56px minmax(0, 1fr); gap: 18px; padding: 24px 0; }
-            .idx-side { display: none; }
-            .idx-no { font-size: 11px; letter-spacing: .04em; white-space: normal; line-height: 1.5; }
-            .idx-main p { color: #47473f; }
-        }
-
-        @media (max-width: 600px) {
-            .idx-row { grid-template-columns: 56px minmax(0, 1fr); gap: 12px; padding: 18px 0; }
-            .idx-no { font-size: 11px; letter-spacing: .04em; }
-            .idx-main h3 { font-size: 20px; }
-            .idx-main p { margin-top: 6px; font-size: 12.5px; line-height: 1.8; }
-            .idx-head { font-size: 9.5px; letter-spacing: .14em; gap: 10px; }
-            .idx-foot { margin-top: 30px; padding-bottom: 44px; font-size: 11px; gap: 6px; }
-        }
-    </style>
-    <style>
-        /* 首页赛事状态板 */
-        .season {
-            --season-accent: #a8492a;
-            margin: 26px 0 42px;
-            border-top: 1px solid var(--line-2);
-        }
-
-        .season-head {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 13px 0 12px;
-            border-bottom: 1px solid var(--line);
-        }
-
-        .season-head .eyebrow {
-            margin: 0;
-            font-size: 11px;
-            letter-spacing: .18em;
-        }
-
-        .season-meta {
-            font-family: var(--mono);
-            font-size: 11px;
-            line-height: 1.6;
-            letter-spacing: .03em;
-            color: var(--muted);
-            text-align: right;
-        }
-
-        .season-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.65fr) minmax(260px, .7fr);
-            gap: 1px;
-            background: var(--line);
-            border: 1px solid var(--line);
-            border-top: 0;
-        }
-
-        .season-main,
-        .season-aside {
-            min-width: 0;
-            background: var(--paper-2);
-            padding: 28px 30px 26px;
-        }
-
-        .season-kicker,
-        .season-aside-head {
-            font-family: var(--mono);
-            font-size: 10px;
-            letter-spacing: .16em;
-            color: var(--muted);
-            text-transform: uppercase;
-        }
-
-        .season-statusline {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 16px;
-        }
-
-        .season-badge {
-            display: inline-flex;
-            align-items: center;
-            border: 1px solid var(--line-2);
-            padding: 3px 8px;
-            font-family: var(--mono);
-            font-size: 10px;
-            line-height: 1.4;
-            letter-spacing: .06em;
-            white-space: nowrap;
-        }
-
-        .season-badge.open {
-            background: var(--season-accent);
-            border-color: var(--season-accent);
-            color: #fff;
-        }
-
-        .season-badge.prep {
-            background: var(--ink);
-            border-color: var(--ink);
-            color: var(--paper);
-        }
-
-        .season-badge.upcoming,
-        .season-badge.ended {
-            color: var(--muted);
-            background: var(--paper);
-        }
-
-        .season-count {
-            font-family: var(--mono);
-            font-size: 11.5px;
-            letter-spacing: .02em;
-            color: var(--muted);
-        }
-
-        .season-count.hot { color: var(--season-accent); }
-
-        .season-title {
-            display: flex;
-            align-items: baseline;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 10px 0 0;
-            font-family: var(--serif);
-            font-size: clamp(30px, 3.4vw, 42px);
-            font-weight: 800;
-            line-height: 1.15;
-            letter-spacing: -.02em;
-        }
-
-        .season-title small {
-            font-family: var(--mono);
-            font-size: 10.5px;
-            font-weight: 400;
-            letter-spacing: .04em;
-            color: var(--muted);
-        }
-
-        .season-desc {
-            max-width: 46em;
-            margin-top: 12px;
-            font-size: 14px;
-            line-height: 1.8;
-            color: var(--ink-2);
-        }
-
-        .season-dates {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            margin-top: 18px;
-            border-top: 1px solid var(--line);
-            border-bottom: 1px solid var(--line);
-        }
-
-        .season-dates > div {
-            min-width: 0;
-            padding: 9px 12px 9px 0;
-            border-right: 1px solid var(--line);
-        }
-
-        .season-dates > div:last-child {
-            padding-right: 0;
-            border-right: 0;
-        }
-
-        .season-dates span {
-            display: block;
-            font-family: var(--mono);
-            font-size: 9.5px;
-            letter-spacing: .06em;
-            color: var(--muted);
-        }
-
-        .season-dates b {
-            display: block;
-            margin-top: 4px;
-            font-family: var(--mono);
-            font-size: 11px;
-            font-weight: 400;
-            line-height: 1.5;
-            color: var(--ink-2);
-        }
-
-        .season-actions {
-            display: flex;
-            gap: 9px;
-            flex-wrap: wrap;
-            margin-top: 19px;
-        }
-
-        .season-actions a {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            border: 1px solid var(--line-2);
-            padding: 8px 12px;
-            font-size: 11.5px;
-            line-height: 1.4;
-            color: var(--ink-2);
-            transition: background .16s, color .16s, border-color .16s;
-        }
-
-        .season-actions a:hover {
-            background: var(--wash);
-            color: var(--ink);
-        }
-
-        .season-actions a.primary {
-            background: var(--ink);
-            border-color: var(--ink);
-            color: var(--paper);
-        }
-
-        .season-actions a.primary:hover {
-            background: #000;
-            color: #fff;
-        }
-
-        .season-source {
-            margin-top: 15px;
-            font-size: 10.5px;
-            line-height: 1.65;
-            color: var(--muted);
-        }
-
-        .season-source a {
-            color: var(--ink-2);
-            text-decoration: underline;
-        }
-
-        .season-aside {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .season-aside-head {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: 8px;
-        }
-
-        .season-aside h3 {
-            margin: 12px 0 0;
-            font-family: var(--serif);
-            font-size: 25px;
-            font-weight: 800;
-            line-height: 1.2;
-        }
-
-        .season-aside p {
-            margin-top: 9px;
-            font-size: 12px;
-            line-height: 1.75;
-            color: var(--muted);
-        }
-
-        .season-aside .season-badge {
-            margin-top: 15px;
-            align-self: flex-start;
-        }
-
-        .season-link {
-            display: inline-flex;
-            margin-top: auto;
-            padding-top: 18px;
-            font-family: var(--mono);
-            font-size: 11.5px;
-            letter-spacing: .02em;
-            color: var(--ink-2);
-            text-decoration: underline;
-        }
-
-        @media (max-width: 900px) {
-            .season-grid { grid-template-columns: 1fr; }
-            .season-dates { grid-template-columns: 1fr; }
-            .season-dates > div { padding: 8px 0; border-right: 0; border-bottom: 1px solid var(--line); }
-            .season-dates > div:last-child { border-bottom: 0; }
-            .season-main, .season-aside { padding: 24px 20px; }
-        }
-
-        @media (max-width: 600px) {
-            .season { margin: 18px 0 30px; }
-            .season-head { display: block; padding: 11px 0 10px; }
-            .season-meta { margin-top: 7px; text-align: left; }
-            .season-title { font-size: 28px; }
-            .season-desc { font-size: 13px; }
-            .season-actions a { flex: 1 1 auto; justify-content: center; }
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/portal.css">
 </head>
 
-<body>
-    <div class="topbar">
-        <a class="brand" href="index.html" title="朝云暮辞 · 学习档案">
-            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2">
+<body class="portal-page">
+    <header class="topbar">
+        <a class="brand" href="index.html" title="朝云暮辞首页">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
                 <path d="M10 4H4v22h6M20 4h6v22h-6" />
                 <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
             </svg>
             <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
         </a>
-        <nav class="nav">
-            <a class="contest-link" href="#contest" data-contest-mode>计挑赛</a>
-            <a href="problems/lanqiao/index.html">蓝桥真题</a>
-            <a href="problems/algorithm/index.html">算法题库</a>
-            <a href="problems/algorithm/learn.html">算法学习</a>
-            <a href="problems/algorithm/lab.html">动画实验室</a>
-            <a href="articles/data-structures/index.html">数据结构</a>
-            <a href="articles/algorithm-competition/index.html">算法竞赛</a>
-            <a href="articles/frontend/index.html">前端教程</a>
-            <a href="articles/fullstack/index.html">全栈笔记</a>
-            <a href="tools/mistakes.html">错题本</a>
-    <a href="settings.html">设置</a></nav>
-    </div>
+        <nav class="nav" aria-label="主要导航">
+            <a class="active" href="index.html" title="返回首页与备考总览">首页</a>
+            <a href="contests.html" title="查看赛事通知、历史赛事与赛程入口">竞赛志</a>
+            <a href="knowledge.html" title="查看算法、数据结构与开发学习入口">研习录</a>
+            <a href="tools/mistakes.html" title="按本地记录复习错题">温故集</a>
+            <a href="ai.html" title="了解静态提示、AI 追问与配置方式">AI问学</a>
+            <a class="nav-settings" href="settings.html#ai" title="配置本机 AI 接口与数据设置">设置</a>
+        </nav>
+    </header>
 
-    <main class="wrap">
-        <section class="season" id="season" aria-labelledby="seasonTitle">
-            <div class="season-head">
-                <div class="eyebrow">— Competition season / 2026–2027</div>
-                <div class="season-meta">按蓝桥杯官网与校内通知整理<br>更新于 <span id="seasonUpdated">2026.11.28</span></div>
+    <main class="portal-main">
+        <section class="portal-hero" aria-labelledby="homeTitle">
+            <div class="portal-hero-copy">
+                <p class="portal-kicker">朝云暮辞 · 竞赛备考与学习档案</p>
+                <h1 class="home-title" id="homeTitle"><span>竞赛消息不漏看，</span><span>备战练习有方向。</span></h1>
+                <p class="portal-lede">先看已整理的赛事与通知，再从 C、C++、Java、Python 真题、蓝桥历年卷和算法专项里选一条练习线。做题时先用页面里的分层提示，需要继续讨论时再用 AI 追问。</p>
+                <div class="portal-actions">
+                    <a class="portal-button" href="contests.html#practice">开始备战</a>
+                    <a class="portal-button secondary" href="contests.html">查看赛事</a>
+                </div>
             </div>
-            <h2 id="seasonTitle" hidden>2026–2027 竞赛赛季</h2>
-            <div class="season-grid" id="seasonBoard" aria-live="polite"></div>
+
+            <aside class="portal-example" aria-labelledby="exampleTitle">
+                <h2 id="exampleTitle">数据加密</h2>
+                <p class="portal-example-meta">算法题库 #269 · 字符与序列 · 入门</p>
+                <p>从现有题目里取一个真实入口：先读题面和已有的分层提示，自己写出字符、ASCII 码与位置下标的关系；需要继续追问时，再让 AI 帮你补上卡住的那一步。</p>
+                <div class="portal-flowline" aria-label="AI 使用顺序">
+                    <span>题目：打开《数据加密》，先独立读题。</span>
+                    <span>静态提示：按原题页的阶梯逐层展开，不发起网络请求。</span>
+                    <span>AI 追问：说清楚卡在哪一步，再请它解释或追问。</span>
+                </div>
+                <div class="portal-actions">
+                    <a class="portal-button" href="problems/algorithm/q.html?id=269">打开原题</a>
+                    <a class="portal-button secondary" href="ai.html">看 AI 问学</a>
+                </div>
+            </aside>
         </section>
 
-        <script>
-            (function () {
-                var UPDATED = '2026-11-28';
-                var ITEMS = [
-                    {
-                        id: 'lanqiao',
-                        name: '蓝桥杯',
-                        kind: '程序设计赛道',
-                        stage: '2026–2027',
-                        start: '2026-10-08T10:00:00+08:00',
-                        end: '2026-12-18T14:00:00+08:00',
-                        contestStart: '2027-04-10T09:00:00+08:00',
-                        contestEnd: '2027-04-10T13:00:00+08:00',
-                        labels: ['报名开放', '报名截止', '省赛'],
-                        desc: 'C/C++、Java、Python 三个程序设计科目，省赛在 2027 年 4 月 10 日。报名已开放，12 月 18 日 14:00 截止。',
-                        prep: 'problems/lanqiao/index.html',
-                        prepLabel: '进入蓝桥题库',
-                        signup: 'https://dasai.lanqiao.cn/',
-                        source: '蓝桥杯官网',
-                        sourceHref: 'https://dasai.lanqiao.cn/',
-                        note: '报名已开放，12 月 18 日 14:00 截止；校内截止可能更早，以学校通知为准。'
-                    },
-                    {
-                        id: 'contest',
-                        name: '计算机挑战赛',
-                        kind: '校内组织',
-                        stage: '2026',
-                        start: '2026-10-15T00:00:00+08:00',
-                        end: '2026-11-25T23:59:59+08:00',
-                        exam: '2026-11-29',
-                        dateOnly: true,
-                        labels: ['开始', '截止', '考试'],
-                        desc: '2026 赛季报名 10 月 15 日开始、11 月 25 日截止，考试在 11 月 29 日；具体时间与考场以学校通知为准。',
-                        prep: 'problems/contest/index.html',
-                        prepLabel: '查看真题与复盘',
-                        source: '校内通知',
-                        note: '报名 10 月 15 日至 11 月 25 日；考试在 11 月 29 日，具体时间与考场以学校通知为准。'
-                    }
-                ];
-
-                var board = document.getElementById('seasonBoard');
-                var updated = document.getElementById('seasonUpdated');
-                if (!board) return;
-                if (updated) updated.textContent = UPDATED.replace(/-/g, '.');
-
-                function dateOf(s) { return new Date(s); }
-                function pad(n) { return n < 10 ? '0' + n : String(n); }
-
-                function fmt(iso, withTime) {
-                    var d = dateOf(iso);
-                    var parts = new Intl.DateTimeFormat('zh-CN', {
-                        timeZone: 'Asia/Shanghai',
-                        year: 'numeric', month: '2-digit', day: '2-digit',
-                        hour: '2-digit', minute: '2-digit', hour12: false
-                    }).formatToParts(d);
-                    var m = {};
-                    parts.forEach(function (p) { if (p.type !== 'literal') m[p.type] = p.value; });
-                    var text = m.year + '.' + m.month + '.' + m.day;
-                    if (withTime) text += ' ' + pad(Number(m.hour)) + ':' + m.minute;
-                    return text;
-                }
-
-                function dayKey(date) {
-                    var parts = new Intl.DateTimeFormat('en-CA', {
-                        timeZone: 'Asia/Shanghai',
-                        year: 'numeric', month: '2-digit', day: '2-digit'
-                    }).formatToParts(date);
-                    var m = {};
-                    parts.forEach(function (p) { if (p.type !== 'literal') m[p.type] = p.value; });
-                    return m.year + '-' + m.month + '-' + m.day;
-                }
-
-                function dayDiff(dateStr, now) {
-                    var target = dateStr.split('-').map(Number);
-                    var current = dayKey(now).split('-').map(Number);
-                    return Math.round((Date.UTC(target[0], target[1] - 1, target[2]) -
-                        Date.UTC(current[0], current[1] - 1, current[2])) / 86400000);
-                }
-
-                function phaseOf(item, now) {
-                    var start = dateOf(item.start);
-                    var end = dateOf(item.end);
-                    if (now < start) return { key: 'upcoming', label: '未开放' };
-                    if (now < end) return { key: 'registering', label: '报名中' };
-                    if (item.contestStart && now < dateOf(item.contestStart)) return { key: 'preparing', label: '备赛中' };
-                    if (item.contestStart && now < dateOf(item.contestEnd)) return { key: 'competing', label: '比赛进行中' };
-                    if (item.exam) {
-                        var examStart = dateOf(item.exam + 'T00:00:00+08:00');
-                        var examEnd = dateOf(item.exam + 'T23:59:59+08:00');
-                        if (now < examStart) return { key: 'closed', label: '待考试' };
-                        if (now <= examEnd) return { key: 'examday', label: '考试日' };
-                    }
-                    return { key: 'ended', label: '已结束' };
-                }
-
-                function targetOf(item, phase) {
-                    if (phase.key === 'upcoming') return dateOf(item.start);
-                    if (phase.key === 'registering') return dateOf(item.end);
-                    if (phase.key === 'preparing') return dateOf(item.contestStart);
-                    if (phase.key === 'competing') return dateOf(item.contestEnd);
-                    if (phase.key === 'closed' && item.exam) return dateOf(item.exam + 'T00:00:00+08:00');
-                    if (phase.key === 'examday' && item.exam) return dateOf(item.exam + 'T23:59:59+08:00');
-                    return null;
-                }
-
-                function targetLabel(phase) {
-                    return {
-                        upcoming: '距开放',
-                        registering: '距报名截止',
-                        preparing: '距省赛',
-                        competing: '距比赛结束',
-                        closed: '距考试',
-                        examday: '考试日',
-                        ended: '真题仍可查看'
-                    }[phase.key];
-                }
-
-                function countdown(item, phase, now) {
-                    if (phase.key === 'ended') return '真题仍可查看';
-                    if (phase.key === 'examday') return '具体时间以通知为准';
-                    if (phase.key === 'closed' && item.exam) {
-                        var daysLeft = dayDiff(item.exam, now);
-                        if (daysLeft > 1) return '距考试 ' + daysLeft + ' 天';
-                        if (daysLeft === 1) return '明天考试';
-                        if (daysLeft === 0) return '今天考试';
-                    }
-                    var target = targetOf(item, phase);
-                    if (!target) return '本赛季已结束';
-                    var ms = target - now;
-                    if (ms <= 0) return '已截止';
-                    var days = Math.floor(ms / 86400000);
-                    var text = days <= 0 ? '今天' : days === 1 ? '明天' : days + ' 天';
-                    return targetLabel(phase) + ' ' + text;
-                }
-
-                function noteFor(item, phase) {
-                    if (item.id === 'lanqiao') {
-                        if (phase.key === 'registering') {
-                            return '报名已开放，12 月 18 日 14:00 截止；校内截止可能更早，以学校通知为准。';
-                        }
-                        if (phase.key === 'preparing') return '报名已截止，省赛在 2027 年 4 月 10 日；现在进入备赛期。';
-                    }
-                    if (item.id === 'contest') {
-                        if (phase.key === 'closed') return '报名已截止，11 月 29 日考试；具体时间与考场以学校通知为准。';
-                        if (phase.key === 'examday') return '考试日；具体时间与考场以学校通知为准。';
-                        if (phase.key === 'ended') return '2026 赛季已结束，真题仍可查看与复盘。';
-                    }
-                    if (phase.key === 'registering') return item.note;
-                    if (phase.key === 'preparing') return '报名已截止，省赛在 2027 年 4 月 10 日；现在进入备赛期。';
-                    if (phase.key === 'upcoming') return '尚未开放，先查看往年真题和备赛资料。';
-                    if (phase.key === 'competing') return '比赛进行中，赛后统一更新真题与题解。';
-                    return item.note;
-                }
-
-                function descFor(item, phase) {
-                    if (item.id === 'lanqiao') {
-                        if (phase.key === 'upcoming') return '本届报名尚未开放，先查看往年真题和基础准备。';
-                        if (phase.key === 'preparing') return '报名已截止，省赛在 2027 年 4 月 10 日 9:00；现在进入备赛期。';
-                        if (phase.key === 'competing') return '省赛正在进行，赛后统一更新真题与题解。';
-                        if (phase.key === 'ended') return '本赛季已结束，真题与题解已归档，可继续复盘。';
-                    }
-                    if (item.id === 'contest') {
-                        if (phase.key === 'closed') return '2026 赛季报名已在 11 月 25 日截止，考试在 11 月 29 日；具体时间与考场以学校通知为准。';
-                        if (phase.key === 'examday') return '今天是计算机挑战赛考试日；具体时间与考场以学校通知为准，赛后更新真题与题解。';
-                        if (phase.key === 'ended') return '2026 赛季已结束，真题与题解已归档，可继续复盘。';
-                    }
-                    if (phase.key === 'ended') return '2026 赛季已截止，真题仍可查看与复盘。';
-                    return item.desc;
-                }
-
-                function actionHTML(item, phase) {
-                    var html = [];
-                    if (phase.key === 'registering' && item.signup) {
-                        html.push('<a class="primary" href="' + item.signup + '" target="_blank" rel="noopener noreferrer">去官网报名 ↗</a>');
-                    }
-                    html.push('<a href="' + item.prep + '">' + item.prepLabel + '</a>');
-                    html.push('<a href="tools/mistakes.html">打开错题本</a>');
-                    return html.join('');
-                }
-
-                function datesHTML(item) {
-                    var withTime = !item.dateOnly;
-                    var rows = [
-                        '<div><span>' + item.labels[0] + '</span><b>' + fmt(item.start, withTime) + '</b></div>',
-                        '<div><span>' + item.labels[1] + '</span><b>' + fmt(item.end, withTime) + '</b></div>'
-                    ];
-                    if (item.contestStart) {
-                        rows.push('<div><span>' + item.labels[2] + '</span><b>' + fmt(item.contestStart, true) + '</b></div>');
-                    }
-                    if (item.exam) {
-                        rows.push('<div><span>' + item.labels[2] + '</span><b>' + fmt(item.exam + 'T00:00:00+08:00', false) + '</b></div>');
-                    }
-                    return '<div class="season-dates">' + rows.join('') + '</div>';
-                }
-
-                function sourceHTML(item) {
-                    var src = item.sourceHref
-                        ? '<a href="' + item.sourceHref + '" target="_blank" rel="noopener noreferrer">' + item.source + '</a>'
-                        : item.source;
-                    return '<p class="season-source">来源：' + src + ' · 时间如有调整，以学校最新通知为准。</p>';
-                }
-
-                function mainHTML(item, phase, now) {
-                    var cls = { registering: 'open', preparing: 'prep', competing: 'prep', closed: 'prep', examday: 'prep', upcoming: 'upcoming', ended: 'ended' }[phase.key];
-                    var countClass = (phase.key === 'registering' || phase.key === 'closed') ? ' hot' : '';
-                    var kicker = phase.key === 'ended' ? '01 / 赛季归档' :
-                        phase.key === 'upcoming' ? '01 / 下一项赛事' : '01 / 当前赛事';
-                    return '<div class="season-main">' +
-                        '<div class="season-kicker">' + kicker + ' · ' + item.stage + '</div>' +
-                        '<div class="season-statusline"><span class="season-badge ' + cls + '">' + phase.label + '</span>' +
-                        '<span class="season-count' + countClass + '">' + countdown(item, phase, now) + '</span></div>' +
-                        '<div class="season-title">' + item.name + ' <small>' + item.kind + '</small></div>' +
-                        '<p class="season-desc">' + descFor(item, phase) + '</p>' +
-                        datesHTML(item) +
-                        '<div class="season-actions">' + actionHTML(item, phase) + '</div>' +
-                        sourceHTML(item) +
-                        '</div>';
-                }
-
-                function asideHTML(item, phase, now) {
-                    var cls = { registering: 'open', preparing: 'prep', competing: 'prep', closed: 'prep', examday: 'prep', upcoming: 'upcoming', ended: 'ended' }[phase.key];
-                    var badgeText = phase.key === 'ended' ? phase.label : countdown(item, phase, now);
-                    var dateText = item.kind + ' · ' + fmt(item.start) + '—' + fmt(item.end) +
-                        (item.exam ? ' · 考试 ' + fmt(item.exam + 'T00:00:00+08:00', false) : '');
-                    return '<div class="season-aside">' +
-                        '<div class="season-aside-head"><span>02 / 另一项赛事</span><span>' + item.stage + '</span></div>' +
-                        '<span class="season-badge ' + cls + '">' + badgeText + '</span>' +
-                        '<h3>' + item.name + '</h3>' +
-                        '<p>' + dateText + '</p>' +
-                        '<p>' + noteFor(item, phase) + '</p>' +
-                        '<a class="season-link" href="' + item.prep + '">' + item.prepLabel + ' →</a>' +
-                        '</div>';
-                }
-
-                function render() {
-                    var now = new Date();
-                    var rows = ITEMS.map(function (item) {
-                        var phase = phaseOf(item, now);
-                        var target = targetOf(item, phase);
-                        return {
-                            item: item,
-                            phase: phase,
-                            target: target,
-                            rank: phase.key === 'registering' || phase.key === 'preparing' || phase.key === 'competing' || phase.key === 'closed' || phase.key === 'examday' ? 0 :
-                                phase.key === 'upcoming' ? 1 : 2
-                        };
-                    });
-
-                    rows.sort(function (a, b) {
-                        if (a.rank !== b.rank) return a.rank - b.rank;
-                        if (a.rank === 2) return dateOf(b.item.contestEnd || b.item.end) - dateOf(a.item.contestEnd || a.item.end);
-                        return (a.target || 0) - (b.target || 0);
-                    });
-
-                    var main = rows[0];
-                    var other = rows[1];
-                    board.innerHTML = mainHTML(main.item, main.phase, now) +
-                        (other ? asideHTML(other.item, other.phase, now) : '');
-                }
-
-                render();
-            })();
-        </script>
-
-        <section class="hero">
-            <div class="hero-left">
-                <div class="eyebrow">— Study archive / 07</div>
-                <h1>把学过的，<br>收进一间书房。</h1>
-                <p class="lede">七条线并排放着：计挑赛 C / C++ / Java / Python 四套真题，蓝桥杯 2012–2026 年十五个年份的省赛国赛真题，算法题库与课程，数据结构与算法的十二章教程，算法竞赛的十章笔记，HTML / CSS / JavaScript 教程，以及 Git / React / Next.js 的全栈笔记。真题可以作答并看解析，算法题可以逐层看演示，教程可以顺着读，笔记可以翻到具体那一章。</p>
+        <section class="portal-section" id="recent" aria-labelledby="recentTitle">
+            <div class="portal-section-head">
+                <h2 id="recentTitle">近期赛事与通知</h2>
+                <p>只显示来源清楚的下一节点，最多三条。日期按已有资料整理，原通知可能调整；来源没有链接时直接以文字标注。</p>
             </div>
-            <div class="hero-stat">
-                <div class="num">67</div>
-                <div class="stat-label">
-                    <span>篇教程在库</span>
-                    <span>另有 4 套计挑赛题库</span>
-                </div>
+            <div data-recent-events data-limit="3" data-empty="暂时没有可显示的近期赛程。先进入历年真题、算法专项或本地错题复习，等待赛事信息更新。"></div>
+            <div class="clock-line" aria-label="时钟说明">
+                <span>设备时钟：<b data-device-clock>读取中</b></span>
+                <span>北京时间：<b data-beijing-clock>读取中</b></span>
+                <span>日期按已有资料整理，不是实时查询。</span>
             </div>
         </section>
 
-        <section class="idx-list" id="sections">
-            <div class="idx-head">
-                <span>— Sections / 索引</span>
-                <span>2026 · updated</span>
+        <section class="portal-section tint" id="sections" aria-labelledby="entryTitle">
+            <div class="portal-section-head">
+                <h2 id="entryTitle">按赛事与语言入场</h2>
+                <p>已经上线的入口直接进入原题库，再从页面里的年份与题型选项开始筛选。</p>
             </div>
 
-            <a class="idx-row" href="#contest" data-contest-mode>
-                <div class="idx-no">01 / CONTEST</div>
-                <div class="idx-main">
-                    <h3>计挑赛</h3>
-                    <p>C、C++、Java、Python 四套题库，2019–2025 年真题按语言与题型归档。单选题点选即判分并给出解析，编程题附参考代码、解析与可自动补全的代码练习区。</p>
+            <div class="entry-layout">
+                <div class="entry-feature" id="contest" aria-labelledby="computerTitle">
+                    <div class="entry-feature-head">
+                        <div>
+                            <h3 id="computerTitle">计算机挑战赛</h3>
+                            <p class="entry-feature-copy">按语言进入同一套真题结构，再进行年份与题型筛选。单选题可直接作答，编程题进入原题页看解析、代码和分层提示。</p>
+                        </div>
+                        <span class="portal-state done" data-contest-badge="computer-challenge">时间信息暂不可用</span>
+                    </div>
+                    <div class="portal-language-list">
+                        <a class="portal-language" href="problems/contest/index.html" title="进入计算机挑战赛 C 语言题库">
+                            <b>C 语言</b><span>指针、结构体与基础算法 →</span>
+                        </a>
+                        <a class="portal-language" href="problems/contest/cpp/index.html" title="进入计算机挑战赛 C++ 题库">
+                            <b>C++</b><span>STL、类与竞赛写法 →</span>
+                        </a>
+                        <a class="portal-language" href="problems/contest/java/index.html" title="进入计算机挑战赛 Java 题库">
+                            <b>Java</b><span>集合、字符串与面向对象 →</span>
+                        </a>
+                        <a class="portal-language" href="problems/contest/python/index.html" title="进入计算机挑战赛 Python 题库">
+                            <b>Python</b><span>列表、字典与内置库 →</span>
+                        </a>
+                    </div>
+                    <p class="portal-note">进入题库后可按年份与题型筛选；首页只负责选语言，不预设还没有出现的年份。</p>
                 </div>
-                <div class="idx-side"><span class="tag">4 套题库 · 6 个年份</span><span class="go">→</span></div>
-            </a>
 
-            <a class="idx-row" href="problems/lanqiao/index.html">
-                <div class="idx-no">02 / LANQIAO</div>
-                <div class="idx-main">
-                    <h3>蓝桥真题</h3>
-                    <p>2012–2026 年蓝桥杯省赛与国赛真题 757 道，按年份归档。点年份看那年的卷与题，点卷进卷面，题面、样例、时限与通过率逐题可查，手敲代码只留在本机、不评测。</p>
-                </div>
-                <div class="idx-side"><span class="tag">757 题 · 15 个年份</span><span class="go">→</span></div>
-            </a>
-
-            <a class="idx-row" href="articles/frontend/index.html">
-                <div class="idx-no">03 / HTML</div>
-                <div class="idx-main">
-                    <h3>前端教程</h3>
-                    <p>HTML 与 CSS 的系统化学习资料，从文档结构、语义化标签、表单与表格，到盒模型、Flex、Grid 与动画，按章节归档。</p>
-                </div>
-                <div class="idx-side"><span class="tag">基础 · 36 篇</span><span class="go">→</span></div>
-            </a>
-
-            <a class="idx-row" href="articles/fullstack/index.html">
-                <div class="idx-no">04 / FULL</div>
-                <div class="idx-main">
-                    <h3>全栈笔记</h3>
-                    <p>Git 工具链、React 组件与状态、Next.js 路由与数据获取，一路到部署和环境变量，按实战顺序排列。</p>
-                </div>
-                <div class="idx-side"><span class="tag">全栈 · 19 篇</span><span class="go">→</span></div>
-            </a>
-
-            <a class="idx-row" href="problems/algorithm/index.html">
-                <div class="idx-no">05 / ALGO</div>
-                <div class="idx-main">
-                    <h3>算法题库</h3>
-                    <p>145 道算法题，按 7 个知识分类归档；每题都有推导、复杂度、C++ / C / Python 参考代码与理解自测。另有 6 条学习路径、21 篇课程和 17 个可逐帧播放的算法演示。</p>
-                </div>
-                <div class="idx-side"><span class="tag">145 题 · 17 演示</span><span class="go">→</span></div>
-            </a>
-
-            <a class="idx-row" href="articles/data-structures/index.html">
-                <div class="idx-no">06 / DS</div>
-                <div class="idx-main">
-                    <h3>数据结构教程</h3>
-                    <p>整理自 dotcpp 的数据结构与算法教程，12 章 87 节重排为「章 → 节 → 要点」。每章一个页面，左侧是全部章节，右侧是本章小标题，代码按语言分块，原文配图随文外挂加载。</p>
-                </div>
-                <div class="idx-side"><span class="tag">12 章 · 87 节</span><span class="go">→</span></div>
-            </a>
-
-            <a class="idx-row" href="articles/algorithm-competition/index.html">
-                <div class="idx-no">07 / 竞赛</div>
-                <div class="idx-main">
-                    <h3>算法竞赛教程</h3>
-                    <p>同样整理自 dotcpp，原文 172 篇长页面按目录重排为 10 章「章 → 节 → 要点」，覆盖基础、搜索、排序、字符串、数学、DP、数据结构、图论、计算几何与其他技巧。左侧是全部章节，右侧是本章小标题，代码分块可复制，964 张原文配图走本地 webp 懒加载。</p>
-                </div>
-                <div class="idx-side"><span class="tag">10 章 · 172 节</span><span class="go">→</span></div>
-            </a>
-        </section>
-
-        <section class="idx-list" id="contestView" hidden>
-            <div class="idx-head">
-                <span>— Contest / 选择语言题库</span>
-                <a class="idx-back" href="#sections">← 返回站点索引</a>
-            </div>
-
-            <a class="idx-row" href="problems/contest/index.html">
-                <div class="idx-no">01 / C</div>
-                <div class="idx-main">
-                    <h3>C 语言</h3>
-                    <p>指针、结构体、文件与基础算法。2019–2025 年真题，单选可直接作答，编程题附官方或 AI 参考代码。</p>
-                </div>
-                <div class="idx-side"><span class="tag">215 道 · 6 个年份<small style="display:block;color:#a8492a;font-size:10px;letter-spacing:.02em;margin-top:3px">已去重 21 道</small></span><span class="go">→</span></div>
-            </a>
-
-            <a class="idx-row" href="problems/contest/cpp/index.html">
-                <div class="idx-no">02 / C++</div>
-                <div class="idx-main">
-                    <h3>C++</h3>
-                    <p>STL、类与模板，兼顾竞赛写法。2019–2025 年真题，按年份与题型归档，配套代码练习区。</p>
-                </div>
-                <div class="idx-side"><span class="tag">212 道 · 6 个年份<small style="display:block;color:#a8492a;font-size:10px;letter-spacing:.02em;margin-top:3px">已去重 23 道</small></span><span class="go">→</span></div>
-            </a>
-
-            <a class="idx-row" href="problems/contest/java/index.html">
-                <div class="idx-no">03 / JAVA</div>
-                <div class="idx-main">
-                    <h3>Java</h3>
-                    <p>集合、字符串与面向对象。2019–2025 年真题，单选题与编程题分开整理，参考代码标明来源。</p>
-                </div>
-                <div class="idx-side"><span class="tag">215 道 · 6 个年份<small style="display:block;color:#a8492a;font-size:10px;letter-spacing:.02em;margin-top:3px">已去重 23 道</small></span><span class="go">→</span></div>
-            </a>
-
-            <a class="idx-row" href="problems/contest/python/index.html">
-                <div class="idx-no">04 / PY</div>
-                <div class="idx-main">
-                    <h3>Python</h3>
-                    <p>列表、字典与内置库。2019–2025 年真题，适合快速上手与脚本式解题练习。</p>
-                </div>
-                <div class="idx-side"><span class="tag">198 道 · 6 个年份<small style="display:block;color:#a8492a;font-size:10px;letter-spacing:.02em;margin-top:3px">已去重 37 道</small></span><span class="go">→</span></div>
-            </a>
-        </section>
-
-        <div class="idx-foot">
-            <div>朝云暮辞 · 学习档案 — 真题、教程与笔记，一处可查。</div>
-        </div>
-    </main>
-
-    <footer class="site-foot">
-        <div class="sf-inner">
-            <div class="sf-top">
-                <div class="sf-brand">
-                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none">
-                        <path d="M10 4H4v22h6M20 4h6v22h-6" />
-                        <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
-                    </svg>
-                    <div>
-                        <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
-                        <p>一个用来放学习资料的小站。真题整理自原始试卷；算法题库与课程整理自 ARENA LAB，经作者授权收录。解析与演示由整理者补充，仅供参考。</p>
+                <div class="entry-side" aria-labelledby="lanqiaoTitle">
+                    <h3 id="lanqiaoTitle">蓝桥杯历年真题</h3>
+                    <p>按题库现有年份进入整套卷面，不预设未来年份。想直接找题时，再进入全部题目页面。</p>
+                    <div class="entry-actions">
+                        <a class="portal-link" href="problems/lanqiao/index.html">按年份选卷</a>
+                        <a class="portal-link" href="problems/lanqiao/bank.html">全部题目</a>
                     </div>
                 </div>
-                <nav class="sf-links">
-                    <a href="#contest">计挑赛</a>
-                    <a href="problems/algorithm/index.html">算法题库</a>
-                    <a href="articles/data-structures/index.html">数据结构教程</a>
-                    <a href="articles/algorithm-competition/index.html">算法竞赛教程</a>
-                    <a href="articles/frontend/index.html">前端教程</a>
-                    <a href="articles/fullstack/index.html">全栈笔记</a><a href="tools/mistakes.html">错题本</a>
-                </nav>
             </div>
-            <div class="sf-bottom">
+
+            <div class="entry-strip">
+                <p><b>算法专项：</b>按知识分类做题，先看题目与逐层推导，再用参考代码核对；学习路径、动画实验室分别接基础补课和过程演示。</p>
+                <div class="mini-links">
+                    <a href="problems/algorithm/index.html">算法题库</a>
+                    <a href="problems/algorithm/learn.html">算法学习</a>
+                    <a href="problems/algorithm/lab.html">动画实验室</a>
+                </div>
+            </div>
+
+            <div class="portal-placeholder">
+                <b>更多赛事</b>
+                <span>其他赛事入口还在整理。</span>
+                <em>暂不可进入</em>
+            </div>
+        </section>
+
+        <section class="portal-section ink" id="ai" aria-labelledby="aiTitle">
+            <div class="portal-section-head">
+                <h2 id="aiTitle">遇到卡点，让 AI 帮你理清思路</h2>
+                <p>题目和分层提示先帮你自己走一遍；需要解释错因、比较写法或追问某一步时，再打开 AI 助教。</p>
+            </div>
+            <div class="ai-steps">
+                <article class="ai-step">
+                    <h3>从原题开始</h3>
+                    <p>在真题或算法题页读完整题面、样例和约束，先保留自己的第一次判断。</p>
+                </article>
+                <article class="ai-step">
+                    <h3>逐层用静态提示</h3>
+                    <p>提示写在页面里，按层展开即可，不联网、不消耗接口额度，也不会把做题记录提交出去。</p>
+                </article>
+                <article class="ai-step">
+                    <h3>配置后追问</h3>
+                    <p><a class="portal-link" href="ai.html">AI问学</a> 说明怎么问、怎么配置，以及哪些内容仍然需要自己核对。</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="portal-section" id="review" aria-labelledby="reviewTitle">
+            <div class="portal-section-head">
+                <h2 id="reviewTitle">本地复习摘要</h2>
+                <p>只读取当前浏览器里的错题和复习进度，不会为了首页统计下载整套题库。</p>
+            </div>
+            <div class="review-layout" data-review-summary>
+                <div class="review-summary">
+                    <p class="review-message" data-review-message>正在读取本地复习记录。</p>
+                    <p class="review-note">摘要来自当前浏览器的本地错题记录，不代表完整题库统计。若记录无法读取，这里会直接说明，不猜测到期数量。</p>
+                    <div class="portal-actions">
+                        <a class="portal-button secondary" href="tools/mistakes.html">进入温故集</a>
+                    </div>
+                </div>
+                <div class="review-metrics" data-review-metrics aria-live="polite">
+                    <div class="review-metric"><b>—</b><span>读取中</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="portal-section tint" id="study" aria-labelledby="studyTitle">
+            <div class="portal-section-head">
+                <h2 id="studyTitle">基础、延伸与校内课程</h2>
+                <p>已有教程直接进入；校内课程等还没有确认过的内容，只保留清楚说明。</p>
+            </div>
+            <div class="study-map">
+                <article class="study-block">
+                    <h3>竞赛基础</h3>
+                    <p>输入输出、复杂度、数组、字符串、排序与查找等基础复习线。</p>
+                    <div class="mini-links">
+                        <a href="problems/algorithm/learn.html">算法学习路径</a>
+                        <a href="articles/data-structures/index.html">数据结构教程</a>
+                    </div>
+                </article>
+                <article class="study-block">
+                    <h3>延伸学习</h3>
+                    <p>面向算法竞赛、数据结构与前端全栈的延伸阅读线。</p>
+                    <div class="mini-links">
+                        <a href="articles/algorithm-competition/index.html">算法竞赛教程</a>
+                        <a href="articles/frontend/index.html">前端教程</a>
+                        <a href="articles/fullstack/index.html">全栈笔记</a>
+                    </div>
+                </article>
+                <article class="study-block">
+                    <h3>校内课程</h3>
+                    <p>与校内课程进度、课件和实验安排对应的资料入口。</p>
+                    <div class="portal-placeholder"><b>课程入口还在整理</b><span>课程名称、学期与资料范围确认后再开放。</span><em>暂不可进入</em></div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="portal-footer">
+        <div class="portal-footer-inner">
+            <div class="portal-footer-brand">
+                <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                    <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                    <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+                </svg>
+                <div>
+                    <b>朝云暮辞 · ZYYC LAB</b>
+                    <p>真题、教程、错题与 AI 入口集中在这里。题目版权归原命题方，学习记录与 AI 配置只保存在当前浏览器。</p>
+                </div>
+            </div>
+            <nav class="portal-footer-links" aria-label="页脚链接">
+                <a href="contests.html">竞赛志</a>
+                <a href="knowledge.html">研习录</a>
+                <a href="tools/mistakes.html">温故集</a>
+                <a href="ai.html">AI问学</a>
+                <a href="settings.html#ai">设置</a>
+            </nav>
+            <div class="portal-footer-bottom">
                 <span>© 2026 朝云暮辞</span>
-                <span>持续更新中 · 发现题目差异请以原始文件为准。</span>
+                <span>赛程以来源通知为准，仓库日期不是实时核验。</span>
             </div>
         </div>
     </footer>
 
-    <script>
-        (function () {
-            var sections = document.getElementById('sections');
-            var contest = document.getElementById('contestView');
-            var triggers = document.querySelectorAll('a.contest-link[data-contest-mode]');
-
-            function sync() {
-                var on = location.hash === '#contest';
-                sections.hidden = on;
-                contest.hidden = !on;
-                triggers.forEach(function (el) {
-                    el.classList.toggle('active', on);
-                });
-                document.body.classList.toggle('is-contest-nav', on);
-            }
-
-            window.addEventListener('hashchange', sync);
-            sync();
-        })();
-    </script>
+    <script src="assets/data/contest-catalog.js" defer></script>
+    <script src="assets/js/contest-schedule.js" defer></script>
+    <script src="assets/js/portal.js" defer></script>
     <script src="assets/js/site.js" defer></script>
 </body>
 

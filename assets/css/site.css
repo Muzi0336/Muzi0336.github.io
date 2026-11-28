@@ -22,17 +22,30 @@ select,input{font:inherit;color:inherit}
 ::selection{background:rgba(25,25,23,.14)}
 
 /* ---------- 顶部导航 ---------- */
-.topbar{height:88px;display:flex;align-items:center;gap:44px;padding:0 48px;border-bottom:1px solid var(--line);background:var(--paper);position:sticky;top:0;z-index:50}
+.topbar{min-height:76px;display:flex;align-items:center;gap:44px;padding:0 48px;border-bottom:1px solid var(--line);background:rgba(244,242,234,.97);position:sticky;top:0;z-index:50}
 .brand{display:flex;align-items:center;gap:11px;flex:none}
 .brand svg{width:30px;height:30px;color:var(--ink)}
 .brand-text{display:flex;flex-direction:column;line-height:1.1}
 .brand-text b{font-size:15px;letter-spacing:.02em;font-weight:700}
 .brand-text small{font-family:var(--mono);font-size:11.5px;letter-spacing:.28em;color:var(--muted);margin-top:3px}
-.nav{display:flex;align-items:center;gap:22px;font-size:13.5px;color:var(--ink-2);margin-left:auto;min-width:0}
+.nav{display:flex;align-items:center;gap:28px;font-size:13.5px;color:var(--ink-2);margin-left:auto;min-width:0}
 .nav a{position:relative;padding:6px 0;white-space:nowrap;transition:color .2s}
 .nav a:hover{color:var(--ink)}
 .nav a.active{color:var(--ink);font-weight:600}
 .nav a.active::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--ink)}
+.nav a.nav-settings{margin-left:2px;padding-left:14px;border-left:1px solid var(--line);font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--muted)}
+.nav a.nav-settings:hover,.nav a.nav-settings.active{color:var(--ink)}
+.nav a.nav-settings::after{left:14px}
+.nav-toggle{display:none;width:38px;height:38px;flex:none;align-items:center;justify-content:center;border:1px solid var(--line-2);background:var(--paper-2);color:var(--ink);margin-left:auto}
+.nav-toggle-mark{position:relative;display:block;width:16px;height:12px}
+.nav-toggle-mark i{position:absolute;left:0;right:0;height:1.5px;background:currentColor;transition:transform .18s,opacity .18s,top .18s}
+.nav-toggle-mark i:nth-child(1){top:0}
+.nav-toggle-mark i:nth-child(2){top:5px}
+.nav-toggle-mark i:nth-child(3){top:10px}
+.topbar[data-nav-open="true"] .nav-toggle-mark i:nth-child(1){top:5px;transform:rotate(45deg)}
+.topbar[data-nav-open="true"] .nav-toggle-mark i:nth-child(2){opacity:0}
+.topbar[data-nav-open="true"] .nav-toggle-mark i:nth-child(3){top:5px;transform:rotate(-45deg)}
+.nav a:focus-visible,.brand:focus-visible,.nav-toggle:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 .top-right{margin-left:auto;display:flex;align-items:center;gap:16px}
 .top-search{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:13.5px;border-bottom:1px solid transparent;padding:4px 0}
 .top-search:hover{color:var(--ink);border-bottom-color:var(--line-2)}
@@ -219,12 +232,24 @@ select,input{font:inherit;color:inherit}
   .hero-stat{padding-bottom:0}
 }
 
+@media (max-width:760px){
+  .topbar{min-height:64px;padding:10px 14px;gap:10px;flex-wrap:wrap}
+  .brand{flex:1 1 auto;min-width:0}
+  html.site-nav-js .topbar > .nav-toggle{display:inline-flex}
+  html.site-nav-js .topbar > nav.nav{display:none;flex:0 0 100%;width:100%;margin:0;padding:8px 0 4px;gap:0;overflow:visible;grid-template-columns:repeat(3,minmax(0,1fr))}
+  html.site-nav-js .topbar[data-nav-open="true"] > nav.nav{display:grid}
+  html.site-nav-js .topbar > nav.nav a{display:block;padding:10px 8px;text-align:center;font-size:13px;line-height:1.35;border-bottom:1px solid var(--line)}
+  html.site-nav-js .topbar > nav.nav a.active::after{left:8px;right:8px;bottom:-1px}
+  html.site-nav-js .topbar > nav.nav a.nav-settings{margin:0;padding:8px;border-left:0;border-bottom:0;grid-column:1/-1;justify-self:end;font-family:var(--sans);font-size:12px;letter-spacing:.04em}
+  html.site-nav-js .topbar > nav.nav a.nav-settings::after{left:auto;right:8px;width:22px;bottom:3px}
+}
+
 /* ---------- 移动端：导航 ---------- */
 @media (max-width:900px){
   /* 手机端提高文字对比度 */
   :root{--muted:#54544b;--ink-2:#33332c}
 
-  .topbar{height:64px;padding:0 18px;gap:14px}
+  .topbar{min-height:64px;padding:0 18px;gap:14px}
   .brand{gap:9px}
   .brand svg{width:24px;height:24px}
   .brand-text b{font-size:14px}
@@ -304,8 +329,14 @@ select,input{font:inherit;color:inherit}
 
 /* ---------- 移动端：窄屏排版 ---------- */
 @media (max-width:600px){
-  .nav a[href="../index.html"]{display:none}
-  .nav{gap:10px;font-size:13px}
+  .topbar{min-height:0;padding:10px 14px 8px;gap:8px;flex-wrap:wrap}
+  .brand{flex:1 1 auto;width:auto;min-width:0}
+  .brand-text small{display:none}
+  .topbar > nav.nav{width:100%;margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;overflow:visible}
+  .topbar > nav.nav a{display:block;text-align:center;padding:8px 4px;font-size:12px;line-height:1.3;border-bottom:1px solid var(--line)}
+  .topbar > nav.nav a.active::after{left:4px;right:4px;bottom:-1px}
+  .topbar > nav.nav a.nav-settings{margin:0;padding:7px 4px;border-left:0;border-bottom:0;grid-column:1/-1;justify-self:end;font-family:var(--sans);font-size:11.5px;letter-spacing:.04em}
+  .topbar > nav.nav a.nav-settings::after{left:auto;right:4px;width:20px;bottom:3px}
   .eyebrow{font-size:11px;margin-bottom:16px;letter-spacing:.18em}
   .hero{padding:26px 0 22px;gap:20px}
   .hero h1{font-size:clamp(28px,8vw,36px)}
@@ -343,9 +374,8 @@ select,input{font:inherit;color:inherit}
 }
 
 @media (max-width:400px){
-  .topbar{padding:0 14px;gap:10px}
-  .nav{gap:9px;font-size:12.5px}
-  .brand-text small{display:none}
+  .topbar{padding:9px 10px 7px}
+  .topbar > nav.nav a{font-size:11px}
   .wrap,.qwrap{padding-left:14px;padding-right:14px}
 }
 

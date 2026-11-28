@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <link rel="stylesheet" href="assets/css/fonts.css?v=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>研习录 · 算法、数据结构与开发学习｜朝云暮辞</title>
+    <meta name="description" content="算法题库、数据结构、算法竞赛、前端与全栈学习入口。">
+    <link rel="stylesheet" href="assets/css/site.css">
+    <link rel="stylesheet" href="assets/css/portal.css">
+</head>
+
+<body class="portal-page">
+    <header class="topbar">
+        <a class="brand" href="index.html" title="朝云暮辞首页">
+            <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+            </svg>
+            <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
+        </a>
+        <nav class="nav" aria-label="主要导航">
+            <a href="index.html" title="返回首页与备考总览">首页</a>
+            <a href="contests.html" title="查看赛事通知、历史赛事与赛程入口">竞赛志</a>
+            <a class="active" href="knowledge.html" title="查看算法、数据结构与开发学习入口">研习录</a>
+            <a href="tools/mistakes.html" title="按本地记录复习错题">温故集</a>
+            <a href="ai.html" title="了解静态提示、AI 追问与配置方式">AI问学</a>
+            <a class="nav-settings" href="settings.html#ai" title="配置本机 AI 接口与数据设置">设置</a>
+        </nav>
+    </header>
+
+    <main class="portal-main">
+        <section class="page-intro" aria-labelledby="knowledgeTitle">
+            <h1 id="knowledgeTitle">先把算法与数据结构读通</h1>
+            <p>研习录以算法题库、数据结构与算法竞赛为主线，前端和全栈作为延伸。先从做题和读章里找到薄弱点，再按路径补课与复盘。</p>
+        </section>
+
+        <section class="portal-section" aria-labelledby="coreTitle">
+            <div class="portal-section-head">
+                <h2 id="coreTitle">算法与数据结构</h2>
+                <p>做题、补课与读章互相配合：先在算法题库暴露问题，再回数据结构或竞赛教程查概念，最后回题里复述。</p>
+            </div>
+            <div class="study-ledger">
+                <div class="study-ledger-main">
+                    <a class="portal-entry-card" href="problems/algorithm/index.html">
+                        <span class="entry-label">优先入口 · 做题</span>
+                        <h3>算法题库</h3>
+                        <p>按知识分类进入题目，先读题面与约束，再逐层展开推导。每题配有参考代码，手敲草稿只留在本机。</p>
+                        <span class="entry-to text-arrow">进入算法题库</span>
+                    </a>
+                    <a class="portal-entry-card" href="articles/data-structures/index.html">
+                        <span class="entry-label">优先入口 · 读章</span>
+                        <h3>数据结构教程</h3>
+                        <p>从线性表、栈、队列、树、图到查找与排序，按章阅读；每章保留小节、代码与原文配图。</p>
+                        <span class="entry-to text-arrow">阅读数据结构</span>
+                    </a>
+                </div>
+                <div class="study-ledger-main">
+                    <a class="portal-entry-card secondary" href="articles/algorithm-competition/index.html">
+                        <span class="entry-label">竞赛延伸</span>
+                        <h3>算法竞赛教程</h3>
+                        <p>按章整理搜索、排序、字符串、数学、动态规划、数据结构、图论与计算几何等竞赛主题。</p>
+                        <span class="entry-to text-arrow">阅读算法竞赛教程</span>
+                    </a>
+                    <div class="portal-entry-card secondary">
+                        <span class="entry-label">练习方式</span>
+                        <h3>路径与过程演示</h3>
+                        <p>学习路径用于补齐知识块；动画实验室把关键过程拆开，适合卡在状态变化时回看。</p>
+                        <div class="mini-links">
+                            <a href="problems/algorithm/learn.html">算法学习路径</a>
+                            <a href="problems/algorithm/lab.html">动画实验室</a>
+                            <a href="problems/algorithm/paths.html">全部学习路径</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="portal-section tint" aria-labelledby="webTitle">
+            <div class="portal-section-head">
+                <h2 id="webTitle">前端与全栈</h2>
+                <p>开发延伸，适合在算法训练之外补页面结构、浏览器交互与服务端流程。已有教程从下方直接进入。</p>
+            </div>
+            <div class="study-ledger-main">
+                <a class="portal-entry-card secondary" href="articles/frontend/index.html">
+                    <span class="entry-label">前端</span>
+                    <h3>HTML、CSS 与 JavaScript</h3>
+                    <p>从文档结构、表单与盒模型，到响应式布局、DOM 与交互。适合把页面从“能显示”推进到“能使用”。</p>
+                    <span class="entry-to text-arrow">进入前端教程</span>
+                </a>
+                <a class="portal-entry-card secondary" href="articles/fullstack/index.html">
+                    <span class="entry-label">全栈</span>
+                    <h3>Git、React 与 Next.js</h3>
+                    <p>从命令行和版本控制，到组件、路由、数据获取与部署，按现有笔记顺序阅读。</p>
+                    <span class="entry-to text-arrow">进入全栈笔记</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="portal-section" aria-labelledby="courseTitle">
+            <div class="future-panel">
+                <div>
+                    <h2 id="courseTitle">校内课程占位</h2>
+                    <p>校内课程需要课程名、适用学期与可公开的资料范围，确认后再建立入口。没有确认前，不写猜测的课程、周次、学分或发布日期。</p>
+                </div>
+                <div class="portal-placeholder">
+                    <b>课程入口还在整理</b>
+                    <span>课程名称与资料范围确认后再开放。</span>
+                    <em>暂不可进入</em>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="portal-footer">
+        <div class="portal-footer-inner">
+            <div class="portal-footer-brand">
+                <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                    <path d="M10 4H4v22h6M20 4h6v22h-6" />
+                    <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
+                </svg>
+                <div>
+                    <b>朝云暮辞 · ZYYC LAB</b>
+                    <p>算法题库与部分课程整理自 ARENA LAB，数据结构与竞赛教程整理自 dotcpp；原文与授权说明保留在对应页面。</p>
+                </div>
+            </div>
+            <nav class="portal-footer-links" aria-label="页脚链接">
+                <a href="index.html#contest">按语言备战</a>
+                <a href="contests.html">竞赛志</a>
+                <a href="tools/mistakes.html">温故集</a>
+                <a href="ai.html">AI问学</a>
+            </nav>
+            <div class="portal-footer-bottom">
+                <span>© 2026 朝云暮辞</span>
+                <span>先读原文，再做归纳。</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/site.js" defer></script>
+</body>
+
+</html>

@@ -9,10 +9,10 @@ import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
-from fetch_algorithm import parse_toc, fetch_text, abs_url, BASE  # noqa: E402
+from fetch_algorithm import parse_toc, fetch_text, abs_url, BASE, CACHE as CACHE_DIR  # noqa: E402
 
 NOTES = os.path.join(ROOT, "笔记")
-CACHE = os.path.join(ROOT, "cache", "pages.json")
+CACHE = os.path.join(CACHE_DIR, "pages.json")
 UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0",
       "Referer": "https://www.dotcpp.com/course/algorithm/"}
 

@@ -24,7 +24,10 @@ bin-release/
 
 # 本地缓存与日志
 .cache/
+/.cache/
 **/.cache/
+/.playwright-cli/
+/.serena/cache/
 *.log
 **/__pycache__/
 cache/

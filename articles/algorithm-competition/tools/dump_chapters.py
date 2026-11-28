@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""从 cache/pages.json 里按章节导出“提炼素材”纯文本，供写笔记用。"""
+"""从项目缓存 pages.json 里按章节导出“提炼素材”纯文本，供写笔记用。"""
 import html as htmllib
 import json
 import os
@@ -8,10 +8,10 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
-from fetch_algorithm import parse_toc, fetch_text, abs_url, BASE  # noqa: E402
+from fetch_algorithm import parse_toc, fetch_text, abs_url, BASE, CACHE as CACHE_DIR  # noqa: E402
 
-CACHE = os.path.join(ROOT, "cache", "pages.json")
-OUT = os.path.join(ROOT, "cache", "chapters")
+CACHE = os.path.join(CACHE_DIR, "pages.json")
+OUT = os.path.join(CACHE_DIR, "chapters")
 
 
 def to_text(body):

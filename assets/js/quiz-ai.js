@@ -1,4 +1,4 @@
-/* 计挑赛 AI 助教：用户自填 OpenAI 兼容接口，Key 仅保存在本机。 */
+/* 题目 AI 助教：用户自填 OpenAI 兼容接口，Key 仅保存在本机。 */
 (function () {
     'use strict';
 
@@ -280,7 +280,7 @@
     }
 
     function systemPrompt() {
-        var role = (state.ctx && state.ctx.aiRole) || '计挑赛';
+        var role = (state.ctx && state.ctx.aiRole) || '朝云暮辞题目';
         return [
             '你是「' + role + '」的 AI 助教。你只能做静态代码审查、题目讲解和样例推演，不能实际编译或运行程序。',
             '绝对不要声称你运行了代码、看到了真实 stdout/stderr，或给出了官方评测结果；这些只能标为「AI 推演」。',

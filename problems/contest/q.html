@@ -8,7 +8,7 @@
     <title>题目详情 · C 语言真题｜朝云暮辞</title>
     <link rel="stylesheet" href="../../assets/css/site.css">
     <link rel="stylesheet" href="../../assets/css/detail.css">
-    <link rel="stylesheet" href="../../assets/css/hints.css">
+    <link rel="stylesheet" href="../../assets/css/hints.css?v=2">
 </head>
 
 <body>
@@ -20,18 +20,14 @@
             </svg>
             <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
         </a>
-          <nav class="nav">
-    <a href="../../index.html#contest" class="contest-link active">计挑赛</a>
-            <a href="../lanqiao/index.html">蓝桥真题</a>
-    <a href="../algorithm/index.html">算法题库</a>
-    <a href="../algorithm/learn.html">算法学习</a>
-    <a href="../algorithm/lab.html">动画实验室</a>
-    <a href="../../articles/data-structures/index.html">数据结构</a>
-    <a href="../../articles/algorithm-competition/index.html">算法竞赛</a>
-    <a href="../../articles/frontend/index.html">前端教程</a>
-    <a href="../../articles/fullstack/index.html">全栈笔记</a>
-    <a href="../../tools/mistakes.html">错题本</a>
-    <a href="../../settings.html">设置</a></nav>
+            <nav class="nav" aria-label="主要导航">
+    <a href="../../index.html" title="首页：站点入口与全景导览" aria-label="首页：站点入口与全景导览">首页</a>
+    <a class="active" aria-current="page" href="../../contests.html" title="竞赛志：计挑赛、蓝桥与算法练习总览" aria-label="竞赛志：计挑赛、蓝桥与算法练习总览">竞赛志</a>
+    <a href="../../knowledge.html" title="研习录：教程、笔记与数据结构研习" aria-label="研习录：教程、笔记与数据结构研习">研习录</a>
+    <a href="../../tools/mistakes.html" title="温故集：错题归档与复习队列" aria-label="温故集：错题归档与复习队列">温故集</a>
+    <a href="../../ai.html" title="AI问学：AI 助教与学习问答" aria-label="AI问学：AI 助教与学习问答">AI问学</a>
+    <a class="nav-settings" href="../../settings.html" title="站点设置：AI 接口、数据与隐私" aria-label="站点设置：AI 接口、数据与隐私">设置</a>
+  </nav>
     </div>
 
     <main class="qwrap">
@@ -115,7 +111,8 @@
     <script src="data.js"></script>
     <script src="../../assets/js/markdown.js"></script>
     <script src="../../assets/js/quiz-ai.js"></script>
-    <script src="../../assets/js/hint-ladder.js"></script>
+    <script src="../../assets/js/hint-ladder.js?v=3"></script>
+    <script src="../../assets/js/progressive-analysis.js?v=4"></script>
     <script>
         (function () {
             const D = window.CDATA;
@@ -189,48 +186,13 @@
 
             // ---------- 提示阶梯 ----------
             function contestLadder(q) {
-                const raw = String(q.expl || '').trim();
-                if (q.kind === 'single') {
-                    const m = raw.match(/^考点[:：]\s*([^。；]+)/);
-                    const guess = [
-                        [/值传递|引用传递/, '参数传递'],
-                        [/虚函数|多态/, '虚函数与多态'],
-                        [/构造|析构/, '构造与析构'],
-                        [/继承/, '继承与派生'],
-                        [/重载/, '函数重载'],
-                        [/模板/, '模板'],
-                        [/指针/, '指针'],
-                        [/引用/, '引用'],
-                        [/异常/, '异常处理'],
-                        [/文件/, '文件操作'],
-                        [/字符串|string/i, '字符串'],
-                        [/排序/, '排序'],
-                        [/查找/, '查找'],
-                        [/递归/, '递归'],
-                        [/动态规划|DP/i, '动态规划'],
-                        [/贪心/, '贪心'],
-                        [/图|树/, '图与树']
-                    ].find(function (pair) { return pair[0].test(q.snippet || ''); });
-                    const concept = m ? m[1].trim() : (guess ? guess[1] : '');
-                    let rest = m ? raw.slice(m[0].length).trim().replace(/^。/,'').trim() : raw;
-                    const first = (rest && !/^正确答案/.test(rest)) ? rest.split('。')[0].trim() + '。' : '';
-                    const lead = concept
-                        ? '<p><b>' + (m ? '考点' : '可能考点') + '：</b>' + esc(concept) + '</p><p>先用自己的话解释它，再逐项对照；解释不出来，就先补这个概念。</p>'
-                        : '<p><b>先圈概念：</b>把题干里反复出现的名词圈出来，写出它的定义，再逐项对照。</p>';
-                    return [
-                        { title: '方向 · 先认考点', html: lead },
-                        { title: '判断 · 用依据排除', html: (first ? '<p>' + esc(first) + '</p>' : '<p>解析只给了结论。自己补一步：把正确选项改写成“因为……所以……”，再看其他选项违反了定义里的哪一条。</p>') + '<p class="hl-lead">先排除，再决定</p>' },
-                        { title: '完整解析 · 对照答案', html: '<p>' + esc(raw || '这道题暂无解析。').replace(/\n/g, '<br>') + '</p>' }
-                    ];
-                }
-                return [
-                    { title: '方向 · 先看输入输出', html: '<p>先确认程序要读什么、输出什么，再手算第一组样例。不要急着打开参考代码。</p>' },
-                    { title: '步骤 · 先写朴素做法', html: '<p>把思路写成 3–5 步，估一下时间复杂度和边界；想不清的地方先记下来。</p>' },
-                    { title: '完整解析 · 最后对照', html: '<p>' + esc(raw || '这道题暂无解析。').replace(/\n/g, '<br>') + '</p>' }
-                ];
+                return window.ProgressiveAnalysis
+                    ? ProgressiveAnalysis.contest(q, esc)
+                    : [{ title: '完整解析', html: '<p>' + esc(q.expl || '这道题暂无解析。') + '</p>' }];
             }
-            const ladder = window.HintLadder ? HintLadder.mount($('#hintLadder'), { key: 'contest:' + LANG + ':' + q.id, steps: contestLadder(q), note: '先自己选，再逐层展开' }) : null;
+            const ladder = window.HintLadder ? HintLadder.mount($('#hintLadder'), { key: 'contest:' + LANG + ':' + q.id, steps: contestLadder(q), note: q.kind === 'single' ? '作答后直接查看解析' : '未作答时逐步引导；展开后逐步推导' }) : null;
             window.__contestLadder = ladder;
+            if (ladder && q.kind === 'single' && loadAns()[q.id]) ladder.unlock({ expand: false });
 
             // ---------- 来源 ----------
             const src = q.source || {};
@@ -604,13 +566,14 @@
                             saveAns(q.id, record);
                             rec = record;
                             revealed = true;
-                            if (!record.ok && window.__contestLadder) window.__contestLadder.open(1);
+                            if (window.__contestLadder) window.__contestLadder.unlock({ expand: false });
                             draw();
                         });
                     });
                     const rb = $('#revealBtn');
                     if (rb) rb.addEventListener('click', () => {
                         revealed = !revealed;
+                        if (revealed && window.__contestLadder) window.__contestLadder.unlock({ expand: false });
                         draw();
                     });
                     const redo = $('#redo');

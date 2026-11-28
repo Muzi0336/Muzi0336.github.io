@@ -6,10 +6,13 @@ import json, os, re, glob, hashlib
 from bs4 import BeautifulSoup
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # 指向 problems/lanqiao/
+REPO_ROOT = os.path.dirname(os.path.dirname(BASE))
 EXAM = BASE
 DATA = os.path.join(BASE, 'data')
 IMG = os.path.join(BASE, 'images')
-CACHE = os.path.join(BASE, 'source', 'cache', 'problems')  # 可选：Dotcpp 题面 HTML 缓存，缺失则跳过样例补全
+CACHE = os.path.join(REPO_ROOT, '.cache', 'lanqiao', 'problems')  # 可选：Dotcpp 题面 HTML 缓存，缺失则跳过样例补全
+BUILD_CACHE = os.path.join(REPO_ROOT, '.cache', 'lanqiao', 'build')
+DIFF_CACHE = os.path.join(BUILD_CACHE, 'diffmap.json')  # 可选：本地难度映射缓存
 os.makedirs(DATA, exist_ok=True)
 
 DUP = {'1023', '1024'}
@@ -99,8 +102,7 @@ for st in sets:
     for pr in st['problems_full']:
         if pr.get('diff') in ('入门', '简单', '中等', '困难'):
             diff_map.setdefault(pr['id'], pr['diff'])
-W = r'C:\Users\21371\AppData\Local\Doubao\User Data\Default\.doubao\agent_mode\workspace\.sessions\38456885805685250\agents\m_0cwGVcDjzcj'
-dm = os.path.join(W, 'diffmap.json')
+dm = DIFF_CACHE
 if os.path.exists(dm):
     for k, v in json.load(open(dm, encoding='utf-8')).items():
         if v in ('入门', '简单', '中等', '困难'):
@@ -310,8 +312,9 @@ for key, obj in chunks.items():
         f'window.LQ_PAGES["{key}"]=' + json.dumps(obj, ensure_ascii=False, separators=(',', ':')) + ';')
     print('   分片', fn, len(obj), '题')
 
-# 全量 JSON 仅作离线备份，写到 build/ 下，不放进站点目录
-open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'problems.json'), 'w', encoding='utf-8').write(
+# 全量 JSON 仅作离线备份，统一写到项目缓存，不放进站点目录
+os.makedirs(BUILD_CACHE, exist_ok=True)
+open(os.path.join(BUILD_CACHE, 'problems.json'), 'w', encoding='utf-8').write(
     json.dumps(ALL, ensure_ascii=False, indent=1))
 
 # 校验
