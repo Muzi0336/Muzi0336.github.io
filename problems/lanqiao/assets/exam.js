@@ -28,91 +28,18 @@
     };
 
     /* ---------- mini markdown ---------- */
-    var KEEP_RE = /<(\/?)(sup|sub|br|u|em|strong|i|b)\s*\/?>/gi;
-
-    function inline(line) {
-        var keep = [];
-        var s = line.replace(KEEP_RE, function (m) { keep.push(m); return '\u0001' + (keep.length - 1) + '\u0001'; });
-        s = LQ.esc(s);
-        s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, '<img alt="$1" src="$2" loading="lazy">');
-        s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-        s = s.replace(/`([^`]+?)`/g, '<code>$1</code>');
-        s = s.replace(/\u0001(\d+)\u0001/g, function (m, i) { return keep[+i]; });
-        return s;
-    }
-
-    function tableHTML(rows) {
-        var cells = function (l) {
-            l = l.trim().replace(/^\|/, '').replace(/\|$/, '');
-            return l.split('|').map(function (c) { return c.trim(); });
-        };
-        var head = cells(rows[0]);
-        var body = rows.slice(1).filter(function (r) { return !/^\s*\|?\s*:?-{2,}/.test(r); });
-        var h = '<table><thead><tr>' + head.map(function (c) { return '<th>' + inline(c) + '</th>'; }).join('') + '</tr></thead><tbody>';
-        h += body.map(function (r) {
-            return '<tr>' + cells(r).map(function (c) { return '<td>' + inline(c) + '</td>'; }).join('') + '</tr>';
-        }).join('');
-        return h + '</tbody></table>';
-    }
-
     LQ.md = function (text) {
-        if (!text) return '';
-        var lines = String(text).replace(/\r/g, '').split('\n');
-        var out = [], buf = [], i = 0;
-
-        function flush() {
-            if (buf.length) {
-                var t = buf.join(' ').replace(/\s+/g, ' ').trim();
-                if (t) out.push('<p>' + inline(t) + '</p>');
-                buf = [];
-            }
-        }
-
-        while (i < lines.length) {
-            var l = lines[i];
-
-            if (!l.trim()) { flush(); i++; continue; }
-
-            if (/^\s*:::/.test(l)) { flush(); i++; continue; }
-
-            if (/^\s*```/.test(l)) {
-                flush();
-                var code = [];
-                i++;
-                while (i < lines.length && !/^\s*```/.test(lines[i])) { code.push(lines[i]); i++; }
-                i++;
-                out.push('<pre class="md-code"><code>' + LQ.esc(code.join('\n')) + '</code></pre>');
-                continue;
-            }
-
-            if (/^\s*\|/.test(l)) {
-                flush();
-                var rows = [l];
-                i++;
-                while (i < lines.length && /\|/.test(lines[i]) && lines[i].trim()) { rows.push(lines[i]); i++; }
-                out.push(tableHTML(rows));
-                continue;
-            }
-
-            if (/^\s*(?:[-*]|\d+\.)\s+/.test(l)) {
-                flush();
-                var ordered = /^\s*\d+\./.test(l);
-                var items = [];
-                while (i < lines.length && /^\s*(?:[-*]|\d+\.)\s+/.test(lines[i])) {
-                    items.push(lines[i].replace(/^\s*(?:[-*]|\d+\.)\s+/, ''));
-                    i++;
-                }
-                out.push('<' + (ordered ? 'ol' : 'ul') + '>' + items.map(function (x) {
-                    return '<li>' + inline(x.trim()) + '</li>';
-                }).join('') + '</</' + (ordered ? 'ol' : 'ul') + '>');
-                continue;
-            }
-
-            buf.push(l.trim());
-            i++;
-        }
-        flush();
-        return out.join('\n');
+        if (!window.SiteMD) return LQ.esc(text).replace(/\n/g, '<br>');
+        return window.SiteMD.render(text, {
+            keepHtml: true,
+            images: true,
+            links: false,
+            lineBreaks: false,
+            directives: true,
+            tableLoose: true,
+            headings: false,
+            strike: false
+        });
     };
 
     /* ---------- KaTeX（按需加载，避免每道题都先下 300KB） ---------- */

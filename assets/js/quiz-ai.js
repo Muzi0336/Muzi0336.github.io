@@ -48,7 +48,7 @@
     }
 
     /* 轻量 Markdown 渲染：只处理 AI 回复常见的加粗、列表、代码和简单表格。 */
-    function renderMarkdown(src) {
+    function renderMarkdownFallback(src) {
         var text = esc(String(src == null ? '' : src)).replace(/\r\n?/g, '\n');
         var lines = text.split('\n');
         var out = [];
@@ -178,6 +178,17 @@
         if (code) out.push('<pre><code>' + code.join('\n') + '</code></pre>');
         flushAll();
         return out.join('');
+    }
+
+    function renderMarkdown(src) {
+        if (window.SiteMD) {
+            return window.SiteMD.render(src, {
+                lineBreaks: true,
+                headings: true,
+                links: true
+            });
+        }
+        return renderMarkdownFallback(src);
     }
 
     function getConfig() {
@@ -782,7 +793,7 @@
             '.qai-msg.assistant pre{margin:6px 0;padding:8px 9px;background:#26221d;color:#f4efe3;overflow:auto;font:11px/1.55 var(--mono),monospace}',
             '.qai-msg.assistant pre code{display:block;background:none;color:inherit;padding:0;font:inherit;white-space:pre}',
             '.qai-msg.assistant a{color:var(--ink);text-decoration:underline}',
-            '.qai-msg.assistant .qai-table-wrap{overflow-x:auto;margin:6px 0}',
+            '.qai-msg.assistant .qai-table-wrap,.qai-msg.assistant .md-table-wrap{overflow-x:auto;margin:6px 0}',
             '.qai-msg.assistant table{border-collapse:collapse;min-width:100%;font-size:11px}',
             '.qai-msg.assistant th,.qai-msg.assistant td{border:1px solid var(--line);padding:4px 6px;text-align:left;white-space:nowrap}',
             '.qai-msg.user{align-self:flex-end;background:#26221d;color:#f4efe3;border-color:#26221d}',

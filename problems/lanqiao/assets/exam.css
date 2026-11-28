@@ -876,6 +876,7 @@
     padding: 1px 5px;
     border-radius: 2px;
 }
+.prose .md-table-wrap { overflow-x: auto; margin: 6px 0 18px; }
 .prose table {
     width: 100%;
     border-collapse: collapse;
