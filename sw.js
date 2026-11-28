@@ -1,5 +1,5 @@
 /* 站点静态资源缓存：HTML 走网络优先，CSS/JS/图片走缓存并后台更新。 */
-const CACHE = 'zyyc-static-v2';
+const CACHE = 'zyyc-static-v3';
 const CORE = ['assets/css/site.css', 'assets/css/detail.css', 'assets/js/site.js'];
 
 self.addEventListener('install', (event) => {
