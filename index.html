@@ -474,12 +474,14 @@
                         stage: '2026',
                         start: '2026-10-15T00:00:00+08:00',
                         end: '2026-11-25T23:59:59+08:00',
-                        labels: ['开始', '截止'],
-                        desc: '2026 赛季已在 11 月 25 日截止。真题与错题记录仍保留，可直接查看和复盘。',
+                        exam: '2026-11-29',
+                        dateOnly: true,
+                        labels: ['开始', '截止', '考试'],
+                        desc: '2026 赛季报名 10 月 15 日开始、11 月 25 日截止，考试在 11 月 29 日；具体时间与考场以学校通知为准。',
                         prep: 'problems/contest/index.html',
                         prepLabel: '查看真题与复盘',
                         source: '校内通知',
-                        note: '2026 赛季已截止，真题仍可查看与复盘。'
+                        note: '报名 10 月 15 日至 11 月 25 日；考试在 11 月 29 日，具体时间与考场以学校通知为准。'
                     }
                 ];
 
@@ -505,6 +507,23 @@
                     return text;
                 }
 
+                function dayKey(date) {
+                    var parts = new Intl.DateTimeFormat('en-CA', {
+                        timeZone: 'Asia/Shanghai',
+                        year: 'numeric', month: '2-digit', day: '2-digit'
+                    }).formatToParts(date);
+                    var m = {};
+                    parts.forEach(function (p) { if (p.type !== 'literal') m[p.type] = p.value; });
+                    return m.year + '-' + m.month + '-' + m.day;
+                }
+
+                function dayDiff(dateStr, now) {
+                    var target = dateStr.split('-').map(Number);
+                    var current = dayKey(now).split('-').map(Number);
+                    return Math.round((Date.UTC(target[0], target[1] - 1, target[2]) -
+                        Date.UTC(current[0], current[1] - 1, current[2])) / 86400000);
+                }
+
                 function phaseOf(item, now) {
                     var start = dateOf(item.start);
                     var end = dateOf(item.end);
@@ -512,6 +531,12 @@
                     if (now < end) return { key: 'registering', label: '报名中' };
                     if (item.contestStart && now < dateOf(item.contestStart)) return { key: 'preparing', label: '备赛中' };
                     if (item.contestStart && now < dateOf(item.contestEnd)) return { key: 'competing', label: '比赛进行中' };
+                    if (item.exam) {
+                        var examStart = dateOf(item.exam + 'T00:00:00+08:00');
+                        var examEnd = dateOf(item.exam + 'T23:59:59+08:00');
+                        if (now < examStart) return { key: 'closed', label: '待考试' };
+                        if (now <= examEnd) return { key: 'examday', label: '考试日' };
+                    }
                     return { key: 'ended', label: '已结束' };
                 }
 
@@ -520,6 +545,8 @@
                     if (phase.key === 'registering') return dateOf(item.end);
                     if (phase.key === 'preparing') return dateOf(item.contestStart);
                     if (phase.key === 'competing') return dateOf(item.contestEnd);
+                    if (phase.key === 'closed' && item.exam) return dateOf(item.exam + 'T00:00:00+08:00');
+                    if (phase.key === 'examday' && item.exam) return dateOf(item.exam + 'T23:59:59+08:00');
                     return null;
                 }
 
@@ -529,12 +556,21 @@
                         registering: '距报名截止',
                         preparing: '距省赛',
                         competing: '距比赛结束',
+                        closed: '距考试',
+                        examday: '考试日',
                         ended: '真题仍可查看'
                     }[phase.key];
                 }
 
                 function countdown(item, phase, now) {
                     if (phase.key === 'ended') return '真题仍可查看';
+                    if (phase.key === 'examday') return '具体时间以通知为准';
+                    if (phase.key === 'closed' && item.exam) {
+                        var daysLeft = dayDiff(item.exam, now);
+                        if (daysLeft > 1) return '距考试 ' + daysLeft + ' 天';
+                        if (daysLeft === 1) return '明天考试';
+                        if (daysLeft === 0) return '今天考试';
+                    }
                     var target = targetOf(item, phase);
                     if (!target) return '本赛季已结束';
                     var ms = target - now;
@@ -545,11 +581,18 @@
                 }
 
                 function noteFor(item, phase) {
-                    if (phase.key === 'registering') {
-                        return item.id === 'lanqiao'
-                            ? '报名已开放，12 月 18 日 14:00 截止；校内截止可能更早，以学校通知为准。'
-                            : item.note;
+                    if (item.id === 'lanqiao') {
+                        if (phase.key === 'registering') {
+                            return '报名已开放，12 月 18 日 14:00 截止；校内截止可能更早，以学校通知为准。';
+                        }
+                        if (phase.key === 'preparing') return '报名已截止，省赛在 2027 年 4 月 10 日；现在进入备赛期。';
                     }
+                    if (item.id === 'contest') {
+                        if (phase.key === 'closed') return '报名已截止，11 月 29 日考试；具体时间与考场以学校通知为准。';
+                        if (phase.key === 'examday') return '考试日；具体时间与考场以学校通知为准。';
+                        if (phase.key === 'ended') return '2026 赛季已结束，真题仍可查看与复盘。';
+                    }
+                    if (phase.key === 'registering') return item.note;
                     if (phase.key === 'preparing') return '报名已截止，省赛在 2027 年 4 月 10 日；现在进入备赛期。';
                     if (phase.key === 'upcoming') return '尚未开放，先查看往年真题和备赛资料。';
                     if (phase.key === 'competing') return '比赛进行中，赛后统一更新真题与题解。';
@@ -562,6 +605,11 @@
                         if (phase.key === 'preparing') return '报名已截止，省赛在 2027 年 4 月 10 日 9:00；现在进入备赛期。';
                         if (phase.key === 'competing') return '省赛正在进行，赛后统一更新真题与题解。';
                         if (phase.key === 'ended') return '本赛季已结束，真题与题解已归档，可继续复盘。';
+                    }
+                    if (item.id === 'contest') {
+                        if (phase.key === 'closed') return '2026 赛季报名已在 11 月 25 日截止，考试在 11 月 29 日；具体时间与考场以学校通知为准。';
+                        if (phase.key === 'examday') return '今天是计算机挑战赛考试日；具体时间与考场以学校通知为准，赛后更新真题与题解。';
+                        if (phase.key === 'ended') return '2026 赛季已结束，真题与题解已归档，可继续复盘。';
                     }
                     if (phase.key === 'ended') return '2026 赛季已截止，真题仍可查看与复盘。';
                     return item.desc;
@@ -578,12 +626,16 @@
                 }
 
                 function datesHTML(item) {
+                    var withTime = !item.dateOnly;
                     var rows = [
-                        '<div><span>' + item.labels[0] + '</span><b>' + fmt(item.start, true) + '</b></div>',
-                        '<div><span>' + item.labels[1] + '</span><b>' + fmt(item.end, true) + '</b></div>'
+                        '<div><span>' + item.labels[0] + '</span><b>' + fmt(item.start, withTime) + '</b></div>',
+                        '<div><span>' + item.labels[1] + '</span><b>' + fmt(item.end, withTime) + '</b></div>'
                     ];
                     if (item.contestStart) {
                         rows.push('<div><span>' + item.labels[2] + '</span><b>' + fmt(item.contestStart, true) + '</b></div>');
+                    }
+                    if (item.exam) {
+                        rows.push('<div><span>' + item.labels[2] + '</span><b>' + fmt(item.exam + 'T00:00:00+08:00', false) + '</b></div>');
                     }
                     return '<div class="season-dates">' + rows.join('') + '</div>';
                 }
@@ -596,8 +648,8 @@
                 }
 
                 function mainHTML(item, phase, now) {
-                    var cls = { registering: 'open', preparing: 'prep', competing: 'prep', upcoming: 'upcoming', ended: 'ended' }[phase.key];
-                    var countClass = phase.key === 'registering' ? ' hot' : '';
+                    var cls = { registering: 'open', preparing: 'prep', competing: 'prep', closed: 'prep', examday: 'prep', upcoming: 'upcoming', ended: 'ended' }[phase.key];
+                    var countClass = (phase.key === 'registering' || phase.key === 'closed') ? ' hot' : '';
                     var kicker = phase.key === 'ended' ? '01 / 赛季归档' :
                         phase.key === 'upcoming' ? '01 / 下一项赛事' : '01 / 当前赛事';
                     return '<div class="season-main">' +
@@ -613,13 +665,15 @@
                 }
 
                 function asideHTML(item, phase, now) {
-                    var cls = { registering: 'open', preparing: 'prep', competing: 'prep', upcoming: 'upcoming', ended: 'ended' }[phase.key];
+                    var cls = { registering: 'open', preparing: 'prep', competing: 'prep', closed: 'prep', examday: 'prep', upcoming: 'upcoming', ended: 'ended' }[phase.key];
                     var badgeText = phase.key === 'ended' ? phase.label : countdown(item, phase, now);
+                    var dateText = item.kind + ' · ' + fmt(item.start) + '—' + fmt(item.end) +
+                        (item.exam ? ' · 考试 ' + fmt(item.exam + 'T00:00:00+08:00', false) : '');
                     return '<div class="season-aside">' +
                         '<div class="season-aside-head"><span>02 / 另一项赛事</span><span>' + item.stage + '</span></div>' +
                         '<span class="season-badge ' + cls + '">' + badgeText + '</span>' +
                         '<h3>' + item.name + '</h3>' +
-                        '<p>' + item.kind + ' · ' + fmt(item.start) + '—' + fmt(item.end) + '</p>' +
+                        '<p>' + dateText + '</p>' +
                         '<p>' + noteFor(item, phase) + '</p>' +
                         '<a class="season-link" href="' + item.prep + '">' + item.prepLabel + ' →</a>' +
                         '</div>';
@@ -634,7 +688,7 @@
                             item: item,
                             phase: phase,
                             target: target,
-                            rank: phase.key === 'registering' || phase.key === 'preparing' || phase.key === 'competing' ? 0 :
+                            rank: phase.key === 'registering' || phase.key === 'preparing' || phase.key === 'competing' || phase.key === 'closed' || phase.key === 'examday' ? 0 :
                                 phase.key === 'upcoming' ? 1 : 2
                         };
                     });
