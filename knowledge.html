@@ -42,7 +42,7 @@
                     <span>阅读与开发教程</span>
                 </p>
                 <h1 id="knowledgeTitle">研习录</h1>
-                <p>从算法题、学习路径和动画演示开始训练；需要补概念时，再进入数据结构、算法竞赛、前端或全栈教程。</p>
+                <p>从算法题、课程文档和动画演示开始训练；需要补概念时，再进入数据结构、算法竞赛、前端或全栈教程。</p>
             </div>
             <div class="portal-heading-links" aria-label="研习录快捷入口">
                 <a href="#algorithm">算法训练</a>
@@ -54,32 +54,40 @@
         <section class="portal-section study-section" id="algorithm" data-reveal aria-labelledby="algorithmTitle">
             <div class="section-heading">
                 <div>
-                    <h2 id="algorithmTitle">算法训练</h2>
-                    <p>先做题暴露问题，再按路径补知识块，卡在过程变化时回到动画实验室复看。</p>
+                    <h2 id="algorithmTitle">算法学习与训练</h2>
+                    <p>题库、文档与动画并列为三个主入口；需要进一步筛选时，再查看全部题目或路径总览。</p>
                 </div>
-                <a class="text-link" href="problems/algorithm/index.html">从分类开始</a>
             </div>
-            <div class="resource-ledger">
-                <a class="resource-row primary-resource" href="problems/algorithm/index.html">
-                    <div><b>算法题库</b><span>按知识分类练习，逐题查看题面、推导与参考代码</span></div>
-                    <em>进入题库</em>
+            <div class="algorithm-entry-grid">
+                <a class="algorithm-entry" href="problems/algorithm/index.html">
+                    <span class="algorithm-entry-index" aria-hidden="true">01</span>
+                    <span class="algorithm-entry-copy">
+                        <b>算法题库</b>
+                        <span>按知识分类练习，逐题查看题面、推导与参考代码。</span>
+                    </span>
+                    <em>进入题库 <span aria-hidden="true">→</span></em>
                 </a>
-                <a class="resource-row" href="problems/algorithm/bank.html">
-                    <div><b>全部题目</b><span>搜索、筛选并按难度浏览现有题目</span></div>
-                    <em>浏览题目</em>
+                <a class="algorithm-entry" href="problems/algorithm/learn.html">
+                    <span class="algorithm-entry-index" aria-hidden="true">02</span>
+                    <span class="algorithm-entry-copy">
+                        <b>算法文档</b>
+                        <span>21 篇基础语法与算法课程，按章节阅读与复习。</span>
+                    </span>
+                    <em>阅读文档 <span aria-hidden="true">→</span></em>
                 </a>
-                <a class="resource-row" href="problems/algorithm/learn.html">
-                    <div><b>学习路径</b><span>输入输出、复杂度、排序、查找、树、图与动态规划</span></div>
-                    <em>按路线补课</em>
+                <a class="algorithm-entry" href="problems/algorithm/lab.html">
+                    <span class="algorithm-entry-index" aria-hidden="true">03</span>
+                    <span class="algorithm-entry-copy">
+                        <b>算法动画</b>
+                        <span>用逐帧演示检查排序、搜索、树与图的状态变化。</span>
+                    </span>
+                    <em>打开演示 <span aria-hidden="true">→</span></em>
                 </a>
-                <a class="resource-row" href="problems/algorithm/paths.html">
-                    <div><b>路径总览</b><span>比较不同训练路线与覆盖知识块</span></div>
-                    <em>查看路径</em>
-                </a>
-                <a class="resource-row" href="problems/algorithm/lab.html">
-                    <div><b>动画实验室</b><span>用逐帧演示检查排序、搜索、树与图的状态变化</span></div>
-                    <em>打开演示</em>
-                </a>
+            </div>
+            <div class="algorithm-secondary-links" aria-label="算法题库与路径补充入口">
+                <span>继续浏览</span>
+                <a href="problems/algorithm/bank.html">全部题目</a>
+                <a href="problems/algorithm/paths.html">路径总览</a>
             </div>
         </section>
 
@@ -147,6 +155,16 @@
                                 <span class="study-item-summary">Git、React、Next.js、数据获取与环境部署，按现有笔记顺序阅读。</span>
                             </span>
                             <span class="study-item-action">阅读教程</span>
+                        </a>
+                    </li>
+                    <li class="study-item" data-study-item data-topic="algorithm-foundation" data-search="算法文档 learn 基础语法 输入输出 复杂度 排序 查找 树 图 动态规划 算法课程 算法基础">
+                        <a class="study-item-link" href="problems/algorithm/learn.html">
+                            <span class="study-item-copy">
+                                <span class="study-item-meta"><span>主题：算法基础</span><span>基础语法 / 算法课程</span></span>
+                                <b>算法文档</b>
+                                <span class="study-item-summary">输入输出、基础语法、复杂度与常用算法，共 21 篇课程文档。</span>
+                            </span>
+                            <span class="study-item-action">阅读文档</span>
                         </a>
                     </li>
                 </ul>

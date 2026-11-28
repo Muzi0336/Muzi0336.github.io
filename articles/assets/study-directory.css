@@ -118,6 +118,11 @@
     transition: background-color 180ms ease;
 }
 
+.study-item-link:focus-visible {
+    background: var(--portal-surface);
+    box-shadow: inset 0 0 0 1px var(--portal-line-strong);
+}
+
 .study-item-copy {
     display: grid;
     min-width: 0;
