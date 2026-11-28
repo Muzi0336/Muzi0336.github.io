@@ -7,8 +7,8 @@
 ```text
 /
 ├── index.html                     # 站点首页
-├── contests.html                  # 竞赛志：比赛日程与真题入口
-├── knowledge.html                 # 研习录：教程与知识内容入口
+├── contests.html                  # 竞赛志：赛事通知、赛程与真题入口
+├── knowledge.html                 # 研习录：算法训练、教程与知识内容入口
 ├── ai.html                        # AI问学：AI 助教说明与题目入口
 ├── 404.html                       # 旧地址跳转 + 新入口
 ├── settings.html                  # 独立设置页（AI 配置、数据与隐私）
@@ -27,7 +27,9 @@
 │   └── algorithm-competition/     # 算法竞赛教程（10 章）
 │
 ├── problems/                      # 真题：题库、卷面、题目详情
-│   ├── contest/                   # 计挑赛 C / C++ / Java / Python
+│   ├── contest/                   # 计挑赛语言总览与分语言题库
+│   │   ├── languages.html         # 计挑赛赛事总览与通用语言题库
+│   │   └── index.html             # C 语言题库兼容入口
 │   ├── algorithm/                 # 算法题库、学习路径、课程、动画实验室
 │   └── lanqiao/                   # 蓝桥杯真题
 │       ├── index.html             # 年份归档
@@ -102,8 +104,8 @@
 ## 门户结构
 
 - `index.html` 是首页，集中展示当前入口、近期事项和站点概览。
-- `contests.html` 是竞赛志，从 `assets/data/contest-catalog.js` 生成比赛日程与真题入口；具体的蓝桥杯、计算机挑战赛题库仍分别位于 `problems/` 下。
-- `knowledge.html` 是研习录，汇总算法、数据结构、前端与全栈等阅读内容。
+- `contests.html` 是竞赛志，从 `assets/data/contest-catalog.js` 生成具体赛事通知、赛程与真题入口；具体的蓝桥杯、计算机挑战赛题库仍分别位于 `problems/` 下。
+- `knowledge.html` 是研习录，分区汇总算法题库、学习路径、动画实验室、数据结构、前端与全栈等训练和阅读内容。
 - `ai.html` 是 AI问学，说明 AI 助教能力、配置前提和使用入口；实际配置仍在 `settings.html`。
 - `tools/mistakes.html` 是温故集，继续汇总本机做题记录与错题。
 
@@ -134,11 +136,11 @@
 
 ### 竞赛志（`contests.html`）
 
-按共享竞赛目录汇总比赛状态、报名与考试日期、官网或通知来源及已上线真题入口。具体题库页仍在 `problems/contest/` 与 `problems/lanqiao/`。
+按共享竞赛目录汇总具体赛事状态、报名与考试日期、官网或通知来源及已上线真题入口。具体题库页仍在 `problems/contest/` 与 `problems/lanqiao/`；算法训练不在此页单列。
 
 ### 研习录（`knowledge.html`）
 
-按主题汇总算法、数据结构、前端与全栈教程；具体章节继续放在 `articles/` 和 `problems/algorithm/`。
+按“算法训练”和“阅读与课程”分区汇总学习入口：训练区包含算法题库、学习路径与动画实验室，阅读区包含数据结构、算法竞赛、前端与全栈教程。
 
 ### AI问学（`ai.html`）
 
@@ -146,11 +148,13 @@
 
 ### 计挑赛（`problems/contest/`）
 
-C、C++、Java、Python 四套题库，按语言和题型归档。单选题可作答、判分与查看解析；编程题附参考代码、解析、AI 核对和本地代码练习区。
+`languages.html` 是计算机挑战赛赛事总览，展示赛道安排与通用语言题库；语言目录从 `computer-challenge.modules` 渲染。`index.html` 继续作为 C 语言题库兼容入口。各语言题库按题型归档，单选题可作答、判分与查看解析；编程题附参考代码、解析、AI 核对和本地代码练习区。
+
+计算机挑战赛在 `computer-challenge.tracks` 中记录独立赛道，每个赛道分别保存名称、任务、来源、报名/作品提交/比赛日期、模块与 override。`tracks` 与通用语言 `modules` 支持任意数量；未知赛场只显示结构化占位，不使用 `legacySchedule` 推导状态。目录每分钟及页面重新可见时刷新赛道状态，语言链接不会重复重建；状态统一使用 `window.ContestSchedule.flatten([contest])` 的 `track`、`parentOverride` 与扁平 schedule，父级取消或延期优先于赛道状态。页面专属样式与脚本位于 `problems/contest/assets/directory.css` 与 `directory.js`。
 
 ### 算法题库（`problems/algorithm/`）
 
-145 道题、7 个分类、6 条学习路径、21 篇课程、17 个代码动画。从顶栏“竞赛志”进入算法题库，`problems/algorithm/index.html` 是统一分类入口；选择分类或路径后进入 `bank.html` 的题库列表排版。路径总览仍保留在 `paths.html`，题目页只加载当前题的数据文件。
+145 道题、7 个分类、6 条学习路径、21 篇课程、17 个代码动画。从顶栏“研习录”进入算法训练，`problems/algorithm/index.html` 是分类入口，`bank.html` 是题库列表，`learn.html` 是学习路径入口，`paths.html` 是路径总览，`lab.html` 是动画实验室。题目页只加载当前题的数据文件。
 
 ### 蓝桥真题（`problems/lanqiao/`）
 

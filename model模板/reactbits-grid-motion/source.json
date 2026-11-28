@@ -1,0 +1,13 @@
+{
+  "url": "https://www.reactbits.dev/backgrounds/grid-motion",
+  "title": "Grid Motion",
+  "retrievedAt": "2026-11-28",
+  "licenseStatus": "MIT + Commons Clause v1.0; standalone component redistribution prohibited; JSX/CSS not archived",
+  "kind": "component",
+  "preview": "preview.png",
+  "previewKind": "official component demo screenshot",
+  "sourceArchived": false,
+  "officialSourceUrl": "https://github.com/DavidHDev/react-bits/tree/main/src/content/Backgrounds/GridMotion",
+  "licenseFile": "source/LICENSE.md",
+  "author": "David Haz / React Bits"
+}

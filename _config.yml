@@ -4,6 +4,7 @@ exclude:
   - .cache
   - .playwright-cli
   - .serena
+  - model模板
   - README.md
   - AGENTS.md
   - tests

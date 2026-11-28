@@ -2,13 +2,15 @@
 <html lang="zh-CN">
 
 <head>
-    <link rel="stylesheet" href="assets/css/fonts.css?v=1">
     <meta charset="UTF-8">
+    <link rel="preload" href="assets/fonts/lxgw/lxgwwenkai-portal-keys.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/fonts.css?v=2">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>研习录 · 算法、数据结构与开发学习｜朝云暮辞</title>
     <meta name="description" content="算法题库、数据结构、算法竞赛、前端与全栈学习入口。">
     <link rel="stylesheet" href="assets/css/site.css">
     <link rel="stylesheet" href="assets/css/portal.css">
+    <link rel="stylesheet" href="articles/assets/study-directory.css">
 </head>
 
 <body class="portal-page">
@@ -18,7 +20,7 @@
                 <path d="M10 4H4v22h6M20 4h6v22h-6" />
                 <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
             </svg>
-            <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
+            <span class="brand-text"><b>朝云暮辞</b><small>Zhaoyun Muci</small></span>
         </a>
         <nav class="nav" aria-label="主要导航">
             <a href="index.html" title="返回首页与备考总览">首页</a>
@@ -31,84 +33,164 @@
     </header>
 
     <main class="portal-main">
-        <section class="page-intro" aria-labelledby="knowledgeTitle">
-            <h1 id="knowledgeTitle">先把算法与数据结构读通</h1>
-            <p>研习录以算法题库、数据结构与算法竞赛为主线，前端和全栈作为延伸。先从做题和读章里找到薄弱点，再按路径补课与复盘。</p>
+        <section class="portal-heading" aria-labelledby="knowledgeTitle">
+            <div class="portal-heading-copy">
+                <p class="portal-context">
+                    <span>练习</span>
+                    <b>算法与数据结构</b>
+                    <span aria-hidden="true">/</span>
+                    <span>阅读与开发教程</span>
+                </p>
+                <h1 id="knowledgeTitle">研习录</h1>
+                <p>从算法题、学习路径和动画演示开始训练；需要补概念时，再进入数据结构、算法竞赛、前端或全栈教程。</p>
+            </div>
+            <div class="portal-heading-links" aria-label="研习录快捷入口">
+                <a href="#algorithm">算法训练</a>
+                <a href="#tutorials">教程与文档</a>
+                <a href="#courses">校内课程</a>
+            </div>
         </section>
 
-        <section class="portal-section" aria-labelledby="coreTitle">
-            <div class="portal-section-head">
-                <h2 id="coreTitle">算法与数据结构</h2>
-                <p>做题、补课与读章互相配合：先在算法题库暴露问题，再回数据结构或竞赛教程查概念，最后回题里复述。</p>
-            </div>
-            <div class="study-ledger">
-                <div class="study-ledger-main">
-                    <a class="portal-entry-card" href="problems/algorithm/index.html">
-                        <span class="entry-label">优先入口 · 做题</span>
-                        <h3>算法题库</h3>
-                        <p>按知识分类进入题目，先读题面与约束，再逐层展开推导。每题配有参考代码，手敲草稿只留在本机。</p>
-                        <span class="entry-to text-arrow">进入算法题库</span>
-                    </a>
-                    <a class="portal-entry-card" href="articles/data-structures/index.html">
-                        <span class="entry-label">优先入口 · 读章</span>
-                        <h3>数据结构教程</h3>
-                        <p>从线性表、栈、队列、树、图到查找与排序，按章阅读；每章保留小节、代码与原文配图。</p>
-                        <span class="entry-to text-arrow">阅读数据结构</span>
-                    </a>
+        <section class="portal-section study-section" id="algorithm" data-reveal aria-labelledby="algorithmTitle">
+            <div class="section-heading">
+                <div>
+                    <h2 id="algorithmTitle">算法训练</h2>
+                    <p>先做题暴露问题，再按路径补知识块，卡在过程变化时回到动画实验室复看。</p>
                 </div>
-                <div class="study-ledger-main">
-                    <a class="portal-entry-card secondary" href="articles/algorithm-competition/index.html">
-                        <span class="entry-label">竞赛延伸</span>
-                        <h3>算法竞赛教程</h3>
-                        <p>按章整理搜索、排序、字符串、数学、动态规划、数据结构、图论与计算几何等竞赛主题。</p>
-                        <span class="entry-to text-arrow">阅读算法竞赛教程</span>
-                    </a>
-                    <div class="portal-entry-card secondary">
-                        <span class="entry-label">练习方式</span>
-                        <h3>路径与过程演示</h3>
-                        <p>学习路径用于补齐知识块；动画实验室把关键过程拆开，适合卡在状态变化时回看。</p>
-                        <div class="mini-links">
-                            <a href="problems/algorithm/learn.html">算法学习路径</a>
-                            <a href="problems/algorithm/lab.html">动画实验室</a>
-                            <a href="problems/algorithm/paths.html">全部学习路径</a>
+                <a class="text-link" href="problems/algorithm/index.html">从分类开始</a>
+            </div>
+            <div class="resource-ledger">
+                <a class="resource-row primary-resource" href="problems/algorithm/index.html">
+                    <div><b>算法题库</b><span>按知识分类练习，逐题查看题面、推导与参考代码</span></div>
+                    <em>进入题库</em>
+                </a>
+                <a class="resource-row" href="problems/algorithm/bank.html">
+                    <div><b>全部题目</b><span>搜索、筛选并按难度浏览现有题目</span></div>
+                    <em>浏览题目</em>
+                </a>
+                <a class="resource-row" href="problems/algorithm/learn.html">
+                    <div><b>学习路径</b><span>输入输出、复杂度、排序、查找、树、图与动态规划</span></div>
+                    <em>按路线补课</em>
+                </a>
+                <a class="resource-row" href="problems/algorithm/paths.html">
+                    <div><b>路径总览</b><span>比较不同训练路线与覆盖知识块</span></div>
+                    <em>查看路径</em>
+                </a>
+                <a class="resource-row" href="problems/algorithm/lab.html">
+                    <div><b>动画实验室</b><span>用逐帧演示检查排序、搜索、树与图的状态变化</span></div>
+                    <em>打开演示</em>
+                </a>
+            </div>
+        </section>
+
+        <section class="portal-section study-section" id="tutorials" data-reveal aria-labelledby="tutorialsTitle">
+            <span class="study-anchor" id="reading" aria-hidden="true"></span>
+            <span class="study-anchor" id="development" aria-hidden="true"></span>
+            <div class="section-heading">
+                <div>
+                    <h2 id="tutorialsTitle">教程与文档</h2>
+                    <p>算法基础与 Web 开发放在同一个目录中，按主题查找需要的教程与文档。</p>
+                </div>
+            </div>
+            <div class="study-directory" data-study-directory>
+                <div class="study-directory-tools" id="studyDirectoryTools" hidden>
+                    <label class="study-search" for="studyDirectorySearch">
+                        <span>搜索教程</span>
+                        <input id="studyDirectorySearch" type="search" placeholder="输入标题或内容" autocomplete="off" spellcheck="false" aria-controls="studyDirectoryList">
+                    </label>
+                    <div class="study-filter-group">
+                        <span class="study-filter-label" id="studyFilterLabel">主题</span>
+                        <div class="study-filters" role="group" aria-labelledby="studyFilterLabel">
+                            <button type="button" data-study-topic="all" aria-pressed="true" aria-controls="studyDirectoryList">全部</button>
+                            <button type="button" data-study-topic="algorithm-foundation" aria-pressed="false" aria-controls="studyDirectoryList">算法基础</button>
+                            <button type="button" data-study-topic="web-development" aria-pressed="false" aria-controls="studyDirectoryList">Web 开发</button>
                         </div>
                     </div>
+                    <p class="study-directory-status" id="studyDirectoryStatus" aria-live="polite"></p>
+                </div>
+                <ul class="study-list" id="studyDirectoryList" aria-label="教程与文档目录">
+                    <li class="study-item" data-study-item data-topic="algorithm-foundation" data-search="数据结构 线性表 栈 队列 字符串 树 图 查找 排序 算法基础">
+                        <a class="study-item-link" href="articles/data-structures/index.html">
+                            <span class="study-item-copy">
+                                <span class="study-item-meta"><span>主题：算法基础</span><span>教程</span></span>
+                                <b>数据结构教程</b>
+                                <span class="study-item-summary">线性表、栈、队列、字符串、树、图、查找与排序，共 12 章。</span>
+                            </span>
+                            <span class="study-item-action">阅读教程</span>
+                        </a>
+                    </li>
+                    <li class="study-item" data-study-item data-topic="algorithm-foundation" data-search="算法竞赛 搜索 排序 字符串 数学 动态规划 图论 计算几何 算法基础">
+                        <a class="study-item-link" href="articles/algorithm-competition/index.html">
+                            <span class="study-item-copy">
+                                <span class="study-item-meta"><span>主题：算法基础</span><span>教程</span></span>
+                                <b>算法竞赛教程</b>
+                                <span class="study-item-summary">搜索、排序、字符串、数学、动态规划、图论与计算几何，按专题推进。</span>
+                            </span>
+                            <span class="study-item-action">阅读教程</span>
+                        </a>
+                    </li>
+                    <li class="study-item" data-study-item data-topic="web-development" data-search="前端 HTML CSS JavaScript DOM 响应式 布局 Web 开发">
+                        <a class="study-item-link" href="articles/frontend/index.html">
+                            <span class="study-item-copy">
+                                <span class="study-item-meta"><span>主题：Web 开发</span><span>教程</span></span>
+                                <b>前端教程</b>
+                                <span class="study-item-summary">HTML、CSS 与 JavaScript：文档结构、盒模型、布局、DOM 与页面交互。</span>
+                            </span>
+                            <span class="study-item-action">阅读教程</span>
+                        </a>
+                    </li>
+                    <li class="study-item" data-study-item data-topic="web-development" data-search="全栈 Git React Next.js 路由 数据获取 环境部署 Web 开发">
+                        <a class="study-item-link" href="articles/fullstack/index.html">
+                            <span class="study-item-copy">
+                                <span class="study-item-meta"><span>主题：Web 开发</span><span>教程</span></span>
+                                <b>全栈笔记</b>
+                                <span class="study-item-summary">Git、React、Next.js、数据获取与环境部署，按现有笔记顺序阅读。</span>
+                            </span>
+                            <span class="study-item-action">阅读教程</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="study-empty" id="studyDirectoryEmpty" hidden>
+                    <b>没有匹配的教程</b>
+                    <span>换一个关键词，或选择“全部”查看现有教程。</span>
+                    <button type="button" id="studyDirectoryClear">清空搜索与筛选</button>
                 </div>
             </div>
         </section>
 
-        <section class="portal-section tint" aria-labelledby="webTitle">
-            <div class="portal-section-head">
-                <h2 id="webTitle">前端与全栈</h2>
-                <p>开发延伸，适合在算法训练之外补页面结构、浏览器交互与服务端流程。已有教程从下方直接进入。</p>
-            </div>
-            <div class="study-ledger-main">
-                <a class="portal-entry-card secondary" href="articles/frontend/index.html">
-                    <span class="entry-label">前端</span>
-                    <h3>HTML、CSS 与 JavaScript</h3>
-                    <p>从文档结构、表单与盒模型，到响应式布局、DOM 与交互。适合把页面从“能显示”推进到“能使用”。</p>
-                    <span class="entry-to text-arrow">进入前端教程</span>
-                </a>
-                <a class="portal-entry-card secondary" href="articles/fullstack/index.html">
-                    <span class="entry-label">全栈</span>
-                    <h3>Git、React 与 Next.js</h3>
-                    <p>从命令行和版本控制，到组件、路由、数据获取与部署，按现有笔记顺序阅读。</p>
-                    <span class="entry-to text-arrow">进入全栈笔记</span>
-                </a>
-            </div>
-        </section>
-
-        <section class="portal-section" aria-labelledby="courseTitle">
-            <div class="future-panel">
+        <section class="portal-section study-section study-courses" id="courses" data-reveal aria-labelledby="courseTitle">
+            <span class="study-anchor" aria-hidden="true"></span>
+            <div class="section-heading">
                 <div>
-                    <h2 id="courseTitle">校内课程占位</h2>
-                    <p>校内课程需要课程名、适用学期与可公开的资料范围，确认后再建立入口。没有确认前，不写猜测的课程、周次、学分或发布日期。</p>
+                    <h2 id="courseTitle">校内课程</h2>
+                    <p>课程资料在课程名、适用学期与可公开范围确认后，按学期和课程逐层展开。</p>
                 </div>
-                <div class="portal-placeholder">
-                    <b>课程入口还在整理</b>
-                    <span>课程名称与资料范围确认后再开放。</span>
-                    <em>暂不可进入</em>
+            </div>
+            <div class="course-placeholder">
+                <div class="course-placeholder-copy">
+                    <b>还没有公开的课程资料</b>
+                    <p>开放后从学期进入课程，再按复习提纲、章节笔记和练习资料逐层查看。</p>
                 </div>
+                <details class="course-outline">
+                    <summary>查看资料层级</summary>
+                    <ol class="course-levels">
+                        <li>
+                            <span>学期</span>
+                            <small>按开课学期收拢课程</small>
+                            <ol>
+                                <li>
+                                    <span>课程</span>
+                                    <small>每门课程独立归档</small>
+                                    <ol>
+                                        <li><span>复习提纲</span><small>先看范围与重点</small></li>
+                                        <li><span>章节笔记</span><small>按章节回顾课堂内容</small></li>
+                                        <li><span>练习资料</span><small>配合复习完成练习</small></li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </details>
             </div>
         </section>
     </main>
@@ -121,7 +203,7 @@
                     <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
                 </svg>
                 <div>
-                    <b>朝云暮辞 · ZYYC LAB</b>
+                    <b>朝云暮辞</b>
                     <p>算法题库与部分课程整理自 ARENA LAB，数据结构与竞赛教程整理自 dotcpp；原文与授权说明保留在对应页面。</p>
                 </div>
             </div>
@@ -139,6 +221,7 @@
     </footer>
 
     <script src="assets/js/site.js" defer></script>
+    <script src="articles/assets/study-directory.js" defer></script>
 </body>
 
 </html>

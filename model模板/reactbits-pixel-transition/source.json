@@ -1,0 +1,13 @@
+{
+  "url": "https://www.reactbits.dev/animations/pixel-transition",
+  "title": "Pixel Transition",
+  "retrievedAt": "2026-11-28",
+  "licenseStatus": "MIT + Commons Clause v1.0; standalone component redistribution prohibited; JSX/CSS not archived",
+  "kind": "component",
+  "preview": "preview.png",
+  "previewKind": "official component demo screenshot",
+  "sourceArchived": false,
+  "officialSourceUrl": "https://github.com/DavidHDev/react-bits/tree/main/src/content/Animations/PixelTransition",
+  "licenseFile": "source/LICENSE.md",
+  "author": "David Haz / React Bits"
+}

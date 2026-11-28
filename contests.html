@@ -2,23 +2,24 @@
 <html lang="zh-CN">
 
 <head>
-    <link rel="stylesheet" href="assets/css/fonts.css?v=1">
     <meta charset="UTF-8">
+    <link rel="preload" href="assets/fonts/lxgw/lxgwwenkai-portal-keys.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/fonts.css?v=2">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>竞赛志 · 赛事通知与历史入口｜朝云暮辞</title>
-    <meta name="description" content="查看近期赛事通知、历史赛事入口、蓝桥杯与计算机挑战赛模块和算法训练入口。">
+    <meta name="description" content="查看近期赛事通知、报名与考试节点、历史赛事与真题入口，以及蓝桥杯和计算机挑战赛的 C、C++、Java、Python 语言题库。">
     <link rel="stylesheet" href="assets/css/site.css">
     <link rel="stylesheet" href="assets/css/portal.css">
 </head>
 
-<body class="portal-page">
+<body class="portal-page contests-page">
     <header class="topbar">
         <a class="brand" href="index.html" title="朝云暮辞首页">
             <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
                 <path d="M10 4H4v22h6M20 4h6v22h-6" />
                 <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
             </svg>
-            <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
+            <span class="brand-text"><b>朝云暮辞</b><small>Zhaoyun Muci</small></span>
         </a>
         <nav class="nav" aria-label="主要导航">
             <a href="index.html" title="返回首页与备考总览">首页</a>
@@ -31,101 +32,137 @@
     </header>
 
     <main class="portal-main">
-        <section class="page-intro" aria-labelledby="contestsTitle">
-            <h1 id="contestsTitle">赛事看通知，练习看真题</h1>
-            <p>竞赛志只做两件事：把已经整理的下一节点和来源列清楚，再把已有真题、专项训练和学习入口送到你面前。日期按已有资料整理，不是实时查询；具体报名、考试与考场安排以来源通知为准。</p>
-            <div class="clock-line" aria-label="时钟说明">
-                <span>设备时钟：<b data-device-clock>读取中</b></span>
-                <span>北京时间：<b data-beijing-clock>读取中</b></span>
-                <span>状态会随本机时间更新。</span>
+        <section class="portal-heading" aria-labelledby="contestsTitle">
+            <div class="portal-heading-copy">
+                <p class="portal-context">
+                    <span>当前赛季</span>
+                    <b data-current-season>2026–2027</b>
+                    <span aria-hidden="true">/</span>
+                    <span>通知与真题入口</span>
+                </p>
+                <h1 id="contestsTitle">竞赛志</h1>
+                <p>查看已录入赛事的报名、比赛与来源；需要练习时沿赛事目录进入已有语言题库、卷面与真题。</p>
+            </div>
+            <div class="portal-heading-links" aria-label="竞赛志快捷入口">
+                <a href="#notices">近期通知</a>
+                <a href="#practice">赛事目录</a>
             </div>
         </section>
 
-        <section class="portal-section" aria-labelledby="noticesTitle">
-            <div class="portal-section-head">
-                <h2 id="noticesTitle">近期通知与赛事</h2>
-                <p>按当前时刻排序，最多三条。暂时没有可显示的赛程时会明确说明，不补造日期。</p>
-            </div>
-            <div data-recent-events data-limit="3" data-empty="暂时没有可显示的近期赛程。历史真题、蓝桥年份卷和算法专项仍可继续使用。"></div>
-        </section>
-
-        <section class="portal-section tint" id="practice" aria-labelledby="historyTitle">
-            <div class="portal-section-head">
-                <h2 id="historyTitle">历史赛事与内容模块</h2>
-                <p>蓝桥杯与计算机挑战赛的线上入口在此汇总。来源没有公开链接时只显示文字；还没有开放入口的赛事会明确标注。</p>
-            </div>
-            <div class="contest-modules" data-contest-modules>
-                <article class="contest-module">
-                    <div class="contest-module-head">
-                        <h3><a class="portal-link" href="problems/contest/index.html">计算机挑战赛</a></h3>
-                        <p>校内学科竞赛 · 按 C、C++、Java、Python 四套题库进入。</p>
-                        <div class="contest-module-state"><span class="portal-state done">时间信息暂不可用</span><small>入口仍可直接打开。</small></div>
-                    </div>
-                    <div class="module-links">
-                        <a class="module-link" href="problems/contest/index.html"><b>C 语言</b><span>指针、结构体与基础算法</span></a>
-                        <a class="module-link" href="problems/contest/cpp/index.html"><b>C++</b><span>STL、类与竞赛写法</span></a>
-                        <a class="module-link" href="problems/contest/java/index.html"><b>Java</b><span>集合、字符串与面向对象</span></a>
-                        <a class="module-link" href="problems/contest/python/index.html"><b>Python</b><span>列表、字典与内置库</span></a>
-                        <div class="module-source">来源：校内通知 · 日期按已有资料整理，不是实时查询。</div>
-                    </div>
-                </article>
-                <article class="contest-module">
-                    <div class="contest-module-head">
-                        <h3><a class="portal-link" href="problems/lanqiao/index.html">蓝桥杯</a></h3>
-                        <p>程序设计 · 省赛、国赛真题按年份归档，可从整套卷或全部题目进入。</p>
-                        <div class="contest-module-state"><span class="portal-state done">时间信息暂不可用</span><small>按题库现有年份进入。</small></div>
-                    </div>
-                    <div class="module-links">
-                        <a class="module-link" href="problems/lanqiao/index.html"><b>历年真题</b><span>按年份选择省赛与国赛</span></a>
-                        <a class="module-link" href="problems/lanqiao/bank.html"><b>全部题目</b><span>按年份、组别和赛段筛题</span></a>
-                        <a class="module-link" href="problems/algorithm/index.html"><b>基础训练</b><span>算法分类题与逐层演示</span></a>
-                        <div class="module-source">来源：<a href="https://dasai.lanqiao.cn/" target="_blank" rel="noopener noreferrer">蓝桥杯官网</a> · 日期按已有资料整理，不是实时查询。</div>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <section class="portal-section" aria-labelledby="trainingTitle">
-            <div class="portal-section-head">
-                <h2 id="trainingTitle">算法训练</h2>
-                <p>赛事入口之外，用题库、学习路径和动画演示补齐基础。先做题暴露问题，再按专题补课。</p>
-            </div>
-            <div class="study-ledger">
-                <div class="study-ledger-main">
-                    <a class="portal-entry-card" href="problems/algorithm/index.html">
-                        <span class="entry-label">算法题库</span>
-                        <h3>按知识分类练习</h3>
-                        <p>从题面、样例、推导到参考代码，逐题完成。先自己推，再展开提示与解析。</p>
-                        <span class="entry-to text-arrow">进入题库</span>
-                    </a>
-                    <a class="portal-entry-card" href="problems/algorithm/learn.html">
-                        <span class="entry-label">学习路径</span>
-                        <h3>从薄弱专题补课</h3>
-                        <p>按知识块补齐输入输出、复杂度、排序、查找、树、图与动态规划等基础。</p>
-                        <span class="entry-to text-arrow">进入学习路径</span>
-                    </a>
-                </div>
-                <a class="portal-entry-card" href="problems/algorithm/lab.html">
-                    <span class="entry-label">动画实验室</span>
-                    <h3>把过程拆成可看的步骤</h3>
-                    <p>用逐帧演示理解排序、搜索、树与图等过程，再回到题目里复述关键状态。</p>
-                    <span class="entry-to text-arrow">进入动画实验室</span>
-                </a>
-            </div>
-        </section>
-
-        <section class="portal-section tint" aria-labelledby="futureTitle">
-            <div class="future-panel">
+        <section class="portal-section workbench" id="notices" aria-labelledby="noticesTitle">
+            <div class="workbench-head">
                 <div>
-                    <h2 id="futureTitle">未来赛事占位</h2>
-                    <p>后续赛事需要先补齐名称、来源、报名与考试节点，再开放入口。这里不写猜测的年份、报名日期或上线日期。</p>
+                    <h2 id="noticesTitle">近期通知与赛事</h2>
+                    <p>报名、提交与比赛安排，按赛道分别查看。</p>
                 </div>
-                <div class="portal-placeholder">
-                    <b>暂时没有新赛事</b>
-                    <span>等名称、来源与时间信息齐备后，再开放入口。</span>
-                    <em>暂不可进入</em>
-                </div>
+                <span class="workbench-stamp">状态按设备时间计算 · 北京时间</span>
             </div>
+            <div class="workbench-grid">
+                <div class="notice-stack" data-recent-events data-limit="3" data-empty="暂时没有可显示的近期赛程。历史赛事、真题入口与本地复习仍可继续使用。">
+                    <article class="notice-item" data-tone="open">
+                        <div class="notice-marker">
+                            <span class="portal-state open">报名中</span>
+                            <time datetime="2026-12-18T14:00:00+08:00">2026.12.18 14:00</time>
+                            <small>报名截止</small>
+                        </div>
+                        <div class="notice-copy">
+                            <div class="notice-title"><h3>蓝桥杯</h3><span>2026–2027 赛季</span></div>
+                            <p>校内截止可能更早，请按学校通知安排提交。</p>
+                            <div class="notice-actions">
+                                <a class="portal-button" href="problems/lanqiao/index.html">进入历年真题</a>
+                                <a class="source-label portal-link" href="https://dasai.lanqiao.cn/" target="_blank" rel="noopener noreferrer">查看蓝桥杯官网</a>
+                            </div>
+                            <details class="verify-note"><summary>核验说明</summary><p>原资料整理于 2026.11.28，非实时核验；报名与考试安排以官网及校内通知为准。</p></details>
+                        </div>
+                    </article>
+                    <article class="notice-item" data-tone="open">
+                        <div class="notice-marker">
+                            <span class="portal-state open">5 个赛道已登记</span>
+                        </div>
+                        <div class="notice-copy">
+                            <div class="notice-title"><h3>计算机挑战赛</h3><span>全国赛事</span></div>
+                            <p>已录入 5 个赛道的报名、提交、比赛与公示参考节点。</p>
+                            <div class="notice-actions">
+                                <a class="portal-button" href="problems/contest/languages.html">查看参考赛程</a>
+                                <span class="source-label">来源：赛事主办方（参考时间）</span>
+                            </div>
+                            <details class="verify-note"><summary>核验说明</summary><p>时间由赛事主办方提供；实际安排可能与通知存在差异，提交和考试前仍需核对正式来源。</p></details>
+                        </div>
+                    </article>
+                </div>
+                <aside class="next-action" data-next-actions aria-labelledby="contestNextTitle">
+                    <p class="next-action-kicker">最紧要节点</p>
+                    <strong data-next-relative>约 20 天</strong>
+                    <h2 id="contestNextTitle">蓝桥杯</h2>
+                    <div class="next-action-links">
+                        <a href="https://dasai.lanqiao.cn/" target="_blank" rel="noopener noreferrer">核对报名来源</a>
+                        <a href="problems/lanqiao/index.html">进入历年真题</a>
+                        <a href="tools/mistakes.html">复习本地错题</a>
+                        <a href="#practice">查看赛事目录</a>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section class="portal-section" id="practice" data-reveal aria-labelledby="historyTitle">
+            <div class="section-heading">
+                <div>
+                    <h2 id="historyTitle">赛事与内容目录</h2>
+                    <p>按赛事查看赛道安排与已有备战资料；未核实的赛道单独收在待补充目录里。</p>
+                </div>
+                <a class="text-link" href="knowledge.html#algorithm">补算法基础</a>
+            </div>
+            <div class="contest-directory" id="contest" data-contest-modules>
+                <article class="contest-entry">
+                    <div class="contest-entry-head">
+                        <div>
+                            <h3><a href="problems/contest/languages.html">计算机挑战赛</a></h3>
+                            <p>2026 参考赛程 · 5 个赛道。</p>
+                        </div>
+                        <span class="portal-state open">参考赛程已录入</span>
+                    </div>
+                    <div class="contest-link-list">
+                        <a href="problems/contest/index.html"><b>C 语言</b><span>指针、结构体、文件与基础算法</span></a>
+                        <a href="problems/contest/cpp/index.html"><b>C++</b><span>STL、类与竞赛写法</span></a>
+                        <a href="problems/contest/java/index.html"><b>Java</b><span>集合、字符串与面向对象</span></a>
+                        <a href="problems/contest/python/index.html"><b>Python</b><span>列表、字典与内置库</span></a>
+                    </div>
+                    <p class="contest-source">来源：赛事主办方（参考时间）· 日期按已有资料整理</p>
+                </article>
+                <article class="contest-entry">
+                    <div class="contest-entry-head">
+                        <div>
+                            <h3><a href="problems/lanqiao/index.html">蓝桥杯</a></h3>
+                            <p>全国赛事 · 软件、电子、AI、专项、视觉设计与数字科技分赛项安排。</p>
+                        </div>
+                        <span class="portal-state open">报名中</span>
+                    </div>
+                    <div class="contest-link-list">
+                        <a href="problems/lanqiao/index.html"><b>历年真题</b><span>按年份选择省赛与国赛</span></a>
+                        <a href="problems/lanqiao/bank.html"><b>全部题目</b><span>按年份、组别和赛段筛题</span></a>
+                    </div>
+                    <p class="contest-source">来源：<a href="https://dasai.lanqiao.cn/" target="_blank" rel="noopener noreferrer">蓝桥杯官网</a> · 日期按已有资料整理</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="portal-section" data-reveal aria-labelledby="archiveTitle">
+            <div class="section-heading">
+                <div>
+                    <h2 id="archiveTitle">赛事档案</h2>
+                    <p>下一项赛事在名称、来源、赛程与真题都核实后进入目录。</p>
+                </div>
+                <span class="section-state">筹备中的栏目</span>
+            </div>
+            <article class="archive-sheet archive-sheet-wide" aria-label="待补充赛事档案">
+                <dl>
+                    <div><dt>赛事名称</dt><dd>待公布</dd></div>
+                    <div><dt>通知来源</dt><dd>待补充</dd></div>
+                    <div><dt>赛程</dt><dd>待公布</dd></div>
+                    <div><dt>真题</dt><dd>待收录</dd></div>
+                </dl>
+                <p>这里保留档案结构，不显示猜测的年份、报名日期或入口状态。</p>
+            </article>
         </section>
     </main>
 
@@ -137,8 +174,8 @@
                     <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
                 </svg>
                 <div>
-                    <b>朝云暮辞 · ZYYC LAB</b>
-                    <p>赛事时间以蓝桥杯官网、校内通知等来源为准。本页日期按已有资料整理，不是实时查询结果。</p>
+                    <b>朝云暮辞</b>
+                    <p>赛事时间以蓝桥杯官网、校内通知等来源为准。</p>
                 </div>
             </div>
             <nav class="portal-footer-links" aria-label="页脚链接">

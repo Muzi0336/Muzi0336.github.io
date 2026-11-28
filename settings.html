@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <link rel="stylesheet" href="assets/css/fonts.css?v=1">
 <meta charset="UTF-8">
+    <link rel="stylesheet" href="assets/css/fonts.css?v=2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>设置 · 朝云暮辞</title>
-<meta name="description" content="朝云暮辞站点设置：AI 助教接口、数据与隐私。所有配置只保存在当前浏览器。">
+<meta name="description" content="朝云暮辞站点设置：学习偏好、AI 助教接口、数据与隐私。所有配置只保存在当前浏览器。">
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/detail.css">
 <link rel="stylesheet" href="assets/css/settings.css">
@@ -14,7 +14,7 @@
 <div class="topbar">
   <a class="brand" href="index.html" title="朝云暮辞 · 学习档案">
     <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg>
-    <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
+    <span class="brand-text"><b>朝云暮辞</b><small>Zhaoyun Muci</small></span>
   </a>
   <nav class="nav" aria-label="主要导航">
     <a href="index.html" title="首页：查看今日入口与学习概览">首页</a>
@@ -30,7 +30,7 @@
   <header class="set-head">
     <div class="eyebrow">— SETTINGS / LOCAL ONLY</div>
     <h1>设置</h1>
-    <p>站点配置只保存在当前浏览器，不会同步、不会提交到仓库。打开或保存设置页不会自动发送 AI 请求；只有主动测试连接或在题目页发起 AI 操作时，才会把请求发给你选择的供应商。免登录不等于无需配置，请使用单独的限额子 Key。</p>
+    <p>学习偏好与站点配置只保存在当前浏览器，不会同步、不会提交到仓库。打开或保存设置页不会自动发送 AI 请求；只有主动测试连接或在题目页发起 AI 操作时，才会把请求发给你选择的供应商。免登录不等于无需配置，请使用单独的限额子 Key。</p>
     <a class="set-back" id="backLink" href="index.html">← 返回首页</a>
   </header>
 
@@ -38,6 +38,7 @@
     <aside class="set-side">
       <span class="set-side-label">SETTINGS</span>
       <a href="#ai" class="active">AI 助教</a>
+      <a href="#profile">学习偏好</a>
       <a href="#data">数据与隐私</a>
       <a href="#about">关于本站</a>
       <div class="set-future">后续的显示、阅读与数据设置会继续加在这里。</div>
@@ -82,10 +83,34 @@
         </div>
       </section>
 
+      <section class="set-sec" id="profile">
+        <header class="set-sec-head"><span class="set-sec-no">02 / PROFILE</span><h2>学习偏好</h2></header>
+        <p class="set-sec-desc">记录专业，便于后续学习资料按你的方向整理。专业由你自由填写，不上传、不登录，也不会同步到其他设备。</p>
+
+        <div class="set-card set-profile-card">
+          <div class="set-card-head">
+            <span>PROFILE / STUDY PREFERENCE</span>
+            <span class="set-state"><i class="dot"></i>本机保存</span>
+          </div>
+          <div class="set-profile-form">
+            <div class="set-field">
+              <label for="profileMajor">专业 <span>自由填写，最多 80 个字符；留空保存即清除</span></label>
+              <input id="profileMajor" type="text" maxlength="80" placeholder="例如 计算机科学与技术" autocomplete="off" spellcheck="false">
+            </div>
+            <div class="set-actions">
+              <button id="profileSave" class="primary" type="button">保存专业</button>
+              <button id="profileClear" type="button">清除专业</button>
+              <span class="set-test-status" id="profileStatus" role="status" aria-live="polite"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="set-sec" id="data">
-        <header class="set-sec-head"><span class="set-sec-no">02 / DATA</span><h2>数据与隐私</h2></header>
-        <p class="set-sec-desc">这个站点没有账号系统，做题进度、AI 配置和代码草稿都只存在当前设备。</p>
+        <header class="set-sec-head"><span class="set-sec-no">03 / DATA</span><h2>数据与隐私</h2></header>
+        <p class="set-sec-desc">这个站点没有账号系统，也不提供付费内容、上传或登录服务。学习偏好、做题进度、AI 配置和代码草稿都只存在当前设备。</p>
         <div class="set-data-list">
+          <div class="set-data-row"><b>学习偏好</b><span>专业与 AI 配置、错题记录分开保存；清除专业不会影响其他资料。</span></div>
           <div class="set-data-row"><b>做题进度</b><span>保存在 localStorage，换浏览器或清理站点数据后会丢失。</span></div>
           <div class="set-data-row"><b>AI 配置</b><span>只保存在当前浏览器；保存后仅本机可用。</span></div>
           <div class="set-data-row"><b>代码草稿</b><span>编程题草稿默认留在本机，不会提交在线评测。</span></div>
@@ -94,8 +119,28 @@
       </section>
 
       <section class="set-sec" id="about">
-        <header class="set-sec-head"><span class="set-sec-no">03 / ABOUT</span><h2>关于本站</h2></header>
-        <p class="set-sec-desc">朝云暮辞是一个静态学习档案。站点自身标记为 ZYYC LAB；算法题库、路径与部分课程整理自 ARENA LAB，相关页面会在页脚保留来源说明。</p>
+        <header class="set-sec-head"><span class="set-sec-no">04 / ABOUT</span><h2>关于本站</h2></header>
+        <p class="set-sec-desc">我是朝云暮辞的维护者，喜欢把竞赛备战、算法练习和学习笔记整理成可以随时查阅的资料。希望这里能帮助同学更快找到题目，在遇到卡点时得到启发，也让每一次复习有迹可循。站点仍在持续整理中，欢迎分享使用建议、指出内容问题或补充资料线索。</p>
+        <p class="set-about-contact">有任何建议，欢迎通过邮箱联系我。</p>
+        <dl class="set-about-facts">
+          <div>
+            <dt>英文品牌</dt>
+            <dd>Daybreak Voyage</dd>
+          </div>
+          <div>
+            <dt>座右铭</dt>
+            <dd>朝云赴远，暮辞从容。</dd>
+          </div>
+          <div>
+            <dt>联系邮箱</dt>
+            <dd><a href="mailto:zyyc0336@163.com">zyyc0336@163.com</a></dd>
+          </div>
+          <div>
+            <dt>企业英文名建议</dt>
+            <dd><b>Zhaoyun Muci Technology Co., Ltd.</b><span>拟用企业英文名（尚未确认注册信息）。</span></dd>
+          </div>
+        </dl>
+        <p class="set-about-source">题库与教程来源：算法题库、路径与部分课程整理自 ARENA LAB，相关页面会在页脚保留来源说明。</p>
       </section>
     </div>
   </div>
@@ -107,7 +152,7 @@
       <div class="sf-brand">
         <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" style="flex:none"><path d="M10 4H4v22h6M20 4h6v22h-6"/><path d="M17.5 9.5 12.5 20.5" stroke-width="1.6"/></svg>
         <div>
-          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
+          <span class="brand-text" style="line-height:1.1"><b>朝云暮辞</b><small>Zhaoyun Muci</small></span>
           <p>一个用来放学习资料的小站。设置只保存在当前浏览器，换设备不会同步。</p>
         </div>
       </div>
@@ -115,7 +160,7 @@
         <a href="index.html">首页</a><a href="problems/algorithm/index.html">算法题库</a><a href="tools/mistakes.html">错题本</a><a href="settings.html">设置</a>
       </nav>
     </div>
-    <div class="sf-bottom"><span>© 2026 朝云暮辞</span><span>ZYYC LAB · LOCAL SETTINGS</span></div>
+    <div class="sf-bottom"><span>© 2026 朝云暮辞</span><span>本地设置</span></div>
   </div>
 </footer>
 
@@ -235,6 +280,7 @@
   }
 })();
 </script>
+    <script src="assets/js/profile-settings.js" defer></script>
     <script src="assets/js/site.js" defer></script>
 </body>
 </html>

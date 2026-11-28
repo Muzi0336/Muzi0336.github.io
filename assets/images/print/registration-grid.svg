@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="160" viewBox="0 0 320 160" role="img" aria-labelledby="title desc">
+  <title id="title">Geometric registration grid</title>
+  <desc id="desc">Warm paper graphic with Bauhaus forms, Swiss grid lines, registration marks, and a restrained two-color print overlap.</desc>
+  <rect width="320" height="160" fill="#f4ecde"/>
+
+  <g fill="none" stroke="#34556c" stroke-width=".5" opacity=".14">
+    <path d="M16 16V144M32 16V144M48 16V144M64 16V144M80 16V144M96 16V144M112 16V144M128 16V144M144 16V144M160 16V144M176 16V144M192 16V144M208 16V144M224 16V144M240 16V144M256 16V144M272 16V144M288 16V144M304 16V144"/>
+    <path d="M16 16H304M16 32H304M16 48H304M16 64H304M16 80H304M16 96H304M16 112H304M16 128H304M16 144H304"/>
+  </g>
+
+  <g fill="none" stroke="#2f3434" stroke-width=".8">
+    <path d="M16 8V152M304 8V152M8 16H312M8 144H312"/>
+    <path d="M80 16V144M238 16V144M80 52H238M80 108H238"/>
+  </g>
+
+  <g stroke="#2f3434" stroke-width=".8" fill="none">
+    <path d="M18 24h12M24 18v12M290 130h12M296 124v12"/>
+    <circle cx="24" cy="24" r="4.5"/>
+    <circle cx="296" cy="136" r="4.5"/>
+    <path d="M286 24h20M296 14v20M14 136h20M24 126v20"/>
+  </g>
+
+  <g>
+    <circle cx="40" cy="72" r="13" fill="none" stroke="#34556c" stroke-width="3"/>
+    <circle cx="43" cy="69" r="13" fill="none" stroke="#b34d37" stroke-width="1.2" opacity=".8"/>
+    <rect x="27" y="96" width="26" height="26" fill="#c4943f"/>
+    <path d="M27 122H53L40 99Z" fill="#34556c" opacity=".88"/>
+    <path d="M56 96 68 116 44 116Z" fill="#b34d37" opacity=".72"/>
+    <circle cx="55" cy="72" r="5.5" fill="#2f3434"/>
+  </g>
+
+  <g stroke="#2f3434" stroke-width=".7" fill="none">
+    <path d="M90 24h38M137 24h38M184 24h38M228 24h6"/>
+    <path d="M90 32h10M108 32h10M126 32h10M144 32h10M162 32h10M180 32h10M198 32h10M216 32h18"/>
+  </g>
+
+  <g style="mix-blend-mode:multiply">
+    <circle cx="130" cy="81" r="38" fill="#b34d37" opacity=".76"/>
+    <circle cx="135" cy="84" r="31" fill="#34556c" opacity=".72"/>
+    <path d="M166 116A34 34 0 0 1 234 116Z" fill="#c4943f" opacity=".82"/>
+    <rect x="176" y="60" width="12" height="12" fill="#b34d37"/>
+    <rect x="179" y="63" width="12" height="12" fill="#34556c" opacity=".72"/>
+  </g>
+
+  <g fill="none" stroke="#2f3434" stroke-width=".9">
+    <circle cx="130" cy="81" r="38"/>
+    <path d="M92 81H168M130 43V119"/>
+    <path d="M166 116A34 34 0 0 1 234 116"/>
+    <path d="M166 116H234"/>
+    <rect x="176" y="60" width="12" height="12"/>
+  </g>
+
+  <path d="M190 31 220 31 205 57Z" fill="#c4943f"/>
+  <path d="M193 34 217 34 205 53Z" fill="none" stroke="#2f3434" stroke-width=".7"/>
+  <path d="M204 59 226 59 204 81Z" fill="#b34d37" opacity=".9"/>
+
+  <g fill="none" stroke="#34556c" stroke-width=".8">
+    <path d="M244 26H286V47H244ZM244 47H286V68H244ZM244 68H286V89H244"/>
+    <circle cx="265" cy="36.5" r="5"/>
+    <path d="M249 58 265 52 281 58M249 63H281"/>
+    <path d="M250 77H280V84H250Z"/>
+  </g>
+  <g>
+    <rect x="246" y="98" width="8" height="8" fill="#b34d37"/>
+    <rect x="256" y="98" width="8" height="8" fill="#34556c"/>
+    <rect x="266" y="98" width="8" height="8" fill="#c4943f"/>
+    <rect x="276" y="98" width="8" height="8" fill="none" stroke="#2f3434" stroke-width=".6"/>
+  </g>
+  <g stroke="#2f3434" stroke-width=".6">
+    <path d="M244 118H288M250 126H282M258 134H274"/>
+  </g>
+
+  <g fill="#2f3434">
+    <rect x="90" y="124" width="8" height="8"/>
+    <rect x="101" y="127" width="5" height="5"/>
+    <rect x="109" y="124" width="8" height="8"/>
+    <rect x="120" y="127" width="5" height="5"/>
+    <rect x="128" y="124" width="8" height="8"/>
+    <rect x="139" y="127" width="5" height="5"/>
+  </g>
+</svg>

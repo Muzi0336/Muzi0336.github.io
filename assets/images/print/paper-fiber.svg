@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Warm paper fiber texture</title>
+  <desc id="desc">Transparent repeating tile of fine paper fibers and restrained ink-colored specks.</desc>
+  <g fill="none" stroke-linecap="round">
+    <path d="M-4 19 31 16M67 20 96 18M121 14 146 16M181 21 226 18M240 24 262 22" stroke="#6b6258" stroke-width=".55" opacity=".34"/>
+    <path d="M8 43 29 42M52 40 91 44M111 39 132 41M157 45 193 41M216 39 255 43" stroke="#a58d73" stroke-width=".38" opacity=".42"/>
+    <path d="M-3 70 22 67M37 69 63 71M82 66 109 68M138 71 168 67M191 66 223 69M238 70 260 68" stroke="#4a4540" stroke-width=".42" opacity=".22"/>
+    <path d="M13 96 46 93M64 97 93 95M116 94 143 96M174 98 205 94M226 96 252 93" stroke="#b8a58e" stroke-width=".42" opacity=".5"/>
+    <path d="M-2 120 27 118M48 123 74 120M99 119 128 121M151 118 180 122M215 120 258 117" stroke="#6b6258" stroke-width=".5" opacity=".26"/>
+    <path d="M9 146 41 144M61 148 92 145M112 143 135 146M159 147 195 143M226 145 253 148" stroke="#a58d73" stroke-width=".36" opacity=".44"/>
+    <path d="M-4 171 18 169M39 174 71 170M91 172 120 169M141 173 169 170M195 171 223 174M242 170 260 172" stroke="#4a4540" stroke-width=".44" opacity=".2"/>
+    <path d="M14 197 45 194M72 198 97 196M122 194 149 197M177 198 207 194M229 196 255 198" stroke="#b8a58e" stroke-width=".38" opacity=".48"/>
+    <path d="M-2 223 25 220M53 224 82 221M104 219 133 223M160 222 189 219M217 220 258 223" stroke="#6b6258" stroke-width=".46" opacity=".24"/>
+    <path d="M11 247 37 245M65 248 94 245M120 244 146 247M177 247 206 244M233 245 252 247" stroke="#a58d73" stroke-width=".36" opacity=".4"/>
+    <path d="M31 52 49 50M146 102 164 100M203 167 220 165M77 241 94 239" stroke="#c4943f" stroke-width=".34" opacity=".22"/>
+    <path d="M21 31 29 20M74 58 84 48M139 34 146 23M207 57 217 47M35 85 42 75M166 87 174 75M236 105 246 94M58 128 66 116M118 152 127 141M194 130 202 119M28 184 38 173M83 215 91 205M144 190 153 179M219 205 228 194M43 238 54 228" stroke="#7c7164" stroke-width=".32" opacity=".24"/>
+  </g>
+  <g fill="#4a4540" opacity=".2">
+    <circle cx="18" cy="58" r=".7"/><circle cx="57" cy="23" r=".55"/><circle cx="88" cy="61" r=".8"/>
+    <circle cx="118" cy="28" r=".55"/><circle cx="151" cy="73" r=".65"/><circle cx="187" cy="35" r=".8"/>
+    <circle cx="224" cy="65" r=".6"/><circle cx="248" cy="28" r=".7"/><circle cx="33" cy="108" r=".55"/>
+    <circle cx="74" cy="134" r=".7"/><circle cx="107" cy="104" r=".55"/><circle cx="143" cy="133" r=".75"/>
+    <circle cx="180" cy="109" r=".55"/><circle cx="214" cy="139" r=".7"/><circle cx="246" cy="119" r=".55"/>
+    <circle cx="17" cy="159" r=".7"/><circle cx="53" cy="181" r=".55"/><circle cx="90" cy="160" r=".65"/>
+    <circle cx="126" cy="186" r=".7"/><circle cx="164" cy="158" r=".55"/><circle cx="201" cy="183" r=".8"/>
+    <circle cx="237" cy="166" r=".55"/><circle cx="35" cy="213" r=".65"/><circle cx="68" cy="236" r=".55"/>
+    <circle cx="104" cy="205" r=".75"/><circle cx="139" cy="234" r=".55"/><circle cx="174" cy="210" r=".7"/>
+    <circle cx="211" cy="232" r=".55"/><circle cx="244" cy="211" r=".65"/>
+  </g>
+  <g opacity=".15">
+    <rect x="46" y="110" width="7" height=".7" fill="#b34d37"/>
+    <rect x="132" y="53" width="5" height=".6" fill="#b34d37"/>
+    <rect x="206" y="151" width="8" height=".7" fill="#b34d37"/>
+    <rect x="91" y="230" width="6" height=".6" fill="#b34d37"/>
+    <rect x="28" y="36" width="5" height=".6" fill="#34556c"/>
+    <rect x="163" y="112" width="7" height=".7" fill="#34556c"/>
+    <rect x="231" y="196" width="5" height=".6" fill="#34556c"/>
+  </g>
+</svg>

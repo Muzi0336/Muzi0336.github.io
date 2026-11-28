@@ -2,8 +2,9 @@
 <html lang="zh-CN">
 
 <head>
-    <link rel="stylesheet" href="assets/css/fonts.css?v=1">
     <meta charset="UTF-8">
+    <link rel="preload" href="assets/fonts/lxgw/lxgwwenkai-portal-keys.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/fonts.css?v=2">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI问学 · 卡点追问与思路整理｜朝云暮辞</title>
     <meta name="description" content="做题卡住时，用静态提示定位问题，再让 AI 帮你解释错因、比较写法或理清下一步。">
@@ -18,7 +19,7 @@
                 <path d="M10 4H4v22h6M20 4h6v22h-6" />
                 <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
             </svg>
-            <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
+            <span class="brand-text"><b>朝云暮辞</b><small>Zhaoyun Muci</small></span>
         </a>
         <nav class="nav" aria-label="主要导航">
             <a href="index.html" title="返回首页与备考总览">首页</a>
@@ -31,127 +32,130 @@
     </header>
 
     <main class="portal-main">
-        <section class="page-intro" aria-labelledby="aiTitle">
-            <h1 id="aiTitle">遇到卡点，让 AI 帮你理清思路</h1>
-            <p>读题、看样例、试静态提示之后，仍然卡在某个状态、边界或代码写法上，就把具体问题交给 AI 助教。它适合解释错因、补一段推导或比较两种思路。</p>
-            <div class="portal-actions">
-                <a class="portal-button" href="settings.html?return=problems%2Falgorithm%2Fq.html%3Fid%3D269#ai">配置后返回《数据加密》</a>
-                <a class="portal-button secondary" href="problems/algorithm/q.html?id=269">先打开原题</a>
+        <section class="portal-heading" aria-labelledby="aiTitle">
+            <div class="portal-heading-copy">
+                <p class="portal-context">
+                    <span>先试提示</span>
+                    <b>再追问</b>
+                    <span aria-hidden="true">/</span>
+                    <span>回答需回到原题核对</span>
+                </p>
+                <h1 id="aiTitle">AI问学</h1>
+                <p>用真实题目演示怎样把“我不会”拆成可回答的卡点。下方示例是预置内容，不会调用接口。</p>
             </div>
-            <p class="portal-note">配置与计费说明集中在下方和设置页；只有你在题目页主动追问时，才会请求已配置的接口。</p>
-        </section>
-
-        <section class="portal-section" aria-labelledby="usesTitle">
-            <div class="portal-section-head">
-                <h2 id="usesTitle">可以帮你做什么</h2>
-                <p>把原题里的状态、变量、边界和你已经试过的思路说清楚，AI 才能给出更贴近当前卡点的回答。</p>
-            </div>
-            <div class="ai-use-list">
-                <article class="ai-use">
-                    <h3>解释错因</h3>
-                    <p>例如：我把第 i 位理解成了从 0 开始，样例为什么对不上？请指出我漏掉的题面条件。</p>
-                </article>
-                <article class="ai-use">
-                    <h3>核对状态定义</h3>
-                    <p>例如：我的动态规划状态表示前 i 个元素，是否漏掉了必须记录的限制条件？</p>
-                </article>
-                <article class="ai-use">
-                    <h3>比较两种写法</h3>
-                    <p>例如：这段循环与参考代码等价吗？指出边界条件或复杂度上的差异。</p>
-                </article>
-                <article class="ai-use">
-                    <h3>理清下一步</h3>
-                    <p>例如：我已经想到前缀和，但不会处理重复区间，下一步该检查哪个状态或约束？</p>
-                </article>
+            <div class="portal-heading-links" aria-label="AI问学快捷入口">
+                <a href="#demo">交互示例</a>
+                <a href="#setup">配置说明</a>
             </div>
         </section>
 
-        <section class="portal-section tint" aria-labelledby="stepsTitle">
-            <div class="portal-section-head">
-                <h2 id="stepsTitle">三步使用</h2>
-                <p>从原题开始，先自己走一步；提示不够时，再把具体卡点交给 AI 助教。</p>
-            </div>
-            <div class="study-map">
-                <article class="study-block">
-                    <h3>先读原题</h3>
-                    <p>看题面、输入输出、样例与约束，写下自己的第一版思路。不要先打开解析或代码。</p>
-                </article>
-                <article class="study-block">
-                    <h3>逐层展开静态提示</h3>
-                    <p>题目页的内置提示按阶梯展示，离线可读。仍然卡住时，记下具体是哪一步、哪个状态或哪个边界没想通。</p>
-                </article>
-                <article class="study-block">
-                    <h3>把具体卡点交给 AI</h3>
-                    <p>在题目页主动点击后才会请求已配置接口。带上你的推导、样例结果和没想通的位置，再核对回答是否贴合题面。</p>
-                </article>
-            </div>
-        </section>
-
-        <section class="portal-section" aria-labelledby="differenceTitle">
-            <div class="portal-section-head">
-                <h2 id="differenceTitle">静态提示与 AI 的区别</h2>
-                <p>静态提示每次打开都一样；AI 会根据你的追问作答，但需要连接你配置的服务商。</p>
-            </div>
-            <div class="ai-compare">
-                <section class="ai-compare-col" aria-labelledby="staticTitle">
-                    <h3 id="staticTitle">页面内静态提示</h3>
-                    <ul>
-                        <li>由页面文件直接提供，不联网也能看。</li>
-                        <li>每次打开的内容一致，适合按顺序阅读。</li>
-                        <li>不读取 API Key，不产生接口费用。</li>
-                        <li>覆盖常见卡点；如果仍不清楚，可以带着具体问题继续追问。</li>
-                    </ul>
-                </section>
-                <section class="ai-compare-col ai-calls" aria-labelledby="remoteTitle">
-                    <h3 id="remoteTitle">配置后的 AI 追问</h3>
-                    <ul>
-                        <li>只在题目页主动点击后发送，本页不会自动请求。</li>
-                        <li>请求会带着当前题目上下文发往你填写的服务商。</li>
-                        <li>可能按使用量、次数或套餐收费，以服务商规则为准。</li>
-                        <li>回答可能有误，需要回到题面、样例与参考代码核对。</li>
-                    </ul>
-                </section>
-            </div>
-        </section>
-
-        <section class="portal-section tint" aria-labelledby="problemsTitle">
-            <div class="portal-section-head">
-                <h2 id="problemsTitle">从真实题目进入</h2>
-                <p>下面都是现有题库里的真实入口。任选一题，先看静态提示；需要时再配置 AI 追问。</p>
-            </div>
-            <div class="problem-list">
-                <article class="problem-row">
-                    <div>
-                        <h3>数据加密</h3>
-                        <p>算法题库 #269 · 字符与序列 · 入门</p>
-                    </div>
-                    <a class="text-arrow" href="problems/algorithm/q.html?id=269">打开原题</a>
-                </article>
-                <article class="problem-row">
-                    <div>
-                        <h3>C 语言 2025 年单选题 1</h3>
-                        <p>计算机挑战赛 · 标识符判断 · 单选题</p>
-                    </div>
-                    <a class="text-arrow" href="problems/contest/q.html?id=2025-1">打开原题</a>
-                </article>
-                <article class="problem-row">
-                    <div>
-                        <h3>均衡数</h3>
-                        <p>蓝桥杯 2026 年第十七届 · 省赛 · 大学 A 组</p>
-                    </div>
-                    <a class="text-arrow" href="problems/lanqiao/problem.html?id=P16224">打开原题</a>
-                </article>
-            </div>
-        </section>
-
-        <section class="portal-section" aria-labelledby="setupTitle">
-            <div class="setup-callout">
+        <section class="portal-section demo-section" id="demo" aria-labelledby="demoTitle">
+            <div class="section-heading">
                 <div>
-                    <h2 id="setupTitle">首次配置说明</h2>
-                    <p>准备服务商提供的 Base URL、模型名和 API Key。保存后点击“返回刚才的页面”，回到原题；没有配置时，题库、静态提示、错题本和复习链接仍照常使用。</p>
-                    <p>配置只保存在当前浏览器。不要把主账号长期使用的 Key 放进公共设备；浏览器扩展或共用电脑也可能读取本地存储。</p>
+                    <h2 id="demoTitle">从《数据加密》的一次卡点开始</h2>
+                    <p>左侧是一次真实错误尝试，右侧切换三层回答。每次切换只改变本地预置内容。</p>
                 </div>
-                <a class="portal-button" href="settings.html?return=problems%2Falgorithm%2Fq.html%3Fid%3D269#ai">去设置 AI 接口</a>
+                <a class="text-link" href="problems/algorithm/q.html?id=269">打开原题</a>
+            </div>
+
+            <div class="ai-demo" data-ai-demo>
+                <section class="demo-problem" aria-labelledby="demoProblemTitle">
+                    <div class="demo-problem-head">
+                        <div>
+                            <h3 id="demoProblemTitle">数据加密</h3>
+                            <p>算法题库 #269 · 字符与序列 · 入门</p>
+                        </div>
+                        <span>真实题目</span>
+                    </div>
+                    <p class="demo-question">加密时第 <i>i</i> 个字符向右移动 <i>i</i> 位，位置从 1 开始。给密文，还原原文。</p>
+                    <div class="sample-pair" aria-label="题面样例">
+                        <div><b>输入</b><code data-demo-target="demo-sample">Igopt]vzun</code></div>
+                        <div><b>输出</b><code>HelloWorld</code></div>
+                    </div>
+                    <p class="demo-attempt-label">一次失败尝试</p>
+                    <pre class="demo-code"><code><span data-demo-target="demo-index">for i, ch in enumerate(s):</span>
+    out.append(chr(ord(ch) - i))</code></pre>
+                    <p class="demo-note">交互示例 · 预置内容，不调用 AI</p>
+                </section>
+
+                <section class="demo-conversation" aria-labelledby="demoConversationTitle">
+                    <div class="demo-conversation-head">
+                        <h3 id="demoConversationTitle">卡点追问</h3>
+                        <span>本地分层回答</span>
+                    </div>
+                    <p class="demo-user-question">“为什么第一个字符出来是 I，不是 H？”</p>
+
+                    <div class="demo-tabs" role="tablist" aria-label="选择回答方式">
+                        <button type="button" role="tab" id="demoTabHint" aria-controls="demoPanelHint" aria-selected="true" data-demo-key="hint">给一点提示</button>
+                        <button type="button" role="tab" id="demoTabWhy" aria-controls="demoPanelWhy" aria-selected="false" tabindex="-1" data-demo-key="why">为什么错</button>
+                        <button type="button" role="tab" id="demoTabCheck" aria-controls="demoPanelCheck" aria-selected="false" tabindex="-1" data-demo-key="check">检查思路</button>
+                    </div>
+
+                    <div class="demo-answer-stack" aria-live="polite">
+                        <section class="demo-answer" id="demoPanelHint" role="tabpanel" aria-labelledby="demoTabHint" data-demo-panel="hint">
+                            <p>先只比较第一位：密文 <code>I</code> 的 ASCII 码是 73，明文 <code>H</code> 是 72，两者只差 1。题面要求第 1 位减去 1，但 <code>enumerate</code> 第一次给出的 <code>i</code> 是 0。</p>
+                            <button type="button" class="demo-more" data-demo-more aria-expanded="false">再提示一步</button>
+                            <div class="demo-more-panel" data-demo-more-panel hidden>
+                                <p>把枚举改成 <code>enumerate(s, start=1)</code>，或者继续用 0-based，但减法写成 <code>i + 1</code>。</p>
+                            </div>
+                        </section>
+                        <section class="demo-answer" id="demoPanelWhy" role="tabpanel" aria-labelledby="demoTabWhy" data-demo-panel="why" hidden>
+                            <p>这不是字符编码问题，而是位置基准混用了。题面中的“第 1 位”是 1-based；<code>enumerate(s)</code> 是 0-based。当前代码让每一位都少减了 1，所以整串从第一字符开始就错。</p>
+                            <button type="button" class="demo-more" data-demo-more aria-expanded="false">再提示一步</button>
+                            <div class="demo-more-panel" data-demo-more-panel hidden>
+                                <p>按题面直接写：<code>shift = i + 1</code>，再执行 <code>chr(ord(ch) - shift)</code>。这样 <code>I-1=H</code>、<code>g-2=e</code>，位置与样例一致。</p>
+                            </div>
+                        </section>
+                        <section class="demo-answer" id="demoPanelCheck" role="tabpanel" aria-labelledby="demoTabCheck" data-demo-panel="check" hidden>
+                            <p>逐位核对密文与明文的 ASCII 差：<code>I-H=1</code>、<code>g-e=2</code>、<code>o-l=3</code>。差值应依次为 1 到字符串长度；如果第一项是 0，说明下标基准错了。</p>
+                            <button type="button" class="demo-more" data-demo-more aria-expanded="false">再提示一步</button>
+                            <div class="demo-more-panel" data-demo-more-panel hidden>
+                                <p>再检查空串、长度为 1 与含空格的输入。解密只依赖字符和位置，不应使用会按空白切词的读取方式。</p>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="demo-actions">
+                        <a class="portal-button" href="problems/algorithm/q.html?id=269">在原题中继续问</a>
+                        <a class="portal-button secondary" href="settings.html?return=problems%2Falgorithm%2Fq.html%3Fid%3D269#ai">配置 AI</a>
+                    </div>
+                    <p class="demo-footnote">本页不请求接口，也不会写入 API Key。</p>
+                </section>
+            </div>
+        </section>
+
+        <section class="portal-section" data-reveal aria-labelledby="usesTitle">
+            <div class="section-heading">
+                <div>
+                    <h2 id="usesTitle">适合询问的卡点</h2>
+                    <p>带上你的推导、样例结果和具体看不懂的位置，回答更容易落到当前题目。</p>
+                </div>
+            </div>
+            <div class="ask-ledger">
+                <div><b>解释错因</b><span>“第 2 位应该减 2，我的代码为什么只减了 1？”</span></div>
+                <div><b>核对状态定义</b><span>“我的 DP 状态表示前 i 个元素，是否漏掉必须记录的限制？”</span></div>
+                <div><b>比较两种写法</b><span>“这段循环与参考代码等价吗？边界条件差在哪里？”</span></div>
+                <div><b>确定下一步</b><span>“我已经想到前缀和，但不会处理重复区间，下一步检查什么？”</span></div>
+            </div>
+        </section>
+
+        <section class="portal-section" id="setup" data-reveal aria-labelledby="setupTitle">
+            <div class="section-heading">
+                <div>
+                    <h2 id="setupTitle">在原题里使用 AI</h2>
+                    <p>真正需要追问时，先打开题目页，在已配置接口的帮助下继续讨论；静态提示和代码始终可离线阅读。</p>
+                </div>
+            </div>
+            <div class="setup-ledger">
+                <div class="setup-copy">
+                    <b>需要准备</b>
+                    <p>服务商提供的 Base URL、模型名和 API Key。保存后可返回刚才的题目；配置只存在当前浏览器。</p>
+                    <p>只在题目页主动追问时发送请求，费用与额度按你选择的服务商规则结算。</p>
+                </div>
+                <div class="setup-actions">
+                    <a class="portal-button" href="settings.html?return=problems%2Falgorithm%2Fq.html%3Fid%3D269#ai">配置后返回《数据加密》</a>
+                    <a class="text-link" href="problems/algorithm/q.html?id=269">先自己做原题</a>
+                </div>
             </div>
         </section>
     </main>
@@ -164,7 +168,7 @@
                     <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
                 </svg>
                 <div>
-                    <b>朝云暮辞 · ZYYC LAB</b>
+                    <b>朝云暮辞</b>
                     <p>AI 在这里更像随叫随到的助教：帮你解释、追问和比较思路。它依赖你自行配置的第三方接口，回答仍要回到题面与样例核对。</p>
                 </div>
             </div>
@@ -181,6 +185,7 @@
         </div>
     </footer>
 
+    <script src="assets/js/portal.js" defer></script>
     <script src="assets/js/site.js" defer></script>
 </body>
 

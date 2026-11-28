@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="160" viewBox="0 0 320 160" role="img" aria-labelledby="title desc">
+  <title id="title">Structured study sheet</title>
+  <desc id="desc">Warm paper study-sheet composition with modular sections, geometric diagrams, and print registration details.</desc>
+  <rect width="320" height="160" fill="#e9dfce"/>
+
+  <g fill="none" stroke="#34556c" stroke-width=".45" opacity=".12">
+    <path d="M8 8H312M8 24H312M8 40H312M8 56H312M8 72H312M8 88H312M8 104H312M8 120H312M8 136H312M8 152H312"/>
+    <path d="M8 8V152M24 8V152M40 8V152M56 8V152M72 8V152M88 8V152M104 8V152M120 8V152M136 8V152M152 8V152M168 8V152M184 8V152M200 8V152M216 8V152M232 8V152M248 8V152M264 8V152M280 8V152M296 8V152M312 8V152"/>
+  </g>
+
+  <g transform="rotate(-2 160 80)">
+    <rect x="31" y="19" width="266" height="122" fill="#c4943f" opacity=".42"/>
+    <rect x="27" y="23" width="266" height="122" fill="#34556c" opacity=".2"/>
+    <rect x="22" y="16" width="274" height="128" fill="#fbf7ee" stroke="#2f3434" stroke-width=".9"/>
+
+    <path d="M22 38H296M75 16V144M75 66H296M75 105H296M220 66V144" fill="none" stroke="#2f3434" stroke-width=".8"/>
+    <path d="M31 28H62M31 32H54" fill="none" stroke="#2f3434" stroke-width="2.2"/>
+
+    <rect x="26" y="20" width="6" height="6" fill="#b34d37"/>
+    <rect x="35" y="20" width="6" height="6" fill="#34556c"/>
+    <path d="M44 20H59V26H50Z" fill="#c4943f"/>
+    <path d="M251 20H263M257 14V32M272 20H284M278 14V32" fill="none" stroke="#2f3434" stroke-width=".7"/>
+
+    <g fill="none" stroke="#34556c" stroke-width=".7">
+      <path d="M32 50H65M32 58H65M32 82H65M32 90H65M32 98H65M32 120H65M32 128H65M32 136H65"/>
+      <circle cx="38" cy="50" r="2.5"/>
+      <rect x="35" y="55" width="6" height="6"/>
+      <path d="M35 88 41 82 47 88Z"/>
+      <path d="M35 118H47M35 126H47M35 134H47"/>
+    </g>
+    <g fill="#2f3434">
+      <rect x="55" y="47" width="8" height="5"/>
+      <rect x="55" y="79" width="8" height="5"/>
+      <rect x="55" y="115" width="8" height="5"/>
+    </g>
+
+    <g>
+      <rect x="84" y="47" width="60" height="47" fill="#34556c" opacity=".88"/>
+      <circle cx="108" cy="68" r="15" fill="#fbf7ee"/>
+      <circle cx="113" cy="72" r="15" fill="#b34d37" opacity=".82"/>
+      <path d="M91 82 115 54 138 82Z" fill="none" stroke="#fbf7ee" stroke-width="1.2"/>
+      <path d="M91 82H138" stroke="#fbf7ee" stroke-width="1.2"/>
+    </g>
+
+    <g>
+      <rect x="151" y="47" width="60" height="47" fill="none" stroke="#2f3434" stroke-width=".8"/>
+      <path d="M161 56H201M161 62H190M161 68H196M161 74H183M161 80H204" stroke="#34556c" stroke-width="2.1"/>
+      <rect x="181" y="55" width="8" height="28" fill="#c4943f" opacity=".75"/>
+      <rect x="193" y="55" width="4" height="28" fill="#b34d37" opacity=".82"/>
+      <path d="M161 87H204" stroke="#2f3434" stroke-width=".6" stroke-dasharray="2 2"/>
+    </g>
+
+    <g>
+      <rect x="228" y="47" width="58" height="47" fill="#f1e7d7" stroke="#2f3434" stroke-width=".7"/>
+      <circle cx="248" cy="68" r="10" fill="none" stroke="#34556c" stroke-width="2"/>
+      <circle cx="259" cy="68" r="10" fill="none" stroke="#b34d37" stroke-width="2" opacity=".8"/>
+      <path d="M238 84H270M252 52V86" stroke="#c4943f" stroke-width="1.2"/>
+      <rect x="267" y="79" width="11" height="7" fill="#2f3434"/>
+    </g>
+
+    <g>
+      <path d="M84 78V134M151 78V134M228 78V134M280 78V134" fill="none" stroke="#2f3434" stroke-width=".6" opacity=".45"/>
+      <path d="M84 92H280M84 111H280" fill="none" stroke="#34556c" stroke-width=".55" stroke-dasharray="2 3"/>
+    </g>
+
+    <g fill="#34556c">
+      <rect x="91" y="116" width="45" height="3" opacity=".72"/>
+      <rect x="91" y="123" width="32" height="3" opacity=".5"/>
+      <rect x="145" y="116" width="30" height="3" opacity=".55"/>
+      <rect x="145" y="123" width="42" height="3" opacity=".7"/>
+      <rect x="186" y="116" width="30" height="3" opacity=".4"/>
+    </g>
+    <g fill="#b34d37" opacity=".82">
+      <rect x="84" y="134" width="20" height="3"/>
+      <rect x="110" y="134" width="30" height="3" opacity=".55"/>
+      <rect x="265" y="134" width="15" height="3"/>
+    </g>
+
+    <g fill="none" stroke="#c4943f" stroke-width=".8">
+      <circle cx="260" cy="111" r="9"/>
+      <path d="M251 111H269M260 102V120"/>
+      <path d="M247 126H273M247 130H264"/>
+    </g>
+
+    <g stroke="#2f3434" stroke-width=".6" fill="none">
+      <path d="M17 10h12M23 4v12M289 10h12M295 4v12M17 140h12M23 134v12M289 140h12M295 134v12"/>
+      <circle cx="23" cy="10" r="3"/>
+      <circle cx="295" cy="140" r="3"/>
+    </g>
+  </g>
+
+  <g fill="none" stroke="#b34d37" stroke-width=".7" opacity=".75">
+    <path d="M10 74H17M10 81H17M303 74H310M303 81H310"/>
+    <path d="M12 76V83M306 76V83"/>
+  </g>
+</svg>

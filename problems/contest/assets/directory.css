@@ -1,0 +1,227 @@
+/* 计算机挑战赛赛事与语言目录。 */
+.contest-directory-page .page-intro {
+    padding-top: 44px;
+    padding-bottom: 30px;
+}
+
+.contest-directory-page .page-intro h1 {
+    max-width: none;
+    font-size: clamp(40px, 3.4vw, 46px);
+}
+
+.contest-directory-page .portal-section-head > *,
+.contest-directory-page .page-intro > * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.contest-directory-page .portal-footer-brand svg {
+    width: 30px;
+    height: 30px;
+    flex: none;
+}
+
+.contest-directory-jump {
+    margin-top: 18px !important;
+    font-size: 14px !important;
+}
+
+.contest-directory-jump a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--line-2);
+    text-underline-offset: 4px;
+}
+
+.contest-directory-list {
+    border-top: 2px solid var(--ink);
+}
+
+.contest-directory-details {
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+}
+
+.contest-directory-details summary {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 14px 0;
+    cursor: pointer;
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.5;
+    list-style: none;
+}
+
+.contest-directory-details summary::-webkit-details-marker {
+    display: none;
+}
+
+.contest-directory-details summary::before {
+    content: "+";
+    flex: none;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 15px;
+}
+
+.contest-directory-details[open] summary::before {
+    content: "−";
+}
+
+.contest-directory-details[open] summary {
+    border-bottom: 1px solid var(--line-2);
+}
+
+.contest-directory-details .contest-directory-list {
+    border-top: 0;
+}
+
+.contest-directory-row {
+    display: grid;
+    grid-template-columns: 54px minmax(150px, .65fr) minmax(0, 1.45fr) minmax(88px, auto);
+    gap: 18px;
+    align-items: start;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line-2);
+}
+
+.contest-directory-index {
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+}
+
+.contest-directory-name {
+    min-width: 0;
+}
+
+.contest-directory-name h3 {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.contest-directory-detail {
+    min-width: 0;
+    color: var(--ink-2);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.contest-directory-detail p {
+    margin: 0;
+}
+
+.contest-directory-detail p + p {
+    margin-top: 3px;
+    color: var(--muted);
+}
+
+.contest-directory-detail .mini-links {
+    margin-top: 5px;
+}
+
+.contest-directory-status,
+.contest-directory-action {
+    justify-self: end;
+    align-self: start;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.contest-directory-status {
+    padding: 3px 8px;
+    border: 1px solid var(--line-2);
+    color: var(--muted);
+}
+
+.contest-directory-status.is-active {
+    border-color: var(--portal-blue);
+    color: var(--portal-blue);
+}
+
+.contest-directory-status.is-urgent {
+    border-color: var(--portal-accent);
+    color: var(--portal-accent);
+}
+
+.contest-directory-action {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--line-2);
+    text-underline-offset: 4px;
+}
+
+#languages {
+    scroll-margin-top: 88px;
+}
+
+@media (max-width: 760px) {
+    .contest-directory-row {
+        grid-template-columns: 38px minmax(0, 1fr) auto;
+        grid-template-areas:
+            "index name status"
+            ". detail detail"
+            ". action action";
+        gap: 5px 10px;
+        padding: 11px 0;
+    }
+
+    .contest-directory-index {
+        grid-area: index;
+    }
+
+    .contest-directory-name {
+        grid-area: name;
+    }
+
+    .contest-directory-name h3 {
+        font-size: 18px;
+    }
+
+    .contest-directory-detail {
+        grid-area: detail;
+    }
+
+    .contest-directory-detail:empty {
+        display: none;
+    }
+
+    .contest-directory-status,
+    .contest-directory-action {
+        grid-area: status;
+    }
+
+    .contest-directory-action {
+        grid-area: action;
+        justify-self: start;
+    }
+}
+
+@media (max-width: 420px) {
+    .contest-directory-page .page-intro h1 {
+        font-size: 40px;
+    }
+
+    .contest-directory-row {
+        grid-template-columns: 32px minmax(0, 1fr);
+        grid-template-areas:
+            "index name"
+            ". detail"
+            ". status"
+            ". action";
+    }
+
+    .contest-directory-status,
+    .contest-directory-action {
+        justify-self: start;
+    }
+}

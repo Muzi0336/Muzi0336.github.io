@@ -1,5 +1,5 @@
 /* 站点静态资源缓存：页面与日程数据网络优先，普通静态资源缓存后后台更新。 */
-const CACHE = 'zyyc-static-v8';
+const CACHE = 'zyyc-static-v12';
 const NETWORK_TIMEOUT = 2500;
 const PRECACHE = [
   './',
@@ -7,15 +7,22 @@ const PRECACHE = [
   'contests.html',
   'knowledge.html',
   'ai.html',
+  'problems/contest/languages.html',
   'tools/mistakes.html',
   'settings.html',
   'assets/css/site.css',
   'assets/css/portal.css',
   'assets/css/detail.css',
   'assets/css/settings.css',
-  'assets/css/fonts.css?v=1',
+  'assets/css/fonts.css?v=2',
+  'assets/fonts/lxgw/lxgwwenkai-portal-keys.woff2',
   'assets/js/site.js',
+  'assets/js/profile-settings.js',
   'assets/js/portal.js',
+  'articles/assets/study-directory.css',
+  'articles/assets/study-directory.js',
+  'problems/contest/assets/directory.css',
+  'problems/contest/assets/directory.js',
   'assets/js/quiz-ai.js',
   'assets/js/contest-schedule.js',
   'assets/data/contest-catalog.js'
@@ -54,7 +61,8 @@ function isHtml(request, url) {
 
 function isNetworkFirstAsset(url) {
   return url.pathname.endsWith('/assets/data/contest-catalog.js') ||
-    url.pathname.endsWith('/assets/js/contest-schedule.js');
+    url.pathname.endsWith('/assets/js/contest-schedule.js') ||
+    url.pathname.endsWith('/assets/css/fonts.css');
 }
 
 function offlineResponse(request) {

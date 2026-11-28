@@ -2,11 +2,12 @@
 <html lang="zh-CN">
 
 <head>
-    <link rel="stylesheet" href="assets/css/fonts.css?v=1">
     <meta charset="UTF-8">
+    <link rel="preload" href="assets/fonts/lxgw/lxgwwenkai-portal-keys.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="assets/css/fonts.css?v=2">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>朝云暮辞 · 竞赛备考与学习档案</title>
-    <meta name="description" content="竞赛消息、历年真题、算法训练、错题复习与本地 AI 助教入口。先看赛程，再按语言、题组和知识专题开始备战。">
+    <title>朝云暮辞｜竞赛、算法与学习文档</title>
+    <meta name="description" content="汇集竞赛通知与六赛道安排、历年真题、算法训练和学习文档，串联分层提示、AI 追问与错题复习；校内课程资料也会逐步整理。">
     <link rel="stylesheet" href="assets/css/site.css">
     <link rel="stylesheet" href="assets/css/portal.css">
 </head>
@@ -18,7 +19,7 @@
                 <path d="M10 4H4v22h6M20 4h6v22h-6" />
                 <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
             </svg>
-            <span class="brand-text"><b>朝云暮辞</b><small>ZYYC LAB</small></span>
+            <span class="brand-text"><b>朝云暮辞</b><small>Zhaoyun Muci</small></span>
         </a>
         <nav class="nav" aria-label="主要导航">
             <a class="active" href="index.html" title="返回首页与备考总览">首页</a>
@@ -31,172 +32,320 @@
     </header>
 
     <main class="portal-main">
-        <section class="portal-hero" aria-labelledby="homeTitle">
-            <div class="portal-hero-copy">
-                <p class="portal-kicker">朝云暮辞 · 竞赛备考与学习档案</p>
-                <h1 class="home-title" id="homeTitle"><span>竞赛消息不漏看，</span><span>备战练习有方向。</span></h1>
-                <p class="portal-lede">先看已整理的赛事与通知，再从 C、C++、Java、Python 真题、蓝桥历年卷和算法专项里选一条练习线。做题时先用页面里的分层提示，需要继续讨论时再用 AI 追问。</p>
-                <div class="portal-actions">
-                    <a class="portal-button" href="contests.html#practice">开始备战</a>
-                    <a class="portal-button secondary" href="contests.html">查看赛事</a>
-                </div>
+        <section class="portal-heading" aria-labelledby="homeTitle">
+            <div class="portal-heading-copy">
+                <p class="portal-context">
+                    <span>竞赛 · 算法 · 学习文档</span>
+                    <span aria-hidden="true">/</span>
+                    <span>按资料核验赛事节点</span>
+                </p>
+                <h1 id="homeTitle">朝云暮辞</h1>
+                <p class="portal-statement">从一场竞赛，到每一次学有所获。</p>
+                <p>汇集竞赛通知与真题、算法训练和学习文档，串联提示、AI 追问与错题复习。校内课程资料也会在这里逐步整理。</p>
             </div>
-
-            <aside class="portal-example" aria-labelledby="exampleTitle">
-                <h2 id="exampleTitle">数据加密</h2>
-                <p class="portal-example-meta">算法题库 #269 · 字符与序列 · 入门</p>
-                <p>从现有题目里取一个真实入口：先读题面和已有的分层提示，自己写出字符、ASCII 码与位置下标的关系；需要继续追问时，再让 AI 帮你补上卡住的那一步。</p>
-                <div class="portal-flowline" aria-label="AI 使用顺序">
-                    <span>题目：打开《数据加密》，先独立读题。</span>
-                    <span>静态提示：按原题页的阶梯逐层展开，不发起网络请求。</span>
-                    <span>AI 追问：说清楚卡在哪一步，再请它解释或追问。</span>
-                </div>
-                <div class="portal-actions">
-                    <a class="portal-button" href="problems/algorithm/q.html?id=269">打开原题</a>
-                    <a class="portal-button secondary" href="ai.html">看 AI 问学</a>
-                </div>
-            </aside>
+            <div class="portal-heading-links" aria-label="首页快捷入口">
+                <a href="#recent">查看通知</a>
+                <a href="#sections">择题备战</a>
+            </div>
+            <span class="portal-heading-art" aria-hidden="true"></span>
         </section>
 
-        <section class="portal-section" id="recent" aria-labelledby="recentTitle">
-            <div class="portal-section-head">
-                <h2 id="recentTitle">近期赛事与通知</h2>
-                <p>只显示来源清楚的下一节点，最多三条。日期按已有资料整理，原通知可能调整；来源没有链接时直接以文字标注。</p>
-            </div>
-            <div data-recent-events data-limit="3" data-empty="暂时没有可显示的近期赛程。先进入历年真题、算法专项或本地错题复习，等待赛事信息更新。"></div>
-            <div class="clock-line" aria-label="时钟说明">
-                <span>设备时钟：<b data-device-clock>读取中</b></span>
-                <span>北京时间：<b data-beijing-clock>读取中</b></span>
-                <span>日期按已有资料整理，不是实时查询。</span>
-            </div>
-        </section>
-
-        <section class="portal-section tint" id="sections" aria-labelledby="entryTitle">
-            <div class="portal-section-head">
-                <h2 id="entryTitle">按赛事与语言入场</h2>
-                <p>已经上线的入口直接进入原题库，再从页面里的年份与题型选项开始筛选。</p>
+        <section class="portal-section workbench" id="recent" aria-labelledby="recentTitle">
+            <div class="workbench-head">
+                <div>
+                    <h2 id="recentTitle">近期通知与赛事</h2>
+                    <p>报名、提交与比赛安排，按赛道分别查看。</p>
+                </div>
+                <span class="workbench-stamp">状态按设备时间计算 · 北京时间</span>
             </div>
 
-            <div class="entry-layout">
-                <div class="entry-feature" id="contest" aria-labelledby="computerTitle">
-                    <div class="entry-feature-head">
-                        <div>
-                            <h3 id="computerTitle">计算机挑战赛</h3>
-                            <p class="entry-feature-copy">按语言进入同一套真题结构，再进行年份与题型筛选。单选题可直接作答，编程题进入原题页看解析、代码和分层提示。</p>
+            <div class="workbench-grid">
+                <div class="notice-stack" data-recent-events data-limit="2" data-empty="暂时没有可显示的近期赛程。赛事目录、真题和本地复习仍可继续使用。">
+                    <article class="notice-item" data-tone="open">
+                        <div class="notice-marker">
+                            <span class="portal-state open">报名中</span>
+                            <time datetime="2026-12-18T14:00:00+08:00">2026.12.18 14:00</time>
+                            <small>报名截止</small>
                         </div>
-                        <span class="portal-state done" data-contest-badge="computer-challenge">时间信息暂不可用</span>
-                    </div>
-                    <div class="portal-language-list">
-                        <a class="portal-language" href="problems/contest/index.html" title="进入计算机挑战赛 C 语言题库">
-                            <b>C 语言</b><span>指针、结构体与基础算法 →</span>
-                        </a>
-                        <a class="portal-language" href="problems/contest/cpp/index.html" title="进入计算机挑战赛 C++ 题库">
-                            <b>C++</b><span>STL、类与竞赛写法 →</span>
-                        </a>
-                        <a class="portal-language" href="problems/contest/java/index.html" title="进入计算机挑战赛 Java 题库">
-                            <b>Java</b><span>集合、字符串与面向对象 →</span>
-                        </a>
-                        <a class="portal-language" href="problems/contest/python/index.html" title="进入计算机挑战赛 Python 题库">
-                            <b>Python</b><span>列表、字典与内置库 →</span>
-                        </a>
-                    </div>
-                    <p class="portal-note">进入题库后可按年份与题型筛选；首页只负责选语言，不预设还没有出现的年份。</p>
+                        <div class="notice-copy">
+                            <div class="notice-title">
+                                <h3>蓝桥杯</h3>
+                                <span>2026–2027 赛季</span>
+                            </div>
+                            <p>报名将于 2026.12.18 14:00 截止；校内截止可能更早，以学校通知为准。</p>
+                            <div class="notice-actions">
+                                <a class="portal-button" href="problems/lanqiao/index.html">进入历年真题</a>
+                                <a class="source-label portal-link" href="https://dasai.lanqiao.cn/" target="_blank" rel="noopener noreferrer">查看蓝桥杯官网</a>
+                            </div>
+                            <details class="verify-note">
+                                <summary>核验说明</summary>
+                                <p>原资料整理于 2026.11.28，非实时核验。报名与考试安排以官网及校内通知为准。</p>
+                            </details>
+                        </div>
+                    </article>
+                    <article class="notice-item" data-tone="open">
+                        <div class="notice-marker">
+                            <span class="portal-state open">5 个赛道已登记</span>
+                        </div>
+                        <div class="notice-copy">
+                            <div class="notice-title">
+                                <h3>计算机挑战赛</h3>
+                                <span>全国赛事</span>
+                            </div>
+                            <p>已录入大数据、人工智能、数字媒体、Office 和程序设计 5 个赛道的参考时间。</p>
+                            <div class="notice-actions">
+                                <a class="portal-button" href="problems/contest/languages.html">查看参考赛程</a>
+                                <span class="source-label">来源：赛事主办方（参考时间）</span>
+                            </div>
+                            <details class="verify-note">
+                                <summary>核验说明</summary>
+                                <p>时间由赛事主办方提供；实际安排可能与通知存在差异，提交和考试前仍需核对正式来源。</p>
+                            </details>
+                        </div>
+                    </article>
                 </div>
 
-                <div class="entry-side" aria-labelledby="lanqiaoTitle">
-                    <h3 id="lanqiaoTitle">蓝桥杯历年真题</h3>
-                    <p>按题库现有年份进入整套卷面，不预设未来年份。想直接找题时，再进入全部题目页面。</p>
-                    <div class="entry-actions">
-                        <a class="portal-link" href="problems/lanqiao/index.html">按年份选卷</a>
-                        <a class="portal-link" href="problems/lanqiao/bank.html">全部题目</a>
+                <aside class="next-action" data-next-actions aria-labelledby="nextActionTitle">
+                    <p class="next-action-kicker">最紧要节点</p>
+                    <strong data-next-relative>约 20 天</strong>
+                    <h2 id="nextActionTitle">蓝桥杯</h2>
+                    <time datetime="2026-12-18T14:00:00+08:00">2026.12.18 14:00 · 报名截止</time>
+                    <p>核对官网与校内报名通知，再按年份进入已有省赛、国赛真题。</p>
+                    <div class="next-action-links">
+                        <a href="https://dasai.lanqiao.cn/" target="_blank" rel="noopener noreferrer">核对报名来源</a>
+                        <a href="problems/lanqiao/index.html">进入历年真题</a>
+                        <a href="tools/mistakes.html">复习本地错题</a>
+                        <a href="contests.html">查看全部赛事</a>
                     </div>
+                </aside>
+            </div>
+            <div class="registration-strip" aria-hidden="true"></div>
+        </section>
+
+        <section class="portal-section" id="sections" data-reveal aria-labelledby="entryTitle">
+            <div class="section-heading">
+                <div>
+                    <h2 id="entryTitle">择题备战</h2>
+                    <p>先看赛道安排，再进入已有语言题库或卷面练习；需要补基础时从研习录开始。</p>
                 </div>
+                <a class="text-link" href="contests.html#practice">查看赛事目录</a>
             </div>
 
-            <div class="entry-strip">
-                <p><b>算法专项：</b>按知识分类做题，先看题目与逐层推导，再用参考代码核对；学习路径、动画实验室分别接基础补课和过程演示。</p>
-                <div class="mini-links">
-                    <a href="problems/algorithm/index.html">算法题库</a>
-                    <a href="problems/algorithm/learn.html">算法学习</a>
-                    <a href="problems/algorithm/lab.html">动画实验室</a>
+            <div class="prepare-layout" id="contest">
+                <div class="route-ledger" aria-label="计算机挑战赛语言入口">
+                    <div class="route-ledger-head">
+                        <b>计算机挑战赛</b>
+                        <span>2019–2025 · 四套语言题库</span>
+                    </div>
+                    <a class="route-row" href="problems/contest/index.html">
+                        <span class="route-name">C 语言</span>
+                        <span>指针、结构体、文件与基础算法</span>
+                        <span class="route-go">进入题库</span>
+                    </a>
+                    <a class="route-row" href="problems/contest/cpp/index.html">
+                        <span class="route-name">C++</span>
+                        <span>STL、类、输入输出与竞赛写法</span>
+                        <span class="route-go">进入题库</span>
+                    </a>
+                    <a class="route-row" href="problems/contest/java/index.html">
+                        <span class="route-name">Java</span>
+                        <span>集合、字符串、面向对象与基础算法</span>
+                        <span class="route-go">进入题库</span>
+                    </a>
+                    <a class="route-row" href="problems/contest/python/index.html">
+                        <span class="route-name">Python</span>
+                        <span>列表、字典、内置库与基础算法</span>
+                        <span class="route-go">进入题库</span>
+                    </a>
                 </div>
-            </div>
 
-            <div class="portal-placeholder">
-                <b>更多赛事</b>
-                <span>其他赛事入口还在整理。</span>
-                <em>暂不可进入</em>
+                <div class="route-aside">
+                    <section class="route-aside-block" aria-labelledby="lanqiaoRouteTitle">
+                        <h3 id="lanqiaoRouteTitle">蓝桥杯卷面</h3>
+                        <p>按现有年份进入整套省赛、国赛卷面，也可以按组别和赛段筛题。</p>
+                        <div class="route-aside-links">
+                            <a href="problems/lanqiao/index.html">按年份选卷</a>
+                            <a href="problems/lanqiao/bank.html">全部题目</a>
+                        </div>
+                    </section>
+                    <section class="route-aside-block" aria-labelledby="algorithmRouteTitle">
+                        <h3 id="algorithmRouteTitle">算法补基础</h3>
+                        <p>分类题、学习路径与动画演示统一收在研习录。写完真题后，用专题补输入输出、复杂度、排序、树图与动态规划。</p>
+                        <div class="route-aside-links">
+                            <a href="knowledge.html#algorithm">进入研习录算法训练</a>
+                        </div>
+                    </section>
+                </div>
             </div>
         </section>
 
-        <section class="portal-section ink" id="ai" aria-labelledby="aiTitle">
-            <div class="portal-section-head">
-                <h2 id="aiTitle">遇到卡点，让 AI 帮你理清思路</h2>
-                <p>题目和分层提示先帮你自己走一遍；需要解释错因、比较写法或追问某一步时，再打开 AI 助教。</p>
+        <section class="portal-section ai-review-section" id="ai" data-reveal aria-labelledby="aiTitle">
+            <div class="section-heading">
+                <div>
+                    <h2 id="aiTitle">把卡点问清楚，把错题留下来</h2>
+                    <p>从真实题目里的预置问答看懂追问方式，再用当前浏览器的错题记录安排下一轮复习。</p>
+                </div>
+                <a class="text-link" href="ai.html">完整交互示例</a>
             </div>
-            <div class="ai-steps">
-                <article class="ai-step">
-                    <h3>从原题开始</h3>
-                    <p>在真题或算法题页读完整题面、样例和约束，先保留自己的第一次判断。</p>
-                </article>
-                <article class="ai-step">
-                    <h3>逐层用静态提示</h3>
-                    <p>提示写在页面里，按层展开即可，不联网、不消耗接口额度，也不会把做题记录提交出去。</p>
-                </article>
-                <article class="ai-step">
-                    <h3>配置后追问</h3>
-                    <p><a class="portal-link" href="ai.html">AI问学</a> 说明怎么问、怎么配置，以及哪些内容仍然需要自己核对。</p>
-                </article>
+
+            <div class="home-ai-review">
+                <section class="home-ai-showcase" aria-labelledby="homeAiSceneTitle">
+                    <div class="home-ai-showcase-head">
+                        <div>
+                            <p class="home-ai-kicker">算法题库 #269 · 字符与序列</p>
+                            <h3 id="homeAiSceneTitle">数据加密 · 卡点演示</h3>
+                        </div>
+                        <span class="home-ai-badge">预置演示 · 不调用 AI</span>
+                    </div>
+                    <div class="home-ai-stage" data-home-ai-stage data-scene="0" data-phase="static">
+                        <div class="home-ai-code">
+                            <div class="home-ai-code-head">
+                                <span data-home-ai-code-label>失败代码</span>
+                                <span data-home-ai-count>1 / 2</span>
+                            </div>
+                            <p class="home-ai-sample">
+                                <span>样例</span>
+                                <code data-home-ai-sample>Igopt]vzun → HelloWorld</code>
+                            </p>
+                            <pre><code data-home-ai-code>for i, ch in enumerate(s):
+    out.append(chr(ord(ch) - i))</code></pre>
+                        </div>
+
+                        <div class="home-ai-conversation">
+                            <p class="home-ai-question" data-home-ai-question>“为什么第一位出来是 I，不是 H？”</p>
+                            <p class="home-ai-answer" data-home-ai-answer aria-hidden="true">密文 I 的 ASCII 是 73，明文 H 是 72。enumerate 从 0 开始，第一轮 i=0，所以只减了 0；题面第 1 位应减 1。改成 i + 1，或 enumerate(s, start=1)。</p>
+                        </div>
+
+                        <span class="home-ai-action" data-home-ai-action aria-hidden="true">
+                            <svg class="home-ai-action-icon" data-home-ai-icon="code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                                <path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 3l-4 18"/>
+                            </svg>
+                            <svg class="home-ai-action-icon" data-home-ai-icon="chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                                <path d="M5 5h14v10H9l-4 4V5Z"/>
+                                <path d="M9 9h6M9 12h4"/>
+                            </svg>
+                            <b>AI</b>
+                        </span>
+                        <span class="home-ai-pointer" data-home-ai-pointer aria-hidden="true">
+                            <svg viewBox="0 0 18 22" fill="currentColor">
+                                <path d="M1 1v17l4.8-4.2L9 21l3-1.3-3.2-7H16Z"/>
+                            </svg>
+                        </span>
+                        <p class="sr-only" data-home-ai-answer-full>密文 I 的 ASCII 是 73，明文 H 是 72。enumerate 从 0 开始，第一轮 i=0，所以只减了 0；题面第 1 位应减 1。改成 i + 1，或 enumerate(s, start=1)。</p>
+                    </div>
+                    <div class="home-ai-actions">
+                        <a class="portal-button" href="problems/algorithm/q.html?id=269">打开原题</a>
+                        <a class="text-link" href="ai.html">完整 AI 示例</a>
+                    </div>
+                </section>
+
+                <aside class="home-review-panel" id="review" aria-labelledby="reviewTitle">
+                    <div class="home-review-head">
+                        <div>
+                            <h3 id="reviewTitle">本地复习</h3>
+                            <p>记录保存在当前浏览器。</p>
+                        </div>
+                        <a class="text-link" href="tools/mistakes.html">进入温故集</a>
+                    </div>
+                    <div class="review-layout" data-review-summary>
+                        <div class="review-summary">
+                            <p class="review-message" data-review-message>正在读取本地复习记录。</p>
+                        </div>
+                        <div class="review-metrics" data-review-metrics aria-live="polite">
+                            <div class="review-metric"><b>—</b><span>读取中</span></div>
+                        </div>
+                    </div>
+                </aside>
             </div>
         </section>
 
-        <section class="portal-section" id="review" aria-labelledby="reviewTitle">
-            <div class="portal-section-head">
-                <h2 id="reviewTitle">本地复习摘要</h2>
-                <p>只读取当前浏览器里的错题和复习进度，不会为了首页统计下载整套题库。</p>
-            </div>
-            <div class="review-layout" data-review-summary>
-                <div class="review-summary">
-                    <p class="review-message" data-review-message>正在读取本地复习记录。</p>
-                    <p class="review-note">摘要来自当前浏览器的本地错题记录，不代表完整题库统计。若记录无法读取，这里会直接说明，不猜测到期数量。</p>
-                    <div class="portal-actions">
-                        <a class="portal-button secondary" href="tools/mistakes.html">进入温故集</a>
-                    </div>
+        <section class="portal-section" id="study" data-reveal aria-labelledby="studyTitle">
+            <div class="section-heading">
+                <div>
+                    <h2 id="studyTitle">算法训练、知识与文档</h2>
+                    <p>练习、阅读与校内资料分别归档；已有入口直接进入，课程资料按确认后的目录逐步补齐。</p>
                 </div>
-                <div class="review-metrics" data-review-metrics aria-live="polite">
-                    <div class="review-metric"><b>—</b><span>读取中</span></div>
-                </div>
+                <a class="text-link" href="knowledge.html">进入研习录</a>
             </div>
-        </section>
 
-        <section class="portal-section tint" id="study" aria-labelledby="studyTitle">
-            <div class="portal-section-head">
-                <h2 id="studyTitle">基础、延伸与校内课程</h2>
-                <p>已有教程直接进入；校内课程等还没有确认过的内容，只保留清楚说明。</p>
+            <div class="study-groups">
+                <section class="study-group" aria-labelledby="studyAlgorithmTitle">
+                    <h3 id="studyAlgorithmTitle">算法训练</h3>
+                    <div class="study-links study-links-single">
+                        <a href="problems/algorithm/index.html"><b>算法题库</b><span>按知识分类练习</span></a>
+                        <a href="problems/algorithm/learn.html"><b>学习路径</b><span>按知识块补基础</span></a>
+                        <a href="problems/algorithm/lab.html"><b>动画实验室</b><span>查看过程与状态变化</span></a>
+                    </div>
+                </section>
+                <section class="study-group" aria-labelledby="studyDocsTitle">
+                    <h3 id="studyDocsTitle">知识与文档</h3>
+                    <div class="study-links study-links-single">
+                        <a href="articles/data-structures/index.html"><b>数据结构教程</b><span>线性表、树、图与查找</span></a>
+                        <a href="articles/algorithm-competition/index.html"><b>算法竞赛教程</b><span>搜索、数学、动态规划与图论</span></a>
+                        <a href="articles/frontend/index.html"><b>前端教程</b><span>HTML、CSS、JavaScript</span></a>
+                        <a href="articles/fullstack/index.html"><b>全栈笔记</b><span>Git、React 与 Next.js</span></a>
+                    </div>
+                </section>
             </div>
-            <div class="study-map">
-                <article class="study-block">
-                    <h3>竞赛基础</h3>
-                    <p>输入输出、复杂度、数组、字符串、排序与查找等基础复习线。</p>
-                    <div class="mini-links">
-                        <a href="problems/algorithm/learn.html">算法学习路径</a>
-                        <a href="articles/data-structures/index.html">数据结构教程</a>
+
+            <div class="home-archives" id="archive" data-home-archives>
+                <section class="home-archive-panel" data-archive-panel="courses" aria-labelledby="courseArchiveTitle">
+                    <div class="home-archive-head">
+                        <div>
+                            <p>COURSES</p>
+                            <h3 id="courseArchiveTitle">校内课程</h3>
+                        </div>
+                        <span class="home-archive-status" data-archive-status>待补充</span>
                     </div>
-                </article>
-                <article class="study-block">
-                    <h3>延伸学习</h3>
-                    <p>面向算法竞赛、数据结构与前端全栈的延伸阅读线。</p>
-                    <div class="mini-links">
-                        <a href="articles/algorithm-competition/index.html">算法竞赛教程</a>
-                        <a href="articles/frontend/index.html">前端教程</a>
-                        <a href="articles/fullstack/index.html">全栈笔记</a>
+                    <p class="home-archive-profile" data-course-major>专业待设置 · <a href="settings.html#profile">前往设置</a></p>
+                    <div class="home-archive-filters" data-archive-filters hidden></div>
+                    <div class="home-archive-preview" data-archive-preview>
+                        <div class="home-archive-empty">
+                            <p>当前没有已核实的课程资料。</p>
+                            <dl>
+                                <div><dt>课程名称</dt><dd>待补充</dd></div>
+                                <div><dt>学期</dt><dd>上学期 / 下学期</dd></div>
+                                <div><dt>复习提纲</dt><dd>待补充</dd></div>
+                                <div><dt>章节与练习</dt><dd>资料待补充</dd></div>
+                            </dl>
+                        </div>
                     </div>
-                </article>
-                <article class="study-block">
-                    <h3>校内课程</h3>
-                    <p>与校内课程进度、课件和实验安排对应的资料入口。</p>
-                    <div class="portal-placeholder"><b>课程入口还在整理</b><span>课程名称、学期与资料范围确认后再开放。</span><em>暂不可进入</em></div>
-                </article>
+                    <span class="home-archive-announcer" data-archive-announcer aria-live="polite"></span>
+                    <div class="home-archive-controls" data-archive-controls hidden>
+                        <button type="button" data-archive-prev aria-label="上一个课程预览">←</button>
+                        <span data-archive-count>1 / 1</span>
+                        <button type="button" data-archive-next aria-label="下一个课程预览">→</button>
+                    </div>
+                </section>
+
+                <section class="home-archive-panel" data-archive-panel="contests" aria-labelledby="contestArchiveTitle">
+                    <div class="home-archive-head">
+                        <div>
+                            <p>CONTESTS</p>
+                            <h3 id="contestArchiveTitle">赛事档案</h3>
+                        </div>
+                        <span class="home-archive-status" data-archive-status>待补充</span>
+                    </div>
+                    <p class="home-archive-profile">档案按比赛月份整理 · 来源待补充</p>
+                    <div class="home-archive-filters" data-archive-filters hidden></div>
+                    <div class="home-archive-preview" data-archive-preview>
+                        <div class="home-archive-empty">
+                            <p>当前没有已核实的未来赛事档案。</p>
+                            <dl>
+                                <div><dt>赛事名称</dt><dd>待补充</dd></div>
+                                <div><dt>比赛月份</dt><dd>按明确月份整理</dd></div>
+                                <div><dt>通知来源</dt><dd>待补充</dd></div>
+                                <div><dt>赛程与真题</dt><dd>待核实</dd></div>
+                            </dl>
+                        </div>
+                    </div>
+                    <span class="home-archive-announcer" data-archive-announcer aria-live="polite"></span>
+                    <div class="home-archive-controls" data-archive-controls hidden>
+                        <button type="button" data-archive-prev aria-label="上一个赛事预览">←</button>
+                        <span data-archive-count>1 / 1</span>
+                        <button type="button" data-archive-next aria-label="下一个赛事预览">→</button>
+                    </div>
+                </section>
             </div>
         </section>
     </main>
@@ -209,7 +358,8 @@
                     <path d="M17.5 9.5 12.5 20.5" stroke-width="1.6" />
                 </svg>
                 <div>
-                    <b>朝云暮辞 · ZYYC LAB</b>
+                    <b>朝云暮辞</b>
+                    <p class="portal-footer-motto">Daybreak Voyage · 朝云赴远，暮辞从容。</p>
                     <p>真题、教程、错题与 AI 入口集中在这里。题目版权归原命题方，学习记录与 AI 配置只保存在当前浏览器。</p>
                 </div>
             </div>
@@ -219,10 +369,11 @@
                 <a href="tools/mistakes.html">温故集</a>
                 <a href="ai.html">AI问学</a>
                 <a href="settings.html#ai">设置</a>
+                <a href="settings.html#about">关于</a>
             </nav>
             <div class="portal-footer-bottom">
                 <span>© 2026 朝云暮辞</span>
-                <span>赛程以来源通知为准，仓库日期不是实时核验。</span>
+                <span>赛程以来源通知为准。</span>
             </div>
         </div>
     </footer>
