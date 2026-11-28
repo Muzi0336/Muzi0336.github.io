@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>朝云暮辞 · 学习档案</title>
-    <meta name="description" content="个人学习档案：文章、真题与学习工具。含前端与全栈笔记、数据结构与算法竞赛教程、计挑赛与蓝桥真题、算法题库和错题本。">
+    <title>朝云暮辞 · 竞赛备考与学习档案</title>
+    <meta name="description" content="本校蓝桥杯、计算机挑战赛报名时间与备赛入口，含真题、解析、错题复习与 AI 助教，以及算法、数据结构与前端学习资料。">
     <link rel="stylesheet" href="assets/css/site.css">
     <link rel="stylesheet" href="assets/css/detail.css">
     <style>
@@ -133,6 +133,283 @@
             .idx-foot { margin-top: 30px; padding-bottom: 44px; font-size: 11px; gap: 6px; }
         }
     </style>
+    <style>
+        /* 首页赛事状态板 */
+        .season {
+            --season-accent: #a8492a;
+            margin: 26px 0 42px;
+            border-top: 1px solid var(--line-2);
+        }
+
+        .season-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 13px 0 12px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .season-head .eyebrow {
+            margin: 0;
+            font-size: 11px;
+            letter-spacing: .18em;
+        }
+
+        .season-meta {
+            font-family: var(--mono);
+            font-size: 11px;
+            line-height: 1.6;
+            letter-spacing: .03em;
+            color: var(--muted);
+            text-align: right;
+        }
+
+        .season-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.65fr) minmax(260px, .7fr);
+            gap: 1px;
+            background: var(--line);
+            border: 1px solid var(--line);
+            border-top: 0;
+        }
+
+        .season-main,
+        .season-aside {
+            min-width: 0;
+            background: var(--paper-2);
+            padding: 28px 30px 26px;
+        }
+
+        .season-kicker,
+        .season-aside-head {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .16em;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .season-statusline {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .season-badge {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid var(--line-2);
+            padding: 3px 8px;
+            font-family: var(--mono);
+            font-size: 10px;
+            line-height: 1.4;
+            letter-spacing: .06em;
+            white-space: nowrap;
+        }
+
+        .season-badge.open {
+            background: var(--season-accent);
+            border-color: var(--season-accent);
+            color: #fff;
+        }
+
+        .season-badge.prep {
+            background: var(--ink);
+            border-color: var(--ink);
+            color: var(--paper);
+        }
+
+        .season-badge.upcoming,
+        .season-badge.ended {
+            color: var(--muted);
+            background: var(--paper);
+        }
+
+        .season-count {
+            font-family: var(--mono);
+            font-size: 11.5px;
+            letter-spacing: .02em;
+            color: var(--muted);
+        }
+
+        .season-count.hot { color: var(--season-accent); }
+
+        .season-title {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 10px 0 0;
+            font-family: var(--serif);
+            font-size: clamp(30px, 3.4vw, 42px);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -.02em;
+        }
+
+        .season-title small {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            font-weight: 400;
+            letter-spacing: .04em;
+            color: var(--muted);
+        }
+
+        .season-desc {
+            max-width: 46em;
+            margin-top: 12px;
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--ink-2);
+        }
+
+        .season-dates {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            margin-top: 18px;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .season-dates > div {
+            min-width: 0;
+            padding: 9px 12px 9px 0;
+            border-right: 1px solid var(--line);
+        }
+
+        .season-dates > div:last-child {
+            padding-right: 0;
+            border-right: 0;
+        }
+
+        .season-dates span {
+            display: block;
+            font-family: var(--mono);
+            font-size: 9.5px;
+            letter-spacing: .06em;
+            color: var(--muted);
+        }
+
+        .season-dates b {
+            display: block;
+            margin-top: 4px;
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--ink-2);
+        }
+
+        .season-actions {
+            display: flex;
+            gap: 9px;
+            flex-wrap: wrap;
+            margin-top: 19px;
+        }
+
+        .season-actions a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid var(--line-2);
+            padding: 8px 12px;
+            font-size: 11.5px;
+            line-height: 1.4;
+            color: var(--ink-2);
+            transition: background .16s, color .16s, border-color .16s;
+        }
+
+        .season-actions a:hover {
+            background: var(--wash);
+            color: var(--ink);
+        }
+
+        .season-actions a.primary {
+            background: var(--ink);
+            border-color: var(--ink);
+            color: var(--paper);
+        }
+
+        .season-actions a.primary:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .season-source {
+            margin-top: 15px;
+            font-size: 10.5px;
+            line-height: 1.65;
+            color: var(--muted);
+        }
+
+        .season-source a {
+            color: var(--ink-2);
+            text-decoration: underline;
+        }
+
+        .season-aside {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .season-aside-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .season-aside h3 {
+            margin: 12px 0 0;
+            font-family: var(--serif);
+            font-size: 25px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .season-aside p {
+            margin-top: 9px;
+            font-size: 12px;
+            line-height: 1.75;
+            color: var(--muted);
+        }
+
+        .season-aside .season-badge {
+            margin-top: 15px;
+            align-self: flex-start;
+        }
+
+        .season-link {
+            display: inline-flex;
+            margin-top: auto;
+            padding-top: 18px;
+            font-family: var(--mono);
+            font-size: 11.5px;
+            letter-spacing: .02em;
+            color: var(--ink-2);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 900px) {
+            .season-grid { grid-template-columns: 1fr; }
+            .season-dates { grid-template-columns: 1fr; }
+            .season-dates > div { padding: 8px 0; border-right: 0; border-bottom: 1px solid var(--line); }
+            .season-dates > div:last-child { border-bottom: 0; }
+            .season-main, .season-aside { padding: 24px 20px; }
+        }
+
+        @media (max-width: 600px) {
+            .season { margin: 18px 0 30px; }
+            .season-head { display: block; padding: 11px 0 10px; }
+            .season-meta { margin-top: 7px; text-align: left; }
+            .season-title { font-size: 28px; }
+            .season-desc { font-size: 13px; }
+            .season-actions a { flex: 1 1 auto; justify-content: center; }
+        }
+    </style>
 </head>
 
 <body>
@@ -159,6 +436,225 @@
     </div>
 
     <main class="wrap">
+        <section class="season" id="season" aria-labelledby="seasonTitle">
+            <div class="season-head">
+                <div class="eyebrow">— Competition season / 2026–2027</div>
+                <div class="season-meta">按蓝桥杯官网与校内通知整理<br>更新于 <span id="seasonUpdated">2026.11.28</span></div>
+            </div>
+            <h2 id="seasonTitle" hidden>2026–2027 竞赛赛季</h2>
+            <div class="season-grid" id="seasonBoard" aria-live="polite"></div>
+        </section>
+
+        <script>
+            (function () {
+                var UPDATED = '2026-11-28';
+                var ITEMS = [
+                    {
+                        id: 'lanqiao',
+                        name: '蓝桥杯',
+                        kind: '程序设计赛道',
+                        stage: '2026–2027',
+                        start: '2026-10-08T10:00:00+08:00',
+                        end: '2026-12-18T14:00:00+08:00',
+                        contestStart: '2027-04-10T09:00:00+08:00',
+                        contestEnd: '2027-04-10T13:00:00+08:00',
+                        labels: ['报名开放', '报名截止', '省赛'],
+                        desc: 'C/C++、Java、Python 三个程序设计科目，省赛在 2027 年 4 月 10 日。报名已开放，12 月 18 日 14:00 截止。',
+                        prep: 'problems/lanqiao/index.html',
+                        prepLabel: '进入蓝桥题库',
+                        signup: 'https://dasai.lanqiao.cn/',
+                        source: '蓝桥杯官网',
+                        sourceHref: 'https://dasai.lanqiao.cn/',
+                        note: '报名已开放，12 月 18 日 14:00 截止；校内截止可能更早，以学校通知为准。'
+                    },
+                    {
+                        id: 'contest',
+                        name: '计算机挑战赛',
+                        kind: '校内组织',
+                        stage: '2026',
+                        start: '2026-10-15T00:00:00+08:00',
+                        end: '2026-11-25T23:59:59+08:00',
+                        labels: ['开始', '截止'],
+                        desc: '2026 赛季已在 11 月 25 日截止。真题与错题记录仍保留，可直接查看和复盘。',
+                        prep: 'problems/contest/index.html',
+                        prepLabel: '查看真题与复盘',
+                        source: '校内通知',
+                        note: '2026 赛季已截止，真题仍可查看与复盘。'
+                    }
+                ];
+
+                var board = document.getElementById('seasonBoard');
+                var updated = document.getElementById('seasonUpdated');
+                if (!board) return;
+                if (updated) updated.textContent = UPDATED.replace(/-/g, '.');
+
+                function dateOf(s) { return new Date(s); }
+                function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+                function fmt(iso, withTime) {
+                    var d = dateOf(iso);
+                    var parts = new Intl.DateTimeFormat('zh-CN', {
+                        timeZone: 'Asia/Shanghai',
+                        year: 'numeric', month: '2-digit', day: '2-digit',
+                        hour: '2-digit', minute: '2-digit', hour12: false
+                    }).formatToParts(d);
+                    var m = {};
+                    parts.forEach(function (p) { if (p.type !== 'literal') m[p.type] = p.value; });
+                    var text = m.year + '.' + m.month + '.' + m.day;
+                    if (withTime) text += ' ' + pad(Number(m.hour)) + ':' + m.minute;
+                    return text;
+                }
+
+                function phaseOf(item, now) {
+                    var start = dateOf(item.start);
+                    var end = dateOf(item.end);
+                    if (now < start) return { key: 'upcoming', label: '未开放' };
+                    if (now < end) return { key: 'registering', label: '报名中' };
+                    if (item.contestStart && now < dateOf(item.contestStart)) return { key: 'preparing', label: '备赛中' };
+                    if (item.contestStart && now < dateOf(item.contestEnd)) return { key: 'competing', label: '比赛进行中' };
+                    return { key: 'ended', label: '已结束' };
+                }
+
+                function targetOf(item, phase) {
+                    if (phase.key === 'upcoming') return dateOf(item.start);
+                    if (phase.key === 'registering') return dateOf(item.end);
+                    if (phase.key === 'preparing') return dateOf(item.contestStart);
+                    if (phase.key === 'competing') return dateOf(item.contestEnd);
+                    return null;
+                }
+
+                function targetLabel(phase) {
+                    return {
+                        upcoming: '距开放',
+                        registering: '距报名截止',
+                        preparing: '距省赛',
+                        competing: '距比赛结束',
+                        ended: '真题仍可查看'
+                    }[phase.key];
+                }
+
+                function countdown(item, phase, now) {
+                    if (phase.key === 'ended') return '真题仍可查看';
+                    var target = targetOf(item, phase);
+                    if (!target) return '本赛季已结束';
+                    var ms = target - now;
+                    if (ms <= 0) return '已截止';
+                    var days = Math.floor(ms / 86400000);
+                    var text = days <= 0 ? '今天' : days === 1 ? '明天' : days + ' 天';
+                    return targetLabel(phase) + ' ' + text;
+                }
+
+                function noteFor(item, phase) {
+                    if (phase.key === 'registering') {
+                        return item.id === 'lanqiao'
+                            ? '报名已开放，12 月 18 日 14:00 截止；校内截止可能更早，以学校通知为准。'
+                            : item.note;
+                    }
+                    if (phase.key === 'preparing') return '报名已截止，省赛在 2027 年 4 月 10 日；现在进入备赛期。';
+                    if (phase.key === 'upcoming') return '尚未开放，先查看往年真题和备赛资料。';
+                    if (phase.key === 'competing') return '比赛进行中，赛后统一更新真题与题解。';
+                    return item.note;
+                }
+
+                function descFor(item, phase) {
+                    if (item.id === 'lanqiao') {
+                        if (phase.key === 'upcoming') return '本届报名尚未开放，先查看往年真题和基础准备。';
+                        if (phase.key === 'preparing') return '报名已截止，省赛在 2027 年 4 月 10 日 9:00；现在进入备赛期。';
+                        if (phase.key === 'competing') return '省赛正在进行，赛后统一更新真题与题解。';
+                        if (phase.key === 'ended') return '本赛季已结束，真题与题解已归档，可继续复盘。';
+                    }
+                    if (phase.key === 'ended') return '2026 赛季已截止，真题仍可查看与复盘。';
+                    return item.desc;
+                }
+
+                function actionHTML(item, phase) {
+                    var html = [];
+                    if (phase.key === 'registering' && item.signup) {
+                        html.push('<a class="primary" href="' + item.signup + '" target="_blank" rel="noopener noreferrer">去官网报名 ↗</a>');
+                    }
+                    html.push('<a href="' + item.prep + '">' + item.prepLabel + '</a>');
+                    html.push('<a href="tools/mistakes.html">打开错题本</a>');
+                    return html.join('');
+                }
+
+                function datesHTML(item) {
+                    var rows = [
+                        '<div><span>' + item.labels[0] + '</span><b>' + fmt(item.start, true) + '</b></div>',
+                        '<div><span>' + item.labels[1] + '</span><b>' + fmt(item.end, true) + '</b></div>'
+                    ];
+                    if (item.contestStart) {
+                        rows.push('<div><span>' + item.labels[2] + '</span><b>' + fmt(item.contestStart, true) + '</b></div>');
+                    }
+                    return '<div class="season-dates">' + rows.join('') + '</div>';
+                }
+
+                function sourceHTML(item) {
+                    var src = item.sourceHref
+                        ? '<a href="' + item.sourceHref + '" target="_blank" rel="noopener noreferrer">' + item.source + '</a>'
+                        : item.source;
+                    return '<p class="season-source">来源：' + src + ' · 时间如有调整，以学校最新通知为准。</p>';
+                }
+
+                function mainHTML(item, phase, now) {
+                    var cls = { registering: 'open', preparing: 'prep', competing: 'prep', upcoming: 'upcoming', ended: 'ended' }[phase.key];
+                    var countClass = phase.key === 'registering' ? ' hot' : '';
+                    var kicker = phase.key === 'ended' ? '01 / 赛季归档' :
+                        phase.key === 'upcoming' ? '01 / 下一项赛事' : '01 / 当前赛事';
+                    return '<div class="season-main">' +
+                        '<div class="season-kicker">' + kicker + ' · ' + item.stage + '</div>' +
+                        '<div class="season-statusline"><span class="season-badge ' + cls + '">' + phase.label + '</span>' +
+                        '<span class="season-count' + countClass + '">' + countdown(item, phase, now) + '</span></div>' +
+                        '<div class="season-title">' + item.name + ' <small>' + item.kind + '</small></div>' +
+                        '<p class="season-desc">' + descFor(item, phase) + '</p>' +
+                        datesHTML(item) +
+                        '<div class="season-actions">' + actionHTML(item, phase) + '</div>' +
+                        sourceHTML(item) +
+                        '</div>';
+                }
+
+                function asideHTML(item, phase, now) {
+                    var cls = { registering: 'open', preparing: 'prep', competing: 'prep', upcoming: 'upcoming', ended: 'ended' }[phase.key];
+                    var badgeText = phase.key === 'ended' ? phase.label : countdown(item, phase, now);
+                    return '<div class="season-aside">' +
+                        '<div class="season-aside-head"><span>02 / 另一项赛事</span><span>' + item.stage + '</span></div>' +
+                        '<span class="season-badge ' + cls + '">' + badgeText + '</span>' +
+                        '<h3>' + item.name + '</h3>' +
+                        '<p>' + item.kind + ' · ' + fmt(item.start) + '—' + fmt(item.end) + '</p>' +
+                        '<p>' + noteFor(item, phase) + '</p>' +
+                        '<a class="season-link" href="' + item.prep + '">' + item.prepLabel + ' →</a>' +
+                        '</div>';
+                }
+
+                function render() {
+                    var now = new Date();
+                    var rows = ITEMS.map(function (item) {
+                        var phase = phaseOf(item, now);
+                        var target = targetOf(item, phase);
+                        return {
+                            item: item,
+                            phase: phase,
+                            target: target,
+                            rank: phase.key === 'registering' || phase.key === 'preparing' || phase.key === 'competing' ? 0 :
+                                phase.key === 'upcoming' ? 1 : 2
+                        };
+                    });
+
+                    rows.sort(function (a, b) {
+                        if (a.rank !== b.rank) return a.rank - b.rank;
+                        if (a.rank === 2) return dateOf(b.item.contestEnd || b.item.end) - dateOf(a.item.contestEnd || a.item.end);
+                        return (a.target || 0) - (b.target || 0);
+                    });
+
+                    var main = rows[0];
+                    var other = rows[1];
+                    board.innerHTML = mainHTML(main.item, main.phase, now) +
+                        (other ? asideHTML(other.item, other.phase, now) : '');
+                }
+
+                render();
+            })();
+        </script>
+
         <section class="hero">
             <div class="hero-left">
                 <div class="eyebrow">— Study archive / 07</div>
