@@ -9,9 +9,9 @@
   --wash:rgba(25,25,23,.035);
   --wrong:#a83a30;
   --ok:#1f6b4d;
-  --serif:"Noto Serif SC","Source Han Serif SC","Songti SC","STZhongsong","华文中宋",SimSun,"Times New Roman",serif;
-  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;
-  --mono:"JetBrains Mono","SFMono-Regular",Menlo,Consolas,"Liberation Mono","Courier New",monospace;
+  --serif:"LXGW WenKai","LXGW WenKai Light","Songti SC","STZhongsong",SimSun,serif;
+  --sans:"LXGW WenKai","LXGW WenKai Light","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+  --mono:"Maple Mono","LXGW WenKai",Menlo,Consolas,"Liberation Mono","Courier New",monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
